@@ -1,0 +1,473 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Practice 13：C Preprocessor 完整互動式教學</title>
+<style>
+:root {
+  --bg:#f6f8fc; --card:#ffffff; --ink:#111827; --muted:#667085; --brand:#2563eb;
+  --brand2:#7c3aed; --ok:#16a34a; --bad:#dc2626; --line:#d9e2ef; --soft:#eef4ff;
+  --code:#0f172a; --warn:#f97316;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Noto Sans TC","Microsoft JhengHei",Arial,sans-serif;background:linear-gradient(180deg,#eaf2ff 0,#f8fafc 300px);color:var(--ink);line-height:1.72}
+header{max-width:1220px;margin:auto;padding:44px 20px 24px}
+h1{font-size:clamp(32px,5vw,56px);margin:0 0 8px}
+.subtitle{font-size:18px;color:var(--muted)}
+.tag{display:inline-block;background:#dbeafe;color:#1d4ed8;border-radius:999px;padding:5px 11px;font-size:13px;margin:4px 3px}
+nav{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.94);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+nav .bar{max-width:1220px;margin:auto;display:flex;gap:8px;overflow:auto;padding:10px 16px}
+nav a{white-space:nowrap;text-decoration:none;color:#1e3a8a;border:1px solid var(--line);padding:7px 12px;border-radius:999px;background:#fff;font-size:14px}
+main{max-width:1220px;margin:auto;padding:20px 18px 80px}
+.card,.slide,.qblock,.code-card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:22px;box-shadow:0 10px 24px rgba(15,23,42,.06);margin:18px 0}
+h2{font-size:30px;margin:4px 0 14px} h3{margin:8px 0 10px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.three{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.concept{border:1px solid var(--line);border-radius:16px;padding:16px;background:#fbfdff}
+.explain{background:#f8fafc;border-left:5px solid var(--brand);padding:12px 14px;border-radius:10px}
+.warn{background:#fff7ed;border-left:5px solid var(--warn);padding:12px 14px;border-radius:10px}
+.good{background:#ecfdf5;border-left:5px solid var(--ok);padding:12px 14px;border-radius:10px}
+pre{background:var(--code);color:#e5e7eb;border-radius:14px;padding:16px;overflow:auto;font-size:14px;line-height:1.55}
+code{font-family:Consolas,Monaco,monospace}
+.code-head{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap}
+button{cursor:pointer;border:0;border-radius:12px;background:var(--brand);color:#fff;padding:10px 14px;font-weight:700}
+button.secondary{background:#e5e7eb;color:#111827}
+button.purple{background:var(--brand2)}
+.table{width:100%;border-collapse:collapse;border-radius:14px;overflow:hidden}
+.table th,.table td{border:1px solid var(--line);padding:10px;text-align:left;vertical-align:top}
+.table th{background:#f1f5f9}
+.output-box{background:#07111f;color:#d1fae5;border-radius:14px;padding:14px 16px;margin-top:12px;border:1px solid #1f2937;font-family:Consolas,Monaco,monospace;white-space:pre-wrap}
+.compiler-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:14px}
+.compiler-card{display:block;text-decoration:none;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;box-shadow:0 8px 18px rgba(15,23,42,.05);transition:.2s}
+.compiler-card:hover{transform:translateY(-3px);border-color:var(--brand);box-shadow:0 12px 24px rgba(37,99,235,.12)}
+.compiler-card b{display:block;font-size:18px;color:#1d4ed8;margin-bottom:6px}
+.pipeline{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:10px;align-items:center;margin:18px 0}
+.pipebox{background:#eff6ff;border:2px solid #93c5fd;border-radius:16px;padding:14px;text-align:center;font-weight:800}
+.arrow{font-size:28px;color:#2563eb}
+.macro-demo{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.demo-box{border:1px solid var(--line);border-radius:14px;padding:14px;background:#fbfdff}
+input{padding:9px 10px;border:1px solid var(--line);border-radius:10px;width:100%;font-size:16px}
+.quiz-card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px;margin:12px 0}
+.option{display:block;width:100%;text-align:left;margin:8px 0;background:#f8fafc;color:#111827;border:1px solid var(--line)}
+.option.correct{background:#dcfce7;border-color:#22c55e} .option.wrong{background:#fee2e2;border-color:#ef4444}
+.result{font-weight:800;margin-top:8px}
+.footer{color:var(--muted);font-size:13px;text-align:center;margin-top:34px}
+@media(max-width:900px){.grid,.three,.macro-demo,.pipeline{grid-template-columns:1fr} .arrow{display:none}}
+</style>
+</head>
+<body>
+<header>
+  <h1>Practice 13：C Preprocessor 完整互動式 HTML 教學</h1>
+  <div class="subtitle">主題：#include、#define、參數巨集、檔案拆分、條件編譯與多檔案編譯</div>
+  <div><span class="tag">C 語言</span><span class="tag">Preprocessor</span><span class="tag">Macro</span><span class="tag">Header File</span><span class="tag">逐行註解</span><span class="tag">互動測驗</span></div>
+</header>
+<nav><div class="bar">
+<a href="#slides">投影片教學</a><a href="#interactive">互動示範</a><a href="#q1">第1題</a><a href="#q2">第2題</a><a href="#q3">第3題</a><a href="#online">線上編譯器</a><a href="#quiz">測驗</a><a href="#compile">本機編譯</a>
+</div></nav>
+<main>
+
+<section class="card">
+<h2>一、學習目標</h2>
+<p>本教學依 Practice 13 與 Preprocessor 投影片整理。完成後，你應能說明 C 程式在正式編譯前，預處理器如何先處理 <code>#include</code>、<code>#define</code> 與條件編譯；也能把程式拆成 <code>.h</code>、<code>.c</code>、<code>main.c</code> 三個檔案並正確編譯。</p>
+<div class="pipeline">
+  <div class="pipebox">原始 C 程式<br><small>含 #include / #define</small></div><div class="arrow">→</div>
+  <div class="pipebox">Preprocessor<br><small>展開與替換</small></div><div class="arrow">→</div>
+  <div class="pipebox">Compiler<br><small>產生執行檔</small></div>
+</div>
+<p class="explain">預處理器不是在「執行程式」，而是在編譯前先改寫原始碼，例如把巨集替換掉、把標頭檔內容插入程式，再交給 compiler。</p>
+</section>
+
+<section id="slides">
+<h2>二、完整投影片式教學</h2>
+<div class="slide">
+<h3>Slide 1：Preprocessor 是什麼？</h3>
+<p>Preprocessor 是編譯前先執行的處理階段。凡是以 <code>#</code> 開頭的 directive，例如 <code>#include</code>、<code>#define</code>、<code>#ifdef</code>，都會先被預處理器處理。</p>
+<ul><li><code>#define</code>：巨集定義。</li><li><code>#include</code>：檔案包含。</li><li><code>#ifdef / #if / #endif</code>：條件編譯。</li></ul>
+</div>
+<div class="slide">
+<h3>Slide 2：Simple Macro</h3>
+<p><code>#define STR_LEN 20</code> 會讓程式中所有 <code>STR_LEN</code> 在預處理後被替換成 <code>20</code>。</p>
+<pre><code>#define STR_LEN 20
+char str[STR_LEN];   // 預處理後變成 char str[20];</code></pre>
+</div>
+<div class="slide">
+<h3>Slide 3：Parameterized Macro</h3>
+<p>參數巨集看起來像函式，但它不是函式呼叫，而是文字替換。</p>
+<pre><code>#define SQUARE(a) a * a
+SQUARE(3+6)  // 展開成 3+6*3+6，結果是 27，不是 81</code></pre>
+<p class="warn">使用參數巨集時，參數與整個 replacement list 都要盡量加括號，避免運算優先順序錯誤。</p>
+</div>
+<div class="slide">
+<h3>Slide 4：巨集的安全寫法</h3>
+<pre><code>#define SQUARE(a) ((a) * (a))
+#define MAX(x, y) (((x) > (y)) ? (x) : (y))</code></pre>
+<p>這樣 <code>SQUARE(3+6)</code> 會展開成 <code>((3+6) * (3+6))</code>，結果才會是 81。</p>
+</div>
+<div class="slide">
+<h3>Slide 5：File Inclusion</h3>
+<p><code>#include &lt;stdio.h&gt;</code> 通常用於系統標頭檔；<code>#include "average.h"</code> 通常用於自己寫的標頭檔。</p>
+<table class="table"><tr><th>寫法</th><th>用途</th></tr><tr><td><code>#include &lt;filename&gt;</code></td><td>標準函式庫或系統提供的 header。</td></tr><tr><td><code>#include "filename"</code></td><td>自己專案中的 header，例如 average.h。</td></tr></table>
+</div>
+<div class="slide">
+<h3>Slide 6：Header Guard</h3>
+<p>標頭檔常使用 header guard 避免重複 include。</p>
+<pre><code>#ifndef PRACTICE13_3_AVERAGE_H
+#define PRACTICE13_3_AVERAGE_H
+double calculate_average(int scores[3]);
+#endif</code></pre>
+</div>
+<div class="slide">
+<h3>Slide 7：Conditional Compilation</h3>
+<p>條件編譯可控制某些程式碼是否被編譯，例如 debug 訊息。</p>
+<pre><code>#define DEBUG 1
+#if DEBUG
+printf("debug message\n");
+#endif</code></pre>
+</div>
+</section>
+
+<section id="interactive" class="card">
+<h2>三、互動示範：巨集展開</h2>
+<div class="macro-demo">
+<div class="demo-box">
+<h3>T_BAD(x) = (x*10)</h3>
+<p>輸入 x 的文字，例如 <code>3+6</code>：</p>
+<input id="macroInput" value="3+6" oninput="updateMacroDemo()">
+<p class="explain" id="badExpand"></p>
+</div>
+<div class="demo-box">
+<h3>T_GOOD(x) = ((x)*10)</h3>
+<p>同一個輸入，用正確括號保護：</p>
+<p class="good" id="goodExpand"></p>
+</div>
+</div>
+</section>
+
+<section id="q1" class="qblock">
+<h2>四、第 1 題：撰寫參數巨集</h2>
+<h3>題目</h3>
+<p>請寫出可以計算下列功能的 parameter macros：</p>
+<ol><li>求 x 和 y 的最大值。</li><li>求陣列大小。</li><li>求兩個數字平均。</li><li>判斷某數是否為偶數。</li></ol>
+<h3>解題觀念</h3>
+<p>本題的重點是「參數一定要加括號」。例如 <code>MAX(a+b, c)</code> 若沒有括號，很容易因運算優先順序造成錯誤。<code>ARRAY_SIZE(arr)</code> 使用 <code>sizeof(arr) / sizeof(arr[0])</code>，但只能用在真正陣列，不能用在指標。</p>
+<h3>程式</h3>
+<div class="code-head"><h3>practice13_1_2_macros_demo.c</h3><button onclick="copyCode('code_macro')">複製程式碼</button></div>
+<pre id="code_macro"><code>/*
+ * ============================================================
+ * Practice 13 第 1、2 題：參數巨集 parameter macros
+ * ============================================================
+ *
+ * 第 1 題：請寫出可以計算下列功能的參數巨集：
+ *   1-1. MAX(x, y)        ：求 x 和 y 的最大值
+ *   1-2. ARRAY_SIZE(arr)  ：求陣列大小
+ *   1-3. AVG(x, y)        ：求兩個數字的平均
+ *   1-4. IS_EVEN(n)       ：判斷數字是否為偶數
+ *
+ * 第 2 題：#define T(x) (x*10)
+ *   2-1. T(3+6) 的結果是多少？
+ *   2-2. 若想讓結果變成 90，應如何修正？
+ */
+
+#include &lt;stdio.h&gt;   /* 第 0 節：引入 printf() 所需要的標頭檔 */
+
+/*
+ * 第 1-1 題：MAX(x, y)
+ * 功能：回傳 x 和 y 中較大的值。
+ * 說明：每個參數都加上括號，可避免運算優先順序造成錯誤。
+ */
+#define MAX(x, y) (((x) &gt; (y)) ? (x) : (y))
+
+/*
+ * 第 1-2 題：ARRAY_SIZE(arr)
+ * 功能：計算陣列元素個數。
+ * 原理：整個陣列的 byte 數 / 單一元素的 byte 數。
+ * 注意：這個巨集只能用在真正的陣列，不能用在指標。
+ */
+#define ARRAY_SIZE(arr) (sizeof(arr) / sizeof((arr)[0]))
+
+/*
+ * 第 1-3 題：AVG(x, y)
+ * 功能：計算兩個數字的平均值。
+ * 說明：除以 2.0 可以保留小數，避免整數除法只留下整數。
+ */
+#define AVG(x, y) (((x) + (y)) / 2.0)
+
+/*
+ * 第 1-4 題：IS_EVEN(n)
+ * 功能：判斷 n 是否為偶數。
+ * 回傳：若 n 可以被 2 整除，結果為 1；否則為 0。
+ */
+#define IS_EVEN(n) (((n) % 2) == 0)
+
+/*
+ * 第 2-1 題：錯誤示範
+ * T_BAD(3+6) 會展開成 (3+6*10)，因為乘法優先於加法，結果為 63。
+ */
+#define T_BAD(x) (x*10)
+
+/*
+ * 第 2-2 題：正確寫法
+ * 將參數 x 加上括號，T_GOOD(3+6) 會展開成 ((3+6)*10)，結果為 90。
+ */
+#define T_GOOD(x) ((x)*10)
+
+int main(void)
+{
+    /* 第 3 節：宣告測試資料 */
+    int a = 10;
+    int b = 25;
+    int numbers[] = {3, 6, 9, 12, 15};
+
+    /* 第 4 節：依序輸出每一題的測試結果 */
+    printf(&quot;Practice 13 第 1、2 題：Macro Demo\n&quot;);
+    printf(&quot;第 1-1 題 MAX(%d, %d) = %d\n&quot;, a, b, MAX(a, b));
+    printf(&quot;第 1-2 題 ARRAY_SIZE(numbers) = %lu\n&quot;, (unsigned long)ARRAY_SIZE(numbers));
+    printf(&quot;第 1-3 題 AVG(%d, %d) = %.2f\n&quot;, a, b, AVG(a, b));
+    printf(&quot;第 1-4 題 IS_EVEN(%d) = %s\n&quot;, a, IS_EVEN(a) ? &quot;true&quot; : &quot;false&quot;);
+    printf(&quot;第 1-4 題 IS_EVEN(%d) = %s\n&quot;, b, IS_EVEN(b) ? &quot;true&quot; : &quot;false&quot;);
+    printf(&quot;第 2-1 題 T_BAD(3+6) = %d\n&quot;, T_BAD(3+6));
+    printf(&quot;第 2-2 題 T_GOOD(3+6) = %d\n&quot;, T_GOOD(3+6));
+
+    return 0;
+}
+</code></pre>
+<h3>執行結果</h3>
+<div class="output-box">Practice 13 第 1、2 題：Macro Demo
+第 1-1 題 MAX(10, 25) = 25
+第 1-2 題 ARRAY_SIZE(numbers) = 5
+第 1-3 題 AVG(10, 25) = 17.50
+第 1-4 題 IS_EVEN(10) = true
+第 1-4 題 IS_EVEN(25) = false
+第 2-1 題 T_BAD(3+6) = 63
+第 2-2 題 T_GOOD(3+6) = 90</div>
+<h3>程式說明</h3>
+<table class="table">
+<tr><th>巨集</th><th>功能</th><th>重點</th></tr>
+<tr><td><code>MAX(x,y)</code></td><td>回傳較大值</td><td>使用三元運算子 <code>?:</code>。</td></tr>
+<tr><td><code>ARRAY_SIZE(arr)</code></td><td>計算陣列元素個數</td><td>整個陣列 byte 數除以單一元素 byte 數。</td></tr>
+<tr><td><code>AVG(x,y)</code></td><td>計算平均</td><td>除以 <code>2.0</code> 保留小數。</td></tr>
+<tr><td><code>IS_EVEN(n)</code></td><td>判斷偶數</td><td><code>((n)%2)==0</code> 為真代表偶數。</td></tr>
+</table>
+</section>
+
+<section id="q2" class="qblock">
+<h2>五、第 2 題：T(3+6) 的巨集展開</h2>
+<h3>題目</h3>
+<p><code>#define T(x) (x*10)</code></p>
+<ol><li><code>T(3+6)</code> 的值是多少？</li><li>如果想讓結果是 90，要怎麼修正？</li></ol>
+<h3>答案</h3>
+<p class="warn"><code>T(3+6)</code> 會展開成 <code>(3+6*10)</code>，因為乘法優先於加法，所以結果是 <b>63</b>。</p>
+<p class="good">要得到 90，應改成 <code>#define T(x) ((x)*10)</code>，讓 <code>3+6</code> 先被括號包住。</p>
+<h3>程式</h3>
+<p>第 2 題已整合在 <code>practice13_1_2_macros_demo.c</code> 中，使用 <code>T_BAD</code> 與 <code>T_GOOD</code> 對照。</p>
+<pre><code>#define T_BAD(x) (x*10)
+#define T_GOOD(x) ((x)*10)
+
+printf("T_BAD(3+6) = %d\n", T_BAD(3+6));
+printf("T_GOOD(3+6) = %d\n", T_GOOD(3+6));</code></pre>
+<h3>程式結果</h3>
+<div class="output-box">第 2-1 題 T_BAD(3+6) = 63
+第 2-2 題 T_GOOD(3+6) = 90</div>
+<h3>程式說明</h3>
+<p><code>T_BAD</code> 的錯誤不是 compiler 算錯，而是 macro 只是文字替換。當你寫 <code>T_BAD(3+6)</code>，預處理器只把 <code>x</code> 換成 <code>3+6</code>，所以變成 <code>(3+6*10)</code>。因此巨集參數要寫成 <code>(x)</code>。</p>
+</section>
+
+<section id="q3" class="qblock">
+<h2>六、第 3 題：多檔案 average.h / average.c / main.c</h2>
+<h3>題目</h3>
+<p>請寫一個計算三科期中考平均分數的程式：</p>
+<ol><li>在 <code>average.h</code> 宣告函式。</li><li>在 <code>average.c</code> 定義函式，接收大小為 3 的陣列並回傳平均。</li><li>在 <code>main.c</code> 使用此函式，讀入使用者指定的三科成績並印出平均。</li></ol>
+<h3>解題觀念</h3>
+<p><code>.h</code> 放函式宣告，<code>.c</code> 放函式定義，<code>main.c</code> 負責主流程。編譯時要把 <code>main.c</code> 和 <code>average.c</code> 一起交給 gcc。</p>
+
+<h3>程式 1：practice13_3_average.h</h3>
+<div class="code-head"><button onclick="copyCode('code_h')">複製 average.h</button></div>
+<pre id="code_h"><code>/*
+ * ============================================================
+ * Practice 13 第 3-1 題：average.h
+ * ============================================================
+ *
+ * 本檔案負責「宣告」計算三科平均分數的函式。
+ * 題目要求：Declare the function in a file &quot;average.h&quot;。
+ */
+
+#ifndef PRACTICE13_3_AVERAGE_H
+#define PRACTICE13_3_AVERAGE_H
+
+/*
+ * 第 3-1 題：calculate_average 函式宣告
+ * 參數：scores[3]，代表三科成績的整數陣列。
+ * 回傳：三科成績的平均值，型態為 double。
+ */
+double calculate_average(int scores[3]);
+
+#endif
+</code></pre>
+
+<h3>程式 2：practice13_3_average.c</h3>
+<div class="code-head"><button onclick="copyCode('code_avg')">複製 average.c</button></div>
+<pre id="code_avg"><code>/*
+ * ============================================================
+ * Practice 13 第 3-1 題：average.c
+ * ============================================================
+ *
+ * 本檔案負責「定義」calculate_average() 函式。
+ * 題目要求：Define it in a file &quot;average.c&quot;。
+ */
+
+#include &quot;practice13_3_average.h&quot;  /* 第 0 節：引入函式宣告，確保宣告與定義一致 */
+
+/*
+ * 第 3-1 題：calculate_average 函式定義
+ * 功能：接收一個大小為 3 的陣列，計算三個數字的平均。
+ * 為什麼回傳 double：平均可能有小數，所以不能只用 int。
+ */
+double calculate_average(int scores[3])
+{
+    int sum = 0;  /* 第 1 節：用來累加三科成績 */
+    int i;        /* 第 1 節：迴圈計數變數，放在外面可相容較舊 C 編譯器 */
+
+    /* 第 2 節：使用 for 迴圈把 scores[0]、scores[1]、scores[2] 加總 */
+    for (i = 0; i &lt; 3; i++)
+    {
+        sum += scores[i];
+    }
+
+    /* 第 3 節：除以 3.0，讓結果保留小數 */
+    return sum / 3.0;
+}
+</code></pre>
+
+<h3>程式 3：practice13_3_main.c</h3>
+<div class="code-head"><button onclick="copyCode('code_main')">複製 main.c</button></div>
+<pre id="code_main"><code>/*
+ * ============================================================
+ * Practice 13 第 3-2 題：main.c
+ * ============================================================
+ *
+ * 本檔案是主程式。
+ * 題目要求：Construct a file &quot;main.c&quot;，使用 average.c 提供的函式，
+ * 計算使用者輸入的三科期中考成績平均。
+ */
+
+#include &lt;stdio.h&gt;                 /* 第 0 節：printf()、scanf() 需要此標頭檔 */
+#include &quot;practice13_3_average.h&quot;  /* 第 0 節：引入自訂標頭檔，才能呼叫 calculate_average() */
+
+int main(void)
+{
+    /* 第 1 節：宣告變數 */
+    int scores[3];   /* 儲存三科成績 */
+    double average;  /* 儲存平均分數 */
+    int i;           /* 迴圈計數變數 */
+
+    /* 第 2 節：提示使用者輸入資料 */
+    printf(&quot;Practice 13 第 3 題：計算三科期中考平均分數\n&quot;);
+    printf(&quot;Please input the midterm scores of 3 subjects.\n&quot;);
+
+    /* 第 3 節：使用 for 迴圈讀入三科成績 */
+    for (i = 0; i &lt; 3; i++)
+    {
+        printf(&quot;Subject %d score: &quot;, i + 1);
+
+        /* scanf() 回傳成功讀取的資料個數；若不是 1，代表輸入錯誤 */
+        if (scanf(&quot;%d&quot;, &amp;scores[i]) != 1)
+        {
+            printf(&quot;Invalid input. Please enter an integer score.\n&quot;);
+            return 1;
+        }
+    }
+
+    /* 第 4 節：呼叫 average.c 中定義的 calculate_average() 函式 */
+    average = calculate_average(scores);
+
+    /* 第 5 節：輸出平均成績，%.2f 代表顯示到小數點後兩位 */
+    printf(&quot;The average score is %.2f\n&quot;, average);
+
+    return 0;
+}
+</code></pre>
+
+<h3>執行結果範例</h3>
+<div class="output-box">Practice 13 第 3 題：計算三科期中考平均分數
+Please input the midterm scores of 3 subjects.
+Subject 1 score: 80
+Subject 2 score: 90
+Subject 3 score: 100
+The average score is 90.00</div>
+
+<h3>程式說明</h3>
+<table class="table">
+<tr><th>檔案</th><th>角色</th><th>內容</th></tr>
+<tr><td><code>practice13_3_average.h</code></td><td>宣告</td><td>告訴其他檔案有 <code>calculate_average()</code> 可以用。</td></tr>
+<tr><td><code>practice13_3_average.c</code></td><td>定義</td><td>真正寫出平均值怎麼計算。</td></tr>
+<tr><td><code>practice13_3_main.c</code></td><td>主程式</td><td>讀入三科成績，呼叫函式，印出結果。</td></tr>
+</table>
+</section>
+
+<section id="online" class="card">
+<h2>七、線上 C 編譯器連結與使用方式</h2>
+<p class="warn">第 1、2 題是單一檔案，可直接貼到任何線上編譯器執行。第 3 題是多檔案，若線上編譯器不方便建立多檔案，可以先用本機 gcc 編譯，或把 average.c 的函式暫時貼到 main.c 裡測試。</p>
+<div class="compiler-grid">
+<a class="compiler-card" href="https://www.w3schools.com/c/c_compiler.php" target="_blank" rel="noopener"><b>W3Schools C Compiler</b>介面簡單，適合貼上單一 C 檔快速執行。</a><a class="compiler-card" href="https://www.onlinegdb.com/online_c_compiler" target="_blank" rel="noopener"><b>OnlineGDB</b>支援 stdin、debug，適合測試 scanf 與多步驟執行。</a><a class="compiler-card" href="https://www.programiz.com/c-programming/online-compiler/" target="_blank" rel="noopener"><b>Programiz</b>版面清楚，適合初學者快速練習。</a><a class="compiler-card" href="https://godbolt.org/" target="_blank" rel="noopener"><b>Godbolt</b>可看預處理/組語，適合理解 macro 展開與編譯流程。</a><a class="compiler-card" href="https://www.jdoodle.com/c-online-compiler" target="_blank" rel="noopener"><b>JDoodle</b>可快速編譯執行，適合交叉測試。</a>
+</div>
+</section>
+
+<section id="quiz" class="card">
+<h2>八、互動測驗</h2>
+<div id="quizBox"></div>
+<button onclick="resetQuiz()" class="secondary">重新作答</button>
+</section>
+
+<section id="compile" class="card">
+<h2>九、如何在本機編譯與執行</h2>
+<h3>第 1、2 題</h3>
+<pre><code>gcc practice13_1_2_macros_demo.c -o practice13_macro
+./practice13_macro</code></pre>
+<h3>第 3 題：多檔案編譯</h3>
+<pre><code>gcc practice13_3_main.c practice13_3_average.c -o practice13_average
+./practice13_average</code></pre>
+<h3>查看預處理後的結果</h3>
+<pre><code>gcc -E practice13_1_2_macros_demo.c -o macro_preprocessed.i</code></pre>
+<p class="explain"><code>-E</code> 只執行預處理，不進入真正編譯。這很適合用來觀察 macro 展開後到底變成什麼。</p>
+</section>
+<div class="footer">Practice 13 C Preprocessor Full Interactive Tutorial ｜ 投影片教學、題目、程式、結果與說明整合版</div>
+</main>
+<script>
+function copyCode(id) {
+  navigator.clipboard.writeText(document.getElementById(id).innerText);
+}
+function updateMacroDemo() {
+  const x = document.getElementById('macroInput').value || 'x';
+  document.getElementById('badExpand').innerHTML =
+    '<code>T_BAD(' + x + ')</code> 展開成 <code>(' + x + '*10)</code>。若輸入是 <code>3+6</code>，會變成 <code>(3+6*10)</code>，結果是 63。';
+  document.getElementById('goodExpand').innerHTML =
+    '<code>T_GOOD(' + x + ')</code> 展開成 <code>((' + x + ')*10)</code>。若輸入是 <code>3+6</code>，會先算括號內，結果是 90。';
+}
+const quiz = [
+  {q:'Preprocessor 在什麼時候執行？', opts:['程式執行時','編譯前','連結後','使用者輸入資料後'], ans:1, why:'Preprocessor 會在真正 compiler 編譯前先處理 directives。'},
+  {q:'下列哪一個是參數巨集的安全寫法？', opts:['#define SQUARE(x) x*x','#define SQUARE(x) (x*x)','#define SQUARE(x) ((x)*(x))','#define SQUARE x*x'], ans:2, why:'參數與整體運算最好加括號，避免優先順序錯誤。'},
+  {q:'#define T(x) (x*10)，T(3+6) 結果為？', opts:['90','63','36','編譯錯誤'], ans:1, why:'展開成 (3+6*10)，乘法先算，所以是 63。'},
+  {q:'average.h 通常放什麼？', opts:['函式宣告','主程式 main','所有執行結果','使用者輸入'], ans:0, why:'Header file 通常放函式宣告、巨集、型別定義等。'},
+  {q:'要同時編譯 main.c 與 average.c，較合理的指令是？', opts:['gcc main.c average.c -o app','gcc average.h -o app','./main.c','gcc -E app'], ans:0, why:'多個 .c 檔要一起交給 gcc 編譯與連結。'}
+];
+function renderQuiz() {
+  let h='';
+  quiz.forEach((q,qi)=>{
+    h += `<div class="quiz-card"><h3>Q${qi+1}. ${q.q}</h3>`;
+    q.opts.forEach((o,oi)=>{h += `<button class="option" onclick="answerQuiz(${qi},${oi},this)">${o}</button>`;});
+    h += `<div class="result" id="res${qi}"></div></div>`;
+  });
+  document.getElementById('quizBox').innerHTML=h;
+}
+function answerQuiz(qi,oi,btn) {
+  const q=quiz[qi]; const card=btn.parentElement;
+  card.querySelectorAll('.option').forEach((b,idx)=>{b.disabled=true;if(idx===q.ans)b.classList.add('correct');});
+  if(oi!==q.ans) btn.classList.add('wrong');
+  document.getElementById('res'+qi).textContent=(oi===q.ans?'答對！':'答錯。')+' '+q.why;
+}
+function resetQuiz() { renderQuiz(); }
+updateMacroDemo(); renderQuiz();
+</script>
+</body>
+</html>

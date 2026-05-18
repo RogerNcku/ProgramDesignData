@@ -1,0 +1,500 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Practice 12 Linked Lists 完整互動式 HTML 教學</title>
+<style>
+:root{--bg:#f6f8fc;--card:#fff;--ink:#172033;--muted:#667085;--brand:#2563eb;--brand2:#7c3aed;--ok:#16a34a;--bad:#dc2626;--line:#d9e2ef;--soft:#eef4ff;--code:#0f172a;--warn:#f97316}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:"Noto Sans TC","Microsoft JhengHei",Arial,sans-serif;background:linear-gradient(180deg,#eef4ff 0,#f8fafc 330px);color:var(--ink);line-height:1.75}
+header{padding:44px 22px 24px;max-width:1220px;margin:auto}h1{font-size:clamp(30px,5vw,56px);margin:0 0 8px;letter-spacing:-1px}.subtitle{font-size:18px;color:var(--muted);max-width:960px}
+nav{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.93);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}nav .bar{max-width:1220px;margin:auto;display:flex;gap:8px;overflow:auto;padding:10px 16px}nav a{white-space:nowrap;text-decoration:none;color:#1e3a8a;border:1px solid var(--line);padding:7px 12px;border-radius:999px;background:white;font-size:14px}
+main{max-width:1220px;margin:auto;padding:20px 18px 70px}.card,.concept,.question,.code-card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px;box-shadow:0 10px 24px rgba(15,23,42,.06);margin:16px 0}h2{font-size:30px;margin:8px 0 14px}h3{margin:12px 0 10px}.tag{display:inline-block;background:#dbeafe;color:#1d4ed8;border-radius:999px;padding:4px 10px;font-size:13px;margin:3px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.explain{background:#f8fafc;border-left:5px solid var(--brand);padding:12px 14px;border-radius:10px}.notice{background:#fff7ed;border-left:5px solid var(--warn);padding:12px 14px;border-radius:10px}.pill{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);padding:6px 10px;border-radius:999px;background:#fff;font-size:14px}
+button{cursor:pointer;border:0;border-radius:12px;background:var(--brand);color:white;padding:10px 14px;font-weight:700}button.secondary{background:#e5e7eb;color:#111827}button.good{background:var(--ok)}button.bad{background:var(--bad)}.btnrow{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+pre{background:var(--code);color:#e5e7eb;border-radius:14px;padding:16px;overflow:auto;font-size:14px;line-height:1.55}code{font-family:Consolas,Monaco,monospace}.code-head{display:flex;justify-content:space-between;gap:10px;align-items:center}
+.table{width:100%;border-collapse:collapse;overflow:hidden;border-radius:12px}.table th,.table td{border:1px solid var(--line);padding:10px;text-align:left;vertical-align:top}.table th{background:#f1f5f9}
+.slidebox{min-height:290px;background:linear-gradient(135deg,#ffffff,#eef4ff);border:1px solid var(--line);border-radius:20px;padding:24px;display:grid;align-content:center;box-shadow:0 10px 24px rgba(15,23,42,.06)}.slide-title{font-size:30px;font-weight:900;color:#1e3a8a;margin-bottom:12px}.slide-text{font-size:19px}.progress{height:9px;background:#e5e7eb;border-radius:999px;overflow:hidden}.progress>div{height:100%;background:linear-gradient(90deg,var(--brand),var(--brand2));width:0%}
+.output-box{background:#07111f;color:#d1fae5;border-radius:14px;padding:14px 16px;margin-top:10px;border:1px solid #1f2937;font-family:Consolas,Monaco,monospace;white-space:pre-wrap}
+.compiler-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;margin-top:14px}.compiler-card{display:block;text-decoration:none;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;box-shadow:0 8px 18px rgba(15,23,42,.05);transition:.2s}.compiler-card:hover{transform:translateY(-3px);border-color:var(--brand);box-shadow:0 12px 24px rgba(37,99,235,.12)}.compiler-card b{display:block;font-size:18px;color:#1d4ed8;margin-bottom:6px}
+.listviz{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:14px 0;padding:16px;background:#f8fafc;border-radius:16px;border:1px solid var(--line)}.node{display:flex;align-items:stretch;border:2px solid #64748b;border-radius:10px;overflow:hidden;background:white;box-shadow:0 5px 12px rgba(15,23,42,.08)}.node .val{padding:12px 18px;font-size:20px;font-weight:900;background:#fff}.node .next{padding:12px 10px;border-left:2px solid #64748b;background:#e2e8f0;color:#334155}.arrow{font-size:26px;color:#2563eb;font-weight:900}.null{padding:10px 14px;border:2px dashed #94a3b8;border-radius:10px;color:#475569;font-weight:800}.node.active{border-color:#2563eb;box-shadow:0 0 0 4px #dbeafe}.node.hit{border-color:#16a34a;box-shadow:0 0 0 4px #dcfce7}.node.cut{opacity:.35;text-decoration:line-through}
+.quiz-card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px;margin:12px 0}.option{display:block;width:100%;text-align:left;margin:8px 0;background:#f8fafc;color:#111827;border:1px solid var(--line)}.option.correct{background:#dcfce7;border-color:#22c55e}.option.wrong{background:#fee2e2;border-color:#ef4444}.result{font-weight:800;margin-top:8px}.footer{color:var(--muted);font-size:13px;text-align:center;margin-top:34px}
+@media(max-width:900px){.grid,.grid3{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header>
+<h1>Practice 12：Linked Lists 完整互動式 HTML 教學</h1>
+<div class="subtitle">主題：struct node、next 指標、建立節點、前端插入、搜尋、刪除、找最後一次出現、計算出現次數、有序插入。</div>
+<div><span class="tag">C 語言</span><span class="tag">Linked List</span><span class="tag">struct</span><span class="tag">malloc/free</span><span class="tag">逐行註解</span><span class="tag">互動動畫</span></div>
+</header>
+<nav><div class="bar">
+<a href="#slides">投影片教學</a><a href="#concepts">核心觀念</a><a href="#animation">互動動畫</a><a href="#questions">題目＋程式＋結果</a><a href="#online">線上編譯器</a><a href="#quiz">測驗</a><a href="#compile">本機編譯</a>
+</div></nav>
+<main>
+<section id="slides" class="card">
+<h2>一、完整投影片式教學</h2>
+<p class="explain">這一節把課堂投影片內容整理成可切換的教學卡。Linked list 的基本定義是由一串 struct node 組成，每個 node 內含資料與指向下一個 node 的指標；投影片也強調 linked list 容易插入刪除，但失去 array 的 random access 能力。</p>
+<div class="slidebox">
+<div class="slide-title" id="slideTitle"></div>
+<div class="slide-text" id="slideText"></div>
+</div>
+<div class="btnrow"><button onclick="prevSlide()">上一張</button><button onclick="nextSlide()">下一張</button><button class="secondary" onclick="goSlide(0)">回到第一張</button><span class="pill" id="slideNo"></span></div>
+<div class="progress"><div id="slideProgress"></div></div>
+</section>
+
+<section id="concepts">
+<h2>二、核心觀念總整理</h2>
+<div class="grid3">
+<article class="concept"><h3>1. struct node</h3><p><code>value</code> 放資料，<code>next</code> 放下一個節點位址。最後一個節點的 <code>next</code> 必須是 <code>NULL</code>。</p></article>
+<article class="concept"><h3>2. head / first / list</h3><p>這些名稱通常代表 linked list 的第一個節點。只要 head 遺失，整串 list 就可能無法再存取。</p></article>
+<article class="concept"><h3>3. malloc</h3><p>linked list 節點通常用 <code>malloc(sizeof(struct node))</code> 動態配置。正式程式應檢查是否回傳 <code>NULL</code>。</p></article>
+<article class="concept"><h3>4. -> 運算子</h3><p><code>p->value</code> 等同 <code>(*p).value</code>。當 p 是 struct 指標時，通常使用 <code>-></code> 讀寫成員。</p></article>
+<article class="concept"><h3>5. 搜尋</h3><p>用 <code>for(p=list; p!=NULL; p=p->next)</code> 逐一走訪。找到節點可回傳指標，找不到通常回傳 <code>NULL</code>。</p></article>
+<article class="concept"><h3>6. 有序插入</h3><p>用 <code>prev</code> 與 <code>cur</code> 找到插入位置，再改兩條 link：<code>new_node->next=cur</code>、<code>prev->next=new_node</code>。</p></article>
+</div>
+</section>
+
+<section id="animation" class="card">
+<h2>三、互動動畫：Linked List 節點走訪與插入</h2>
+<div class="grid">
+<div>
+<h3>動畫 A：搜尋 5 的最後一次出現</h3>
+<p>按「下一步」觀察 p 如何走訪每個節點，以及 last 如何更新。</p>
+<div class="btnrow"><button onclick="findStep()">下一步</button><button class="secondary" onclick="resetFind()">重設</button></div>
+<div id="findViz" class="listviz"></div>
+<p id="findExplain" class="explain"></p>
+</div>
+<div>
+<h3>動畫 B：把 20 插入 10 -> 30</h3>
+<p>觀察 prev、cur 如何找到位置，最後改變 next 指標。</p>
+<div class="btnrow"><button onclick="insertStep()">下一步</button><button class="secondary" onclick="resetInsert()">重設</button></div>
+<div id="insertViz" class="listviz"></div>
+<p id="insertExplain" class="explain"></p>
+</div>
+</div>
+</section>
+
+<section id="questions">
+<h2>四、Practice 12：題目、程式、結果、說明放在同一題</h2>
+
+<article class="question" id="q1">
+<h2>第 1 題：find_last</h2>
+<h3>題目</h3>
+<p class="explain">Write the following function: struct node *find_last(struct node *list, int n); list 指向一個 linked list。函式應回傳最後一個 value 等於 n 的節點；若 n 不存在，回傳 NULL。</p>
+<div class="grid">
+<div>
+<h3>解題觀念</h3>
+<ol><li>核心想法是從頭走到尾，不要一找到就 return，因為題目要的是最後一次出現。</li><li>使用 last 指標記錄目前最後一次找到的位置。每遇到 p-&gt;value == n，就更新 last = p。</li><li>走訪完成後，last 若仍為 NULL，表示沒找到；否則 last 指向最後一次出現的節點。</li></ol>
+<h3>執行流程追蹤</h3>
+<ol><li>建立串列：1 -&gt; 5 -&gt; 3 -&gt; 5 -&gt; NULL</li><li>從 1 開始檢查，不符合 5。</li><li>遇到第一個 5，last 指向這個節點。</li><li>遇到 3，不更新。</li><li>遇到第二個 5，再更新 last。</li><li>到 NULL 後回傳 last，因此輸出 5。</li></ol>
+</div>
+<div>
+<h3>程式執行結果</h3>
+<div class="output-box">Last node value: 5</div>
+<h3>建議測試方式</h3>
+<p>先複製本題程式碼，貼到下方任一線上 C 編譯器執行。若使用本機，請用 <code>gcc practice12_1.c -o practice12_1</code> 編譯。</p>
+</div>
+</div>
+<div class="code-card">
+<div class="code-head"><h3>完整程式：practice12_1.c</h3><button onclick="copyCode('q1_code')">複製程式碼</button></div>
+<pre id="q1_code"><code>/*
+ * 檔名：practice12_1.c
+ * 主題：單向鏈結串列，尋找最後一次出現的節點
+ * 說明：建立一個 linked list，並找出值為指定數字的最後一個節點。
+ */
+
+#include &lt;stdio.h&gt;   /* 引入標準輸入輸出函式庫，提供 printf() */
+#include &lt;stdlib.h&gt;  /* 引入標準函式庫，提供 malloc() */
+
+/* 定義單向鏈結串列節點 */
+struct node
+{
+    int value;          /* 節點中儲存的整數資料 */
+    struct node *next;  /* 指向下一個節點的指標；若為 NULL 代表串列結尾 */
+};
+
+/*
+ * 函式名稱：add_to_list
+ * 函式功能：建立新節點，並插入到串列最前面。
+ * 參數 list：原本串列的第一個節點位址。
+ * 參數 n：要放入新節點的值。
+ * 回傳值：新的串列開頭位址。
+ */
+struct node *add_to_list(struct node *list, int n)
+{
+    struct node *new_node;  /* 宣告新節點指標 */
+
+    new_node = (struct node *)malloc(sizeof(struct node));  /* 配置一個 struct node 大小的記憶體空間 */
+
+    new_node-&gt;value = n;     /* 將新節點的 value 設定為 n */
+    new_node-&gt;next = list;   /* 讓新節點指向原本的串列開頭，完成前端插入 */
+
+    return new_node;  /* 回傳新節點，因為它現在是新的串列開頭 */
+}
+
+/*
+ * 函式名稱：find_last
+ * 函式功能：在串列中尋找最後一次出現數值 n 的節點。
+ * 作法：從頭走到尾，每次遇到 n 就更新 last，因此最後留下的就是最後一次出現的位置。
+ */
+struct node *find_last(struct node *list, int n)
+{
+    struct node *p;            /* p 用來走訪整個串列 */
+    struct node *last = NULL;  /* last 用來記錄目前找到的最後一個符合節點；初始為 NULL 表示尚未找到 */
+
+    for (p = list; p != NULL; p = p-&gt;next)  /* 從串列開頭一路走到 NULL 結尾 */
+    {
+        if (p-&gt;value == n)  /* 如果目前節點的值等於要找的 n */
+        {
+            last = p;  /* 更新 last，記錄目前這個符合條件的節點 */
+        }
+    }
+
+    return last;  /* 回傳最後一次出現 n 的節點；若找不到則回傳 NULL */
+}
+
+int main(void)
+{
+    struct node *list = NULL;  /* 宣告串列開頭指標，初始為 NULL 表示空串列 */
+    struct node *result;       /* result 用來接收 find_last() 的搜尋結果 */
+
+    list = add_to_list(list, 5);  /* 插入 5 到串列前端，目前串列：5 */
+    list = add_to_list(list, 3);  /* 插入 3 到串列前端，目前串列：3 -&gt; 5 */
+    list = add_to_list(list, 5);  /* 插入 5 到串列前端，目前串列：5 -&gt; 3 -&gt; 5 */
+    list = add_to_list(list, 1);  /* 插入 1 到串列前端，目前串列：1 -&gt; 5 -&gt; 3 -&gt; 5 */
+
+    result = find_last(list, 5);  /* 尋找串列中最後一次出現值 5 的節點 */
+
+    if (result != NULL)  /* 如果 result 不是 NULL，代表有找到值為 5 的節點 */
+    {
+        printf(&quot;Last node value: %d\n&quot;, result-&gt;value);  /* 印出找到的節點值 */
+    }
+    else  /* 如果 result 是 NULL，代表串列中沒有值為 5 的節點 */
+    {
+        printf(&quot;Value not found.\n&quot;);  /* 印出找不到資料的訊息 */
+    }
+
+    return 0;  /* 程式正常結束；注意：原程式未釋放 linked list 節點，正式程式可再補 free */
+}
+</code></pre>
+</div>
+</article>
+
+<article class="question" id="q2">
+<h2>第 2 題：count_occurrences</h2>
+<h3>題目</h3>
+<p class="explain">Write the following function: int count_occurrences(struct node *list, int n); list 指向 linked list。函式回傳 n 在此串列中出現幾次。</p>
+<div class="grid">
+<div>
+<h3>解題觀念</h3>
+<ol><li>核心想法是完整走訪整個串列，使用 count 計數。</li><li>每一個節點都檢查 p-&gt;value 是否等於 n。若相等，count++。</li><li>走到 NULL 後回傳 count。若完全沒有出現，count 會維持 0。</li></ol>
+<h3>執行流程追蹤</h3>
+<ol><li>建立串列：1 -&gt; 5 -&gt; 5 -&gt; 3 -&gt; 5 -&gt; NULL</li><li>檢查 1，不計數。</li><li>檢查第一個 5，count=1。</li><li>檢查第二個 5，count=2。</li><li>檢查 3，不計數。</li><li>檢查第三個 5，count=3。</li><li>回傳 3。</li></ol>
+</div>
+<div>
+<h3>程式執行結果</h3>
+<div class="output-box">Occurrences of 5: 3</div>
+<h3>建議測試方式</h3>
+<p>先複製本題程式碼，貼到下方任一線上 C 編譯器執行。若使用本機，請用 <code>gcc practice12_2.c -o practice12_2</code> 編譯。</p>
+</div>
+</div>
+<div class="code-card">
+<div class="code-head"><h3>完整程式：practice12_2.c</h3><button onclick="copyCode('q2_code')">複製程式碼</button></div>
+<pre id="q2_code"><code>/*
+ * 檔名：practice12_2.c
+ * 主題：單向鏈結串列，計算指定數值出現次數
+ * 說明：建立 linked list 後，走訪整個串列並統計某個值出現幾次。
+ */
+
+#include &lt;stdio.h&gt;   /* 引入標準輸入輸出函式庫，提供 printf() */
+#include &lt;stdlib.h&gt;  /* 引入標準函式庫，提供 malloc() */
+
+/* 定義單向鏈結串列節點 */
+struct node
+{
+    int value;          /* 節點儲存的整數值 */
+    struct node *next;  /* 指向下一個節點的指標 */
+};
+
+/* 建立新節點並插入串列最前面 */
+struct node *add_to_list(struct node *list, int n)
+{
+    struct node *new_node;  /* 宣告新節點指標 */
+
+    new_node = (struct node *)malloc(sizeof(struct node));  /* 配置一個節點所需的記憶體 */
+
+    new_node-&gt;value = n;    /* 將新節點的資料設定為 n */
+    new_node-&gt;next = list;  /* 新節點接到原本串列前面 */
+
+    return new_node;  /* 回傳新的串列開頭 */
+}
+
+/*
+ * 函式名稱：count_occurrences
+ * 函式功能：計算串列中有多少節點的 value 等於 n。
+ */
+int count_occurrences(struct node *list, int n)
+{
+    int count = 0;   /* count 用來累計 n 出現的次數 */
+    struct node *p;  /* p 用來走訪 linked list */
+
+    for (p = list; p != NULL; p = p-&gt;next)  /* 從串列開頭走到結尾 */
+    {
+        if (p-&gt;value == n)  /* 若目前節點的值等於要統計的 n */
+        {
+            count++;  /* 出現次數加 1 */
+        }
+    }
+
+    return count;  /* 回傳統計結果 */
+}
+
+int main(void)
+{
+    struct node *list = NULL;  /* 建立空串列，開頭指標先設為 NULL */
+
+    list = add_to_list(list, 5);  /* 插入 5，目前串列：5 */
+    list = add_to_list(list, 3);  /* 插入 3，目前串列：3 -&gt; 5 */
+    list = add_to_list(list, 5);  /* 插入 5，目前串列：5 -&gt; 3 -&gt; 5 */
+    list = add_to_list(list, 5);  /* 插入 5，目前串列：5 -&gt; 5 -&gt; 3 -&gt; 5 */
+    list = add_to_list(list, 1);  /* 插入 1，目前串列：1 -&gt; 5 -&gt; 5 -&gt; 3 -&gt; 5 */
+
+    printf(&quot;Occurrences of 5: %d\n&quot;, count_occurrences(list, 5));  /* 印出數值 5 在串列中出現的次數 */
+
+    return 0;  /* 程式正常結束；注意：原程式未釋放 linked list 節點，正式程式可再補 free */
+}
+</code></pre>
+</div>
+</article>
+
+<article class="question" id="q3">
+<h2>第 3 題：insert_into_ordered_list</h2>
+<h3>題目</h3>
+<p class="explain">Write the following function: struct node *insert_into_ordered_list(struct node *list, struct node *new_node); list 指向一個已排序 linked list。函式要把 new_node 插入正確位置，並回傳修改後串列的第一個節點。</p>
+<div class="grid">
+<div>
+<h3>解題觀念</h3>
+<ol><li>核心想法是用 cur 找到第一個不小於 new_node-&gt;value 的位置，用 prev 記住 cur 前面的節點。</li><li>若 prev == NULL，代表新節點要插入開頭，直接 return new_node。</li><li>否則讓 prev-&gt;next = new_node，且 new_node-&gt;next = cur，完成中間或尾端插入。</li></ol>
+<h3>執行流程追蹤</h3>
+<ol><li>先插入 10：10 -&gt; NULL</li><li>插入 30：10 -&gt; 30 -&gt; NULL</li><li>插入 20 時，cur 從 10 走到 30，因為 30 不小於 20，所以停下。</li><li>此時 prev 是 10，cur 是 30。</li><li>new_node-&gt;next = cur，讓 20 指向 30。</li><li>prev-&gt;next = new_node，讓 10 指向 20。</li><li>結果：10 -&gt; 20 -&gt; 30 -&gt; NULL。</li></ol>
+</div>
+<div>
+<h3>程式執行結果</h3>
+<div class="output-box">10 -&gt; 20 -&gt; 30 -&gt; NULL</div>
+<h3>建議測試方式</h3>
+<p>先複製本題程式碼，貼到下方任一線上 C 編譯器執行。若使用本機，請用 <code>gcc practice12_3.c -o practice12_3</code> 編譯。</p>
+</div>
+</div>
+<div class="code-card">
+<div class="code-head"><h3>完整程式：practice12_3.c</h3><button onclick="copyCode('q3_code')">複製程式碼</button></div>
+<pre id="q3_code"><code>/*
+ * 檔名：practice12_3.c
+ * 主題：有序 linked list 插入
+ * 說明：將新節點插入已排序的單向鏈結串列，使串列仍保持由小到大的順序。
+ */
+
+#include &lt;stdio.h&gt;   /* 引入標準輸入輸出函式庫，提供 printf() */
+#include &lt;stdlib.h&gt;  /* 引入標準函式庫，提供 malloc() */
+
+/* 定義單向鏈結串列節點 */
+struct node
+{
+    int value;          /* 節點中儲存的整數值 */
+    struct node *next;  /* 指向下一個節點的指標 */
+};
+
+/*
+ * 函式名稱：insert_into_ordered_list
+ * 函式功能：把 new_node 插入到已由小到大排序的 linked list 中。
+ * 參數 list：目前有序串列的開頭。
+ * 參數 new_node：準備插入的新節點。
+ * 回傳值：插入後的串列開頭。
+ */
+struct node *insert_into_ordered_list(struct node *list, struct node *new_node)
+{
+    struct node *cur;        /* cur 指向目前檢查的節點 */
+    struct node *prev = NULL;/* prev 指向 cur 前一個節點，初始為 NULL 表示還在串列開頭前 */
+
+    for (cur = list; cur != NULL &amp;&amp; cur-&gt;value &lt; new_node-&gt;value; cur = cur-&gt;next)  /* 找到第一個不小於 new_node 的位置 */
+    {
+        prev = cur;  /* 每往後走一步，就把 prev 更新成目前的 cur */
+    }
+
+    new_node-&gt;next = cur;  /* 讓新節點接到 cur 前面；cur 可能是中間節點，也可能是 NULL */
+
+    if (prev == NULL)  /* 如果 prev 仍是 NULL，代表新節點應插入在串列最前面 */
+    {
+        return new_node;  /* 新節點成為新的串列開頭 */
+    }
+    else  /* 否則代表新節點插入在 prev 和 cur 中間 */
+    {
+        prev-&gt;next = new_node;  /* 讓前一個節點 prev 指向新節點 */
+        return list;            /* 串列開頭沒有改變，回傳原本的 list */
+    }
+}
+
+/* 印出整個 linked list 的內容 */
+void print_list(struct node *list)
+{
+    struct node *p;  /* p 用來從頭到尾走訪串列 */
+
+    for (p = list; p != NULL; p = p-&gt;next)  /* 逐一走訪每個節點直到 NULL */
+    {
+        printf(&quot;%d -&gt; &quot;, p-&gt;value);  /* 印出目前節點的值，並用箭頭表示下一個節點 */
+    }
+
+    printf(&quot;NULL\n&quot;);  /* 串列結尾以 NULL 表示 */
+}
+
+int main(void)
+{
+    struct node *list = NULL;  /* 宣告串列開頭，初始為 NULL，表示空串列 */
+    struct node *n1;           /* 宣告第一個節點指標 */
+    struct node *n2;           /* 宣告第二個節點指標 */
+    struct node *n3;           /* 宣告第三個節點指標 */
+
+    n1 = (struct node *)malloc(sizeof(struct node));  /* 配置第一個節點的記憶體 */
+    n2 = (struct node *)malloc(sizeof(struct node));  /* 配置第二個節點的記憶體 */
+    n3 = (struct node *)malloc(sizeof(struct node));  /* 配置第三個節點的記憶體 */
+
+    n1-&gt;value = 10;  /* 設定第一個節點的值為 10 */
+    n1-&gt;next = NULL; /* 先將 next 設為 NULL，表示尚未接到其他節點 */
+
+    n2-&gt;value = 30;  /* 設定第二個節點的值為 30 */
+    n2-&gt;next = NULL; /* 先將 next 設為 NULL */
+
+    n3-&gt;value = 20;  /* 設定第三個節點的值為 20 */
+    n3-&gt;next = NULL; /* 先將 next 設為 NULL */
+
+    list = insert_into_ordered_list(list, n1);  /* 將 10 插入有序串列，目前：10 */
+    list = insert_into_ordered_list(list, n2);  /* 將 30 插入有序串列，目前：10 -&gt; 30 */
+    list = insert_into_ordered_list(list, n3);  /* 將 20 插入有序串列，目前：10 -&gt; 20 -&gt; 30 */
+
+    print_list(list);  /* 印出完整串列，應顯示 10 -&gt; 20 -&gt; 30 -&gt; NULL */
+
+    return 0;  /* 程式正常結束；注意：原程式未釋放 n1、n2、n3，正式程式可再補 free */
+}
+</code></pre>
+</div>
+</article>
+
+</section>
+
+<section id="online" class="card">
+<h2>五、線上 C 編譯器連結與使用方式</h2>
+<p class="notice">使用方式：按每題程式碼右上角「複製程式碼」，再點下面任一網站，把程式貼上後執行。這三題都是單檔 C 程式，適合直接貼到線上編譯器。</p>
+<div class="compiler-grid">
+<a class="compiler-card" href="https://www.w3schools.com/c/c_compiler.php" target="_blank" rel="noopener"><b>W3Schools C Compiler</b>介面簡單，適合快速貼上單檔 C 程式測試。</a><a class="compiler-card" href="https://www.onlinegdb.com/online_c_compiler" target="_blank" rel="noopener"><b>OnlineGDB</b>可執行、輸入 stdin，也可做簡單 debug。</a><a class="compiler-card" href="https://www.programiz.com/c-programming/online-compiler/" target="_blank" rel="noopener"><b>Programiz C Compiler</b>版面乾淨，適合初學者快速執行。</a><a class="compiler-card" href="https://godbolt.org/" target="_blank" rel="noopener"><b>Godbolt / Compiler Explorer</b>可看組合語言，適合理解 struct、pointer、malloc 的底層效果。</a><a class="compiler-card" href="https://www.jdoodle.com/c-online-compiler" target="_blank" rel="noopener"><b>JDoodle C Compiler</b>可快速編譯執行，也可切換編譯器版本。</a>
+</div>
+<h3>線上編譯器測試建議</h3>
+<ol>
+<li>先測第 1 題，確認輸出 <code>Last node value: 5</code>。</li>
+<li>再測第 2 題，確認輸出 <code>Occurrences of 5: 3</code>。</li>
+<li>最後測第 3 題，確認有序插入結果為 <code>10 -> 20 -> 30 -> NULL</code>。</li>
+</ol>
+</section>
+
+<section id="quiz" class="card">
+<h2>六、互動測驗</h2>
+<div id="quizBox"></div>
+<button onclick="resetQuiz()" class="secondary">重新作答</button>
+</section>
+
+<section id="compile" class="card">
+<h2>七、本機編譯與執行方式</h2>
+<div class="grid">
+<div>
+<h3>Linux / macOS / Git Bash</h3>
+<pre><code>gcc practice12_1.c -o practice12_1
+./practice12_1
+
+gcc practice12_2.c -o practice12_2
+./practice12_2
+
+gcc practice12_3.c -o practice12_3
+./practice12_3</code></pre>
+</div>
+<div>
+<h3>Windows CMD</h3>
+<pre><code>gcc practice12_1.c -o practice12_1.exe
+practice12_1.exe
+
+gcc practice12_2.c -o practice12_2.exe
+practice12_2.exe
+
+gcc practice12_3.c -o practice12_3.exe
+practice12_3.exe</code></pre>
+</div>
+</div>
+<h3>常見錯誤提醒</h3>
+<ul>
+<li><code>struct node *next;</code> 後面記得分號。</li>
+<li><code>malloc()</code> 需要 <code>#include &lt;stdlib.h&gt;</code>。</li>
+<li>走訪 linked list 時，條件通常是 <code>p != NULL</code>，不要先取 <code>p->value</code> 才檢查 p 是否為 NULL。</li>
+<li>刪除節點時要先接回串列，再 <code>free(cur)</code>，避免串列斷掉。</li>
+</ul>
+</section>
+<div class="footer">Practice 12 Linked Lists Full Interactive Tutorial ｜ 題目、程式、結果與說明整合版</div>
+</main>
+
+<script>
+const slides = [["Linked List 是什麼？", "Linked list 是由一串 struct node 串起來的資料結構。每個 node 通常包含資料 value 與 next 指標。next 指向下一個 node，最後一個 node 的 next 為 NULL。"], ["Linked List vs Array", "Array 可以用 index 隨機存取，例如 a[3]。Linked list 不能直接跳到第 3 個節點，必須從 head 一個一個走訪。但 linked list 插入與刪除節點比較彈性。"], ["Node 結構", "struct node { int value; struct node *next; }; value 是資料欄位，next 是指標欄位。這是遞迴型結構：struct node 裡面放 struct node *。"], ["建立新節點", "建立 node 通常分三步：malloc 配置記憶體、填入 value、設定 next 並接回 list。若插入到開頭，new_node->next = list，再 return new_node。"], ["搜尋 Linked List", "搜尋時用 for(p=list; p!=NULL; p=p->next) 從頭走到尾。若找到目標可回傳該節點位址；若找不到，回傳 NULL。"], ["刪除 Linked List 節點", "刪除時需要 prev 與 cur。找到 cur 後，用 prev->next = cur->next 跳過 cur，最後 free(cur)。若刪除第一個節點要特別處理 head。"], ["Practice 12 三題重點", "第 1 題找最後一次出現的節點；第 2 題計算出現次數；第 3 題把新節點插入有序串列並維持排序。"]];
+let slideIndex = 0;
+function renderSlide(){
+  document.getElementById('slideTitle').textContent = slides[slideIndex][0];
+  document.getElementById('slideText').textContent = slides[slideIndex][1];
+  document.getElementById('slideNo').textContent = `第 ${slideIndex+1} / ${slides.length} 張`;
+  document.getElementById('slideProgress').style.width = `${((slideIndex+1)/slides.length)*100}%`;
+}
+function nextSlide(){ slideIndex = (slideIndex + 1) % slides.length; renderSlide(); }
+function prevSlide(){ slideIndex = (slideIndex - 1 + slides.length) % slides.length; renderSlide(); }
+function goSlide(i){ slideIndex = i; renderSlide(); }
+
+function nodeHTML(v, cls=''){return `<div class="node ${cls}"><div class="val">${v}</div><div class="next">next</div></div>`}
+function renderList(values, active=-1, hit=-1, cut=-1){
+ let h='';
+ values.forEach((v,i)=>{let cls=''; if(i===active)cls+=' active'; if(i===hit)cls+=' hit'; if(i===cut)cls+=' cut'; h+=nodeHTML(v,cls); h+='<span class="arrow">→</span>';});
+ h+='<span class="null">NULL</span>'; return h;
+}
+let fstep=0;
+function resetFind(){fstep=0;renderFind();}
+function findStep(){fstep=Math.min(fstep+1,6);renderFind();}
+function renderFind(){
+ const vals=[1,5,3,5]; let active=-1, hit=-1; let msg='';
+ if(fstep===0){msg='初始：p 準備從 list 第一個節點開始走訪，last = NULL。'}
+ if(fstep===1){active=0;msg='檢查 1：不是 5，last 不更新。'}
+ if(fstep===2){active=1;hit=1;msg='檢查第一個 5：符合條件，last 更新到這個節點。'}
+ if(fstep===3){active=2;hit=1;msg='檢查 3：不是 5，last 仍指向第一個 5。'}
+ if(fstep===4){active=3;hit=3;msg='檢查第二個 5：符合條件，last 更新到這個更後面的 5。'}
+ if(fstep===5){hit=3;msg='p 走到 NULL，走訪結束。'}
+ if(fstep===6){hit=3;msg='回傳 last，因此得到最後一次出現的 5。'}
+ document.getElementById('findViz').innerHTML=renderList(vals,active,hit);
+ document.getElementById('findExplain').textContent=msg;
+}
+let istep=0;
+function resetInsert(){istep=0;renderInsert();}
+function insertStep(){istep=Math.min(istep+1,5);renderInsert();}
+function renderInsert(){
+ let msg='', h='';
+ if(istep===0){h=renderList([10,30]); msg='初始有序串列：10 -> 30 -> NULL，準備插入 new_node=20。'}
+ if(istep===1){h=renderList([10,30],0); msg='cur 指向 10，因為 10 < 20，所以 prev=10，cur 往下一個節點移動。'}
+ if(istep===2){h=renderList([10,30],1); msg='cur 指向 30，因為 30 < 20 不成立，停止。插入位置在 prev=10 與 cur=30 中間。'}
+ if(istep===3){h=renderList([10,30],1)+'<span class="pill">new_node = 20</span>'; msg='先做 new_node->next = cur，讓 20 指向 30。'}
+ if(istep===4){h=renderList([10,20,30],1); msg='再做 prev->next = new_node，讓 10 指向 20。'}
+ if(istep===5){h=renderList([10,20,30]); msg='完成：10 -> 20 -> 30 -> NULL，排序仍然正確。'}
+ document.getElementById('insertViz').innerHTML=h;
+ document.getElementById('insertExplain').textContent=msg;
+}
+const quiz=[
+{q:'linked list 的每個 node 通常包含什麼？',opts:['只有 value','value 與 next 指標','只有 index','只有 array 長度'],ans:1,why:'node 通常包含資料欄位與指向下一個節點的 next 指標。'},
+{q:'find_last 為什麼不能找到第一個符合就 return？',opts:['因為題目要最後一次出現','因為 return 不能用在 function','因為 linked list 不能搜尋','因為 NULL 不能比較'],ans:0,why:'題目要求最後一個包含 n 的節點，所以必須完整走訪。'},
+{q:'count_occurrences 的核心變數是什麼？',opts:['temp','count','argc','FILE'],ans:1,why:'count 用來累計目標值出現次數。'},
+{q:'有序插入時 prev == NULL 通常代表什麼？',opts:['新節點要插入最前面','記憶體配置失敗','串列一定有三個節點','cur 一定是最後節點'],ans:0,why:'prev 尚未移動，表示插入位置在 head 前面。'},
+{q:'p = p->next 的意思是什麼？',opts:['讓 p 回到第一個節點','讓 p 移到下一個節點','釋放 p','改變 p 的 value'],ans:1,why:'這是 linked list 走訪下一個節點的標準寫法。'}
+];
+function renderQuiz(){let h='';quiz.forEach((q,qi)=>{h+=`<div class="quiz-card"><h3>Q${qi+1}. ${q.q}</h3>`;q.opts.forEach((o,oi)=>{h+=`<button class="option" onclick="answerQuiz(${qi},${oi},this)">${o}</button>`});h+=`<div class="result" id="res${qi}"></div></div>`});document.getElementById('quizBox').innerHTML=h;}
+function answerQuiz(qi,oi,btn){const q=quiz[qi];const card=btn.parentElement;card.querySelectorAll('.option').forEach((b,idx)=>{b.disabled=true;if(idx===q.ans)b.classList.add('correct');});if(oi!==q.ans)btn.classList.add('wrong');document.getElementById('res'+qi).textContent=(oi===q.ans?'答對！':'答錯。')+' '+q.why;}
+function resetQuiz(){renderQuiz();}
+function copyCode(id){navigator.clipboard.writeText(document.getElementById(id).innerText);}
+renderSlide(); resetFind(); resetInsert(); renderQuiz();
+</script>
+</body></html>

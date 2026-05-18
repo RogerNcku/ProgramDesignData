@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Practice 07 Pointer II｜非常詳細互動式 HTML 教學</title>
+<style>
+:root{--bg:#f6f7fb;--card:#fff;--ink:#111827;--muted:#64748b;--brand:#2563eb;--brand2:#7c3aed;--ok:#16a34a;--bad:#dc2626;--line:#dbe3ef;--soft:#eff6ff;--code:#0b1220;--warn:#fff7ed}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:"Noto Sans TC","Microsoft JhengHei",Arial,sans-serif;background:linear-gradient(180deg,#dbeafe 0,#f8fafc 360px);color:var(--ink);line-height:1.75}a{color:#1d4ed8}header{max-width:1280px;margin:auto;padding:48px 22px 26px}.hero{display:grid;grid-template-columns:1.2fr .8fr;gap:24px;align-items:center}.hero h1{font-size:clamp(34px,5vw,62px);line-height:1.12;margin:0 0 14px}.subtitle{font-size:19px;color:#334155}.tag{display:inline-block;background:#dbeafe;color:#1d4ed8;border:1px solid #bfdbfe;border-radius:999px;padding:5px 11px;margin:4px;font-size:13px;font-weight:700}.hero-card{background:rgba(255,255,255,.82);border:1px solid var(--line);border-radius:24px;padding:22px;box-shadow:0 18px 40px rgba(15,23,42,.09)}.hero-card b{color:#1d4ed8}nav{position:sticky;top:0;background:rgba(255,255,255,.94);backdrop-filter:blur(10px);z-index:10;border-bottom:1px solid var(--line)}nav .bar{max-width:1280px;margin:auto;display:flex;gap:8px;overflow:auto;padding:10px 16px}nav a{text-decoration:none;white-space:nowrap;color:#1e3a8a;background:#fff;border:1px solid var(--line);border-radius:999px;padding:8px 13px;font-size:14px;font-weight:700}main{max-width:1280px;margin:auto;padding:22px 18px 80px}.card,.question-card,.slide-card,.mini-panel,.concept,.toolbox{background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:0 10px 26px rgba(15,23,42,.06)}.card{padding:22px;margin:18px 0}h2{font-size:30px;margin:8px 0 16px}h3{margin:0 0 10px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.three{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.concept{padding:18px}.concept h3{color:#1e40af}.slides{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}.slide-card{padding:18px;position:relative;overflow:hidden}.slide-card:before{content:"";position:absolute;right:-30px;top:-30px;width:95px;height:95px;border-radius:999px;background:#dbeafe}.slide-no{width:44px;height:44px;border-radius:14px;background:#1d4ed8;color:white;display:grid;place-items:center;font-weight:900;margin-bottom:10px}.question-card{padding:24px;margin:24px 0;border-left:8px solid var(--brand)}.q-top{display:flex;gap:8px;flex-wrap:wrap}.badge{background:#dbeafe;color:#1d4ed8;border-radius:999px;padding:4px 10px;font-weight:800;font-size:13px}.badge.alt{background:#ede9fe;color:#6d28d9}.q-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.mini-panel{padding:16px;background:#fbfdff}.mini-panel h3{color:#1e3a8a}details{margin:14px 0;border:1px solid var(--line);border-radius:16px;background:#fff;overflow:hidden}summary{cursor:pointer;padding:13px 16px;font-weight:900;background:#f8fafc;color:#0f172a}details>p,details>ul{padding:0 16px}pre{background:var(--code);color:#e5e7eb;border-radius:14px;padding:16px;overflow:auto;font-size:14px;line-height:1.55}pre.output{background:#061521;color:#d1fae5;border:1px solid #134e4a}code{font-family:Consolas,Monaco,"Courier New",monospace}.code-toolbar,.copy-row{display:flex;gap:10px;flex-wrap:wrap;padding:14px 16px 0}button{cursor:pointer;border:0;border-radius:12px;background:var(--brand);color:white;padding:10px 14px;font-weight:900}button.secondary{background:#e5e7eb;color:#111827}button.good{background:var(--ok)}button.purple{background:var(--brand2)}.note,.notice{background:#f8fafc;border-left:5px solid var(--brand);padding:12px 14px;border-radius:10px;margin:12px 16px}.notice{background:var(--warn);border-left-color:#f97316;margin:12px 0}.compiler-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:14px;margin-top:14px}.compiler-grid.small{padding:0 16px 16px}.compiler-card{display:block;text-decoration:none;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;box-shadow:0 8px 18px rgba(15,23,42,.05);transition:.2s}.compiler-card:hover{transform:translateY(-3px);border-color:var(--brand);box-shadow:0 12px 24px rgba(37,99,235,.12)}.compiler-card b{display:block;color:#1d4ed8;font-size:17px;margin-bottom:4px}.memory{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:center}.box{border:2px solid #93c5fd;border-radius:16px;padding:13px;background:#eff6ff;transition:.25s}.box.active{transform:scale(1.03);border-color:#2563eb;box-shadow:0 0 0 4px #dbeafe}.addr{font-size:12px;color:var(--muted)}.val{font-size:28px;font-weight:900}.steps{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}.array{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0 34px}.cell{width:62px;height:62px;border:2px solid var(--line);border-radius:14px;background:white;display:grid;place-items:center;font-weight:900;position:relative}.cell small{position:absolute;bottom:-25px;color:var(--muted);font-weight:500}.cell.sel{background:#dbeafe;border-color:#2563eb}.table{width:100%;border-collapse:collapse}.table th,.table td{border:1px solid var(--line);padding:10px}.table th{background:#f1f5f9;text-align:left}.quiz-card{border:1px solid var(--line);border-radius:18px;padding:18px;margin:12px 0;background:#fff}.option{display:block;width:100%;text-align:left;margin:8px 0;background:#f8fafc;color:#111827;border:1px solid var(--line)}.option.correct{background:#dcfce7;border-color:#22c55e}.option.wrong{background:#fee2e2;border-color:#ef4444}.result{font-weight:900;margin-top:8px}.toast{position:fixed;right:18px;bottom:18px;background:#111827;color:white;border-radius:14px;padding:12px 16px;opacity:0;transform:translateY(8px);transition:.25s;z-index:20}.toast.show{opacity:1;transform:translateY(0)}.footer{text-align:center;color:var(--muted);font-size:13px;margin-top:36px}@media(max-width:900px){.hero,.grid,.q-grid,.memory,.three{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header>
+  <div class="hero">
+    <div>
+      <h1>Practice 07：Pointer II<br>非常詳細互動式 HTML 教學</h1>
+      <p class="subtitle">包含完整投影片教學、題目、解題觀念、完整 C 程式、程式執行結果、逐題說明、互動動畫、測驗，以及線上 C 編譯器連結。</p>
+      <div><span class="tag">Pointer as Arguments</span><span class="tag">Pointer Return</span><span class="tag">Array</span><span class="tag">Pointer Arithmetic</span><span class="tag">2D Array</span><span class="tag">malloc/free</span></div>
+    </div>
+    <div class="hero-card">
+      <h3>使用方式</h3>
+      <p><b>建議從投影片教學開始</b>，再看每一題。每一題已把「題目、觀念、程式、結果、說明、線上執行連結」放在同一區塊。</p>
+      <div class="copy-row"><button onclick="location.href='#questions'">開始看題目</button><button class="secondary" onclick="location.href='#online'">線上編譯器</button></div>
+    </div>
+  </div>
+</header>
+<nav><div class="bar"><a href="#objectives">學習目標</a><a href="#slides">完整投影片教學</a><a href="#concepts">核心觀念</a><a href="#interactive">互動動畫</a><a href="#questions">五題完整整理</a><a href="#online">線上編譯器</a><a href="#quiz">互動測驗</a><a href="#compile">本機編譯</a></div></nav>
+<main>
+<section class="card" id="objectives"><h2>一、學習目標</h2><div class="grid"><div><p>本教學對應 Pointer II 與 Practice 07。你會從最基本的「指標存位址」開始，逐步理解為什麼函式需要指標才能修改原變數，以及陣列名稱、指標運算、二維陣列在 C 語言中的實際意義。</p><ul><li>會判斷 <code>p</code>、<code>&p</code>、<code>*p</code> 的差異。</li><li>會用 <code>swap(&i,&j)</code> 交換原變數。</li><li>會寫回傳指標的函式。</li><li>會用指標走訪一維與二維陣列。</li><li>會解釋 <code>p+2</code>、<code>q-p</code>、<code>*p&lt;*q</code>。</li></ul></div><div class="notice"><h3>一句話記憶</h3><p>指標不是魔法，它只是「存位址的變數」。只要你知道它存的是誰的位址，就能知道 <code>*p</code> 改的是誰。</p></div></div></section>
+<section class="card" id="slides"><h2>二、完整投影片教學整理</h2><p>下面依 Pointer II 投影片順序整理，每一張都用中文說明重點，方便你之後放進報告或教學網頁。</p><div class="slides"><article class="slide-card"><div class="slide-no">01</div><h3>Slide 1｜Pointer II 課程標題</h3><p>本章是 Pointer II，主軸從「指標是位址」延伸到函式參數、回傳值、陣列處理、指標運算與二維陣列。</p></article>
+<article class="slide-card"><div class="slide-no">02</div><h3>Slide 2｜Usage of pointers</h3><p>指標常見用途包含：作為函式參數、作為函式回傳值、處理陣列、指向陣列元素、做指標運算、處理多維陣列，以及理解 pointer 與 array 的差異。</p></article>
+<article class="slide-card"><div class="slide-no">03</div><h3>Slide 3｜Pointer Review</h3><p>指標變數儲存的是記憶體位址。若 int i=5; int *p=&amp;i;，則 p 的內容是 i 的位址，*p 代表該位址中的值，也就是 5。</p></article>
+<article class="slide-card"><div class="slide-no">04</div><h3>Slide 4｜swap 失敗版本</h3><p>swap(int x, int y) 只收到 main 變數的副本。函式內 x、y 的位址與 main 裡 x、y 的位址不同，所以函式內交換後 main 裡的值不會改變。</p></article>
+<article class="slide-card"><div class="slide-no">05</div><h3>Slide 5｜swap 成功版本</h3><p>swap(int *px, int *py) 收到 main 裡 x、y 的位址，透過 *px 與 *py 修改原記憶體位置，因此 main 的變數真的被交換。</p></article>
+<article class="slide-card"><div class="slide-no">06</div><h3>Slide 6｜scanf 與指標</h3><p>scanf 需要知道輸入值要存到哪個記憶體位置，所以 scanf(&quot;%d&quot;, &amp;number)。若 p=&amp;number，則 scanf(&quot;%d&quot;, p) 也等價。</p></article>
+<article class="slide-card"><div class="slide-no">07</div><h3>Slide 7｜Pointers as Return Values</h3><p>函式可以回傳指標，例如 max(&amp;num1,&amp;num2) 回傳較大值所在的位址。主程式可用 p 接住位址，再用 *p 取得值。</p></article>
+<article class="slide-card"><div class="slide-no">08</div><h3>Slide 8｜Array element pointer</h3><p>陣列元素也有位址。int *p=&amp;a[0]; 代表 p 指向陣列第一格。</p></article>
+<article class="slide-card"><div class="slide-no">09</div><h3>Slide 9｜Array name as pointer</h3><p>在多數運算式中，陣列名稱 a 會轉換成 &amp;a[0]，所以 int *p=a; 常用來讓 p 指向陣列開頭。</p></article>
+<article class="slide-card"><div class="slide-no">10</div><h3>Slide 10｜Pointer addition</h3><p>若 p 指向 a[i]，則 p+j 指向 a[i+j]。注意不是加 j 個 byte，而是加 j 個元素大小。</p></article>
+<article class="slide-card"><div class="slide-no">11</div><h3>Slide 11｜Pointer subtraction</h3><p>同一陣列中的兩個指標相減，得到的是元素距離。例如 q 指向 a[4]、p 指向 a[0]，q-p 得 4。</p></article>
+<article class="slide-card"><div class="slide-no">12</div><h3>Slide 12｜Multidimensional Arrays</h3><p>二維陣列在記憶體中仍是連續存放，C 採 row-major order：先放完 row 0，再放 row 1。</p></article>
+<article class="slide-card"><div class="slide-no">13</div><h3>Slide 13｜Nested loops for 2D array</h3><p>最直覺的二維陣列走訪方式是雙層 for：外層 row，內層 column。</p></article>
+<article class="slide-card"><div class="slide-no">14</div><h3>Slide 14｜Pointer scan 2D array</h3><p>因為二維陣列在記憶體中連續，可用 int *p 從 &amp;a[0][0] 一路走到最後一格，但要小心範圍。</p></article>
+<article class="slide-card"><div class="slide-no">15</div><h3>Slide 15｜Array and Pointer Sizes</h3><p>sizeof(a) 是整個陣列大小；sizeof(p) 是指標變數大小。這證明陣列名稱與指標變數不完全相同。</p></article>
+<article class="slide-card"><div class="slide-no">16</div><h3>Slide 16｜Array name cannot be changed</h3><p>p++ 合法，因為 p 是指標變數；a++ 不合法，因為 a 代表陣列起始位址，不是可被改變的變數。</p></article>
+<article class="slide-card"><div class="slide-no">17</div><h3>Slide 17｜String traversal by pointer</h3><p>字元陣列也可用 char *p 走訪，while(*p != 0) 印出字元後 p++。</p></article>
+<article class="slide-card"><div class="slide-no">18</div><h3>Slide 18｜Next：String</h3><p>下一章會進入 String，字串其實就是以 null character 結尾的 char 陣列，會大量用到指標觀念。</p></article></div></section>
+<section id="concepts"><h2>三、核心觀念總整理</h2><div class="three"><article class="concept"><h3>1. 傳值 vs 傳位址</h3><p>傳值只會複製資料；傳位址會讓函式知道原變數在哪裡，因此可以修改原變數。</p></article><article class="concept"><h3>2. 指標回傳值</h3><p>函式可以回傳某個變數或陣列元素的位址，但不能回傳區域變數的位址。</p></article><article class="concept"><h3>3. 陣列名稱</h3><p>多數情況下 <code>a</code> 會轉成 <code>&a[0]</code>，但 <code>a</code> 不是可以被 <code>++</code> 的指標變數。</p></article><article class="concept"><h3>4. 指標加法</h3><p><code>p+1</code> 不是加 1 byte，而是移動到下一個元素，實際位址增加 <code>sizeof(*p)</code>。</p></article><article class="concept"><h3>5. 指標相減</h3><p>同一陣列內指標相減，得到兩者間相隔幾個元素。</p></article><article class="concept"><h3>6. 二維陣列</h3><p>C 的二維陣列是 row-major，宣告 <code>int (*p)[column]</code> 可讓 p 指向一整列。</p></article></div></section>
+<section class="card" id="interactive"><h2>四、互動動畫</h2><div class="grid"><div><h3>互動 1：swap(&x,&y) 記憶體變化</h3><div class="steps"><button onclick="swapStep(0)">0 初始</button><button onclick="swapStep(1)">1 temp=*p</button><button onclick="swapStep(2)">2 *p=*q</button><button onclick="swapStep(3)">3 *q=temp</button></div><p id="swapText" class="notice"></p></div><div class="grid"><div id="xbox" class="box"><div class="addr">x 位址 0x1000</div><div>x 內容</div><div class="val" id="xval">10</div></div><div id="ybox" class="box"><div class="addr">y 位址 0x1004</div><div>y 內容</div><div class="val" id="yval">5</div></div><div id="pbox" class="box"><div class="addr">p 內容</div><div>&x</div><div class="val">0x1000</div></div><div id="qbox" class="box"><div class="addr">q 內容</div><div>&y</div><div class="val">0x1004</div></div><div id="tbox" class="box"><div class="addr">local</div><div>temp</div><div class="val" id="tval">?</div></div></div></div><hr><h3>互動 2：指標走訪陣列</h3><p><code>int a[5] = {5,4,3,2,1}; int *p = a;</code>，拖曳滑桿看 <code>p+i</code> 指到哪裡。</p><input type="range" min="0" max="4" value="0" id="arrRange" oninput="drawArray()"><div id="arrayView" class="array"></div><p id="arrExplain" class="notice"></p></section>
+<section id="questions"><h2>五、Practice 07 五題完整整理</h2><p class="notice">每一題都放在同一區塊：題目、投影片觀念、完整程式、執行結果、說明、線上編譯器連結。</p>
+<section class="question-card" id="q1">
+  <div class="q-top"><span class="badge">Practice 07</span><span class="badge alt">同一題完整整理</span></div>
+  <h2>第 1 題｜swap(int *p, int *q)</h2>
+  <div class="q-grid">
+    <div class="mini-panel"><h3>題目</h3><p>Write the following function: void swap(int *p, int *q); When passed the addresses of two variables, swap should exchange the values of the variables: swap(&amp;i, &amp;j);</p></div>
+    <div class="mini-panel"><h3>對應投影片觀念</h3><p>本題對應投影片 Slide 4、Slide 5。核心是「傳值」與「傳位址」的差異：若只傳入 i、j 的值，函式內交換的是副本；若傳入 &amp;i、&amp;j，函式透過 *p、*q 可以直接改 main 裡的 i、j。</p></div>
+  </div>
+  <details open><summary>解題重點與觀念說明</summary><p>temp = *p 先保存第一個變數的值；*p = *q 將第二個變數寫到第一個變數位置；*q = temp 將原第一個值寫到第二個變數位置。整個過程修改的是原變數，不是副本。</p><ul><li>p 與 q 是 int 指標，內容分別是兩個整數變數的位址。</li><li>*p 代表 p 指到的那個整數變數。</li><li>swap(&amp;i,&amp;j) 才能真正改變 main 裡的 i 和 j。</li></ul></details>
+  <details open><summary>完整程式與中文註解</summary><div class="code-toolbar"><button onclick="copyCode('code1')">複製這題程式</button><button onclick="showResult(1)" class="secondary">查看執行結果</button></div><pre id="code1"><code>/*
+ * 檔名：practice07_1_annotated.c
+ * 主題：使用指標進行 swap 交換
+ * 功能：透過傳入兩個變數的位址，讓函式可以直接修改 main 裡的 i 與 j。
+ */
+#include &lt;stdio.h&gt;  /* 匯入標準輸入輸出函式庫，提供 printf()。 */
+
+void swap(int *p, int *q)  /* swap 接收兩個 int 指標，也就是兩個整數變數的位址。 */
+{
+    int temp;  /* 暫存變數，用來保存其中一個值，避免交換過程資料遺失。 */
+
+    temp = *p; /* 先把 p 指向的值，也就是第一個變數的值，存到 temp。 */
+    *p = *q;   /* 把 q 指向的值放到 p 指向的位置。 */
+    *q = temp; /* 把原本 p 指向的舊值放到 q 指向的位置，完成交換。 */
+}
+
+int main(void)  /* 主程式進入點。 */
+{
+    int i = 10; /* 宣告整數 i 並初始化為 10。 */
+    int j = 5;  /* 宣告整數 j 並初始化為 5。 */
+
+    printf(&quot;Before swap: i = %d, j = %d\n&quot;, i, j); /* 顯示交換前的 i、j。 */
+
+    swap(&amp;i, &amp;j); /* 傳入 i 與 j 的位址，讓 swap 可以修改原本的變數。 */
+
+    printf(&quot;After swap: i = %d, j = %d\n&quot;, i, j);  /* 顯示交換後的 i、j。 */
+
+    return 0; /* 正常結束程式。 */
+}
+</code></pre></details>
+  <details open><summary>程式執行後結果</summary><pre class="output"><code>Before swap: i = 10, j = 5
+After swap: i = 5, j = 10</code></pre><p class="note">實際記憶體位址每台電腦可能不同；本題輸出結果以上方數值與文字為主。</p></details>
+  <details><summary>如何把這題拿去線上編譯器執行</summary><p>先按「複製這題程式」，再開啟下方任一網站，把程式貼上後執行。</p><div class="compiler-grid small"><a class="compiler-card" href="https://www.w3schools.com/c/c_compiler.php" target="_blank" rel="noopener"><b>W3Schools C Compiler</b><span>介面簡單，適合初學者快速貼上程式按 Run。</span></a>
+<a class="compiler-card" href="https://www.onlinegdb.com/online_c_compiler" target="_blank" rel="noopener"><b>OnlineGDB</b><span>支援輸入、debug、單步執行，適合觀察變數變化。</span></a>
+<a class="compiler-card" href="https://www.programiz.com/c-programming/online-compiler/" target="_blank" rel="noopener"><b>Programiz C Compiler</b><span>版面清楚，適合快速測試作業程式。</span></a>
+<a class="compiler-card" href="https://godbolt.org/" target="_blank" rel="noopener"><b>Godbolt Compiler Explorer</b><span>可查看 assembly，適合深入理解指標與陣列在底層如何編譯。</span></a>
+<a class="compiler-card" href="https://www.jdoodle.com/c-online-compiler" target="_blank" rel="noopener"><b>JDoodle C Compiler</b><span>可快速執行 C 程式並切換部分環境設定。</span></a></div></details>
+</section>
+
+<section class="question-card" id="q2">
+  <div class="q-top"><span class="badge">Practice 07</span><span class="badge alt">同一題完整整理</span></div>
+  <h2>第 2 題｜int *find_largest(int a[], int n)</h2>
+  <div class="q-grid">
+    <div class="mini-panel"><h3>題目</h3><p>When passed an array a of length n, the function will return a pointer to the largest element of the array.</p></div>
+    <div class="mini-panel"><h3>對應投影片觀念</h3><p>本題對應 Slide 7、Slide 8、Slide 9。函式不是回傳最大值，而是回傳「最大值所在的位置」。因此回傳型態是 int *。</p></div>
+  </div>
+  <details open><summary>解題重點與觀念說明</summary><p>largest 一開始指向 a[0]。每次看到更大的 a[i]，就讓 largest 改指向 &amp;a[i]。最後 return largest，main 可用 *p 印出最大值，也可以用 p-a 算出最大元素索引。</p><ul><li>回傳 int * 表示回傳整數元素的位址。</li><li>largest = &amp;a[i] 是改變指標指向的位置。</li><li>*largest 是目前指標指到位置裡的值。</li></ul></details>
+  <details open><summary>完整程式與中文註解</summary><div class="code-toolbar"><button onclick="copyCode('code2')">複製這題程式</button><button onclick="showResult(2)" class="secondary">查看執行結果</button></div><pre id="code2"><code>/*
+ * 檔名：practice07_2_annotated.c
+ * 主題：函式回傳指標
+ * 功能：find_largest 回傳「最大元素的位址」，main 再透過 *p 印出最大值。
+ */
+#include &lt;stdio.h&gt;  /* 提供 printf()。 */
+
+int *find_largest(int a[], int n) /* 回傳 int 指標，指向陣列中最大元素。 */
+{
+    int i;                 /* 迴圈索引。 */
+    int *largest = &amp;a[0];  /* 先假設第一個元素最大，largest 儲存其位址。 */
+
+    for (i = 1; i &lt; n; i++) /* 從第二個元素開始比較。 */
+    {
+        if (a[i] &gt; *largest) /* *largest 是目前最大值；若 a[i] 更大就更新位址。 */
+        {
+            largest = &amp;a[i]; /* largest 改成指向新的最大元素。 */
+        }
+    }
+
+    return largest; /* 回傳最大元素的位址。 */
+}
+
+int main(void) /* 主程式。 */
+{
+    int a[] = {10, 80, 30, 50, 20}; /* 測試陣列。 */
+    int n = sizeof(a) / sizeof(a[0]); /* 計算陣列長度。 */
+    int *p; /* 用來接收最大元素位址的指標。 */
+
+    p = find_largest(a, n); /* 呼叫函式，取得最大元素的位址。 */
+
+    printf(&quot;Largest value = %d\n&quot;, *p); /* *p 取出該位址上的值，也就是最大值。 */
+
+    return 0; /* 正常結束。 */
+}
+</code></pre></details>
+  <details open><summary>程式執行後結果</summary><pre class="output"><code>Largest value = 80</code></pre><p class="note">實際記憶體位址每台電腦可能不同；本題輸出結果以上方數值與文字為主。</p></details>
+  <details><summary>如何把這題拿去線上編譯器執行</summary><p>先按「複製這題程式」，再開啟下方任一網站，把程式貼上後執行。</p><div class="compiler-grid small"><a class="compiler-card" href="https://www.w3schools.com/c/c_compiler.php" target="_blank" rel="noopener"><b>W3Schools C Compiler</b><span>介面簡單，適合初學者快速貼上程式按 Run。</span></a>
+<a class="compiler-card" href="https://www.onlinegdb.com/online_c_compiler" target="_blank" rel="noopener"><b>OnlineGDB</b><span>支援輸入、debug、單步執行，適合觀察變數變化。</span></a>
+<a class="compiler-card" href="https://www.programiz.com/c-programming/online-compiler/" target="_blank" rel="noopener"><b>Programiz C Compiler</b><span>版面清楚，適合快速測試作業程式。</span></a>
+<a class="compiler-card" href="https://godbolt.org/" target="_blank" rel="noopener"><b>Godbolt Compiler Explorer</b><span>可查看 assembly，適合深入理解指標與陣列在底層如何編譯。</span></a>
+<a class="compiler-card" href="https://www.jdoodle.com/c-online-compiler" target="_blank" rel="noopener"><b>JDoodle C Compiler</b><span>可快速執行 C 程式並切換部分環境設定。</span></a></div></details>
+</section>
+
+<section class="question-card" id="q3">
+  <div class="q-top"><span class="badge">Practice 07</span><span class="badge alt">同一題完整整理</span></div>
+  <h2>第 3 題｜用 p 印出二維陣列所有元素</h2>
+  <div class="q-grid">
+    <div class="mini-panel"><h3>題目</h3><p>Given int a[row][column] and int (*p)[column]; p = a; add statements that use p to print all elements in a.</p></div>
+    <div class="mini-panel"><h3>對應投影片觀念</h3><p>本題對應 Slide 12、Slide 13、Slide 14。二維陣列可以用 row-major 觀念理解，int (*p)[column] 代表 p 指向「一列有 column 個 int 的陣列」。</p></div>
+  </div>
+  <details open><summary>解題重點與觀念說明</summary><p>p+i 會移到第 i 列；*(p+i) 取得第 i 列的開頭；*(p+i)+j 移到第 j 欄；*(*(p+i)+j) 取得第 i 列第 j 欄的值。也可以寫 p[i][j]。</p><ul><li>int (*p)[column] 的括號不能省略。</li><li>p 指向的是一整列，不是單一 int。</li><li>*(*(p+i)+j) 與 p[i][j] 取到同一個元素。</li></ul></details>
+  <details open><summary>完整程式與中文註解</summary><div class="code-toolbar"><button onclick="copyCode('code3')">複製這題程式</button><button onclick="showResult(3)" class="secondary">查看執行結果</button></div><pre id="code3"><code>/*
+ * 檔名：practice07_3_annotated.c
+ * 主題：二維陣列與指向一列陣列的指標
+ * 功能：使用 int (*p)[column] 走訪 3x5 二維陣列。
+ */
+#include &lt;stdio.h&gt;  /* 提供 printf()。 */
+
+#define row 3       /* 定義二維陣列列數為 3。 */
+#define column 5    /* 定義二維陣列欄數為 5。 */
+
+int main(void) /* 主程式。 */
+{
+    int a[row][column] = /* 宣告 3x5 二維整數陣列。 */
+    {
+        {1, 2, 3, 4, 5},       /* 第 1 列資料。 */
+        {1, 4, 9, 16, 25},     /* 第 2 列資料。 */
+        {1, 8, 27, 64, 125}    /* 第 3 列資料。 */
+    };
+
+    int (*p)[column]; /* p 是指標，指向「含有 column 個 int 的一整列」。 */
+    int i, j;         /* i 控制列，j 控制欄。 */
+
+    p = a; /* 二維陣列名稱 a 會轉成第一列的位址，因此 p 指向第 0 列。 */
+
+    for (i = 0; i &lt; row; i++) /* 逐列走訪。 */
+    {
+        for (j = 0; j &lt; column; j++) /* 逐欄走訪。 */
+        {
+            printf(&quot;%d &quot;, *(*(p + i) + j)); /* p+i 到第 i 列；*(p+i)+j 到第 j 欄；最外層 * 取值。 */
+        }
+        printf(&quot;\n&quot;); /* 每印完一列就換行。 */
+    }
+
+    return 0; /* 正常結束。 */
+}
+</code></pre></details>
+  <details open><summary>程式執行後結果</summary><pre class="output"><code>1 2 3 4 5 
+1 4 9 16 25 
+1 8 27 64 125 </code></pre><p class="note">實際記憶體位址每台電腦可能不同；本題輸出結果以上方數值與文字為主。</p></details>
+  <details><summary>如何把這題拿去線上編譯器執行</summary><p>先按「複製這題程式」，再開啟下方任一網站，把程式貼上後執行。</p><div class="compiler-grid small"><a class="compiler-card" href="https://www.w3schools.com/c/c_compiler.php" target="_blank" rel="noopener"><b>W3Schools C Compiler</b><span>介面簡單，適合初學者快速貼上程式按 Run。</span></a>
+<a class="compiler-card" href="https://www.onlinegdb.com/online_c_compiler" target="_blank" rel="noopener"><b>OnlineGDB</b><span>支援輸入、debug、單步執行，適合觀察變數變化。</span></a>
+<a class="compiler-card" href="https://www.programiz.com/c-programming/online-compiler/" target="_blank" rel="noopener"><b>Programiz C Compiler</b><span>版面清楚，適合快速測試作業程式。</span></a>
+<a class="compiler-card" href="https://godbolt.org/" target="_blank" rel="noopener"><b>Godbolt Compiler Explorer</b><span>可查看 assembly，適合深入理解指標與陣列在底層如何編譯。</span></a>
+<a class="compiler-card" href="https://www.jdoodle.com/c-online-compiler" target="_blank" rel="noopener"><b>JDoodle C Compiler</b><span>可快速執行 C 程式並切換部分環境設定。</span></a></div></details>
+</section>
+
+<section class="question-card" id="q4">
+  <div class="q-top"><span class="badge">Practice 07</span><span class="badge alt">同一題完整整理</span></div>
+  <h2>第 4 題｜指標運算與比較</h2>
+  <div class="q-grid">
+    <div class="mini-panel"><h3>題目</h3><p>Suppose int a[5]={5,4,3,2,1}; int *p=a,*q=&amp;a[4]; Find *(p+2), *(q-3), q-p, p&lt;q, *p&lt;*q.</p></div>
+    <div class="mini-panel"><h3>對應投影片觀念</h3><p>本題對應 Slide 10、Slide 11。指標加減是以「元素」為單位，不是以 byte 為單位。</p></div>
+  </div>
+  <details open><summary>解題重點與觀念說明</summary><p>p 指向 a[0]，q 指向 a[4]。所以 p+2 指到 a[2]，值是 3；q-3 指到 a[1]，值是 4；q-p 是 4 個元素距離；p&lt;q 比位址為 true；*p&lt;*q 比內容 5&lt;1 為 false。</p><ul><li>指標相減結果是元素距離。</li><li>p&lt;q 比的是記憶體位置前後。</li><li>*p&lt;*q 比的是兩個元素內容。</li></ul></details>
+  <details open><summary>完整程式與中文註解</summary><div class="code-toolbar"><button onclick="copyCode('code4')">複製這題程式</button><button onclick="showResult(4)" class="secondary">查看執行結果</button></div><pre id="code4"><code>/*
+ * 檔名：practice07_4_annotated.c
+ * 主題：指標算術與指標比較
+ * 功能：示範 p+2、q-3、q-p、p&lt;q，以及指標所指向值的比較。
+ */
+#include &lt;stdio.h&gt; /* 提供 printf()。 */
+
+int main(void) /* 主程式。 */
+{
+    int a[5] = {5, 4, 3, 2, 1}; /* 宣告長度為 5 的陣列。 */
+    int *p = a;                 /* p 指向陣列第一個元素 a[0]。 */
+    int *q = &amp;a[4];             /* q 指向陣列最後一個元素 a[4]。 */
+
+    printf(&quot;*(p + 2) = %d\n&quot;, *(p + 2)); /* p+2 指向 a[2]，值為 3。 */
+    printf(&quot;*(q - 3) = %d\n&quot;, *(q - 3)); /* q-3 從 a[4] 往前 3 格到 a[1]，值為 4。 */
+    printf(&quot;q - p = %ld\n&quot;, q - p);     /* 兩指標相減得到元素距離，不是位元組距離，結果為 4。 */
+    printf(&quot;p &lt; q is %s\n&quot;, (p &lt; q) ? &quot;true&quot; : &quot;false&quot;);   /* 比較位址順序，p 在 q 前面所以 true。 */
+    printf(&quot;*p &lt; *q is %s\n&quot;, (*p &lt; *q) ? &quot;true&quot; : &quot;false&quot;); /* 比較值：a[0]=5，a[4]=1，所以 false。 */
+
+    return 0; /* 正常結束。 */
+}
+</code></pre></details>
+  <details open><summary>程式執行後結果</summary><pre class="output"><code>*(p + 2) = 3
+*(q - 3) = 4
+q - p = 4
+p &lt; q is true
+*p &lt; *q is false</code></pre><p class="note">實際記憶體位址每台電腦可能不同；本題輸出結果以上方數值與文字為主。</p></details>
+  <details><summary>如何把這題拿去線上編譯器執行</summary><p>先按「複製這題程式」，再開啟下方任一網站，把程式貼上後執行。</p><div class="compiler-grid small"><a class="compiler-card" href="https://www.w3schools.com/c/c_compiler.php" target="_blank" rel="noopener"><b>W3Schools C Compiler</b><span>介面簡單，適合初學者快速貼上程式按 Run。</span></a>
+<a class="compiler-card" href="https://www.onlinegdb.com/online_c_compiler" target="_blank" rel="noopener"><b>OnlineGDB</b><span>支援輸入、debug、單步執行，適合觀察變數變化。</span></a>
+<a class="compiler-card" href="https://www.programiz.com/c-programming/online-compiler/" target="_blank" rel="noopener"><b>Programiz C Compiler</b><span>版面清楚，適合快速測試作業程式。</span></a>
+<a class="compiler-card" href="https://godbolt.org/" target="_blank" rel="noopener"><b>Godbolt Compiler Explorer</b><span>可查看 assembly，適合深入理解指標與陣列在底層如何編譯。</span></a>
+<a class="compiler-card" href="https://www.jdoodle.com/c-online-compiler" target="_blank" rel="noopener"><b>JDoodle C Compiler</b><span>可快速執行 C 程式並切換部分環境設定。</span></a></div></details>
+</section>
+
+<section class="question-card" id="q5">
+  <div class="q-top"><span class="badge">Practice 07</span><span class="badge alt">同一題完整整理</span></div>
+  <h2>第 5 題｜絕對值與平方陣列</h2>
+  <div class="q-grid">
+    <div class="mini-panel"><h3>題目</h3><p>Write int* func(int a[], int size); Modify each value in a to its absolute value, and return an array where each corresponding element is squared.</p></div>
+    <div class="mini-panel"><h3>對應投影片觀念</h3><p>本題整合 Slide 8、Slide 9 與動態記憶體。函式會直接修改原陣列 a，並另外 malloc 一個新陣列 r 回傳平方值。</p></div>
+  </div>
+  <details open><summary>解題重點與觀念說明</summary><p>陣列傳入函式時會退化成指標，所以修改 a[i] 會改到原陣列。平方結果需要回傳一個陣列，因此使用 malloc 配置新記憶體，main 使用完後必須 free(r)。</p><ul><li>a[i] = -a[i] 會直接修改原陣列元素。</li><li>r[i] = a[i] * a[i] 儲存平方結果。</li><li>malloc 配置的記憶體要由呼叫端 free。</li></ul></details>
+  <details open><summary>完整程式與中文註解</summary><div class="code-toolbar"><button onclick="copyCode('code5')">複製這題程式</button><button onclick="showResult(5)" class="secondary">查看執行結果</button></div><pre id="code5"><code>/*
+ * 檔名：practice07_5_annotated.c
+ * 主題：動態記憶體 malloc、陣列修改、free
+ * 功能：把原陣列改成絕對值，並另外建立一個平方陣列回傳。
+ */
+#include &lt;stdio.h&gt;   /* 提供 printf()。 */
+#include &lt;stdlib.h&gt;  /* 提供 malloc() 與 free()。 */
+
+int *func(int a[], int size) /* 接收陣列與大小，回傳新配置的平方陣列位址。 */
+{
+    int *r; /* r 指向動態配置的新陣列。 */
+    int i;  /* 迴圈索引。 */
+
+    r = (int *)malloc(size * sizeof(int)); /* 配置可存放 size 個 int 的記憶體空間。 */
+
+    if (r == NULL) /* 若 malloc 失敗，會回傳 NULL。 */
+    {
+        return NULL; /* 通知呼叫端記憶體配置失敗。 */
+    }
+
+    for (i = 0; i &lt; size; i++) /* 逐一處理陣列元素。 */
+    {
+        if (a[i] &lt; 0) /* 若原陣列元素為負數。 */
+        {
+            a[i] = -a[i]; /* 改成正數，也就是取絕對值。 */
+        }
+
+        r[i] = a[i] * a[i]; /* 將絕對值平方後存到新陣列 r。 */
+    }
+
+    return r; /* 回傳新陣列的起始位址。 */
+}
+
+int main(void) /* 主程式。 */
+{
+    int a[] = {-1, 2, -3, 4, -5}; /* 原始陣列，包含正數與負數。 */
+    int size = sizeof(a) / sizeof(a[0]); /* 計算陣列元素數量。 */
+    int *r; /* 接收 func 回傳的新陣列。 */
+    int i;  /* 迴圈索引。 */
+
+    r = func(a, size); /* 呼叫函式，a 會被改成絕對值，r 會指向平方結果。 */
+
+    if (r == NULL) /* 檢查記憶體配置是否失敗。 */
+    {
+        printf(&quot;Memory allocation failed.\n&quot;); /* 顯示錯誤訊息。 */
+        return 1; /* 非正常結束。 */
+    }
+
+    printf(&quot;Absolute array:\n&quot;); /* 準備輸出改成絕對值後的原陣列。 */
+    for (i = 0; i &lt; size; i++)
+    {
+        printf(&quot;%d &quot;, a[i]); /* 輸出 a[i]。 */
+    }
+
+    printf(&quot;\nSquare array:\n&quot;); /* 準備輸出平方陣列。 */
+    for (i = 0; i &lt; size; i++)
+    {
+        printf(&quot;%d &quot;, r[i]); /* 輸出 r[i]。 */
+    }
+
+    printf(&quot;\n&quot;); /* 最後換行。 */
+
+    free(r); /* 釋放 malloc 配置的記憶體，避免 memory leak。 */
+
+    return 0; /* 正常結束。 */
+}
+</code></pre></details>
+  <details open><summary>程式執行後結果</summary><pre class="output"><code>Absolute array:
+1 2 3 4 5 
+Square array:
+1 4 9 16 25 </code></pre><p class="note">實際記憶體位址每台電腦可能不同；本題輸出結果以上方數值與文字為主。</p></details>
+  <details><summary>如何把這題拿去線上編譯器執行</summary><p>先按「複製這題程式」，再開啟下方任一網站，把程式貼上後執行。</p><div class="compiler-grid small"><a class="compiler-card" href="https://www.w3schools.com/c/c_compiler.php" target="_blank" rel="noopener"><b>W3Schools C Compiler</b><span>介面簡單，適合初學者快速貼上程式按 Run。</span></a>
+<a class="compiler-card" href="https://www.onlinegdb.com/online_c_compiler" target="_blank" rel="noopener"><b>OnlineGDB</b><span>支援輸入、debug、單步執行，適合觀察變數變化。</span></a>
+<a class="compiler-card" href="https://www.programiz.com/c-programming/online-compiler/" target="_blank" rel="noopener"><b>Programiz C Compiler</b><span>版面清楚，適合快速測試作業程式。</span></a>
+<a class="compiler-card" href="https://godbolt.org/" target="_blank" rel="noopener"><b>Godbolt Compiler Explorer</b><span>可查看 assembly，適合深入理解指標與陣列在底層如何編譯。</span></a>
+<a class="compiler-card" href="https://www.jdoodle.com/c-online-compiler" target="_blank" rel="noopener"><b>JDoodle C Compiler</b><span>可快速執行 C 程式並切換部分環境設定。</span></a></div></details>
+</section></section>
+<section class="card" id="online"><h2>六、線上 C 編譯器連結</h2><p class="notice">使用方式：在任一題按「複製這題程式」，再點下方網站，把程式貼上執行。若網站預設不是 C，請改成 C / GCC。</p><div class="compiler-grid"><a class="compiler-card" href="https://www.w3schools.com/c/c_compiler.php" target="_blank" rel="noopener"><b>W3Schools C Compiler</b><span>介面簡單，適合初學者快速貼上程式按 Run。</span></a>
+<a class="compiler-card" href="https://www.onlinegdb.com/online_c_compiler" target="_blank" rel="noopener"><b>OnlineGDB</b><span>支援輸入、debug、單步執行，適合觀察變數變化。</span></a>
+<a class="compiler-card" href="https://www.programiz.com/c-programming/online-compiler/" target="_blank" rel="noopener"><b>Programiz C Compiler</b><span>版面清楚，適合快速測試作業程式。</span></a>
+<a class="compiler-card" href="https://godbolt.org/" target="_blank" rel="noopener"><b>Godbolt Compiler Explorer</b><span>可查看 assembly，適合深入理解指標與陣列在底層如何編譯。</span></a>
+<a class="compiler-card" href="https://www.jdoodle.com/c-online-compiler" target="_blank" rel="noopener"><b>JDoodle C Compiler</b><span>可快速執行 C 程式並切換部分環境設定。</span></a></div></section>
+<section class="card" id="quiz"><h2>七、互動測驗</h2><div id="quizBox"></div><button class="secondary" onclick="resetQuiz()">重新作答</button></section>
+<section class="card" id="compile"><h2>八、本機編譯與執行</h2><h3>Linux / macOS / Git Bash</h3><pre><code>gcc practice07_1_annotated.c -o practice07_1
+./practice07_1</code></pre><h3>Windows CMD</h3><pre><code>gcc practice07_1_annotated.c -o practice07_1.exe
+practice07_1.exe</code></pre><h3>五題一次編譯範例</h3><pre><code>gcc practice07_1_annotated.c -o p1
+ gcc practice07_2_annotated.c -o p2
+ gcc practice07_3_annotated.c -o p3
+ gcc practice07_4_annotated.c -o p4
+ gcc practice07_5_annotated.c -o p5</code></pre></section>
+<div class="footer">Practice 07 Pointer II｜非常詳細互動式 HTML 教學｜題目、程式、結果、說明、線上執行整合版</div>
+</main><div id="toast" class="toast">已複製</div>
+<script>
+const quiz=[
+{q:'swap(&i,&j) 中 &i 是什麼？',opts:['i 的值','i 的位址','指標 p 的位址','陣列長度'],ans:1,why:'& 是 address operator，會取得變數位址。'},
+{q:'在 swap(int *p,int *q) 中，*p 代表什麼？',opts:['p 自己的位址','p 指到位置的內容','q 的位址','函式名稱'],ans:1,why:'* 是 indirection operator，可取得指標指向位置中的值。'},
+{q:'int *find_largest(int a[],int n) 回傳什麼？',opts:['最大值本身','最大值的位址','陣列長度','最小值位址'],ans:1,why:'回傳型態 int *，代表回傳 int 物件的位址。'},
+{q:'int a[5]={5,4,3,2,1}; int *p=a; *(p+2) 是？',opts:['5','4','3','2'],ans:2,why:'p 指向 a[0]，p+2 指向 a[2]，值為 3。'},
+{q:'q-p 的結果單位是什麼？',opts:['byte','bit','元素個數','秒'],ans:2,why:'同一陣列中的指標相減，結果是元素距離。'},
+{q:'為什麼 a++ 不合法但 p++ 合法？',opts:['a 是常數 0','a 代表陣列起始位置，不是可修改的指標變數','p 是陣列','因為 C 不支援陣列'],ans:1,why:'陣列名稱不是可指定的左值，指標變數 p 則可以改變。'},
+{q:'malloc 配置的記憶體使用完應該做什麼？',opts:['return','scanf','free','sizeof'],ans:2,why:'使用 malloc 配置的記憶體需要 free，避免 memory leak。'}
+];
+function toast(msg='已複製'){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1600)}
+function copyCode(id){navigator.clipboard.writeText(document.getElementById(id).innerText).then(()=>toast('已複製這題程式碼'));}
+function showResult(i){location.href='#q'+i;toast('執行結果在同一題下方');}
+function swapStep(s){let x=10,y=5,t='?';let msg='';document.querySelectorAll('.box').forEach(e=>e.classList.remove('active')); if(s===0){msg='初始：p 存 &x，q 存 &y，所以 *p 代表 x，*q 代表 y。';pbox.classList.add('active');qbox.classList.add('active');} if(s===1){t=10;msg='temp = *p：把 p 指向的內容，也就是 x 的 10，先存到 temp。';xbox.classList.add('active');tbox.classList.add('active');} if(s===2){t=10;x=5;msg='*p = *q：把 q 指向的內容 5 寫入 p 指向的位置，所以 x 變成 5。';xbox.classList.add('active');ybox.classList.add('active');} if(s===3){t=10;x=5;y=10;msg='*q = temp：把 temp 的 10 寫入 q 指向的位置，所以 y 變成 10，交換完成。';ybox.classList.add('active');tbox.classList.add('active');} xval.textContent=x;yval.textContent=y;tval.textContent=t;swapText.textContent=msg;}
+function drawArray(){const vals=[5,4,3,2,1];const i=+document.getElementById('arrRange').value;let h='';vals.forEach((v,idx)=>{h+=`<div class="cell ${idx===i?'sel':''}"><div>${v}</div><small>a[${idx}]</small></div>`});arrayView.innerHTML=h;arrExplain.innerHTML=`目前 i = <b>${i}</b>，所以 <code>p+${i}</code> 指向 <code>a[${i}]</code>，<code>*(p+${i})</code> 的值是 <b>${vals[i]}</b>。`;}
+function renderQuiz(){let h='';quiz.forEach((q,qi)=>{h+=`<div class="quiz-card"><h3>Q${qi+1}. ${q.q}</h3>`;q.opts.forEach((o,oi)=>{h+=`<button class="option" onclick="answerQuiz(${qi},${oi},this)">${o}</button>`});h+=`<div class="result" id="res${qi}"></div></div>`});quizBox.innerHTML=h;}
+function answerQuiz(qi,oi,btn){const q=quiz[qi];const card=btn.parentElement;card.querySelectorAll('.option').forEach((b,idx)=>{b.disabled=true;if(idx===q.ans)b.classList.add('correct')});if(oi!==q.ans)btn.classList.add('wrong');document.getElementById('res'+qi).textContent=(oi===q.ans?'答對！':'答錯。')+' '+q.why;}
+function resetQuiz(){renderQuiz();}
+swapStep(0);drawArray();renderQuiz();
+</script>
+</body></html>

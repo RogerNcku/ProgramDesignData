@@ -1,0 +1,335 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Practice 06 Pointer I 完整互動式教學</title>
+<style>
+:root{--bg:#f6f8fc;--card:#fff;--ink:#111827;--muted:#667085;--brand:#2563eb;--brand2:#7c3aed;--line:#d9e2ef;--soft:#eff6ff;--ok:#16a34a;--bad:#dc2626;--warn:#f97316;--code:#0b1220;}
+*{box-sizing:border-box} body{margin:0;font-family:"Noto Sans TC","Microsoft JhengHei",Arial,sans-serif;background:linear-gradient(180deg,#eaf2ff 0,#f8fafc 280px);color:var(--ink);line-height:1.72} a{color:#1d4ed8} header{max-width:1220px;margin:auto;padding:44px 22px 24px} h1{font-size:clamp(32px,5vw,56px);line-height:1.08;margin:0 0 10px} h2{font-size:30px;margin:10px 0 16px} h3{font-size:22px;margin:18px 0 10px} .subtitle{color:var(--muted);font-size:18px} .tag{display:inline-block;background:#dbeafe;color:#1d4ed8;border-radius:999px;padding:5px 12px;font-size:13px;margin:5px 4px 0 0}
+nav{position:sticky;top:0;z-index:30;background:rgba(255,255,255,.94);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)} nav .bar{max-width:1220px;margin:auto;display:flex;gap:8px;overflow:auto;padding:10px 16px} nav a{white-space:nowrap;text-decoration:none;border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 13px;font-size:14px;color:#1e3a8a}
+main{max-width:1220px;margin:auto;padding:20px 18px 80px} .card,.slide,.qcard{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:22px;margin:16px 0;box-shadow:0 10px 28px rgba(15,23,42,.06)} .grid{display:grid;grid-template-columns:1fr 1fr;gap:18px} .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px} .note{background:#f8fafc;border-left:5px solid var(--brand);padding:13px 15px;border-radius:12px} .warn{background:#fff7ed;border-left:5px solid var(--warn);padding:13px 15px;border-radius:12px} .ok{background:#ecfdf5;border-left:5px solid var(--ok);padding:13px 15px;border-radius:12px} .bad{background:#fef2f2;border-left:5px solid var(--bad);padding:13px 15px;border-radius:12px}
+.slideDeck{display:grid;grid-template-columns:320px 1fr;gap:18px;align-items:start} .slideNav{position:sticky;top:64px;background:#fff;border:1px solid var(--line);border-radius:18px;padding:14px} .slideNav button{display:block;width:100%;margin:7px 0;text-align:left} .slide{min-height:420px;display:none} .slide.active{display:block} .slideTitle{font-size:34px;font-weight:900;margin-bottom:8px} .slideNo{color:var(--muted);font-size:14px}
+.memrow{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:18px 0} .memcell{min-width:110px;border:2px solid var(--line);background:#fff;border-radius:14px;padding:10px;text-align:center;position:relative;transition:.25s} .memcell.active{background:#dbeafe;border-color:#2563eb;transform:translateY(-3px)} .addr{font-size:12px;color:var(--muted)} .val{font-size:24px;font-weight:900} .arrow{font-size:28px;color:#dc2626;font-weight:900} .locker{display:grid;grid-template-columns:repeat(4,1fr);gap:8px} .locker div{background:#fee2e2;border:2px solid #fca5a5;border-radius:12px;padding:10px;text-align:center}
+button{cursor:pointer;border:0;border-radius:12px;background:var(--brand);color:#fff;padding:10px 14px;font-weight:800} button.secondary{background:#e5e7eb;color:#111827} button.good{background:var(--ok)} button.badbtn{background:var(--bad)} .btnrow{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+pre{background:var(--code);color:#e5e7eb;border-radius:16px;padding:16px;overflow:auto;font-size:14px;line-height:1.55} code{font-family:Consolas,Monaco,monospace} .code-head{display:flex;justify-content:space-between;align-items:center;gap:10px} .output{background:#07111f;color:#d1fae5;border:1px solid #1f2937;border-radius:15px;padding:14px 16px;white-space:pre-wrap;font-family:Consolas,Monaco,monospace}
+.table{width:100%;border-collapse:collapse;margin:12px 0;border-radius:12px;overflow:hidden} .table th,.table td{border:1px solid var(--line);padding:10px;vertical-align:top} .table th{background:#f1f5f9;text-align:left} details{border:1px solid var(--line);border-radius:14px;padding:13px;margin:10px 0;background:#fff} summary{cursor:pointer;font-weight:900;color:#1e40af}
+.compiler-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;margin-top:14px} .compiler-card{display:block;text-decoration:none;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;box-shadow:0 8px 18px rgba(15,23,42,.05);transition:.2s} .compiler-card:hover{transform:translateY(-3px);border-color:var(--brand);box-shadow:0 12px 24px rgba(37,99,235,.12)} .compiler-card b{display:block;font-size:18px;color:#1d4ed8;margin-bottom:6px}
+.quiz-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;margin:12px 0} .option{display:block;width:100%;text-align:left;margin:8px 0;background:#f8fafc;color:#111827;border:1px solid var(--line)} .option.correct{background:#dcfce7;border-color:#22c55e} .option.wrong{background:#fee2e2;border-color:#ef4444} .result{font-weight:900;margin-top:8px} .footer{color:var(--muted);font-size:13px;text-align:center;margin-top:34px}
+@media(max-width:900px){.grid,.grid3,.slideDeck{grid-template-columns:1fr} .slideNav{position:static}}
+</style>
+</head>
+<body>
+<header>
+<h1>Practice 06：Pointer I 完整互動式 HTML 教學</h1>
+<div class="subtitle">完整投影片教學＋題目＋程式＋執行結果＋程式說明。同一題全部放在同一區塊，並附線上 C 編譯器連結。</div>
+<div><span class="tag">C 語言</span><span class="tag">Pointer I</span><span class="tag">Address</span><span class="tag">Indirection</span><span class="tag">互動動畫</span><span class="tag">Practice 06</span></div>
+</header>
+<nav><div class="bar"><a href="#slides">投影片教學</a><a href="#interactive">互動記憶體</a><a href="#q1">第1題</a><a href="#q2">第2題</a><a href="#q3">第3題</a><a href="#q4">第4題</a><a href="#q5">第5題</a><a href="#online">線上編譯器</a><a href="#quiz">互動測驗</a><a href="#compile">本機編譯</a></div></nav>
+<main>
+<section class="card">
+<h2>一、教學目標</h2>
+<div class="grid">
+<div><p>本教學依照 Pointer I 講義與 Practice 06 製作。重點是理解「變數的值」和「變數的位址」不同，以及指標變數如何儲存位址。</p>
+<ul><li>理解 <code>&amp;</code> address operator。</li><li>理解 <code>*</code> indirection / dereference operator。</li><li>判斷指標指定敘述是否合法。</li><li>用指標修改原變數。</li><li>用指標作為函式輸出參數，回傳多個結果。</li></ul></div>
+<div class="note"><b>最重要觀念：</b><br>一般變數存的是「值」，指標變數存的是「位址」。<br><code>p = &amp;i;</code> 表示 p 存 i 的位址。<br><code>*p</code> 表示「到 p 存的位址那裡，把內容拿出來或改掉」。</div>
+</div>
+</section>
+
+<section id="slides" class="card">
+<h2>二、完整投影片式教學</h2>
+<div class="slideDeck">
+<div class="slideNav">
+<button onclick="showSlide(0)">1 記憶體像置物櫃</button>
+<button onclick="showSlide(1)">2 變數、Byte、Address</button>
+<button onclick="showSlide(2)">3 什麼是 Pointer</button>
+<button onclick="showSlide(3)">4 宣告與初始化</button>
+<button onclick="showSlide(4)">5 *p 間接存取</button>
+<button onclick="showSlide(5)">6 指標指定 q=p</button>
+<button onclick="showSlide(6)">7 值複製 *q=*p</button>
+<button onclick="showSlide(7)">8 危險錯誤與 Segmentation Fault</button>
+</div>
+<div>
+<article class="slide active"><div class="slideNo">Slide 1 / 8</div><div class="slideTitle">記憶體像置物櫃</div><p>講義用「行李、置物格、置物格編號、置物櫃」比喻 C 語言記憶體：</p><div class="locker"><div>行李<br><b>Value</b></div><div>置物格<br><b>Byte</b></div><div>編號<br><b>Address</b></div><div>櫃子<br><b>Main memory</b></div></div><p class="note">當你宣告 <code>int i = 5;</code>，可以想成把數值 5 放進某個置物格，而那個置物格有一個位址。</p></article>
+<article class="slide"><div class="slideNo">Slide 2 / 8</div><div class="slideTitle">變數會佔用記憶體位址</div><p>每個變數會佔用一個或多個 bytes。每個 byte 都有唯一的 address。變數的 address 通常指它佔用的第一個 byte 的位址。</p><table class="table"><tr><th>概念</th><th>例子</th></tr><tr><td><code>int i</code></td><td>可能佔 4 bytes</td></tr><tr><td><code>&amp;i</code></td><td>取得 i 的起始位址</td></tr><tr><td><code>i</code></td><td>取得 i 裡面的值</td></tr></table></article>
+<article class="slide"><div class="slideNo">Slide 3 / 8</div><div class="slideTitle">什麼是 Pointer？</div><p>Pointer 是一種變數，但它裡面存的不是一般整數值，而是「記憶體位址」。</p><pre><code>int i = 5;
+int *p;
+p = &i;</code></pre><p class="ok">此時 p 指向 i；<code>p</code> 是 i 的位址，<code>*p</code> 是 i 的值。</p></article>
+<article class="slide"><div class="slideNo">Slide 4 / 8</div><div class="slideTitle">宣告與初始化</div><pre><code>int *p;      // 宣告 p 是 int pointer
+p = &i;      // 讓 p 指向 i
+int *q=&i;   // 宣告時直接初始化</code></pre><p class="warn">只宣告 <code>int *p;</code> 但沒有讓它指向合法變數時，不能使用 <code>*p</code> 寫值。</p></article>
+<article class="slide"><div class="slideNo">Slide 5 / 8</div><div class="slideTitle">*p：到 p 指向的位置取值或改值</div><pre><code>int i = 5;
+int *p = &i;
+printf("%d", *p); // 印出 5
+*p = 1;           // i 變成 1</code></pre><p class="note"><code>*p</code> 不是 p 自己，而是「p 指向的那個變數」。</p></article>
+<article class="slide"><div class="slideNo">Slide 6 / 8</div><div class="slideTitle">q = p：改變指向對象</div><p>若 <code>p=&amp;i</code>，<code>q=&amp;j</code>，執行 <code>q=p</code> 後，q 不再指向 j，而是和 p 一樣指向 i。</p><pre><code>q = p;
+*p = 1;
+// i 變 1，j 不變
+// *p 和 *q 都是 i 的值</code></pre></article>
+<article class="slide"><div class="slideNo">Slide 7 / 8</div><div class="slideTitle">*q = *p：複製值，不改指向</div><p><code>*q = *p</code> 是把 p 指向位置的內容複製到 q 指向的位置。p 與 q 仍然指向原本的變數。</p><pre><code>*q = *p; // j = i
+*p = 1;  // i = 1，j 保持剛剛複製到的值</code></pre></article>
+<article class="slide"><div class="slideNo">Slide 8 / 8</div><div class="slideTitle">危險錯誤：未初始化指標</div><pre><code>int *p;
+*p = 3;  // 危險：p 還不知道指到哪裡</code></pre><p class="bad">這可能造成 Segmentation Fault，因為程式嘗試寫入不屬於它的記憶體位置。</p></article>
+</div></div>
+</section>
+
+<section id="interactive" class="card">
+<h2>三、互動記憶體動畫</h2>
+<p>按按鈕觀察 <code>p=&amp;i</code>、<code>q=&amp;j</code>、<code>*q=*p</code>、<code>*p=1</code> 的變化。</p>
+<div class="btnrow"><button onclick="memStep(0)">0 初始</button><button onclick="memStep(1)">1 p=&i, q=&j</button><button onclick="memStep(2)">2 *q=*p</button><button onclick="memStep(3)">3 *p=1</button></div>
+<div class="memrow"><div class="memcell" id="mi"><div class="addr">&i = 0x1000</div><div>i</div><div class="val" id="ival">5</div></div><div class="memcell" id="mj"><div class="addr">&j = 0x1004</div><div>j</div><div class="val" id="jval">6</div></div><div class="arrow">←</div><div class="memcell" id="mp"><div class="addr">&p = 0x2000</div><div>p 內容</div><div class="val" id="pval">?</div></div><div class="memcell" id="mq"><div class="addr">&q = 0x2008</div><div>q 內容</div><div class="val" id="qval">?</div></div></div>
+<p id="memExplain" class="note"></p>
+</section>
+
+<section id="q1" class="qcard"><h2>四、第 1 題：判斷哪些 pointer assignment 合法</h2>
+<h3>題目</h3><p>假設 <code>int i;</code> 且 <code>p</code>、<code>q</code> 都是 <code>int *</code>，判斷 a 到 i 哪些指定合法。</p>
+<table class="table"><tr><th>敘述</th><th>答案</th><th>說明</th></tr>
+<tr><td><code>p = i;</code></td><td>illegal</td><td>p 需要 int 位址，但 i 是 int 值。</td></tr>
+<tr><td><code>*p = &amp;i;</code></td><td>illegal</td><td>*p 是 int 變數內容，&amp;i 是位址。</td></tr>
+<tr><td><code>&amp;p = q;</code></td><td>illegal</td><td>&amp;p 不是可被指定的左值。</td></tr>
+<tr><td><code>p = &amp;q;</code></td><td>illegal</td><td>&amp;q 型態是 int **，p 型態是 int *。</td></tr>
+<tr><td><code>p = &amp;*q;</code></td><td>legal</td><td>&amp;*q 等同 q，型態為 int *。</td></tr>
+<tr><td><code>p = q;</code></td><td>legal</td><td>兩者都是 int *。</td></tr>
+<tr><td><code>p = *q;</code></td><td>illegal</td><td>*q 是 int 值，不是 int 位址。</td></tr>
+<tr><td><code>*p = q;</code></td><td>illegal</td><td>*p 是 int，q 是 int *。</td></tr>
+<tr><td><code>*p = *q;</code></td><td>legal</td><td>兩邊都是 int 值。</td></tr></table>
+<h3>示範程式</h3><div class="code-head"><b>practice06_1_demo.c</b><button onclick="copyCode('code1')">複製程式碼</button></div><pre id="code1"><code>/* Practice 6-1: 判斷合法與非法 assignment */
+#include &lt;stdio.h&gt;
+
+int main(void)
+{
+    int i = 10;
+    int j = 20;
+    int *p = &amp;i;
+    int *q = &amp;j;
+
+    /* 以下三種是合法的 */
+    p = &amp;*q;     /* &amp;*q 等同 q，所以 p 指向 j */
+    p = q;       /* p 和 q 指向同一個 int 變數 */
+    *p = *q;     /* 把 q 指向的值指定給 p 指向的位置 */
+
+    printf(&quot;i = %d
+&quot;, i);
+    printf(&quot;j = %d
+&quot;, j);
+    printf(&quot;*p = %d
+&quot;, *p);
+    printf(&quot;*q = %d
+&quot;, *q);
+
+    return 0;
+}</code></pre>
+<h3>程式結果</h3><div class="output">i = 10
+j = 20
+*p = 20
+*q = 20</div>
+<h3>程式說明</h3><p class="note">第 1 題不一定要執行程式才能判斷，核心是看左右兩邊型態是否相容。<code>p</code> 和 <code>q</code> 是位址；<code>*p</code> 和 <code>*q</code> 是整數值。</p><div class="compiler-grid">
+<a class="compiler-card" target="_blank" href="https://www.w3schools.com/c/c_compiler.php"><b>W3Schools C Compiler</b><span>適合快速貼上執行，介面最簡單。</span></a>
+<a class="compiler-card" target="_blank" href="https://www.onlinegdb.com/online_c_compiler"><b>OnlineGDB</b><span>可輸入 stdin，也可 debug 單步執行。</span></a>
+<a class="compiler-card" target="_blank" href="https://www.programiz.com/c-programming/online-compiler/"><b>Programiz</b><span>適合初學者測試小程式。</span></a>
+<a class="compiler-card" target="_blank" href="https://godbolt.org/"><b>Godbolt</b><span>可觀察 assembly，理解指標與記憶體。</span></a>
+<a class="compiler-card" target="_blank" href="https://www.jdoodle.com/c-online-compiler"><b>JDoodle</b><span>可切換編譯器版本與快速執行。</span></a>
+</div></section>
+
+<section id="q2" class="qcard"><h2>五、第 2 題：追蹤 *q = *p 與 *p = 1</h2><h3>題目</h3><p>閱讀程式，判斷螢幕會輸出什麼，並說明原因。</p><h3>完整程式</h3><div class="code-head"><b>practice06_2_annotated.c</b><button onclick="copyCode('code2')">複製程式碼</button></div><pre id="code2"><code>/*
+ * 檔名：practice06_2_annotated.c
+ * 主題：指標與變數位址
+ * 功能：示範指標 p、q 分別指向 i、j 後，透過 *p、*q 間接修改變數內容。
+ */
+#include &lt;stdio.h&gt;  /* 匯入標準輸入輸出函式庫，提供 printf() 函式。 */
+
+int main(void)  /* 程式進入點；void 表示 main 不接收命令列參數。 */
+{
+    int i, j, *p, *q;  /* 宣告整數 i、j；宣告整數指標 p、q，用來存放 int 變數的位址。 */
+
+    i = 5;      /* 將 i 設為 5。 */
+    j = 6;      /* 將 j 設為 6。 */
+    p = &amp;i;     /* &amp;i 取得 i 的位址，讓 p 指向 i。 */
+    q = &amp;j;     /* &amp;j 取得 j 的位址，讓 q 指向 j。 */
+
+    *q = *p;    /* *p 代表 i 的值 5；*q 代表 j，因此這行會把 j 改成 5。 */
+    *p = 1;     /* *p 代表 i，因此這行會把 i 改成 1；不會影響 j。 */
+
+    printf(&quot;i = %d\n&quot;, i);    /* 輸出 i 的目前值，結果為 1。 */
+    printf(&quot;j = %d\n&quot;, j);    /* 輸出 j 的目前值，結果為 5。 */
+    printf(&quot;*p = %d\n&quot;, *p);  /* p 指向 i，所以 *p 等於 i 的值 1。 */
+    printf(&quot;*q = %d\n&quot;, *q);  /* q 指向 j，所以 *q 等於 j 的值 5。 */
+
+    return 0;   /* 回傳 0 表示程式正常結束。 */
+}
+</code></pre><h3>程式結果</h3><div class="output">i = 1
+j = 5
+*p = 1
+*q = 5</div><h3>程式說明</h3><ol><li><code>p=&amp;i</code>，所以 <code>*p</code> 是 i。</li><li><code>q=&amp;j</code>，所以 <code>*q</code> 是 j。</li><li><code>*q=*p</code> 把 i 的值 5 複製給 j，因此 j 變成 5。</li><li><code>*p=1</code> 把 i 改成 1，因此最後 i=1、j=5。</li></ol><div class="compiler-grid">
+<a class="compiler-card" target="_blank" href="https://www.w3schools.com/c/c_compiler.php"><b>W3Schools C Compiler</b><span>適合快速貼上執行，介面最簡單。</span></a>
+<a class="compiler-card" target="_blank" href="https://www.onlinegdb.com/online_c_compiler"><b>OnlineGDB</b><span>可輸入 stdin，也可 debug 單步執行。</span></a>
+<a class="compiler-card" target="_blank" href="https://www.programiz.com/c-programming/online-compiler/"><b>Programiz</b><span>適合初學者測試小程式。</span></a>
+<a class="compiler-card" target="_blank" href="https://godbolt.org/"><b>Godbolt</b><span>可觀察 assembly，理解指標與記憶體。</span></a>
+<a class="compiler-card" target="_blank" href="https://www.jdoodle.com/c-online-compiler"><b>JDoodle</b><span>可切換編譯器版本與快速執行。</span></a>
+</div></section>
+
+<section id="q3" class="qcard"><h2>六、第 3 題：swap(int *p, int *q)</h2><h3>題目</h3><p>撰寫函式 <code>void swap(int *p, int *q);</code>。傳入兩個變數位址後，交換這兩個變數的值。</p><h3>完整程式</h3><div class="code-head"><b>practice06_3_annotated.c</b><button onclick="copyCode('code3')">複製程式碼</button></div><pre id="code3"><code>/*
+ * 檔名：practice06_3_annotated.c
+ * 主題：使用指標進行 swap 交換
+ * 功能：透過傳入兩個變數的位址，讓函式可以直接修改 main 裡的 i 與 j。
+ */
+#include &lt;stdio.h&gt;  /* 匯入標準輸入輸出函式庫，提供 printf()。 */
+
+void swap(int *p, int *q)  /* swap 接收兩個 int 指標，也就是兩個整數變數的位址。 */
+{
+    int temp;  /* 暫存變數，用來保存其中一個值，避免交換過程資料遺失。 */
+
+    temp = *p; /* 先把 p 指向的值，也就是第一個變數的值，存到 temp。 */
+    *p = *q;   /* 把 q 指向的值放到 p 指向的位置。 */
+    *q = temp; /* 把原本 p 指向的舊值放到 q 指向的位置，完成交換。 */
+}
+
+int main(void)  /* 主程式進入點。 */
+{
+    int i = 10; /* 宣告整數 i 並初始化為 10。 */
+    int j = 20; /* 宣告整數 j 並初始化為 20。 */
+
+    printf(&quot;Before swap: i = %d, j = %d\n&quot;, i, j); /* 顯示交換前的 i、j。 */
+
+    swap(&amp;i, &amp;j); /* 傳入 i 與 j 的位址，讓 swap 可以修改原本的變數。 */
+
+    printf(&quot;After swap: i = %d, j = %d\n&quot;, i, j);  /* 顯示交換後的 i、j。 */
+
+    return 0; /* 正常結束程式。 */
+}
+</code></pre><h3>程式結果</h3><div class="output">Before swap: i = 10, j = 20
+After swap: i = 20, j = 10</div><h3>程式說明</h3><p class="note">若函式寫成 <code>swap(int p, int q)</code>，只會交換副本；這題使用 <code>int *p</code> 和 <code>int *q</code>，函式拿到的是 main 裡 i、j 的位址，因此可以透過 <code>*p</code>、<code>*q</code> 修改原變數。</p><div class="compiler-grid">
+<a class="compiler-card" target="_blank" href="https://www.w3schools.com/c/c_compiler.php"><b>W3Schools C Compiler</b><span>適合快速貼上執行，介面最簡單。</span></a>
+<a class="compiler-card" target="_blank" href="https://www.onlinegdb.com/online_c_compiler"><b>OnlineGDB</b><span>可輸入 stdin，也可 debug 單步執行。</span></a>
+<a class="compiler-card" target="_blank" href="https://www.programiz.com/c-programming/online-compiler/"><b>Programiz</b><span>適合初學者測試小程式。</span></a>
+<a class="compiler-card" target="_blank" href="https://godbolt.org/"><b>Godbolt</b><span>可觀察 assembly，理解指標與記憶體。</span></a>
+<a class="compiler-card" target="_blank" href="https://www.jdoodle.com/c-online-compiler"><b>JDoodle</b><span>可切換編譯器版本與快速執行。</span></a>
+</div></section>
+
+<section id="q4" class="qcard"><h2>七、第 4 題：split_time(long total_sec, int *hr, int *min, int *sec)</h2><h3>題目</h3><p>撰寫函式，把從午夜開始算起的總秒數轉換成小時、分鐘、秒，並用三個指標回傳結果。</p><h3>完整程式</h3><div class="code-head"><b>practice06_4_annotated.c</b><button onclick="copyCode('code4')">複製程式碼</button></div><pre id="code4"><code>/*
+ * 檔名：practice06_4_annotated.c
+ * 主題：用指標回傳多個結果
+ * 功能：把總秒數轉換成「時：分：秒」，並透過 hr、min、sec 三個指標回傳結果。
+ */
+#include &lt;stdio.h&gt;  /* 提供 printf() 與 scanf()。 */
+
+void split_time(long total_sec, int *hr, int *min, int *sec) /* 將總秒數拆成小時、分鐘、秒。 */
+{
+    *hr = total_sec / 3600;      /* 1 小時 = 3600 秒；計算完整的小時數並寫入 *hr。 */
+    total_sec = total_sec % 3600;/* 取除以 3600 後的餘數，留下不足 1 小時的秒數。 */
+
+    *min = total_sec / 60;       /* 1 分鐘 = 60 秒；計算完整分鐘數並寫入 *min。 */
+    *sec = total_sec % 60;       /* 剩下不足 1 分鐘的秒數寫入 *sec。 */
+}
+
+int main(void) /* 主程式。 */
+{
+    long total_sec;     /* 儲存使用者輸入的總秒數；long 可容納較大的秒數。 */
+    int hr, min, sec;   /* 儲存轉換後的小時、分鐘、秒。 */
+
+    printf(&quot;Enter total seconds: &quot;); /* 提示使用者輸入總秒數。 */
+    scanf(&quot;%ld&quot;, &amp;total_sec);        /* 讀入 long 型態資料，必須傳入 total_sec 的位址。 */
+
+    split_time(total_sec, &amp;hr, &amp;min, &amp;sec); /* 傳入 hr、min、sec 位址，讓函式寫回結果。 */
+
+    printf(&quot;%02d:%02d:%02d\n&quot;, hr, min, sec); /* 以兩位數格式輸出，例如 01:05:09。 */
+
+    return 0; /* 正常結束。 */
+}
+</code></pre><h3>程式結果</h3><div class="output">Input: 3661
+Output:
+Enter total seconds: 01:01:01</div><h3>程式說明</h3><table class="table"><tr><th>步驟</th><th>計算</th><th>結果</th></tr><tr><td>小時</td><td>3661 / 3600</td><td>1</td></tr><tr><td>剩餘秒數</td><td>3661 % 3600</td><td>61</td></tr><tr><td>分鐘</td><td>61 / 60</td><td>1</td></tr><tr><td>秒</td><td>61 % 60</td><td>1</td></tr></table><p class="note">因為 C 函式一次只能直接 return 一個值，所以這題用 <code>hr</code>、<code>min</code>、<code>sec</code> 三個指標把三個結果寫回 main。</p><div class="compiler-grid">
+<a class="compiler-card" target="_blank" href="https://www.w3schools.com/c/c_compiler.php"><b>W3Schools C Compiler</b><span>適合快速貼上執行，介面最簡單。</span></a>
+<a class="compiler-card" target="_blank" href="https://www.onlinegdb.com/online_c_compiler"><b>OnlineGDB</b><span>可輸入 stdin，也可 debug 單步執行。</span></a>
+<a class="compiler-card" target="_blank" href="https://www.programiz.com/c-programming/online-compiler/"><b>Programiz</b><span>適合初學者測試小程式。</span></a>
+<a class="compiler-card" target="_blank" href="https://godbolt.org/"><b>Godbolt</b><span>可觀察 assembly，理解指標與記憶體。</span></a>
+<a class="compiler-card" target="_blank" href="https://www.jdoodle.com/c-online-compiler"><b>JDoodle</b><span>可切換編譯器版本與快速執行。</span></a>
+</div></section>
+
+<section id="q5" class="qcard"><h2>八、第 5 題：find_two_largest</h2><h3>題目</h3><p>撰寫函式 <code>void find_two_largest(int a[], int n, int *largest, int *second_largest);</code>，找出陣列最大值與第二大值，並透過指標回傳。</p><h3>完整程式</h3><div class="code-head"><b>practice06_5_annotated.c</b><button onclick="copyCode('code5')">複製程式碼</button></div><pre id="code5"><code>/*
+ * 檔名：practice06_5_annotated.c
+ * 主題：陣列與指標輸出參數
+ * 功能：找出陣列中最大值與第二大值，並用指標把結果回傳給 main。
+ */
+#include &lt;stdio.h&gt;  /* 提供 printf()。 */
+
+void find_two_largest(int a[], int n, int *largest, int *second_largest) /* 找最大與第二大。 */
+{
+    int i; /* 迴圈索引。 */
+
+    if (a[0] &gt; a[1]) /* 先比較前兩個元素，建立初始最大值與第二大值。 */
+    {
+        *largest = a[0];        /* 若 a[0] 較大，最大值設為 a[0]。 */
+        *second_largest = a[1]; /* 第二大值設為 a[1]。 */
+    }
+    else
+    {
+        *largest = a[1];        /* 若 a[1] 較大或相等，最大值設為 a[1]。 */
+        *second_largest = a[0]; /* 第二大值設為 a[0]。 */
+    }
+
+    for (i = 2; i &lt; n; i++) /* 從第三個元素開始逐一檢查。 */
+    {
+        if (a[i] &gt; *largest) /* 若目前元素比最大值還大。 */
+        {
+            *second_largest = *largest; /* 原本最大值退到第二大。 */
+            *largest = a[i];            /* 目前元素成為新的最大值。 */
+        }
+        else if (a[i] &gt; *second_largest) /* 若沒有超過最大值，但超過第二大。 */
+        {
+            *second_largest = a[i];      /* 更新第二大值。 */
+        }
+    }
+}
+
+int main(void) /* 主程式。 */
+{
+    int a[] = {10, 5, 30, 20, 40, 15}; /* 測試用整數陣列。 */
+    int largest, second_largest;       /* 儲存最大值與第二大值。 */
+    int n = sizeof(a) / sizeof(a[0]);  /* 計算陣列元素個數。 */
+
+    find_two_largest(a, n, &amp;largest, &amp;second_largest); /* 傳入結果變數位址。 */
+
+    printf(&quot;Largest = %d\n&quot;, largest);               /* 輸出最大值。 */
+    printf(&quot;Second largest = %d\n&quot;, second_largest); /* 輸出第二大值。 */
+
+    return 0; /* 正常結束。 */
+}
+</code></pre><h3>程式結果</h3><div class="output">Largest = 40
+Second largest = 30</div><h3>程式說明</h3><ol><li>先用前兩個元素建立最大值與第二大值。</li><li>從第三個元素開始掃描。</li><li>若目前元素大於最大值，原本最大值退到第二大，目前元素變成最大值。</li><li>若目前元素沒有超過最大值，但超過第二大，就只更新第二大。</li></ol><p class="ok">這題同時練習陣列與指標輸出參數，是 Practice 06 最重要的應用題之一。</p><div class="compiler-grid">
+<a class="compiler-card" target="_blank" href="https://www.w3schools.com/c/c_compiler.php"><b>W3Schools C Compiler</b><span>適合快速貼上執行，介面最簡單。</span></a>
+<a class="compiler-card" target="_blank" href="https://www.onlinegdb.com/online_c_compiler"><b>OnlineGDB</b><span>可輸入 stdin，也可 debug 單步執行。</span></a>
+<a class="compiler-card" target="_blank" href="https://www.programiz.com/c-programming/online-compiler/"><b>Programiz</b><span>適合初學者測試小程式。</span></a>
+<a class="compiler-card" target="_blank" href="https://godbolt.org/"><b>Godbolt</b><span>可觀察 assembly，理解指標與記憶體。</span></a>
+<a class="compiler-card" target="_blank" href="https://www.jdoodle.com/c-online-compiler"><b>JDoodle</b><span>可切換編譯器版本與快速執行。</span></a>
+</div></section>
+
+<section id="online" class="card"><h2>九、線上 C 編譯器總整理</h2><p class="warn">使用方式：按每題上方「複製程式碼」，再點任一網站，把程式貼上並執行。第 4 題需要輸入，例如 <code>3661</code>。</p><div class="compiler-grid">
+<a class="compiler-card" target="_blank" href="https://www.w3schools.com/c/c_compiler.php"><b>W3Schools C Compiler</b><span>適合快速貼上執行，介面最簡單。</span></a>
+<a class="compiler-card" target="_blank" href="https://www.onlinegdb.com/online_c_compiler"><b>OnlineGDB</b><span>可輸入 stdin，也可 debug 單步執行。</span></a>
+<a class="compiler-card" target="_blank" href="https://www.programiz.com/c-programming/online-compiler/"><b>Programiz</b><span>適合初學者測試小程式。</span></a>
+<a class="compiler-card" target="_blank" href="https://godbolt.org/"><b>Godbolt</b><span>可觀察 assembly，理解指標與記憶體。</span></a>
+<a class="compiler-card" target="_blank" href="https://www.jdoodle.com/c-online-compiler"><b>JDoodle</b><span>可切換編譯器版本與快速執行。</span></a>
+</div></section>
+<section id="quiz" class="card"><h2>十、互動測驗</h2><div id="quizBox"></div><button class="secondary" onclick="renderQuiz()">重新作答</button></section>
+<section id="compile" class="card"><h2>十一、本機編譯與執行</h2><h3>Linux / macOS / Git Bash</h3><pre><code>gcc practice06_3_annotated.c -o practice06_3
+./practice06_3</code></pre><h3>Windows CMD</h3><pre><code>gcc practice06_3_annotated.c -o practice06_3.exe
+practice06_3.exe</code></pre><h3>第 4 題有輸入</h3><pre><code>gcc practice06_4_annotated.c -o practice06_4
+./practice06_4
+# 輸入：3661</code></pre></section>
+<div class="footer">Practice 06 Pointer I Full Interactive Tutorial ｜ 依 Pointer I 講義與 Practice 06 題目整理</div>
+</main>
+<script>
+function showSlide(n){document.querySelectorAll('.slide').forEach((s,i)=>s.classList.toggle('active',i===n));}
+function memStep(s){let i=5,j=6,p='?',q='?',msg='';document.querySelectorAll('.memcell').forEach(e=>e.classList.remove('active'));if(s===0){msg='初始：i=5、j=6，p 與 q 尚未設定指向位置。';}if(s===1){p='0x1000';q='0x1004';msg='p=&i，所以 p 存 i 的位址；q=&j，所以 q 存 j 的位址。';document.getElementById('mp').classList.add('active');document.getElementById('mq').classList.add('active');}if(s===2){p='0x1000';q='0x1004';j=5;msg='*q=*p：把 p 指向的內容，也就是 i 的 5，複製到 q 指向的位置，所以 j 變成 5。';document.getElementById('mi').classList.add('active');document.getElementById('mj').classList.add('active');}if(s===3){p='0x1000';q='0x1004';i=1;j=5;msg='*p=1：p 指向 i，所以這行把 i 改成 1；j 不會跟著改。';document.getElementById('mi').classList.add('active');document.getElementById('mp').classList.add('active');}document.getElementById('ival').textContent=i;document.getElementById('jval').textContent=j;document.getElementById('pval').textContent=p;document.getElementById('qval').textContent=q;document.getElementById('memExplain').textContent=msg;}
+function copyCode(id){navigator.clipboard.writeText(document.getElementById(id).innerText);}
+const quiz=[
+{q:'p = &i; 之後，p 裡面存的是什麼？',opts:['i 的值','i 的位址','p 的位址','整個記憶體'],ans:1,why:'&i 會取得 i 的位址，所以 p 存的是位址。'},
+{q:'若 int i=5; int *p=&i; 則 *p 是什麼？',opts:['p 的位址','i 的位址','i 的值 5','不能使用'],ans:2,why:'*p 代表 p 指向位置的內容，也就是 i 的值。'},
+{q:'為什麼 int *p; *p=3; 危險？',opts:['p 沒有初始化，不知道指向哪裡','3 不是 int','*p 只能讀不能寫','因為 p 一定是 NULL'],ans:0,why:'未初始化指標可能指向未知位置，寫入會造成錯誤或 Segmentation Fault。'},
+{q:'*q = *p; 的意思是？',opts:['讓 q 指向 p','把 p 的位址放入 q','把 p 指向的值複製到 q 指向的位置','交換 p 與 q'],ans:2,why:'左右兩邊加 * 後都是 int 值，所以是值的複製。'},
+{q:'第 4 題 split_time 為什麼要用 int *hr, *min, *sec？',opts:['因為 int 不能 return','為了讓函式一次寫回三個結果','為了讓程式變慢','因為 scanf 要用'],ans:1,why:'C 函式直接 return 一個值，用指標參數可以把多個結果寫回呼叫端。'}];
+function renderQuiz(){let h='';quiz.forEach((q,qi)=>{h+=`<div class="quiz-card"><h3>Q${qi+1}. ${q.q}</h3>`;q.opts.forEach((o,oi)=>h+=`<button class="option" onclick="ansQuiz(${qi},${oi},this)">${o}</button>`);h+=`<div class="result" id="qr${qi}"></div></div>`;});document.getElementById('quizBox').innerHTML=h;}
+function ansQuiz(qi,oi,btn){const q=quiz[qi], card=btn.parentElement;card.querySelectorAll('.option').forEach((b,idx)=>{b.disabled=true;if(idx===q.ans)b.classList.add('correct');});if(oi!==q.ans)btn.classList.add('wrong');document.getElementById('qr'+qi).textContent=(oi===q.ans?'答對！':'答錯。')+' '+q.why;}
+memStep(0);renderQuiz();
+</script>
+</body></html>

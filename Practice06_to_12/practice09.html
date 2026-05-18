@@ -1,0 +1,654 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Practice 09：File I/O</title>
+<link rel="stylesheet" href="style.css">
+<script src="script.js"></script>
+</head>
+<body>
+<header>
+<h1>Practice 09：File I/O</h1>
+<p>多網頁程式說明、每行註解、函式說明與執行結果動畫</p>
+</header>
+<nav><a href="index.html">首頁</a><a href="practice06.html">Practice 06</a><a href="practice07.html">Practice 07</a><a href="practice08.html">Practice 08</a><a href="practice09.html">Practice 09</a><a href="practice10.html">Practice 10</a><a href="practice11.html">Practice 11</a><a href="practice12.html">Practice 12</a></nav>
+<div class="wrap">
+
+<div class='card'><h2>Practice 09：File I/O</h2><p>本頁將 Practice 09 的每個程式用下拉式介面呈現，並提供每行註解與函式功能說明。</p></div>
+
+<details open>
+<summary>practice9_1.c</summary>
+<div class="details-body">
+  <div class="grid">
+    <div>
+      <h3>原始程式碼</h3>
+      <pre>#include &lt;stdio.h&gt;
+#include &lt;ctype.h&gt;
+
+int main(int argc, char *argv[])
+{
+    FILE *fp;
+    int ch;
+    int newWord = 1;
+
+    if (argc != 2)
+    {
+        printf(&quot;Usage: %s filename\n&quot;, argv[0]);
+        return 1;
+    }
+
+    fp = fopen(argv[1], &quot;r&quot;);
+
+    if (fp == NULL)
+    {
+        printf(&quot;Cannot open file.\n&quot;);
+        return 1;
+    }
+
+    while ((ch = fgetc(fp)) != EOF)
+    {
+        if (isspace(ch))
+        {
+            newWord = 1;
+            putchar(ch);
+        }
+        else
+        {
+            if (newWord)
+            {
+                putchar(toupper(ch));
+                newWord = 0;
+            }
+            else
+            {
+                putchar(ch);
+            }
+        }
+    }
+
+    fclose(fp);
+    return 0;
+}
+</pre>
+    </div>
+    <div>
+      <h3>函式說明</h3>
+      <ul class='func-list'><li><b>main</b><br><span>參數：<code>int argc, char *argv[]</code></span><br>主程式，負責建立測試資料、呼叫函式並印出結果。</li></ul>
+      <h3>預期執行結果</h3>
+      <pre>此程式需要依照題目輸入或命令列參數執行。</pre>
+    </div>
+  </div>
+
+  
+<h3>標頭檔 include 說明</h3>
+<ul class='func-list'><li><b>&lt;stdio.h&gt;</b><br>標準輸入輸出函式庫。提供 printf、scanf、puts、FILE、fopen、fclose、fgets、fprintf、fread、fwrite 等功能。</li>
+<li><b>&lt;ctype.h&gt;</b><br>字元處理函式庫。提供 toupper、tolower、isspace、isdigit、isalpha 等字元判斷與轉換函式。</li></ul>
+<h3>完整函式與函式庫說明</h3>
+<ul class='func-list'><li><b>main()</b><br>自訂函式。參數：int argc, char *argv[]。主程式進入點，負責建立測試資料、呼叫函式、顯示結果。</li>
+<li><b>printf()</b><br>把格式化文字輸出到螢幕。</li>
+<li><b>fopen()</b><br>開啟檔案，依模式進行讀取、寫入、追加或 binary 操作。</li>
+<li><b>fclose()</b><br>關閉檔案並釋放檔案資源。</li>
+<li><b>toupper()</b><br>將字母轉成大寫。</li>
+<li><b>isspace()</b><br>判斷字元是否為空白、換行或 tab。</li></ul>
+
+<h3>如何編輯、編譯與執行</h3>
+<details open>
+<summary>Windows / PowerShell</summary>
+<div class="details-body">
+<ol>
+<li>用 VS Code、Dev-C++、Notepad++ 或 Visual Studio 開啟 <code>practice9_1.c</code>。</li>
+<li>修改程式後按儲存。</li>
+<li>在同一個資料夾開啟 PowerShell 或 cmd。</li>
+<li>編譯：<pre>gcc practice9_1.c -o practice9_1.exe</pre></li>
+<li>執行：<pre>.\practice9_1.exe</pre></li>
+</ol>
+<p class="note">若程式需要輸入，執行後依畫面提示輸入資料。</p>
+</div>
+</details>
+<details>
+<summary>Linux / Yellow Server</summary>
+<div class="details-body">
+<ol>
+<li>進入程式所在資料夾。</li>
+<li>用 <code>vim</code>、<code>nano</code> 或其他編輯器修改 <code>practice9_1.c</code>。</li>
+<li>編譯：<pre>gcc practice9_1.c -o practice9_1.out</pre></li>
+<li>執行：<pre>./practice9_1.out</pre></li>
+</ol>
+</div>
+</details>
+
+<h3>每一行程式註解</h3>
+  <table>
+    <thead><tr><th>行號</th><th>程式碼</th><th>說明</th></tr></thead>
+    <tbody>
+      <tr><td class='ln'>1</td><td><code>#include &lt;stdio.h&gt;</code></td><td>匯入標準輸入輸出函式庫，可使用 printf、scanf、FILE 等功能。</td></tr>
+<tr><td class='ln'>2</td><td><code>#include &lt;ctype.h&gt;</code></td><td>一般 C 語言敘述，負責完成此題所需的運算或資料處理。</td></tr>
+<tr><td class='ln'>3</td><td><code></code></td><td>空白行，用來分隔程式區塊，增加可讀性。</td></tr>
+<tr><td class='ln'>4</td><td><code>int main(int argc, char *argv[])</code></td><td>函式定義的開始，這裡宣告函式名稱、參數與回傳型態。</td></tr>
+<tr><td class='ln'>5</td><td><code>{</code></td><td>大括號，用來標示程式區塊的開始或結束。</td></tr>
+<tr><td class='ln'>6</td><td><code>    FILE *fp;</code></td><td>一般 C 語言敘述，負責完成此題所需的運算或資料處理。</td></tr>
+<tr><td class='ln'>7</td><td><code>    int ch;</code></td><td>一般 C 語言敘述，負責完成此題所需的運算或資料處理。</td></tr>
+<tr><td class='ln'>8</td><td><code>    int newWord = 1;</code></td><td>指定敘述，把右邊的值存入左邊的變數。</td></tr>
+<tr><td class='ln'>9</td><td><code></code></td><td>空白行，用來分隔程式區塊，增加可讀性。</td></tr>
+<tr><td class='ln'>10</td><td><code>    if (argc != 2)</code></td><td>條件判斷，若條件成立就執行對應區塊。</td></tr>
+<tr><td class='ln'>11</td><td><code>    {</code></td><td>大括號，用來標示程式區塊的開始或結束。</td></tr>
+<tr><td class='ln'>12</td><td><code>        printf(&quot;Usage: %s filename\n&quot;, argv[0]);</code></td><td>將文字或變數內容輸出到螢幕。</td></tr>
+<tr><td class='ln'>13</td><td><code>        return 1;</code></td><td>結束函式並回傳結果給呼叫端。</td></tr>
+<tr><td class='ln'>14</td><td><code>    }</code></td><td>大括號，用來標示程式區塊的開始或結束。</td></tr>
+<tr><td class='ln'>15</td><td><code></code></td><td>空白行，用來分隔程式區塊，增加可讀性。</td></tr>
+<tr><td class='ln'>16</td><td><code>    fp = fopen(argv[1], &quot;r&quot;);</code></td><td>開啟檔案，第二個參數決定讀取、寫入、追加或 binary 模式。</td></tr>
+<tr><td class='ln'>17</td><td><code></code></td><td>空白行，用來分隔程式區塊，增加可讀性。</td></tr>
+<tr><td class='ln'>18</td><td><code>    if (fp == NULL)</code></td><td>條件判斷，若條件成立就執行對應區塊。</td></tr>
+<tr><td class='ln'>19</td><td><code>    {</code></td><td>大括號，用來標示程式區塊的開始或結束。</td></tr>
+<tr><td class='ln'>20</td><td><code>        printf(&quot;Cannot open file.\n&quot;);</code></td><td>將文字或變數內容輸出到螢幕。</td></tr>
+<tr><td class='ln'>21</td><td><code>        return 1;</code></td><td>結束函式並回傳結果給呼叫端。</td></tr>
+<tr><td class='ln'>22</td><td><code>    }</code></td><td>大括號，用來標示程式區塊的開始或結束。</td></tr>
+<tr><td class='ln'>23</td><td><code></code></td><td>空白行，用來分隔程式區塊，增加可讀性。</td></tr>
+<tr><td class='ln'>24</td><td><code>    while ((ch = fgetc(fp)) != EOF)</code></td><td>while 迴圈，當條件成立時持續重複執行。</td></tr>
+<tr><td class='ln'>25</td><td><code>    {</code></td><td>大括號，用來標示程式區塊的開始或結束。</td></tr>
+<tr><td class='ln'>26</td><td><code>        if (isspace(ch))</code></td><td>條件判斷，若條件成立就執行對應區塊。</td></tr>
+<tr><td class='ln'>27</td><td><code>        {</code></td><td>大括號，用來標示程式區塊的開始或結束。</td></tr>
+<tr><td class='ln'>28</td><td><code>            newWord = 1;</code></td><td>指定敘述，把右邊的值存入左邊的變數。</td></tr>
+<tr><td class='ln'>29</td><td><code>            putchar(ch);</code></td><td>一般 C 語言敘述，負責完成此題所需的運算或資料處理。</td></tr>
+<tr><td class='ln'>30</td><td><code>        }</code></td><td>大括號，用來標示程式區塊的開始或結束。</td></tr>
+<tr><td class='ln'>31</td><td><code>        else</code></td><td>當前面的 if 條件不成立時，執行這個區塊。</td></tr>
+<tr><td class='ln'>32</td><td><code>        {</code></td><td>大括號，用來標示程式區塊的開始或結束。</td></tr>
+<tr><td class='ln'>33</td><td><code>            if (newWord)</code></td><td>條件判斷，若條件成立就執行對應區塊。</td></tr>
+<tr><td class='ln'>34</td><td><code>            {</code></td><td>大括號，用來標示程式區塊的開始或結束。</td></tr>
+<tr><td class='ln'>35</td><td><code>                putchar(toupper(ch));</code></td><td>一般 C 語言敘述，負責完成此題所需的運算或資料處理。</td></tr>
+<tr><td class='ln'>36</td><td><code>                newWord = 0;</code></td><td>指定敘述，把右邊的值存入左邊的變數。</td></tr>
+<tr><td class='ln'>37</td><td><code>            }</code></td><td>大括號，用來標示程式區塊的開始或結束。</td></tr>
+<tr><td class='ln'>38</td><td><code>            else</code></td><td>當前面的 if 條件不成立時，執行這個區塊。</td></tr>
+<tr><td class='ln'>39</td><td><code>            {</code></td><td>大括號，用來標示程式區塊的開始或結束。</td></tr>
+<tr><td class='ln'>40</td><td><code>                putchar(ch);</code></td><td>一般 C 語言敘述，負責完成此題所需的運算或資料處理。</td></tr>
+<tr><td class='ln'>41</td><td><code>            }</code></td><td>大括號，用來標示程式區塊的開始或結束。</td></tr>
+<tr><td class='ln'>42</td><td><code>        }</code></td><td>大括號，用來標示程式區塊的開始或結束。</td></tr>
+<tr><td class='ln'>43</td><td><code>    }</code></td><td>大括號，用來標示程式區塊的開始或結束。</td></tr>
+<tr><td class='ln'>44</td><td><code></code></td><td>空白行，用來分隔程式區塊，增加可讀性。</td></tr>
+<tr><td class='ln'>45</td><td><code>    fclose(fp);</code></td><td>關閉檔案，釋放檔案資源。</td></tr>
+<tr><td class='ln'>46</td><td><code>    return 0;</code></td><td>結束函式並回傳結果給呼叫端。</td></tr>
+<tr><td class='ln'>47</td><td><code>}</code></td><td>大括號，用來標示程式區塊的開始或結束。</td></tr>
+    </tbody>
+  </table>
+
+  
+<div class="runner">
+  <h4>執行動畫</h4>
+  <p class="note">按「逐行執行」會逐步高亮程式碼，右側會模擬輸出逐漸出現。</p>
+  <div class="controls">
+    <button onclick="stepRunner('practice9_1')">逐行執行</button>
+    <button onclick="playRunner('practice9_1')">自動播放</button>
+    <button class="secondary" onclick="resetRunner('practice9_1')">重設</button>
+  </div>
+  <div class="stage">
+    <pre id="practice9_1_code"></pre>
+    <div class="output" id="practice9_1_out"></div>
+  </div>
+</div>
+<script>initRunner('practice9_1', ['#include <stdio.h>', '#include <ctype.h>', '', 'int main(int argc, char *argv[])', '{', '    FILE *fp;', '    int ch;', '    int newWord = 1;', '', '    if (argc != 2)', '    {', '        printf("Usage: %s filename\\n", argv[0]);', '        return 1;', '    }', '', '    fp = fopen(argv[1], "r");', '', '    if (fp == NULL)', '    {', '        printf("Cannot open file.\\n");', '        return 1;', '    }', '', '    while ((ch = fgetc(fp)) != EOF)', '    {', '        if (isspace(ch))', '        {', '            newWord = 1;', '            putchar(ch);', '        }', '        else', '        {', '            if (newWord)', '            {', '                putchar(toupper(ch));', '                newWord = 0;', '            }', '            else', '            {', '                putchar(ch);', '            }', '        }', '    }', '', '    fclose(fp);', '    return 0;', '}'], '此程式需要依照題目輸入或命令列參數執行。');</script>
+
+</div>
+</details>
+
+
+<details open>
+<summary>practice9_2.c</summary>
+<div class="details-body">
+  <div class="grid">
+    <div>
+      <h3>原始程式碼</h3>
+      <pre>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+int main(int argc, char *argv[])
+{
+    FILE *fp;
+    long size;
+    char *buffer;
+    int i;
+
+    if (argc != 2)
+    {
+        printf(&quot;Usage: %s filename\n&quot;, argv[0]);
+        return 1;
+    }
+
+    fp = fopen(argv[1], &quot;r&quot;);
+
+    if (fp == NULL)
+    {
+        printf(&quot;Cannot open file.\n&quot;);
+        return 1;
+    }
+
+    fseek(fp, 0L, SEEK_END);
+    size = ftell(fp);
+    fseek(fp, 0L, SEEK_SET);
+
+    buffer = (char *)malloc(size + 1);
+
+    if (buffer == NULL)
+    {
+        printf(&quot;Memory allocation failed.\n&quot;);
+        fclose(fp);
+        return 1;
+    }
+
+    fread(buffer, sizeof(char), size, fp);
+    buffer[size] = &#x27;\0&#x27;;
+
+    fclose(fp);
+
+    fp = fopen(argv[1], &quot;w&quot;);
+
+    if (fp == NULL)
+    {
+        printf(&quot;Cannot write file.\n&quot;);
+        free(buffer);
+        return 1;
+    }
+
+    for (i = 0; i &lt; 3; i++)
+    {
+        fputs(buffer, fp);
+    }
+
+    fclose(fp);
+    free(buffer);
+
+    return 0;
+}
+</pre>
+    </div>
+    <div>
+      <h3>函式說明</h3>
+      <ul class='func-list'><li><b>main</b><br><span>參數：<code>int argc, char *argv[]</code></span><br>主程式，負責建立測試資料、呼叫函式並印出結果。</li></ul>
+      <h3>預期執行結果</h3>
+      <pre>此程式需要依照題目輸入或命令列參數執行。</pre>
+    </div>
+  </div>
+
+  
+<h3>標頭檔 include 說明</h3>
+<ul class='func-list'><li><b>&lt;stdio.h&gt;</b><br>標準輸入輸出函式庫。提供 printf、scanf、puts、FILE、fopen、fclose、fgets、fprintf、fread、fwrite 等功能。</li>
+<li><b>&lt;stdlib.h&gt;</b><br>標準工具函式庫。提供 malloc、calloc、realloc、free、exit、abs 等動態記憶體與工具函式。</li></ul>
+<h3>完整函式與函式庫說明</h3>
+<ul class='func-list'><li><b>main()</b><br>自訂函式。參數：int argc, char *argv[]。主程式進入點，負責建立測試資料、呼叫函式、顯示結果。</li>
+<li><b>printf()</b><br>把格式化文字輸出到螢幕。</li>
+<li><b>fopen()</b><br>開啟檔案，依模式進行讀取、寫入、追加或 binary 操作。</li>
+<li><b>fclose()</b><br>關閉檔案並釋放檔案資源。</li>
+<li><b>fputs()</b><br>把字串寫入檔案或標準輸出。</li>
+<li><b>fread()</b><br>用 binary 方式從檔案讀取資料。</li>
+<li><b>fseek()</b><br>移動檔案目前讀寫位置。</li>
+<li><b>ftell()</b><br>取得檔案目前讀寫位置。</li>
+<li><b>malloc()</b><br>配置指定大小的動態記憶體，但內容不會自動清為 0。</li>
+<li><b>free()</b><br>釋放動態配置的記憶體。</li>
+<li><b>sizeof()</b><br>計算型別或變數所佔的記憶體大小。</li></ul>
+
+<h3>如何編輯、編譯與執行</h3>
+<details open>
+<summary>Windows / PowerShell</summary>
+<div class="details-body">
+<ol>
+<li>用 VS Code、Dev-C++、Notepad++ 或 Visual Studio 開啟 <code>practice9_2.c</code>。</li>
+<li>修改程式後按儲存。</li>
+<li>在同一個資料夾開啟 PowerShell 或 cmd。</li>
+<li>編譯：<pre>gcc practice9_2.c -o practice9_2.exe</pre></li>
+<li>執行：<pre>.\practice9_2.exe</pre></li>
+</ol>
+<p class="note">若程式需要輸入，執行後依畫面提示輸入資料。</p>
+</div>
+</details>
+<details>
+<summary>Linux / Yellow Server</summary>
+<div class="details-body">
+<ol>
+<li>進入程式所在資料夾。</li>
+<li>用 <code>vim</code>、<code>nano</code> 或其他編輯器修改 <code>practice9_2.c</code>。</li>
+<li>編譯：<pre>gcc practice9_2.c -o practice9_2.out</pre></li>
+<li>執行：<pre>./practice9_2.out</pre></li>
+</ol>
+</div>
+</details>
+
+<h3>每一行程式註解</h3>
+  <table>
+    <thead><tr><th>行號</th><th>程式碼</th><th>說明</th></tr></thead>
+    <tbody>
+      <tr><td class='ln'>1</td><td><code>#include &lt;stdio.h&gt;</code></td><td>匯入標準輸入輸出函式庫，可使用 printf、scanf、FILE 等功能。</td></tr>
+<tr><td class='ln'>2</td><td><code>#include &lt;stdlib.h&gt;</code></td><td>匯入標準函式庫，可使用 malloc、calloc、free、exit、abs 等功能。</td></tr>
+<tr><td class='ln'>3</td><td><code></code></td><td>空白行，用來分隔程式區塊，增加可讀性。</td></tr>
+<tr><td class='ln'>4</td><td><code>int main(int argc, char *argv[])</code></td><td>函式定義的開始，這裡宣告函式名稱、參數與回傳型態。</td></tr>
+<tr><td class='ln'>5</td><td><code>{</code></td><td>大括號，用來標示程式區塊的開始或結束。</td></tr>
+<tr><td class='ln'>6</td><td><code>    FILE *fp;</code></td><td>一般 C 語言敘述，負責完成此題所需的運算或資料處理。</td></tr>
+<tr><td class='ln'>7</td><td><code>    long size;</code></td><td>一般 C 語言敘述，負責完成此題所需的運算或資料處理。</td></tr>
+<tr><td class='ln'>8</td><td><code>    char *buffer;</code></td><td>一般 C 語言敘述，負責完成此題所需的運算或資料處理。</td></tr>
+<tr><td class='ln'>9</td><td><code>    int i;</code></td><td>一般 C 語言敘述，負責完成此題所需的運算或資料處理。</td></tr>
+<tr><td class='ln'>10</td><td><code></code></td><td>空白行，用來分隔程式區塊，增加可讀性。</td></tr>
+<tr><td class='ln'>11</td><td><code>    if (argc != 2)</code></td><td>條件判斷，若條件成立就執行對應區塊。</td></tr>
+<tr><td class='ln'>12</td><td><code>    {</code></td><td>大括號，用來標示程式區塊的開始或結束。</td></tr>
+<tr><td class='ln'>13</td><td><code>        printf(&quot;Usage: %s filename\n&quot;, argv[0]);</code></td><td>將文字或變數內容輸出到螢幕。</td></tr>
+<tr><td class='ln'>14</td><td><code>        return 1;</code></td><td>結束函式並回傳結果給呼叫端。</td></tr>
+<tr><td class='ln'>15</td><td><code>    }</code></td><td>大括號，用來標示程式區塊的開始或結束。</td></tr>
+<tr><td class='ln'>16</td><td><code></code></td><td>空白行，用來分隔程式區塊，增加可讀性。</td></tr>
+<tr><td class='ln'>17</td><td><code>    fp = fopen(argv[1], &quot;r&quot;);</code></td><td>開啟檔案，第二個參數決定讀取、寫入、追加或 binary 模式。</td></tr>
+<tr><td class='ln'>18</td><td><code></code></td><td>空白行，用來分隔程式區塊，增加可讀性。</td></tr>
+<tr><td class='ln'>19</td><td><code>    if (fp == NULL)</code></td><td>條件判斷，若條件成立就執行對應區塊。</td></tr>
+<tr><td class='ln'>20</td><td><code>    {</code></td><td>大括號，用來標示程式區塊的開始或結束。</td></tr>
+<tr><td class='ln'>21</td><td><code>        printf(&quot;Cannot open file.\n&quot;);</code></td><td>將文字或變數內容輸出到螢幕。</td></tr>
+<tr><td class='ln'>22</td><td><code>        return 1;</code></td><td>結束函式並回傳結果給呼叫端。</td></tr>
+<tr><td class='ln'>23</td><td><code>    }</code></td><td>大括號，用來標示程式區塊的開始或結束。</td></tr>
+<tr><td class='ln'>24</td><td><code></code></td><td>空白行，用來分隔程式區塊，增加可讀性。</td></tr>
+<tr><td class='ln'>25</td><td><code>    fseek(fp, 0L, SEEK_END);</code></td><td>移動檔案讀寫位置。</td></tr>
+<tr><td class='ln'>26</td><td><code>    size = ftell(fp);</code></td><td>取得目前檔案讀寫位置。</td></tr>
+<tr><td class='ln'>27</td><td><code>    fseek(fp, 0L, SEEK_SET);</code></td><td>移動檔案讀寫位置。</td></tr>
+<tr><td class='ln'>28</td><td><code></code></td><td>空白行，用來分隔程式區塊，增加可讀性。</td></tr>
+<tr><td class='ln'>29</td><td><code>    buffer = (char *)malloc(size + 1);</code></td><td>動態配置記憶體，大小由程式執行時決定。</td></tr>
+<tr><td class='ln'>30</td><td><code></code></td><td>空白行，用來分隔程式區塊，增加可讀性。</td></tr>
+<tr><td class='ln'>31</td><td><code>    if (buffer == NULL)</code></td><td>條件判斷，若條件成立就執行對應區塊。</td></tr>
+<tr><td class='ln'>32</td><td><code>    {</code></td><td>大括號，用來標示程式區塊的開始或結束。</td></tr>
+<tr><td class='ln'>33</td><td><code>        printf(&quot;Memory allocation failed.\n&quot;);</code></td><td>將文字或變數內容輸出到螢幕。</td></tr>
+<tr><td class='ln'>34</td><td><code>        fclose(fp);</code></td><td>關閉檔案，釋放檔案資源。</td></tr>
+<tr><td class='ln'>35</td><td><code>        return 1;</code></td><td>結束函式並回傳結果給呼叫端。</td></tr>
+<tr><td class='ln'>36</td><td><code>    }</code></td><td>大括號，用來標示程式區塊的開始或結束。</td></tr>
+<tr><td class='ln'>37</td><td><code></code></td><td>空白行，用來分隔程式區塊，增加可讀性。</td></tr>
+<tr><td class='ln'>38</td><td><code>    fread(buffer, sizeof(char), size, fp);</code></td><td>以 binary 方式從檔案讀取資料。</td></tr>
+<tr><td class='ln'>39</td><td><code>    buffer[size] = &#x27;\0&#x27;;</code></td><td>指定敘述，把右邊的值存入左邊的變數。</td></tr>
+<tr><td class='ln'>40</td><td><code></code></td><td>空白行，用來分隔程式區塊，增加可讀性。</td></tr>
+<tr><td class='ln'>41</td><td><code>    fclose(fp);</code></td><td>關閉檔案，釋放檔案資源。</td></tr>
+<tr><td class='ln'>42</td><td><code></code></td><td>空白行，用來分隔程式區塊，增加可讀性。</td></tr>
+<tr><td class='ln'>43</td><td><code>    fp = fopen(argv[1], &quot;w&quot;);</code></td><td>開啟檔案，第二個參數決定讀取、寫入、追加或 binary 模式。</td></tr>
+<tr><td class='ln'>44</td><td><code></code></td><td>空白行，用來分隔程式區塊，增加可讀性。</td></tr>
+<tr><td class='ln'>45</td><td><code>    if (fp == NULL)</code></td><td>條件判斷，若條件成立就執行對應區塊。</td></tr>
+<tr><td class='ln'>46</td><td><code>    {</code></td><td>大括號，用來標示程式區塊的開始或結束。</td></tr>
+<tr><td class='ln'>47</td><td><code>        printf(&quot;Cannot write file.\n&quot;);</code></td><td>將文字或變數內容輸出到螢幕。</td></tr>
+<tr><td class='ln'>48</td><td><code>        free(buffer);</code></td><td>釋放動態配置的記憶體，避免 memory leak。</td></tr>
+<tr><td class='ln'>49</td><td><code>        return 1;</code></td><td>結束函式並回傳結果給呼叫端。</td></tr>
+<tr><td class='ln'>50</td><td><code>    }</code></td><td>大括號，用來標示程式區塊的開始或結束。</td></tr>
+<tr><td class='ln'>51</td><td><code></code></td><td>空白行，用來分隔程式區塊，增加可讀性。</td></tr>
+<tr><td class='ln'>52</td><td><code>    for (i = 0; i &lt; 3; i++)</code></td><td>for 迴圈，用固定次數或範圍重複執行程式。</td></tr>
+<tr><td class='ln'>53</td><td><code>    {</code></td><td>大括號，用來標示程式區塊的開始或結束。</td></tr>
+<tr><td class='ln'>54</td><td><code>        fputs(buffer, fp);</code></td><td>把字串寫入檔案或標準輸出。</td></tr>
+<tr><td class='ln'>55</td><td><code>    }</code></td><td>大括號，用來標示程式區塊的開始或結束。</td></tr>
+<tr><td class='ln'>56</td><td><code></code></td><td>空白行，用來分隔程式區塊，增加可讀性。</td></tr>
+<tr><td class='ln'>57</td><td><code>    fclose(fp);</code></td><td>關閉檔案，釋放檔案資源。</td></tr>
+<tr><td class='ln'>58</td><td><code>    free(buffer);</code></td><td>釋放動態配置的記憶體，避免 memory leak。</td></tr>
+<tr><td class='ln'>59</td><td><code></code></td><td>空白行，用來分隔程式區塊，增加可讀性。</td></tr>
+<tr><td class='ln'>60</td><td><code>    return 0;</code></td><td>結束函式並回傳結果給呼叫端。</td></tr>
+<tr><td class='ln'>61</td><td><code>}</code></td><td>大括號，用來標示程式區塊的開始或結束。</td></tr>
+    </tbody>
+  </table>
+
+  
+<div class="runner">
+  <h4>執行動畫</h4>
+  <p class="note">按「逐行執行」會逐步高亮程式碼，右側會模擬輸出逐漸出現。</p>
+  <div class="controls">
+    <button onclick="stepRunner('practice9_2')">逐行執行</button>
+    <button onclick="playRunner('practice9_2')">自動播放</button>
+    <button class="secondary" onclick="resetRunner('practice9_2')">重設</button>
+  </div>
+  <div class="stage">
+    <pre id="practice9_2_code"></pre>
+    <div class="output" id="practice9_2_out"></div>
+  </div>
+</div>
+<script>initRunner('practice9_2', ['#include <stdio.h>', '#include <stdlib.h>', '', 'int main(int argc, char *argv[])', '{', '    FILE *fp;', '    long size;', '    char *buffer;', '    int i;', '', '    if (argc != 2)', '    {', '        printf("Usage: %s filename\\n", argv[0]);', '        return 1;', '    }', '', '    fp = fopen(argv[1], "r");', '', '    if (fp == NULL)', '    {', '        printf("Cannot open file.\\n");', '        return 1;', '    }', '', '    fseek(fp, 0L, SEEK_END);', '    size = ftell(fp);', '    fseek(fp, 0L, SEEK_SET);', '', '    buffer = (char *)malloc(size + 1);', '', '    if (buffer == NULL)', '    {', '        printf("Memory allocation failed.\\n");', '        fclose(fp);', '        return 1;', '    }', '', '    fread(buffer, sizeof(char), size, fp);', "    buffer[size] = '\\0';", '', '    fclose(fp);', '', '    fp = fopen(argv[1], "w");', '', '    if (fp == NULL)', '    {', '        printf("Cannot write file.\\n");', '        free(buffer);', '        return 1;', '    }', '', '    for (i = 0; i < 3; i++)', '    {', '        fputs(buffer, fp);', '    }', '', '    fclose(fp);', '    free(buffer);', '', '    return 0;', '}'], '此程式需要依照題目輸入或命令列參數執行。');</script>
+
+</div>
+</details>
+
+
+<details open>
+<summary>practice9_3.c</summary>
+<div class="details-body">
+  <div class="grid">
+    <div>
+      <h3>原始程式碼</h3>
+      <pre>#include &lt;stdio.h&gt;
+
+int main(int argc, char *argv[])
+{
+    if (argc != 3)
+    {
+        printf(&quot;Usage: %s old_filename new_filename\n&quot;, argv[0]);
+        return 1;
+    }
+
+    if (rename(argv[1], argv[2]) != 0)
+    {
+        printf(&quot;Rename failed.\n&quot;);
+        return 1;
+    }
+
+    printf(&quot;Rename success.\n&quot;);
+
+    return 0;
+}
+</pre>
+    </div>
+    <div>
+      <h3>函式說明</h3>
+      <ul class='func-list'><li><b>main</b><br><span>參數：<code>int argc, char *argv[]</code></span><br>主程式，負責建立測試資料、呼叫函式並印出結果。</li></ul>
+      <h3>預期執行結果</h3>
+      <pre>此程式需要依照題目輸入或命令列參數執行。</pre>
+    </div>
+  </div>
+
+  
+<h3>標頭檔 include 說明</h3>
+<ul class='func-list'><li><b>&lt;stdio.h&gt;</b><br>標準輸入輸出函式庫。提供 printf、scanf、puts、FILE、fopen、fclose、fgets、fprintf、fread、fwrite 等功能。</li></ul>
+<h3>完整函式與函式庫說明</h3>
+<ul class='func-list'><li><b>main()</b><br>自訂函式。參數：int argc, char *argv[]。主程式進入點，負責建立測試資料、呼叫函式、顯示結果。</li>
+<li><b>printf()</b><br>把格式化文字輸出到螢幕。</li>
+<li><b>rename()</b><br>將檔案改名。</li></ul>
+
+<h3>如何編輯、編譯與執行</h3>
+<details open>
+<summary>Windows / PowerShell</summary>
+<div class="details-body">
+<ol>
+<li>用 VS Code、Dev-C++、Notepad++ 或 Visual Studio 開啟 <code>practice9_3.c</code>。</li>
+<li>修改程式後按儲存。</li>
+<li>在同一個資料夾開啟 PowerShell 或 cmd。</li>
+<li>編譯：<pre>gcc practice9_3.c -o practice9_3.exe</pre></li>
+<li>執行：<pre>.\practice9_3.exe</pre></li>
+</ol>
+<p class="note">若程式需要輸入，執行後依畫面提示輸入資料。</p>
+</div>
+</details>
+<details>
+<summary>Linux / Yellow Server</summary>
+<div class="details-body">
+<ol>
+<li>進入程式所在資料夾。</li>
+<li>用 <code>vim</code>、<code>nano</code> 或其他編輯器修改 <code>practice9_3.c</code>。</li>
+<li>編譯：<pre>gcc practice9_3.c -o practice9_3.out</pre></li>
+<li>執行：<pre>./practice9_3.out</pre></li>
+</ol>
+</div>
+</details>
+
+<h3>每一行程式註解</h3>
+  <table>
+    <thead><tr><th>行號</th><th>程式碼</th><th>說明</th></tr></thead>
+    <tbody>
+      <tr><td class='ln'>1</td><td><code>#include &lt;stdio.h&gt;</code></td><td>匯入標準輸入輸出函式庫，可使用 printf、scanf、FILE 等功能。</td></tr>
+<tr><td class='ln'>2</td><td><code></code></td><td>空白行，用來分隔程式區塊，增加可讀性。</td></tr>
+<tr><td class='ln'>3</td><td><code>int main(int argc, char *argv[])</code></td><td>函式定義的開始，這裡宣告函式名稱、參數與回傳型態。</td></tr>
+<tr><td class='ln'>4</td><td><code>{</code></td><td>大括號，用來標示程式區塊的開始或結束。</td></tr>
+<tr><td class='ln'>5</td><td><code>    if (argc != 3)</code></td><td>條件判斷，若條件成立就執行對應區塊。</td></tr>
+<tr><td class='ln'>6</td><td><code>    {</code></td><td>大括號，用來標示程式區塊的開始或結束。</td></tr>
+<tr><td class='ln'>7</td><td><code>        printf(&quot;Usage: %s old_filename new_filename\n&quot;, argv[0]);</code></td><td>將文字或變數內容輸出到螢幕。</td></tr>
+<tr><td class='ln'>8</td><td><code>        return 1;</code></td><td>結束函式並回傳結果給呼叫端。</td></tr>
+<tr><td class='ln'>9</td><td><code>    }</code></td><td>大括號，用來標示程式區塊的開始或結束。</td></tr>
+<tr><td class='ln'>10</td><td><code></code></td><td>空白行，用來分隔程式區塊，增加可讀性。</td></tr>
+<tr><td class='ln'>11</td><td><code>    if (rename(argv[1], argv[2]) != 0)</code></td><td>將檔案重新命名。</td></tr>
+<tr><td class='ln'>12</td><td><code>    {</code></td><td>大括號，用來標示程式區塊的開始或結束。</td></tr>
+<tr><td class='ln'>13</td><td><code>        printf(&quot;Rename failed.\n&quot;);</code></td><td>將文字或變數內容輸出到螢幕。</td></tr>
+<tr><td class='ln'>14</td><td><code>        return 1;</code></td><td>結束函式並回傳結果給呼叫端。</td></tr>
+<tr><td class='ln'>15</td><td><code>    }</code></td><td>大括號，用來標示程式區塊的開始或結束。</td></tr>
+<tr><td class='ln'>16</td><td><code></code></td><td>空白行，用來分隔程式區塊，增加可讀性。</td></tr>
+<tr><td class='ln'>17</td><td><code>    printf(&quot;Rename success.\n&quot;);</code></td><td>將文字或變數內容輸出到螢幕。</td></tr>
+<tr><td class='ln'>18</td><td><code></code></td><td>空白行，用來分隔程式區塊，增加可讀性。</td></tr>
+<tr><td class='ln'>19</td><td><code>    return 0;</code></td><td>結束函式並回傳結果給呼叫端。</td></tr>
+<tr><td class='ln'>20</td><td><code>}</code></td><td>大括號，用來標示程式區塊的開始或結束。</td></tr>
+    </tbody>
+  </table>
+
+  
+<div class="runner">
+  <h4>執行動畫</h4>
+  <p class="note">按「逐行執行」會逐步高亮程式碼，右側會模擬輸出逐漸出現。</p>
+  <div class="controls">
+    <button onclick="stepRunner('practice9_3')">逐行執行</button>
+    <button onclick="playRunner('practice9_3')">自動播放</button>
+    <button class="secondary" onclick="resetRunner('practice9_3')">重設</button>
+  </div>
+  <div class="stage">
+    <pre id="practice9_3_code"></pre>
+    <div class="output" id="practice9_3_out"></div>
+  </div>
+</div>
+<script>initRunner('practice9_3', ['#include <stdio.h>', '', 'int main(int argc, char *argv[])', '{', '    if (argc != 3)', '    {', '        printf("Usage: %s old_filename new_filename\\n", argv[0]);', '        return 1;', '    }', '', '    if (rename(argv[1], argv[2]) != 0)', '    {', '        printf("Rename failed.\\n");', '        return 1;', '    }', '', '    printf("Rename success.\\n");', '', '    return 0;', '}'], '此程式需要依照題目輸入或命令列參數執行。');</script>
+
+</div>
+</details>
+
+
+<details open>
+<summary>Practice 09 補充：自行指定檔名、寫入內容、讀回並顯示結果</summary>
+<div class="details-body">
+  <h3>功能說明</h3>
+  <p>
+    這個範例會先建立一個文字檔，例如 <code>my_file.txt</code>，
+    並把一句文字寫進去。接著程式再把同一個檔案打開，逐行讀入並印到螢幕上。
+    這樣可以完整展示 File I/O 的基本流程：開檔、寫檔、關檔、讀檔、顯示結果。
+  </p>
+
+  <h3>C 程式碼：practice09_file_read_demo.c</h3>
+  <pre>#include &lt;stdio.h&gt;
+
+int main(void)
+{
+    FILE *fp;
+    char fileName[] = "my_file.txt";
+    char content[] = "Once upon the time, there was a big gray wolf.";
+    char line[200];
+
+    fp = fopen(fileName, "w");
+
+    if (fp == NULL)
+    {
+        printf("Cannot create file.\n");
+        return 1;
+    }
+
+    fprintf(fp, "%s\n", content);
+
+    fclose(fp);
+
+    fp = fopen(fileName, "r");
+
+    if (fp == NULL)
+    {
+        printf("Cannot open file.\n");
+        return 1;
+    }
+
+    printf("File name: %s\n", fileName);
+    printf("File content:\n");
+
+    while (fgets(line, sizeof(line), fp) != NULL)
+    {
+        printf("%s", line);
+    }
+
+    fclose(fp);
+
+    return 0;
+}</pre>
+
+  <h3>每一行程式註解</h3>
+  <table>
+    <thead>
+      <tr><th>行號</th><th>程式碼</th><th>說明</th></tr>
+    </thead>
+    <tbody>
+      <tr><td class="ln">1</td><td><code>#include &lt;stdio.h&gt;</code></td><td>匯入標準輸入輸出函式庫，可使用 FILE、fopen、fprintf、fgets、printf、fclose。</td></tr>
+      <tr><td class="ln">3</td><td><code>int main(void)</code></td><td>主程式進入點，程式從這裡開始執行。</td></tr>
+      <tr><td class="ln">5</td><td><code>FILE *fp;</code></td><td>宣告檔案指標，用來代表目前開啟的檔案。</td></tr>
+      <tr><td class="ln">6</td><td><code>char fileName[] = "my_file.txt";</code></td><td>自行設定要建立與讀取的檔案名稱。</td></tr>
+      <tr><td class="ln">7</td><td><code>char content[] = "...";</code></td><td>設定要寫入檔案的文字內容。</td></tr>
+      <tr><td class="ln">8</td><td><code>char line[200];</code></td><td>宣告字元陣列，用來暫存從檔案讀進來的一行文字。</td></tr>
+      <tr><td class="ln">10</td><td><code>fp = fopen(fileName, "w");</code></td><td>用寫入模式開啟檔案；如果檔案不存在，會建立新檔案。</td></tr>
+      <tr><td class="ln">12</td><td><code>if (fp == NULL)</code></td><td>檢查檔案是否建立失敗。</td></tr>
+      <tr><td class="ln">18</td><td><code>fprintf(fp, "%s\n", content);</code></td><td>把 content 字串寫入檔案中。</td></tr>
+      <tr><td class="ln">20</td><td><code>fclose(fp);</code></td><td>寫入完成後關閉檔案。</td></tr>
+      <tr><td class="ln">22</td><td><code>fp = fopen(fileName, "r");</code></td><td>用讀取模式重新開啟同一個檔案。</td></tr>
+      <tr><td class="ln">30</td><td><code>printf("File name: %s\n", fileName);</code></td><td>顯示目前讀取的檔案名稱。</td></tr>
+      <tr><td class="ln">33</td><td><code>while (fgets(line, sizeof(line), fp) != NULL)</code></td><td>逐行讀取檔案內容，直到檔案結尾。</td></tr>
+      <tr><td class="ln">35</td><td><code>printf("%s", line);</code></td><td>把讀進來的那一行文字顯示到螢幕上。</td></tr>
+      <tr><td class="ln">38</td><td><code>fclose(fp);</code></td><td>讀取完成後關閉檔案。</td></tr>
+      <tr><td class="ln">40</td><td><code>return 0;</code></td><td>程式正常結束。</td></tr>
+    </tbody>
+  </table>
+
+  <h3>函式說明</h3>
+  <ul class="func-list">
+    <li><b>fopen(fileName, "w")</b><br>以寫入模式建立或開啟檔案。</li>
+    <li><b>fprintf(fp, "%s\n", content)</b><br>將字串寫入指定檔案。</li>
+    <li><b>fopen(fileName, "r")</b><br>以讀取模式開啟已存在的檔案。</li>
+    <li><b>fgets(line, sizeof(line), fp)</b><br>從檔案讀取一行文字到 line 陣列。</li>
+    <li><b>fclose(fp)</b><br>關閉檔案並釋放資源。</li>
+  </ul>
+
+  <h3>預期執行結果</h3>
+  <pre>File name: my_file.txt
+File content:
+Once upon the time, there was a big gray wolf.</pre>
+
+  <div class="runner">
+    <h4>執行結果動畫</h4>
+    <p class="note">按「自動播放」可以看到程式碼逐行執行，並逐步顯示輸出結果。</p>
+    <div class="controls">
+      <button onclick="stepRunner('practice09_file_read_demo')">逐行執行</button>
+      <button onclick="playRunner('practice09_file_read_demo')">自動播放</button>
+      <button class="secondary" onclick="resetRunner('practice09_file_read_demo')">重設</button>
+    </div>
+    <div class="stage">
+      <pre id="practice09_file_read_demo_code"></pre>
+      <div class="output" id="practice09_file_read_demo_out"></div>
+    </div>
+  </div>
+  <script>
+    initRunner(
+      'practice09_file_read_demo',
+      [
+        '#include <stdio.h>',
+        'int main(void)',
+        '{',
+        '    FILE *fp;',
+        '    char fileName[] = "my_file.txt";',
+        '    char content[] = "Once upon the time, there was a big gray wolf."; ',
+        '    char line[200];',
+        '    fp = fopen(fileName, "w");',
+        '    fprintf(fp, "%s\\n", content);',
+        '    fclose(fp);',
+        '    fp = fopen(fileName, "r");',
+        '    printf("File name: %s\\n", fileName);',
+        '    printf("File content:\\n");',
+        '    while (fgets(line, sizeof(line), fp) != NULL)',
+        '        printf("%s", line);',
+        '    fclose(fp);',
+        '    return 0;',
+        '}'
+      ],
+      'File name: my_file.txt\\nFile content:\\nOnce upon the time, there was a big gray wolf.\\n'
+    );
+  </script>
+</div>
+</details>
+
+</div><div class="footer">Generated for Practice 06–12 C Programming Review</div></body></html>

@@ -1,0 +1,425 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Practice 10 Dynamic Storage Allocation 完整互動式教學</title>
+<style>
+:root {
+  --bg:#f6f8fc; --card:#ffffff; --ink:#111827; --muted:#667085; --brand:#2563eb;
+  --brand2:#7c3aed; --ok:#16a34a; --bad:#dc2626; --line:#d9e2ef; --soft:#eef4ff;
+  --code:#0f172a; --warn:#f97316;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Noto Sans TC","Microsoft JhengHei",Arial,sans-serif;background:linear-gradient(180deg,#eaf2ff 0,#f8fafc 340px);color:var(--ink);line-height:1.72}
+header{max-width:1220px;margin:auto;padding:42px 18px 24px}
+h1{font-size:clamp(30px,5vw,54px);line-height:1.12;margin:0 0 12px}
+.subtitle{font-size:18px;color:var(--muted)}
+.tag,.badge{display:inline-block;border-radius:999px;padding:5px 11px;font-size:13px;margin:3px;background:#dbeafe;color:#1d4ed8;font-weight:700}
+nav{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.94);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+nav .bar{max-width:1220px;margin:auto;display:flex;gap:8px;overflow:auto;padding:10px 16px}
+nav a{white-space:nowrap;text-decoration:none;color:#1e3a8a;border:1px solid var(--line);padding:7px 12px;border-radius:999px;background:white;font-size:14px}
+main{max-width:1220px;margin:auto;padding:20px 18px 80px}
+.card,.problem-card,.slide,.note{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:20px;box-shadow:0 10px 24px rgba(15,23,42,.06)}
+h2{font-size:28px;margin:8px 0 14px} h3{margin:0 0 10px;font-size:21px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px} .mini-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:12px 0}
+.explain{background:#f8fafc;border-left:5px solid var(--brand);padding:12px 14px;border-radius:12px}
+.warn{background:#fff7ed;border-left:5px solid var(--warn);padding:12px 14px;border-radius:12px}
+pre{background:var(--code);color:#e5e7eb;border-radius:14px;padding:16px;overflow:auto;font-size:14px;line-height:1.55}
+code{font-family:Consolas,Monaco,monospace}
+button{cursor:pointer;border:0;border-radius:12px;background:var(--brand);color:white;padding:10px 14px;font-weight:800}
+button.secondary{background:#e5e7eb;color:#111827}
+.problem-head{display:flex;justify-content:space-between;gap:16px;align-items:center;border-bottom:1px solid var(--line);padding-bottom:12px;margin-bottom:12px}
+.problem-head h2{margin:6px 0 0}
+details{border:1px solid var(--line);border-radius:16px;padding:12px 14px;margin:12px 0;background:#fff}
+summary{cursor:pointer;font-weight:900;color:#1e3a8a}
+.question{white-space:pre-wrap;background:#f8fafc;border-radius:12px;padding:12px}
+.output-box{background:#07111f;color:#d1fae5;border-radius:14px;padding:14px 16px;margin-top:12px;border:1px solid #1f2937;font-family:Consolas,Monaco,monospace;white-space:pre-wrap}
+.table{width:100%;border-collapse:collapse;overflow:hidden;border-radius:14px;margin:12px 0}
+.table th,.table td{border:1px solid var(--line);padding:10px;text-align:left;vertical-align:top} .table th{background:#f1f5f9}
+.slide-stage{position:relative;min-height:230px} .slide{display:none;min-height:220px;background:linear-gradient(135deg,#fff,#f8fbff)} .slide.active{display:block;animation:fade .22s ease}
+@keyframes fade{from{opacity:.2;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+.slide-controls{display:flex;gap:10px;align-items:center;margin-top:12px;flex-wrap:wrap}
+.memory-area{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start}
+.mem-box{border:2px solid #93c5fd;border-radius:16px;background:#eff6ff;padding:14px;transition:.25s}
+.mem-box.active{border-color:var(--brand);transform:scale(1.03);box-shadow:0 0 0 4px #dbeafe}
+.addr{font-size:13px;color:var(--muted)} .val{font-size:28px;font-weight:900}
+.array{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 28px}
+.cell{width:72px;height:66px;border:2px solid var(--line);border-radius:14px;background:white;display:grid;place-items:center;font-weight:900;position:relative}
+.cell small{position:absolute;bottom:-24px;color:var(--muted);font-weight:500} .cell.sel{background:#dbeafe;border-color:#2563eb}
+.compiler-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:14px}
+.compiler-card{display:block;text-decoration:none;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;box-shadow:0 8px 18px rgba(15,23,42,.05);transition:.2s}
+.compiler-card:hover{transform:translateY(-3px);border-color:var(--brand);box-shadow:0 12px 24px rgba(37,99,235,.13)}
+.compiler-card b{display:block;font-size:18px;color:#1d4ed8;margin-bottom:6px}
+.quiz-card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px;margin:12px 0}
+.option{display:block;width:100%;text-align:left;margin:8px 0;background:#f8fafc;color:#111827;border:1px solid var(--line)}
+.option.correct{background:#dcfce7;border-color:#22c55e} .option.wrong{background:#fee2e2;border-color:#ef4444}
+.footer{text-align:center;color:var(--muted);font-size:13px;margin-top:34px}
+@media(max-width:880px){.grid,.mini-grid,.memory-area{grid-template-columns:1fr} .problem-head{display:block}}
+</style>
+</head>
+<body>
+<header>
+  <h1>Practice 10：Dynamic Storage Allocation 完整互動式 HTML 教學</h1>
+  <div class="subtitle">主題：malloc、calloc、realloc、NULL pointer、free、動態陣列、記憶體釋放與內積計算</div>
+  <div><span class="tag">C 語言</span><span class="tag">Dynamic Memory</span><span class="tag">malloc</span><span class="tag">free</span><span class="tag">互動式教學</span></div>
+</header>
+<nav><div class="bar">
+<a href="#slides">投影片教學</a><a href="#concept">核心整理</a><a href="#memory">互動記憶體動畫</a><a href="#questions">題目＋程式＋結果</a><a href="#online">線上編譯器</a><a href="#quiz">互動測驗</a><a href="#compile">本機編譯</a>
+</div></nav>
+<main>
+<section id="slides" class="card">
+<h2>一、完整投影片教學</h2>
+<p class="explain">本章從指標存取記憶體開始，接著介紹動態記憶體配置。講義指出 fixed-size data structures 的問題是大小在寫程式時就固定，動態配置可在執行期間配置儲存空間；常見函式包含 malloc、calloc、realloc。</p>
+<div class="slide-stage"><article class="slide" data-slide="0">
+<h3>1. 動態記憶體配置是什麼？</h3><p>固定大小陣列必須在寫程式時決定容量；動態配置讓程式在執行期間依需求向系統要記憶體。常見函式有 malloc、calloc、realloc。</p></article><article class="slide" data-slide="1">
+<h3>2. malloc：只配置，不初始化</h3><p>malloc(size) 會配置 size bytes，但內容是未初始化的垃圾值。使用前要自行賦值，並檢查是否回傳 NULL。</p></article><article class="slide" data-slide="2">
+<h3>3. calloc：配置並清為 0</h3><p>calloc(n, sizeof(type)) 會配置 n 個元素，並把每個 bit 設為 0，適合需要初始為 0 的陣列。</p></article><article class="slide" data-slide="3">
+<h3>4. realloc：調整已配置空間大小</h3><p>realloc(ptr, new_size) 可放大或縮小已配置記憶體。成功後舊指標可能失效，應使用新指標接收。</p></article><article class="slide" data-slide="4">
+<h3>5. free：釋放不用的記憶體</h3><p>malloc/calloc/realloc 得到的記憶體用完後要 free(ptr)，避免 memory leak。free 後不要再使用該指標。</p></article><article class="slide" data-slide="5">
+<h3>6. NULL pointer 與錯誤處理</h3><p>配置失敗會回傳 NULL。安全寫法是 if (p == NULL) 處理錯誤，避免後續 *p 或 p[i] 造成 crash。</p></article><article class="slide" data-slide="6">
+<h3>7. Practice 10 三題核心</h3><p>第 1 題包裝 malloc，第 2 題建立初始化動態陣列，第 3 題用 const 指標計算 double 陣列內積。</p></article></div>
+<div class="slide-controls"><button onclick="prevSlide()">上一張</button><button onclick="nextSlide()">下一張</button><button class="secondary" onclick="showSlide(0)">回第一張</button><span id="slideInfo"></span></div>
+</section>
+
+<section id="concept" class="card">
+<h2>二、核心觀念整理</h2>
+<table class="table">
+<tr><th>函式 / 觀念</th><th>用途</th><th>重要提醒</th></tr>
+<tr><td><code>malloc(size)</code></td><td>配置 size bytes 的記憶體。</td><td>內容未初始化，可能是垃圾值；要檢查 NULL。</td></tr>
+<tr><td><code>calloc(n, sizeof(type))</code></td><td>配置 n 個元素並初始化為 0。</td><td>適合一開始需要 0 的陣列。</td></tr>
+<tr><td><code>realloc(ptr, new_size)</code></td><td>調整已配置空間大小。</td><td>成功後位址可能改變，應使用新指標接收。</td></tr>
+<tr><td><code>free(ptr)</code></td><td>釋放動態配置的記憶體。</td><td>free 後不要再 dereference；可把指標設成 NULL。</td></tr>
+<tr><td><code>NULL</code></td><td>代表指標沒有指向有效物件。</td><td>配置失敗常回傳 NULL，應避免使用 <code>*NULL</code>。</td></tr>
+</table>
+<div class="warn"><b>最重要規則：</b>只要使用 <code>malloc</code>、<code>calloc</code>、<code>realloc</code> 取得記憶體，就要思考「什麼時候 free？」。</div>
+</section>
+
+<section id="memory" class="card">
+<h2>三、互動記憶體動畫：malloc → 寫入 → free</h2>
+<p>按按鈕觀察動態陣列從尚未配置，到 malloc 成功、寫入數值、最後 free 的變化。</p>
+<div class="memory-area">
+  <div>
+    <div class="slide-controls">
+      <button onclick="memStep(0)">0 尚未配置</button>
+      <button onclick="memStep(1)">1 malloc</button>
+      <button onclick="memStep(2)">2 填入資料</button>
+      <button onclick="memStep(3)">3 free</button>
+    </div>
+    <p id="memText" class="explain"></p>
+  </div>
+  <div>
+    <div id="ptrBox" class="mem-box"><div class="addr">指標變數 arr</div><div>內容</div><div class="val" id="ptrVal">NULL</div></div>
+    <div id="heapView" class="array"></div>
+  </div>
+</div>
+</section>
+
+<section id="questions">
+<h2>四、Practice 10 題目、程式、結果、說明：同一題放在一起</h2>
+
+<section class="problem-card" id="q1">
+  <div class="problem-head">
+    <div><span class="badge">Practice 10-1</span><h2>第 1 題：my_malloc 安全包裝函式</h2></div>
+    <button onclick="copyCode('code1')">複製程式碼</button>
+  </div>
+  <details open><summary>題目</summary><p class="question">Having to check the return value of malloc each time we call it is an annoyance. Write a wrapper function my_malloc for malloc. When we call my_malloc and ask it to allocate n bytes, it calls malloc, makes sure that malloc does not return a null pointer, and then returns the pointer from malloc. Have my_malloc print an error message and terminate the program if malloc returns a null pointer.</p></details>
+  <details open><summary>解題觀念與程式說明</summary><p>本題重點是把 malloc 的錯誤檢查集中到 my_malloc()。主程式只要呼叫 my_malloc(n)，就能保證成功時得到有效位址；若失敗，my_malloc 會印出錯誤並 exit(1)，避免每次配置都重複寫 NULL 檢查。程式中配置 5 個 int，填入 1 到 5，最後用 free(arr) 釋放。</p>
+  <div class="mini-grid">
+    <div class="note"><b>本題使用到的觀念</b><ul><li>malloc()</li><li>NULL 檢查</li><li>free()</li></ul></div>
+    <div class="note"><b>編譯執行指令</b><pre><code>gcc practice10_1.c -o practice10_1
+./practice10_1</code></pre></div>
+  </div>
+  </details>
+  <details open><summary>完整程式碼</summary><pre id="code1"><code>/*
+ * 檔名：practice10_1.c
+ * 主題：自訂安全版 malloc 函式，並建立整數動態陣列
+ * 說明：此程式示範如何使用 malloc() 配置記憶體、檢查配置是否成功、使用完後以 free() 釋放。
+ */
+
+#include &lt;stdio.h&gt;   /* 引入標準輸入輸出函式庫，提供 printf() 等函式 */
+#include &lt;stdlib.h&gt;  /* 引入標準函式庫，提供 malloc()、free()、exit()、size_t 等功能 */
+
+/*
+ * 函式名稱：my_malloc
+ * 函式功能：包裝 malloc()，讓配置記憶體時可以自動檢查是否失敗。
+ * 參數 n：想要配置的記憶體大小，單位是 byte。
+ * 回傳值：成功時回傳配置到的記憶體位址；失敗時印出錯誤訊息並結束程式。
+ */
+void *my_malloc(size_t n)
+{
+    void *p;  /* 宣告 void 指標 p，用來接收 malloc() 回傳的記憶體位址 */
+
+    p = malloc(n);  /* 向系統要求 n bytes 的動態記憶體空間 */
+
+    if (p == NULL)  /* 如果 malloc() 回傳 NULL，代表記憶體配置失敗 */
+    {
+        printf(&quot;Error: malloc failed.\n&quot;);  /* 印出記憶體配置失敗的錯誤訊息 */
+        exit(1);  /* 以狀態碼 1 強制結束程式，表示程式非正常結束 */
+    }
+
+    return p;  /* 回傳成功配置到的記憶體起始位址 */
+}
+
+int main(void)
+{
+    int *arr;  /* 宣告整數指標 arr，之後會指向動態配置的整數陣列 */
+    int i;     /* 宣告迴圈變數 i，用來控制 for 迴圈 */
+
+    arr = (int *)my_malloc(5 * sizeof(int));  /* 配置可存放 5 個 int 的記憶體空間，並轉型成 int 指標 */
+
+    for (i = 0; i &lt; 5; i++)  /* 從索引 0 到 4，依序處理陣列中的 5 個元素 */
+    {
+        arr[i] = i + 1;  /* 將陣列元素設定為 1、2、3、4、5 */
+    }
+
+    for (i = 0; i &lt; 5; i++)  /* 再次走訪陣列中的每一個元素 */
+    {
+        printf(&quot;arr[%d] = %d\n&quot;, i, arr[i]);  /* 印出目前索引與對應的陣列值 */
+    }
+
+    free(arr);  /* 釋放先前使用 my_malloc() / malloc() 配置的動態記憶體，避免記憶體洩漏 */
+
+    return 0;  /* 回傳 0，表示程式正常結束 */
+}
+</code></pre></details>
+  <details open><summary>程式執行結果</summary><div class="output-box">arr[0] = 1
+arr[1] = 2
+arr[2] = 3
+arr[3] = 4
+arr[4] = 5</div></details>
+  <details open><summary>執行結果說明</summary><p>本題重點是把 malloc 的錯誤檢查集中到 my_malloc()。主程式只要呼叫 my_malloc(n)，就能保證成功時得到有效位址；若失敗，my_malloc 會印出錯誤並 exit(1)，避免每次配置都重複寫 NULL 檢查。程式中配置 5 個 int，填入 1 到 5，最後用 free(arr) 釋放。</p></details>
+</section>
+
+
+<section class="problem-card" id="q2">
+  <div class="problem-head">
+    <div><span class="badge">Practice 10-2</span><h2>第 2 題：create_array 建立並初始化動態陣列</h2></div>
+    <button onclick="copyCode('code2')">複製程式碼</button>
+  </div>
+  <details open><summary>題目</summary><p class="question">Write the following function:
+int *create_array( int n, int initial_value);
+The function should return a pointer to a dynamically allocated int array with n elements, each of which is initialized to initial_value. The return value should be NULL if the array cannot be allocated.</p></details>
+  <details open><summary>解題觀念與程式說明</summary><p>本題重點是函式要回傳動態陣列的起始位址。create_array(n, initial_value) 先用 malloc(n * sizeof(int)) 配置 n 個 int 的空間，再用 for 迴圈把每格設成 initial_value。若 malloc 失敗，就回傳 NULL 讓 main 判斷。範例輸入 n=4、initial_value=7，所以印出四個 7。</p>
+  <div class="mini-grid">
+    <div class="note"><b>本題使用到的觀念</b><ul><li>malloc()</li><li>動態陣列初始化</li><li>NULL 回傳</li></ul></div>
+    <div class="note"><b>編譯執行指令</b><pre><code>gcc practice10_2.c -o practice10_2
+./practice10_2
+# 範例輸入：
+4
+7</code></pre></div>
+  </div>
+  </details>
+  <details open><summary>完整程式碼</summary><pre id="code2"><code>/*
+ * 檔名：practice10_2.c
+ * 主題：使用函式建立動態整數陣列，並設定初始值
+ * 說明：使用者輸入陣列大小與初始值，程式會配置動態陣列並把每個元素設成相同初始值。
+ */
+
+#include &lt;stdio.h&gt;   /* 引入標準輸入輸出函式庫，提供 printf()、scanf() */
+#include &lt;stdlib.h&gt;  /* 引入標準函式庫，提供 malloc()、free() */
+
+/*
+ * 函式名稱：create_array
+ * 函式功能：建立一個長度為 n 的整數動態陣列，並將每個元素初始化為 initial_value。
+ * 參數 n：陣列元素個數。
+ * 參數 initial_value：每個陣列元素要設定的初始值。
+ * 回傳值：成功時回傳陣列起始位址；失敗時回傳 NULL。
+ */
+int *create_array(int n, int initial_value)
+{
+    int *arr;  /* 宣告整數指標 arr，用來指向動態配置出的整數陣列 */
+    int i;     /* 宣告迴圈變數 i */
+
+    arr = (int *)malloc(n * sizeof(int));  /* 配置可存放 n 個 int 的記憶體空間 */
+
+    if (arr == NULL)  /* 檢查 malloc() 是否配置失敗 */
+    {
+        return NULL;  /* 若配置失敗，回傳 NULL 給呼叫端判斷 */
+    }
+
+    for (i = 0; i &lt; n; i++)  /* 逐一走訪陣列的每一個元素 */
+    {
+        arr[i] = initial_value;  /* 將目前元素設定為使用者指定的初始值 */
+    }
+
+    return arr;  /* 回傳配置完成並初始化好的陣列位址 */
+}
+
+int main(void)
+{
+    int *arr;   /* 宣告整數指標 arr，用來接收 create_array() 建立的動態陣列 */
+    int n;      /* 宣告 n，用來儲存使用者輸入的陣列大小 */
+    int value;  /* 宣告 value，用來儲存使用者輸入的初始值 */
+    int i;      /* 宣告迴圈變數 i */
+
+    printf(&quot;Enter array size: &quot;);  /* 提示使用者輸入陣列大小 */
+    scanf(&quot;%d&quot;, &amp;n);  /* 讀取使用者輸入的整數，存入 n */
+
+    printf(&quot;Enter initial value: &quot;);  /* 提示使用者輸入每個元素的初始值 */
+    scanf(&quot;%d&quot;, &amp;value);  /* 讀取使用者輸入的整數，存入 value */
+
+    arr = create_array(n, value);  /* 呼叫函式建立動態陣列，並把所有元素初始化為 value */
+
+    if (arr == NULL)  /* 判斷 create_array() 是否配置失敗 */
+    {
+        printf(&quot;Array allocation failed.\n&quot;);  /* 印出配置失敗訊息 */
+        return 1;  /* 回傳 1，表示程式發生錯誤後結束 */
+    }
+
+    for (i = 0; i &lt; n; i++)  /* 逐一印出陣列中的每一個元素 */
+    {
+        printf(&quot;arr[%d] = %d\n&quot;, i, arr[i]);  /* 顯示索引 i 與 arr[i] 的值 */
+    }
+
+    free(arr);  /* 釋放動態配置的陣列記憶體 */
+
+    return 0;  /* 程式正常結束 */
+}
+</code></pre></details>
+  <details open><summary>程式執行結果</summary><div class="output-box">Enter array size: 4
+Enter initial value: 7
+arr[0] = 7
+arr[1] = 7
+arr[2] = 7
+arr[3] = 7</div></details>
+  <details open><summary>執行結果說明</summary><p>本題重點是函式要回傳動態陣列的起始位址。create_array(n, initial_value) 先用 malloc(n * sizeof(int)) 配置 n 個 int 的空間，再用 for 迴圈把每格設成 initial_value。若 malloc 失敗，就回傳 NULL 讓 main 判斷。範例輸入 n=4、initial_value=7，所以印出四個 7。</p></details>
+</section>
+
+
+<section class="problem-card" id="q3">
+  <div class="problem-head">
+    <div><span class="badge">Practice 10-3</span><h2>第 3 題：inner_product 計算兩個 double 陣列內積</h2></div>
+    <button onclick="copyCode('code3')">複製程式碼</button>
+  </div>
+  <details open><summary>題目</summary><p class="question">Write the following function:
+double inner_product(const double *a, const double *b, int n);
+a and b both point to array of length n respectively. The function should return the value of a[0]*b[0] + a[1]*b[1] + … +a[n-1]*b[n-1].</p></details>
+  <details open><summary>解題觀念與程式說明</summary><p>本題重點是 const double *a 與 const double *b 代表函式只讀取陣列，不修改陣列內容。內積公式是逐項相乘再累加：1.0*4.0 + 2.0*5.0 + 3.0*6.0 = 4 + 10 + 18 = 32，所以輸出 32.00。</p>
+  <div class="mini-grid">
+    <div class="note"><b>本題使用到的觀念</b><ul><li>const pointer</li><li>陣列走訪</li><li>累加計算</li></ul></div>
+    <div class="note"><b>編譯執行指令</b><pre><code>gcc practice10_3.c -o practice10_3
+./practice10_3</code></pre></div>
+  </div>
+  </details>
+  <details open><summary>完整程式碼</summary><pre id="code3"><code>/*
+ * 檔名：practice10_3.c
+ * 主題：計算兩個 double 陣列的 inner product（內積）
+ * 說明：內積公式為 a[0]*b[0] + a[1]*b[1] + ... + a[n-1]*b[n-1]。
+ */
+
+#include &lt;stdio.h&gt;  /* 引入標準輸入輸出函式庫，提供 printf() */
+
+/*
+ * 函式名稱：inner_product
+ * 函式功能：計算兩個 double 陣列前 n 個元素的內積。
+ * 參數 a：第一個 double 陣列的起始位址，使用 const 表示函式不會修改陣列內容。
+ * 參數 b：第二個 double 陣列的起始位址，使用 const 表示函式不會修改陣列內容。
+ * 參數 n：要參與內積計算的元素個數。
+ * 回傳值：兩個陣列的內積結果。
+ */
+double inner_product(const double *a, const double *b, int n)
+{
+    int i;              /* 宣告迴圈變數 i */
+    double sum = 0.0;   /* 宣告 sum 並初始化為 0.0，用來累加內積結果 */
+
+    for (i = 0; i &lt; n; i++)  /* 從第 0 個元素計算到第 n-1 個元素 */
+    {
+        sum += a[i] * b[i];  /* 將 a[i] 與 b[i] 相乘後加入 sum */
+    }
+
+    return sum;  /* 回傳最後累加完成的內積值 */
+}
+
+int main(void)
+{
+    double a[] = {1.0, 2.0, 3.0};  /* 宣告並初始化第一個 double 陣列 */
+    double b[] = {4.0, 5.0, 6.0};  /* 宣告並初始化第二個 double 陣列 */
+    double result;                 /* 宣告 result，用來儲存內積計算結果 */
+
+    result = inner_product(a, b, 3);  /* 呼叫 inner_product()，計算兩個長度為 3 的陣列內積 */
+
+    printf(&quot;Inner product = %.2f\n&quot;, result);  /* 以小數點後兩位格式印出內積結果 */
+
+    return 0;  /* 程式正常結束 */
+}
+</code></pre></details>
+  <details open><summary>程式執行結果</summary><div class="output-box">Inner product = 32.00</div></details>
+  <details open><summary>執行結果說明</summary><p>本題重點是 const double *a 與 const double *b 代表函式只讀取陣列，不修改陣列內容。內積公式是逐項相乘再累加：1.0*4.0 + 2.0*5.0 + 3.0*6.0 = 4 + 10 + 18 = 32，所以輸出 32.00。</p></details>
+</section>
+
+</section>
+
+<section id="online" class="card">
+<h2>五、線上 C 編譯器連結與使用方式</h2>
+<p class="warn">使用方式：在上方每一題按「複製程式碼」，再點下面任一線上編譯器，把程式貼上去執行。第 2 題需要輸入測資，可使用 <code>4</code> 與 <code>7</code>。</p>
+<div class="compiler-grid"><a class="compiler-card" href="https://www.w3schools.com/c/c_compiler.php" target="_blank" rel="noopener"><b>W3Schools C Compiler</b><span>介面最簡單，適合快速貼上單檔 C 程式並按 Run。</span></a><a class="compiler-card" href="https://www.onlinegdb.com/online_c_compiler" target="_blank" rel="noopener"><b>OnlineGDB</b><span>支援標準輸入、Debug、單步執行，適合 Practice 10 第 2 題。</span></a><a class="compiler-card" href="https://www.programiz.com/c-programming/online-compiler/" target="_blank" rel="noopener"><b>Programiz C Compiler</b><span>版面乾淨，適合快速測試 malloc、calloc、free。</span></a><a class="compiler-card" href="https://godbolt.org/" target="_blank" rel="noopener"><b>Godbolt Compiler Explorer</b><span>可觀察編譯後組合語言，適合理解指標與記憶體。</span></a><a class="compiler-card" href="https://www.jdoodle.com/c-online-compiler" target="_blank" rel="noopener"><b>JDoodle C Compiler</b><span>可快速編譯執行，也可切換不同 GCC 版本。</span></a></div>
+</section>
+
+<section id="quiz" class="card">
+<h2>六、互動測驗</h2>
+<div id="quizBox"></div>
+<button class="secondary" onclick="resetQuiz()">重新作答</button>
+</section>
+
+<section id="compile" class="card">
+<h2>七、如何在本機編輯、編譯與執行</h2>
+<div class="grid">
+<div><h3>Linux / macOS / Git Bash</h3><pre><code>gcc practice10_1.c -o practice10_1
+./practice10_1
+
+gcc practice10_2.c -o practice10_2
+./practice10_2
+
+gcc practice10_3.c -o practice10_3
+./practice10_3</code></pre></div>
+<div><h3>Windows CMD</h3><pre><code>gcc practice10_1.c -o practice10_1.exe
+practice10_1.exe
+
+gcc practice10_2.c -o practice10_2.exe
+practice10_2.exe
+
+gcc practice10_3.c -o practice10_3.exe
+practice10_3.exe</code></pre></div>
+</div>
+<h3>建議檢查</h3>
+<ul>
+<li>有使用 <code>malloc()</code>、<code>calloc()</code>、<code>realloc()</code>、<code>free()</code> 時，要 <code>#include &lt;stdlib.h&gt;</code>。</li>
+<li>配置後要檢查 <code>p == NULL</code>。</li>
+<li>配置 n 個 int 應寫 <code>n * sizeof(int)</code>，不要只寫 <code>n</code>。</li>
+<li>用完動態記憶體後要 <code>free()</code>。</li>
+</ul>
+</section>
+
+<div class="footer">Practice 10 Dynamic Storage Allocation Full Interactive Tutorial</div>
+</main>
+<script>
+let slideIndex=0;
+const slides=[...document.querySelectorAll('.slide')];
+function showSlide(i){slideIndex=(i+slides.length)%slides.length;slides.forEach((s,idx)=>s.classList.toggle('active',idx===slideIndex));document.getElementById('slideInfo').textContent=`第 ${slideIndex+1} / ${slides.length} 張`;}
+function nextSlide(){showSlide(slideIndex+1)} function prevSlide(){showSlide(slideIndex-1)}
+
+function memStep(s){
+  const ptr=document.getElementById('ptrVal'), txt=document.getElementById('memText'), heap=document.getElementById('heapView'), box=document.getElementById('ptrBox');
+  box.classList.remove('active');
+  if(s===0){ptr.textContent='NULL';heap.innerHTML='';txt.textContent='尚未配置記憶體，arr 沒有指向可使用的動態陣列。此時不能使用 arr[0]。';}
+  if(s===1){ptr.textContent='0x5000';box.classList.add('active');heap.innerHTML=[0,1,2,3,4].map(i=>`<div class="cell sel"><div>?</div><small>arr[${i}]</small></div>`).join('');txt.textContent='呼叫 arr = malloc(5 * sizeof(int)) 後，arr 儲存 heap 上某一塊記憶體的起始位址。但 malloc 不會初始化內容，所以先用 ? 表示垃圾值。';}
+  if(s===2){ptr.textContent='0x5000';heap.innerHTML=[1,2,3,4,5].map((v,i)=>`<div class="cell sel"><div>${v}</div><small>arr[${i}]</small></div>`).join('');txt.textContent='透過 arr[i] 寫入資料後，動態陣列內容變成 1、2、3、4、5。arr[i] 等價於 *(arr+i)。';}
+  if(s===3){ptr.textContent='NULL';heap.innerHTML='';txt.textContent='呼叫 free(arr) 後，這塊記憶體交還給系統。安全習慣是接著 arr = NULL，避免 dangling pointer。';}
+}
+
+const quiz=[
+{q:'malloc(size) 的 size 單位是什麼？',opts:['元素數量','byte','bit','陣列索引'],ans:1,why:'malloc 的參數是要配置的 byte 數，所以配置 n 個 int 要寫 n * sizeof(int)。'},
+{q:'malloc 配置成功後，記憶體內容一定是 0 嗎？',opts:['一定是 0','不一定，可能是垃圾值','一定是 -1','一定是 NULL'],ans:1,why:'malloc 只配置不初始化；calloc 才會把配置空間清成 0。'},
+{q:'calloc(3, sizeof(int)) 通常會得到幾個 int 空間？',opts:['1 個','3 個','sizeof(int) 個','0 個'],ans:1,why:'calloc 的第一個參數是元素數量，第二個參數是每個元素大小。'},
+{q:'free(arr) 之後，下列哪個說法最安全？',opts:['可以繼續使用 arr[0]','arr 會自動變成 NULL','最好不要再 dereference，必要時 arr=NULL','free 只能用在一般陣列'],ans:2,why:'free 後指標值不一定改變，但那塊記憶體已不再屬於程式，應避免使用。'},
+{q:'inner_product 的 const double *a 表示什麼？',opts:['a 不能指向陣列','函式不應修改 a 指向的資料','a 裡面所有值都是 0','a 一定是 NULL'],ans:1,why:'const double * 表示透過這個指標不能修改所指向的 double 資料。'}
+];
+function renderQuiz(){let h='';quiz.forEach((q,qi)=>{h+=`<div class="quiz-card"><h3>Q${qi+1}. ${q.q}</h3>`;q.opts.forEach((o,oi)=>{h+=`<button class="option" onclick="answerQuiz(${qi},${oi},this)">${o}</button>`});h+=`<div class="result" id="res${qi}"></div></div>`});document.getElementById('quizBox').innerHTML=h;}
+function answerQuiz(qi,oi,btn){const q=quiz[qi];const card=btn.parentElement;card.querySelectorAll('.option').forEach((b,idx)=>{b.disabled=true;if(idx===q.ans)b.classList.add('correct')});if(oi!==q.ans)btn.classList.add('wrong');document.getElementById('res'+qi).textContent=(oi===q.ans?'答對！':'答錯。')+' '+q.why;}
+function resetQuiz(){renderQuiz();}
+function copyCode(id){navigator.clipboard.writeText(document.getElementById(id).innerText);}
+showSlide(0);memStep(0);renderQuiz();
+</script>
+</body>
+</html>

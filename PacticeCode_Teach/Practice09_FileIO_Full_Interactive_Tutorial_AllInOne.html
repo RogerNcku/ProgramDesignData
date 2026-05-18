@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Practice 09 File I/O 完整互動式 HTML 教學</title>
+<style>
+:root {--bg:#f5f7fb;--card:#fff;--ink:#172033;--muted:#667085;--brand:#2563eb;--brand2:#7c3aed;--ok:#16a34a;--bad:#dc2626;--line:#d9e2ef;--soft:#eef4ff;--code:#0f172a;--warn:#f97316}
+*{box-sizing:border-box} body{margin:0;font-family:"Noto Sans TC","Microsoft JhengHei",Arial,sans-serif;background:linear-gradient(180deg,#eaf2ff 0,#f8fafc 330px);color:var(--ink);line-height:1.7}
+header{max-width:1240px;margin:auto;padding:44px 20px 24px} h1{font-size:clamp(31px,5vw,56px);margin:0 0 8px} .subtitle{font-size:18px;color:var(--muted)} .tag{display:inline-block;background:#dbeafe;color:#1d4ed8;border-radius:999px;padding:4px 10px;font-size:13px;margin:4px}
+nav{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.94);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)} nav .bar{max-width:1240px;margin:auto;display:flex;gap:8px;overflow:auto;padding:10px 16px} nav a{white-space:nowrap;text-decoration:none;color:#1e3a8a;border:1px solid var(--line);padding:7px 12px;border-radius:999px;background:white;font-size:14px}
+main{max-width:1240px;margin:auto;padding:20px 18px 70px} .card,.slide,.question-card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:22px;margin:18px 0;box-shadow:0 10px 26px rgba(15,23,42,.06)}
+h2{font-size:28px;margin:8px 0 14px} h3{margin:10px 0} .grid{display:grid;grid-template-columns:1fr 1fr;gap:18px} .three{display:grid;grid-template-columns:repeat(3,1fr);gap:16px} @media(max-width:900px){.grid,.three{grid-template-columns:1fr}}
+.kpi{padding:16px;border:1px solid var(--line);border-radius:16px;background:#f8fbff} .kpi b{display:block;font-size:20px;color:#1d4ed8} .note{background:#fff7ed;border-left:5px solid var(--warn);padding:12px 14px;border-radius:10px} .explain{background:#f8fafc;border-left:5px solid var(--brand);padding:12px 14px;border-radius:10px}
+.slide-deck{display:grid;gap:18px} .slide{min-height:330px;position:relative;overflow:hidden} .slide::after{content:attr(data-no);position:absolute;right:22px;bottom:14px;color:#cbd5e1;font-size:46px;font-weight:900} .slide-title{display:flex;align-items:center;gap:12px} .num{background:linear-gradient(135deg,var(--brand),var(--brand2));color:#fff;border-radius:14px;padding:8px 12px;font-weight:800}
+.mode-table,.table{width:100%;border-collapse:collapse;overflow:hidden;border-radius:14px} .mode-table th,.mode-table td,.table th,.table td{border:1px solid var(--line);padding:10px;text-align:left} .mode-table th,.table th{background:#f1f5f9}
+.flow{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:12px 0} .pill{padding:10px 13px;border-radius:999px;background:#eef4ff;border:1px solid #bfdbfe;font-weight:700} .arrow{font-weight:900;color:#64748b}
+.memory{display:grid;grid-template-columns:1fr 1fr;gap:16px} .filebox,.console{border-radius:16px;padding:15px;border:2px solid #f59e0b;background:#fffbeb} .console{background:#06111f;color:#d1fae5;border-color:#334155;font-family:Consolas,monospace} .filebox.active,.console.active{box-shadow:0 0 0 4px #fed7aa;transform:scale(1.02)} button{cursor:pointer;border:0;border-radius:12px;background:var(--brand);color:white;padding:10px 14px;font-weight:700} button.secondary{background:#e5e7eb;color:#111827} .steps{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+pre{background:var(--code);color:#e5e7eb;border-radius:14px;padding:16px;overflow:auto;font-size:14px;line-height:1.55} code{font-family:Consolas,Monaco,monospace} details{border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin:12px 0;background:#fff} summary{font-weight:800;cursor:pointer;color:#1e3a8a} .badge{display:inline-block;background:#ede9fe;color:#5b21b6;border-radius:999px;padding:4px 10px;font-weight:700;font-size:13px} .qtop{border-bottom:1px solid var(--line);margin-bottom:12px} .output{background:#07111f;color:#d1fae5;border-radius:14px;padding:14px 16px;margin-top:12px;border:1px solid #1f2937;font-family:Consolas,Monaco,monospace;white-space:pre-wrap}
+.compiler-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;margin-top:14px} .compiler{display:block;text-decoration:none;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;box-shadow:0 8px 18px rgba(15,23,42,.05);transition:.2s} .compiler:hover{transform:translateY(-3px);border-color:var(--brand);box-shadow:0 12px 24px rgba(37,99,235,.12)} .compiler b{display:block;font-size:18px;color:#1d4ed8;margin-bottom:6px} .copyrow{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0} .runbox{background:#eef2ff;border:1px dashed #6366f1;border-radius:12px;padding:12px;margin-top:10px;font-family:Consolas,monospace} .hidden{display:none}
+.quiz-card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px;margin:12px 0} .option{display:block;width:100%;text-align:left;margin:8px 0;background:#f8fafc;color:#111827;border:1px solid var(--line)} .option.correct{background:#dcfce7;border-color:#22c55e} .option.wrong{background:#fee2e2;border-color:#ef4444} .result{font-weight:800;margin-top:8px} .footer{text-align:center;color:var(--muted);font-size:13px;margin-top:30px}
+</style>
+</head>
+<body>
+<header>
+<h1>Practice 09：File I/O 完整互動式 HTML 教學</h1>
+<div class="subtitle">主題：fopen、fprintf、fscanf、fputs、fgets、fread、fwrite、fseek、ftell、fflush、rename、command line arguments</div>
+<div><span class="tag">C 語言</span><span class="tag">File I/O</span><span class="tag">投影片教學</span><span class="tag">題目＋程式＋結果＋說明同一題</span><span class="tag">線上編譯器連結</span></div>
+</header>
+<nav><div class="bar"><a href="#overview">總覽</a><a href="#slides">投影片教學</a><a href="#interactive">互動示範</a><a href="#q1">第1題</a><a href="#q2">第2題</a><a href="#q3">第3題</a><a href="#online">線上編譯器</a><a href="#quiz">互動測驗</a><a href="#local">本機編譯</a></div></nav>
+<main>
+<section id="overview" class="card">
+<h2>一、學習總覽</h2>
+<p>本章 File I/O 的核心是：C 程式透過 <code>FILE *</code> 取得檔案操作通道，再用不同函式讀寫資料。Practice 09 主要訓練三件事：讀檔並處理字元、讀入整份檔案再覆寫、以及使用 <code>rename()</code> 改檔名。</p>
+<div class="three"><div class="kpi"><b>讀檔</b>fopen(...,"r")、fgetc、fscanf、fread</div><div class="kpi"><b>寫檔</b>fopen(...,"w")、fprintf、fputs、fwrite</div><div class="kpi"><b>檔案控制</b>fseek、ftell、fflush、rename</div></div>
+<p class="note">注意：<code>"w"</code> 模式會清空原本檔案；<code>"a"</code> 模式會附加在檔案最後；<code>fclose()</code> 會關閉檔案並把緩衝區資料寫入磁碟。</p>
+</section>
+<section id="slides" class="card"><h2>二、完整投影片式教學</h2><div class="slide-deck">
+<div class="slide" data-no="01"><div class="slide-title"><span class="num">Slide 1</span><h3>File I/O 是什麼？</h3></div><p>File I/O 就是讓 C 程式能讀取與寫入硬碟上的檔案。最基本流程是：</p><div class="flow"><span class="pill">fopen 開檔</span><span class="arrow">→</span><span class="pill">讀取或寫入</span><span class="arrow">→</span><span class="pill">fclose 關檔</span></div><p>例如用 <code>fprintf(fp,"Hello")</code> 寫入文字，用 <code>fscanf(fp,"%s",str)</code> 讀出文字。</p></div>
+<div class="slide" data-no="02"><div class="slide-title"><span class="num">Slide 2</span><h3>FILE *fp 是什麼？</h3></div><p><code>FILE *fp</code> 是檔案指標，不是一般 int 指標。它代表目前開啟檔案的狀態，例如檔案位置、讀寫模式、緩衝區等。</p><pre><code>FILE *fp;
+fp = fopen("data.txt", "r");
+if (fp == NULL) {
+    printf("Cannot open file.
+");
+}</code></pre><p class="explain">只要 <code>fopen()</code> 失敗，通常會回傳 <code>NULL</code>，所以一定要檢查。</p></div>
+<div class="slide" data-no="03"><div class="slide-title"><span class="num">Slide 3</span><h3>開檔模式 Mode String</h3></div><table class="mode-table"><tr><th>模式</th><th>意思</th><th>是否清空原檔</th></tr><tr><td>r</td><td>讀取，檔案必須存在</td><td>否</td></tr><tr><td>w</td><td>寫入，檔案不存在會建立</td><td>會</td></tr><tr><td>a</td><td>附加，寫到檔案尾端</td><td>否</td></tr><tr><td>rb / wb</td><td>二進位讀取 / 寫入</td><td>wb 會</td></tr></table></div>
+<div class="slide" data-no="04"><div class="slide-title"><span class="num">Slide 4</span><h3>文字檔常用函式</h3></div><table class="table"><tr><th>函式</th><th>用途</th><th>範例</th></tr><tr><td>fprintf</td><td>格式化寫入檔案</td><td>fprintf(fp,"num=%d",num);</td></tr><tr><td>fscanf</td><td>格式化讀取</td><td>fscanf(fp,"%d",&num);</td></tr><tr><td>fputs</td><td>寫入字串</td><td>fputs("Hello",fp);</td></tr><tr><td>fgets</td><td>讀取一行或指定長度</td><td>fgets(str,60,fp);</td></tr><tr><td>fgetc</td><td>讀一個字元</td><td>ch=fgetc(fp);</td></tr></table></div>
+<div class="slide" data-no="05"><div class="slide-title"><span class="num">Slide 5</span><h3>二進位檔：fwrite / fread</h3></div><p>若要儲存 int、struct 等原始記憶體資料，可使用二進位模式。</p><pre><code>int x = 7, y;
+FILE *fp = fopen("num.bin", "wb");
+fwrite(&x, sizeof(x), 1, fp);
+fclose(fp);
+
+fp = fopen("num.bin", "rb");
+fread(&y, sizeof(y), 1, fp);
+fclose(fp);</code></pre></div>
+<div class="slide" data-no="06"><div class="slide-title"><span class="num">Slide 6</span><h3>檔案位置：fseek 與 ftell</h3></div><p><code>fseek()</code> 可以移動目前讀寫位置，<code>ftell()</code> 可以告訴你目前位置。</p><table class="table"><tr><th>基準</th><th>意思</th><th>範例</th></tr><tr><td>SEEK_SET</td><td>從檔案開頭算</td><td>fseek(fp, 0L, SEEK_SET)</td></tr><tr><td>SEEK_CUR</td><td>從目前位置算</td><td>fseek(fp, 1L, SEEK_CUR)</td></tr><tr><td>SEEK_END</td><td>從檔案結尾算</td><td>fseek(fp, -2L, SEEK_END)</td></tr></table></div>
+<div class="slide" data-no="07"><div class="slide-title"><span class="num">Slide 7</span><h3>fflush 與 fclose 的差異</h3></div><p><code>fflush(fp)</code> 是強制把緩衝區資料寫進檔案，但檔案仍然開著；<code>fclose(fp)</code> 除了會 flush，也會關閉檔案、釋放資源。</p><p class="note">如果寫完資料後馬上用另一個 FILE 指標讀同一檔案，最好先 <code>fflush()</code> 或 <code>fclose()</code>。</p></div>
+<div class="slide" data-no="08"><div class="slide-title"><span class="num">Slide 8</span><h3>Practice 09 的三題重點</h3></div><ol><li>第 1 題：用 <code>fgetc()</code> 逐字元讀檔，判斷每個單字開頭並大寫。</li><li>第 2 題：用 <code>fseek()</code>、<code>ftell()</code>、<code>fread()</code> 讀整個檔案，再用 <code>fputs()</code> 寫回三次。</li><li>第 3 題：用 <code>rename()</code> 將檔案改名。</li></ol></div>
+</div></section>
+<section id="interactive" class="card"><h2>三、互動示範：w 模式與 a 模式差異</h2><p>點按鈕觀察檔案內容與 console 輸出。<code>w</code> 會覆蓋，<code>a</code> 會附加。</p><div class="steps"><button onclick="demoMode('start')">初始 File IO!</button><button onclick="demoMode('w')">用 w 寫 Blokus!</button><button onclick="demoMode('a')">用 a 附加 String!</button><button onclick="demoMode('read')">讀取檔案</button></div><div class="memory"><div id="fileDemo" class="filebox"><b>prac1.txt</b><pre id="fileText">File IO!</pre></div><div id="consoleDemo" class="console"><b>console</b><pre id="consoleText">尚未執行</pre></div></div><p id="demoExplain" class="explain">初始狀態：檔案內有 File IO!</p></section>
+
+<section class="question-card" id="q1">
+  <div class="qtop"><span class="badge">Practice 09 - Question 1</span><h2>1、將文字檔每個單字的第一個字母轉大寫</h2></div>
+  <details open><summary>題目</summary><p>Write a program that converts all the characters which are the first ones of all words in p9_1.txt to upper cases. A word is any sequence of non-white-space characters.</p></details>
+  <details open><summary>解題觀念</summary><p>本題重點是「逐字元讀取」與「判斷單字開頭」。程式用 fgetc() 每次讀一個字元，遇到空白、換行、tab 時把 newWord 設為 1，表示下一個非空白字元就是新單字開頭。若 newWord 為 1，就用 toupper() 轉成大寫並輸出；其他字元則原樣輸出。</p></details>
+  <details open><summary>完整程式：practice9_1_annotated.c</summary><div class="copyrow"><button onclick="copyCode('code1')">複製這題程式</button><button onclick="showRun('run1')">顯示/隱藏執行指令</button></div><pre id="code1"><code>/*
+ * 檔名：practice9_1_annotated.c
+ * 主題：檔案讀取與單字首字母大寫
+ * 功能：從命令列指定檔案，逐字元讀取內容，將每個單字第一個字母轉成大寫後輸出到螢幕。
+ */
+#include &lt;stdio.h&gt;  /* 提供 FILE、fopen()、fgetc()、putchar()、fclose()、printf()。 */
+#include &lt;ctype.h&gt;  /* 提供 isspace() 與 toupper()。 */
+
+int main(int argc, char *argv[]) /* argc 是參數數量；argv 是參數字串陣列。 */
+{
+    FILE *fp;     /* 檔案指標，用來代表開啟的檔案。 */
+    int ch;       /* 儲存 fgetc 讀到的字元；用 int 才能正確存 EOF。 */
+    int newWord = 1; /* 旗標：1 表示下一個非空白字元是新單字開頭。 */
+
+    if (argc != 2) /* 程式名稱算一個參數，所以需要剛好 2 個：程式名 + 檔名。 */
+    {
+        printf(&quot;Usage: %s filename\n&quot;, argv[0]); /* 顯示正確使用方式。 */
+        return 1; /* 參數錯誤，非正常結束。 */
+    }
+
+    fp = fopen(argv[1], &quot;r&quot;); /* 以讀取模式開啟使用者指定的檔案。 */
+
+    if (fp == NULL) /* 若檔案不存在或無法開啟，fopen 會回傳 NULL。 */
+    {
+        printf(&quot;Cannot open file.\n&quot;); /* 顯示錯誤訊息。 */
+        return 1; /* 非正常結束。 */
+    }
+
+    while ((ch = fgetc(fp)) != EOF) /* 每次讀取一個字元，直到檔案結尾 EOF。 */
+    {
+        if (isspace(ch)) /* 若目前字元是空白、換行、tab 等空白字元。 */
+        {
+            newWord = 1; /* 下一個非空白字元會是新單字開頭。 */
+            putchar(ch); /* 原樣輸出空白字元，保留原本文字格式。 */
+        }
+        else
+        {
+            if (newWord) /* 若目前是單字第一個字元。 */
+            {
+                putchar(toupper(ch)); /* 轉成大寫後輸出。 */
+                newWord = 0;          /* 之後同一個單字的其他字元不再轉大寫。 */
+            }
+            else
+            {
+                putchar(ch); /* 非單字開頭，原樣輸出。 */
+            }
+        }
+    }
+
+    fclose(fp); /* 關閉檔案，釋放系統資源。 */
+    return 0;   /* 正常結束。 */
+}
+</code></pre></details>
+  <details open><summary>程式執行結果</summary><div class="output">假設 p9_1.txt 內容為：
+once upon the time, there’s a big gray wolf.
+
+執行：
+./practice9_1 p9_1.txt
+
+螢幕輸出：
+Once Upon The Time, There’s A Big Gray Wolf.</div></details>
+  <details open><summary>程式說明：逐段流程</summary><ol><li>本題重點是「逐字元讀取」與「判斷單字開頭」</li><li>程式用 fgetc() 每次讀一個字元，遇到空白、換行、tab 時把 newWord 設為 1，表示下一個非空白字元就是新單字開頭</li><li>若 newWord 為 1，就用 toupper() 轉成大寫並輸出；其他字元則原樣輸出</li></ol><div id="run1" class="runbox hidden">gcc practice9_1_annotated.c -o practice9_1<br>./practice9_1 p9_1.txt</div></details>
+  <details open><summary>線上編譯器連結</summary><p class="note">先按「複製這題程式」，再打開任一網站貼上。第 1、2、3 題都用到檔案或命令列參數；若線上編譯器不方便建立檔案，建議改用 OnlineGDB，或在本機 gcc 執行。</p><div class="compiler-grid">
+<a class="compiler" href="https://www.w3schools.com/c/c_compiler.php" target="_blank"><b>W3Schools C Compiler</b><span>最適合快速貼上 C 程式並按 Run。</span></a>
+<a class="compiler" href="https://www.onlinegdb.com/online_c_compiler" target="_blank"><b>OnlineGDB</b><span>可輸入 command line argument，也適合 debug。</span></a>
+<a class="compiler" href="https://www.programiz.com/c-programming/online-compiler/" target="_blank"><b>Programiz C Compiler</b><span>介面簡潔，適合初學者測試小程式。</span></a>
+<a class="compiler" href="https://godbolt.org/" target="_blank"><b>Compiler Explorer / Godbolt</b><span>可看組合語言，適合觀察 fwrite、fread、fseek 等呼叫。</span></a>
+<a class="compiler" href="https://www.jdoodle.com/c-online-compiler" target="_blank"><b>JDoodle C Compiler</b><span>可快速執行並切換不同編譯器版本。</span></a>
+</div></details>
+</section>
+
+<section class="question-card" id="q2">
+  <div class="qtop"><span class="badge">Practice 09 - Question 2</span><h2>2、將檔案原內容複製三次並寫回同一檔案</h2></div>
+  <details open><summary>題目</summary><p>Write a program that copies the original contents for three times and writes back to the file. The file name is obtained from command line.</p></details>
+  <details open><summary>解題觀念</summary><p>本題重點是「先完整讀入，再用 w 模式覆寫」。程式先用 fseek(fp,0L,SEEK_END) 移到檔尾，再用 ftell() 得到檔案大小，接著配置 buffer，把檔案內容讀進來。之後用 fopen(argv[1], &quot;w&quot;) 重新開啟同一檔案，原內容會被清空，再用 fputs(buffer, fp) 寫入三次。</p></details>
+  <details open><summary>完整程式：practice9_2_annotated.c</summary><div class="copyrow"><button onclick="copyCode('code2')">複製這題程式</button><button onclick="showRun('run2')">顯示/隱藏執行指令</button></div><pre id="code2"><code>/*
+ * 檔名：practice9_2_annotated.c
+ * 主題：檔案讀取、動態記憶體、覆寫檔案
+ * 功能：讀入整個檔案內容，再把原內容重複寫入同一檔案 3 次。
+ */
+#include &lt;stdio.h&gt;   /* 提供 FILE、fopen()、fseek()、ftell()、fread()、fputs()、fclose()。 */
+#include &lt;stdlib.h&gt;  /* 提供 malloc() 與 free()。 */
+
+int main(int argc, char *argv[]) /* 使用命令列參數取得檔名。 */
+{
+    FILE *fp;      /* 檔案指標。 */
+    long size;     /* 儲存檔案大小，單位通常是 byte。 */
+    char *buffer;  /* 動態配置的字元陣列，用來存整個檔案內容。 */
+    int i;         /* 迴圈索引。 */
+
+    if (argc != 2) /* 需要一個檔名參數。 */
+    {
+        printf(&quot;Usage: %s filename\n&quot;, argv[0]); /* 顯示使用方式。 */
+        return 1; /* 參數錯誤。 */
+    }
+
+    fp = fopen(argv[1], &quot;r&quot;); /* 以讀取模式開啟檔案。 */
+
+    if (fp == NULL) /* 檢查檔案是否成功開啟。 */
+    {
+        printf(&quot;Cannot open file.\n&quot;); /* 顯示錯誤。 */
+        return 1; /* 非正常結束。 */
+    }
+
+    fseek(fp, 0L, SEEK_END); /* 將檔案位置移到檔案結尾。 */
+    size = ftell(fp);        /* 取得目前位置，也就是檔案大小。 */
+    fseek(fp, 0L, SEEK_SET); /* 將檔案位置移回檔案開頭，準備讀取。 */
+
+    buffer = (char *)malloc(size + 1); /* 多配置 1 byte 給字串結尾 &#x27;\0&#x27;。 */
+
+    if (buffer == NULL) /* 檢查 malloc 是否成功。 */
+    {
+        printf(&quot;Memory allocation failed.\n&quot;); /* 顯示記憶體不足。 */
+        fclose(fp); /* 已開啟的檔案要先關閉。 */
+        return 1; /* 非正常結束。 */
+    }
+
+    fread(buffer, sizeof(char), size, fp); /* 一次讀入 size 個字元到 buffer。 */
+    buffer[size] = &#x27;\0&#x27;; /* 補上字串結尾，讓 buffer 可被 fputs 當字串處理。 */
+
+    fclose(fp); /* 讀完後先關閉檔案。 */
+
+    fp = fopen(argv[1], &quot;w&quot;); /* 以寫入模式重新開啟；注意會清空原檔案內容。 */
+
+    if (fp == NULL) /* 檢查是否能寫入。 */
+    {
+        printf(&quot;Cannot write file.\n&quot;); /* 顯示錯誤。 */
+        free(buffer); /* 發生錯誤也要釋放記憶體。 */
+        return 1; /* 非正常結束。 */
+    }
+
+    for (i = 0; i &lt; 3; i++) /* 重複 3 次。 */
+    {
+        fputs(buffer, fp); /* 將原本檔案內容寫入檔案。 */
+    }
+
+    fclose(fp);   /* 關閉寫入中的檔案，確保緩衝區內容被寫入磁碟。 */
+    free(buffer); /* 釋放動態記憶體。 */
+
+    return 0; /* 正常結束。 */
+}
+</code></pre></details>
+  <details open><summary>程式執行結果</summary><div class="output">假設 copy.txt 原本內容為：
+Ha! I am a genius.
+
+執行：
+./practice9_2 copy.txt
+
+執行後 copy.txt 內容變成：
+Ha! I am a genius.
+Ha! I am a genius.
+Ha! I am a genius.</div></details>
+  <details open><summary>程式說明：逐段流程</summary><ol><li>本題重點是「先完整讀入，再用 w 模式覆寫」</li><li>程式先用 fseek(fp,0L,SEEK_END) 移到檔尾，再用 ftell() 得到檔案大小，接著配置 buffer，把檔案內容讀進來</li><li>之後用 fopen(argv[1], &quot;w&quot;) 重新開啟同一檔案，原內容會被清空，再用 fputs(buffer, fp) 寫入三次</li></ol><div id="run2" class="runbox hidden">gcc practice9_2_annotated.c -o practice9_2<br>./practice9_2 copy.txt</div></details>
+  <details open><summary>線上編譯器連結</summary><p class="note">先按「複製這題程式」，再打開任一網站貼上。第 1、2、3 題都用到檔案或命令列參數；若線上編譯器不方便建立檔案，建議改用 OnlineGDB，或在本機 gcc 執行。</p><div class="compiler-grid">
+<a class="compiler" href="https://www.w3schools.com/c/c_compiler.php" target="_blank"><b>W3Schools C Compiler</b><span>最適合快速貼上 C 程式並按 Run。</span></a>
+<a class="compiler" href="https://www.onlinegdb.com/online_c_compiler" target="_blank"><b>OnlineGDB</b><span>可輸入 command line argument，也適合 debug。</span></a>
+<a class="compiler" href="https://www.programiz.com/c-programming/online-compiler/" target="_blank"><b>Programiz C Compiler</b><span>介面簡潔，適合初學者測試小程式。</span></a>
+<a class="compiler" href="https://godbolt.org/" target="_blank"><b>Compiler Explorer / Godbolt</b><span>可看組合語言，適合觀察 fwrite、fread、fseek 等呼叫。</span></a>
+<a class="compiler" href="https://www.jdoodle.com/c-online-compiler" target="_blank"><b>JDoodle C Compiler</b><span>可快速執行並切換不同編譯器版本。</span></a>
+</div></details>
+</section>
+
+<section class="question-card" id="q3">
+  <div class="qtop"><span class="badge">Practice 09 - Question 3</span><h2>3、將檔案重新命名</h2></div>
+  <details open><summary>題目</summary><p>Write a program that renames a file in the same directory. The old file name and new file name are obtained from command line.</p></details>
+  <details open><summary>解題觀念</summary><p>本題重點是命令列參數與 rename()。argc 必須等於 3，argv[1] 是舊檔名，argv[2] 是新檔名。rename(argv[1], argv[2]) 成功會回傳 0；如果舊檔不存在、沒有權限、或目標檔名不合法，就會失敗。</p></details>
+  <details open><summary>完整程式：practice9_3_annotated.c</summary><div class="copyrow"><button onclick="copyCode('code3')">複製這題程式</button><button onclick="showRun('run3')">顯示/隱藏執行指令</button></div><pre id="code3"><code>/*
+ * 檔名：practice9_3_annotated.c
+ * 主題：檔案重新命名 rename()
+ * 功能：從命令列輸入舊檔名與新檔名，將檔案改名。
+ */
+#include &lt;stdio.h&gt; /* 提供 printf() 與 rename()。 */
+
+int main(int argc, char *argv[]) /* argc/argv 用來讀取命令列參數。 */
+{
+    if (argc != 3) /* 需要三個參數：程式名、舊檔名、新檔名。 */
+    {
+        printf(&quot;Usage: %s old_filename new_filename\n&quot;, argv[0]); /* 顯示正確用法。 */
+        return 1; /* 參數不足或過多，非正常結束。 */
+    }
+
+    if (rename(argv[1], argv[2]) != 0) /* rename 成功回傳 0；失敗回傳非 0。 */
+    {
+        printf(&quot;Rename failed.\n&quot;); /* 改名失敗，例如舊檔不存在或權限不足。 */
+        return 1; /* 非正常結束。 */
+    }
+
+    printf(&quot;Rename success.\n&quot;); /* 改名成功。 */
+
+    return 0; /* 正常結束。 */
+}
+</code></pre></details>
+  <details open><summary>程式執行結果</summary><div class="output">假設目前資料夾有 test.txt。
+
+執行：
+./practice9_3 test.txt test2.txt
+
+螢幕輸出：
+Rename success.
+
+執行後：
+test.txt 會改名為 test2.txt</div></details>
+  <details open><summary>程式說明：逐段流程</summary><ol><li>本題重點是命令列參數與 rename()</li><li>argc 必須等於 3，argv[1] 是舊檔名，argv[2] 是新檔名</li><li>rename(argv[1], argv[2]) 成功會回傳 0；如果舊檔不存在、沒有權限、或目標檔名不合法，就會失敗</li></ol><div id="run3" class="runbox hidden">gcc practice9_3_annotated.c -o practice9_3<br>./practice9_3 test.txt test2.txt</div></details>
+  <details open><summary>線上編譯器連結</summary><p class="note">先按「複製這題程式」，再打開任一網站貼上。第 1、2、3 題都用到檔案或命令列參數；若線上編譯器不方便建立檔案，建議改用 OnlineGDB，或在本機 gcc 執行。</p><div class="compiler-grid">
+<a class="compiler" href="https://www.w3schools.com/c/c_compiler.php" target="_blank"><b>W3Schools C Compiler</b><span>最適合快速貼上 C 程式並按 Run。</span></a>
+<a class="compiler" href="https://www.onlinegdb.com/online_c_compiler" target="_blank"><b>OnlineGDB</b><span>可輸入 command line argument，也適合 debug。</span></a>
+<a class="compiler" href="https://www.programiz.com/c-programming/online-compiler/" target="_blank"><b>Programiz C Compiler</b><span>介面簡潔，適合初學者測試小程式。</span></a>
+<a class="compiler" href="https://godbolt.org/" target="_blank"><b>Compiler Explorer / Godbolt</b><span>可看組合語言，適合觀察 fwrite、fread、fseek 等呼叫。</span></a>
+<a class="compiler" href="https://www.jdoodle.com/c-online-compiler" target="_blank"><b>JDoodle C Compiler</b><span>可快速執行並切換不同編譯器版本。</span></a>
+</div></details>
+</section>
+
+<section id="online" class="card"><h2>七、線上 C 編譯器連結</h2><p class="note">Practice 09 會讀寫檔案與使用命令列參數。線上編譯器不一定都支援建立外部檔案，因此建議優先使用 OnlineGDB；最穩定的方式仍是本機 gcc。</p><div class="compiler-grid">
+<a class="compiler" href="https://www.w3schools.com/c/c_compiler.php" target="_blank"><b>W3Schools C Compiler</b><span>最適合快速貼上 C 程式並按 Run。</span></a>
+<a class="compiler" href="https://www.onlinegdb.com/online_c_compiler" target="_blank"><b>OnlineGDB</b><span>可輸入 command line argument，也適合 debug。</span></a>
+<a class="compiler" href="https://www.programiz.com/c-programming/online-compiler/" target="_blank"><b>Programiz C Compiler</b><span>介面簡潔，適合初學者測試小程式。</span></a>
+<a class="compiler" href="https://godbolt.org/" target="_blank"><b>Compiler Explorer / Godbolt</b><span>可看組合語言，適合觀察 fwrite、fread、fseek 等呼叫。</span></a>
+<a class="compiler" href="https://www.jdoodle.com/c-online-compiler" target="_blank"><b>JDoodle C Compiler</b><span>可快速執行並切換不同編譯器版本。</span></a>
+</div></section>
+<section id="quiz" class="card"><h2>八、互動測驗</h2><div id="quizBox"></div><button onclick="resetQuiz()" class="secondary">重新作答</button></section>
+<section id="local" class="card"><h2>九、本機編譯與執行方式</h2><h3>Linux / macOS / Git Bash</h3><pre><code>gcc practice9_1_annotated.c -o practice9_1
+gcc practice9_2_annotated.c -o practice9_2
+gcc practice9_3_annotated.c -o practice9_3
+
+./practice9_1 p9_1.txt
+./practice9_2 copy.txt
+./practice9_3 test.txt test2.txt</code></pre><h3>Windows CMD</h3><pre><code>gcc practice9_1_annotated.c -o practice9_1.exe
+practice9_1.exe p9_1.txt</code></pre><p class="explain">第 1 題要先準備 <code>p9_1.txt</code>；第 2 題要先準備 <code>copy.txt</code>；第 3 題要先有 <code>test.txt</code> 才能改名。</p></section>
+<div class="footer">Practice 09 File I/O Interactive Tutorial ｜ 題目、程式、結果、說明整合版</div>
+</main>
+<script>
+function copyCode(id){navigator.clipboard.writeText(document.getElementById(id).innerText).then(()=>alert('已複製程式碼'));}
+function showRun(id){document.getElementById(id).classList.toggle('hidden');}
+function demoMode(mode){const f=document.getElementById('fileText'),c=document.getElementById('consoleText'),e=document.getElementById('demoExplain');document.getElementById('fileDemo').classList.remove('active');document.getElementById('consoleDemo').classList.remove('active'); if(mode==='start'){f.textContent='File IO!';c.textContent='尚未執行';e.textContent='初始狀態：檔案內有 File IO!';} if(mode==='w'){f.textContent='Blokus!';c.textContent='尚未讀取';e.innerHTML='<code>fopen("prac1.txt","w")</code> 會清空原檔案，再寫入 Blokus!，所以 File IO! 消失。';document.getElementById('fileDemo').classList.add('active');} if(mode==='a'){f.textContent=f.textContent.trim()+'
+String!';c.textContent='尚未讀取';e.innerHTML='<code>fopen("prac1.txt","a")</code> 會寫到檔案最後，不會刪掉原內容。';document.getElementById('fileDemo').classList.add('active');} if(mode==='read'){c.textContent=f.textContent.split(/\s+/).filter(Boolean).map(x=>`Let's practice ${x}!`).join('
+');e.textContent='使用 fscanf(fp, "%s", sentence) 時，會一次讀一個非空白字串。';document.getElementById('consoleDemo').classList.add('active');}}
+const quiz=[{q:'fopen("data.txt","w") 的效果是什麼？',opts:['只能讀取檔案','寫入檔案，若原檔存在會清空','附加到檔案最後','只能開二進位檔'],ans:1,why:'w 模式會開啟檔案供寫入，若檔案已存在會 truncate 清空。'},{q:'讀取整數時，為什麼 fscanf(fp,"%d",&num) 要用 &num？',opts:['因為 num 是字串','因為 fscanf 需要知道要寫入哪個位址','因為 &num 代表檔名','因為 %d 只能搭配指標陣列'],ans:1,why:'fscanf 讀到資料後要寫進變數，因此需要該變數的位址。'},{q:'fseek(fp,0L,SEEK_END) 後接 ftell(fp) 常用來做什麼？',opts:['取得檔案大小','刪除檔案','重新命名檔案','清空檔案'],ans:0,why:'移到檔尾後，目前位置通常就是檔案大小。'},{q:'fflush(fp) 和 fclose(fp) 最大差異是？',opts:['fflush 會關檔，fclose 不會','fflush 只刷出緩衝區，fclose 會刷出並關閉檔案','兩者完全一樣','fflush 只能用在 scanf'],ans:1,why:'fflush 強制寫出緩衝資料，但檔案仍開著；fclose 會關閉檔案。'},{q:'rename("test.txt","test2.txt") 成功時回傳什麼？',opts:['1','-1','0','EOF'],ans:2,why:'rename 成功回傳 0，失敗回傳非 0。'}];
+function renderQuiz(){let h='';quiz.forEach((q,qi)=>{h+=`<div class="quiz-card"><h3>Q${qi+1}. ${q.q}</h3>`;q.opts.forEach((o,oi)=>{h+=`<button class="option" onclick="answerQuiz(${qi},${oi},this)">${o}</button>`});h+=`<div class="result" id="res${qi}"></div></div>`});document.getElementById('quizBox').innerHTML=h;}
+function answerQuiz(qi,oi,btn){const q=quiz[qi];const card=btn.parentElement;card.querySelectorAll('.option').forEach((b,idx)=>{b.disabled=true;if(idx===q.ans)b.classList.add('correct');});if(oi!==q.ans)btn.classList.add('wrong');document.getElementById('res'+qi).textContent=(oi===q.ans?'答對！':'答錯。')+' '+q.why;}
+function resetQuiz(){renderQuiz();}
+renderQuiz();
+</script>
+</body></html>

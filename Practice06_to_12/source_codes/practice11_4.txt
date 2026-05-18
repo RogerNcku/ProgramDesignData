@@ -1,0 +1,12 @@
+Comparison between Structure in C and Class in Java
+
+Similarities:
+1. Both can store related data together.
+2. Both can create variables containing multiple members.
+3. Both support nested data structures.
+
+Differences:
+1. Structure in C does not contain methods, but Java class can contain methods.
+2. Structure members are public by default, while Java class supports access control such as private and public.
+3. Java class supports object-oriented programming features such as inheritance and polymorphism.
+4. Structure is mainly used for grouping data, while Java class combines both data and behavior.

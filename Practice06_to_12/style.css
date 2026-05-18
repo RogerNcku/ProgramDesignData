@@ -1,0 +1,37 @@
+
+:root{
+  --bg:#f4f7fb;--card:#fff;--ink:#1f2937;--muted:#64748b;--brand:#2563eb;
+  --line:#dbe3ef;--code:#0f172a;--soft:#eef5ff;--ok:#16a34a;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Arial,"Noto Sans TC",sans-serif;line-height:1.65}
+header{background:linear-gradient(135deg,#0f172a,#2563eb);color:white;padding:30px 26px}
+header h1{margin:0;font-size:30px}
+header p{margin:8px 0 0;color:#dbeafe}
+nav{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5;padding:10px 18px;display:flex;gap:10px;flex-wrap:wrap}
+nav a{color:#1d4ed8;text-decoration:none;border:1px solid var(--line);padding:7px 10px;border-radius:999px;background:#f8fafc}
+.wrap{max-width:1200px;margin:22px auto;padding:0 16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;box-shadow:0 8px 20px rgba(15,23,42,.06);padding:18px;margin:18px 0}
+details{border:1px solid var(--line);border-radius:16px;background:#fff;margin:14px 0;overflow:hidden}
+summary{cursor:pointer;background:var(--soft);padding:14px 18px;font-weight:700;color:#0f172a}
+.details-body{padding:18px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:900px){.grid{grid-template-columns:1fr}}
+pre{background:#0b1220;color:#e5e7eb;padding:16px;border-radius:14px;overflow:auto}
+code{font-family:Consolas,Menlo,monospace}
+table{width:100%;border-collapse:collapse;background:#fff}
+th,td{border-bottom:1px solid var(--line);padding:8px;vertical-align:top}
+th{background:#f8fafc;text-align:left}
+td.ln{width:58px;color:var(--muted);text-align:right;font-family:Consolas,monospace}
+.func-list li{margin:10px 0;padding:10px;border-left:4px solid var(--brand);background:#f8fbff;border-radius:8px}
+.runner{border:1px solid var(--line);border-radius:16px;padding:14px;background:#fcfdff}
+.controls{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}
+button{border:0;background:var(--brand);color:white;padding:9px 12px;border-radius:10px;cursor:pointer}
+button.secondary{background:#475569}
+.stage{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:900px){.stage{grid-template-columns:1fr}}
+.highlight{background:#fef3c7!important}
+.output{min-height:140px;white-space:pre-wrap;background:#111827;color:#f9fafb;border-radius:14px;padding:14px;font-family:Consolas,monospace}
+.note{color:var(--muted)}
+.badge{display:inline-block;background:#dbeafe;color:#1e40af;border-radius:999px;padding:3px 9px;font-size:13px}
+.footer{text-align:center;color:var(--muted);padding:28px}

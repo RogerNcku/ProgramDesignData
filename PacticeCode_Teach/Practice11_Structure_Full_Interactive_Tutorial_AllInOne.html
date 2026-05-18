@@ -1,0 +1,367 @@
+<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Practice 11 Structure in C 完整互動式教學</title>
+<style>
+:root{--bg:#f5f7fb;--card:#fff;--ink:#142033;--muted:#667085;--brand:#2563eb;--brand2:#7c3aed;--ok:#16a34a;--bad:#dc2626;--line:#d9e2ef;--soft:#eef4ff;--code:#0f172a;--warn:#f97316}
+*{box-sizing:border-box} body{margin:0;font-family:"Noto Sans TC","Microsoft JhengHei",Arial,sans-serif;background:linear-gradient(180deg,#eaf2ff 0,#f8fafc 360px);color:var(--ink);line-height:1.75} a{color:#1d4ed8} header{padding:48px 22px 28px;max-width:1220px;margin:auto} h1{font-size:clamp(30px,5vw,56px);margin:0 0 10px;line-height:1.1} .subtitle{font-size:18px;color:var(--muted)} .tag{display:inline-block;background:#dbeafe;color:#1d4ed8;border-radius:999px;padding:5px 11px;font-size:13px;margin:4px}
+nav{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.94);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)} nav .bar{max-width:1220px;margin:auto;display:flex;gap:8px;overflow:auto;padding:10px 16px} nav a{white-space:nowrap;text-decoration:none;border:1px solid var(--line);padding:7px 12px;border-radius:999px;background:white;font-size:14px}
+main{max-width:1220px;margin:auto;padding:20px 18px 80px} section{scroll-margin-top:78px} .card,.slide,.qcard,.concept,.codebox{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:22px;box-shadow:0 10px 24px rgba(15,23,42,.06);margin:18px 0} h2{font-size:30px;margin:6px 0 14px} h3{font-size:22px;margin:18px 0 8px} .grid{display:grid;grid-template-columns:1fr 1fr;gap:18px} .tri{display:grid;grid-template-columns:repeat(3,1fr);gap:14px} .concept{margin:0} .note{background:#f8fafc;border-left:5px solid var(--brand);padding:13px 15px;border-radius:12px} .warn{background:#fff7ed;border-left:5px solid var(--warn);padding:13px 15px;border-radius:12px} .ok{background:#ecfdf5;border-left:5px solid var(--ok);padding:13px 15px;border-radius:12px}
+.slide-controls{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0} button{cursor:pointer;border:0;border-radius:12px;background:var(--brand);color:white;padding:9px 14px;font-weight:700} button.secondary{background:#e5e7eb;color:#111827} .slides{position:relative;min-height:390px} .slidepane{display:none;animation:fade .25s ease} .slidepane.active{display:block} @keyframes fade{from{opacity:.35;transform:translateY(4px)}to{opacity:1;transform:none}} .slide-num{color:var(--muted);font-size:14px}
+.structviz{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;margin:14px 0} .struct-card{border:2px solid #bfdbfe;background:#eff6ff;border-radius:16px;padding:14px;transition:.25s} .struct-card.active{border-color:var(--brand);transform:scale(1.02);box-shadow:0 0 0 4px #dbeafe} .field{display:flex;justify-content:space-between;border-bottom:1px dashed #93c5fd;padding:6px 0} .field:last-child{border-bottom:0} .field b{color:#1e3a8a}
+.time-sim{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start} .clock{font-size:36px;font-weight:900;background:#111827;color:#d1fae5;border-radius:16px;padding:18px;text-align:center;font-family:Consolas,monospace} .memory-row{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0} .memcell{min-width:110px;padding:10px;border:2px solid var(--line);border-radius:14px;background:#fff;text-align:center} .memcell.sel{border-color:var(--brand);background:#dbeafe} .small{font-size:13px;color:var(--muted)}
+pre{background:var(--code);color:#e5e7eb;border-radius:16px;padding:16px;overflow:auto;font-size:14px;line-height:1.55} code{font-family:Consolas,Monaco,monospace} summary{font-weight:800;font-size:18px;cursor:pointer} summary button{float:right;margin-left:8px} .terminal{background:#07111f;color:#d1fae5;border-radius:16px;padding:15px 17px;white-space:pre-wrap;font-family:Consolas,Monaco,monospace;margin:10px 0;border:1px solid #1f2937} .explain-list li{margin:6px 0}
+.table{width:100%;border-collapse:collapse;margin:12px 0;background:white} .table th,.table td{border:1px solid var(--line);padding:10px;text-align:left;vertical-align:top} .table th{background:#f1f5f9}
+.compiler-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:14px} .compiler-grid a{display:block;text-decoration:none;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;box-shadow:0 8px 18px rgba(15,23,42,.05);transition:.2s} .compiler-grid a:hover{transform:translateY(-3px);border-color:var(--brand)} .compiler-grid b{display:block;color:#1d4ed8;font-size:18px;margin-bottom:5px} .compiler-grid span{color:var(--muted)}
+.quiz-card{border:1px solid var(--line);border-radius:16px;padding:16px;background:#fff;margin:12px 0} .option{display:block;width:100%;text-align:left;margin:8px 0;background:#f8fafc;color:#111827;border:1px solid var(--line)} .option.correct{background:#dcfce7;border-color:#22c55e} .option.wrong{background:#fee2e2;border-color:#ef4444} .result{font-weight:800;margin-top:8px} .footer{text-align:center;color:var(--muted);font-size:13px;margin-top:35px}
+@media(max-width:860px){.grid,.tri,.time-sim{grid-template-columns:1fr} summary button{float:none;display:block;margin-top:8px}}
+</style></head><body>
+<header><h1>Practice 11：Structure in C 完整互動式 HTML 教學</h1><div class="subtitle">完整投影片教學＋題目＋程式＋執行結果＋逐題說明。主題包含 struct 宣告、初始化、複製、函式傳值/傳址、巢狀結構、結構陣列與 calloc 動態配置。</div><div><span class="tag">C Structure</span><span class="tag">struct tag</span><span class="tag">call by value</span><span class="tag">call by reference</span><span class="tag">calloc</span><span class="tag">線上編譯器連結</span></div></header>
+<nav><div class="bar"><a href="#slides">投影片教學</a><a href="#concepts">核心觀念</a><a href="#interactive">互動模擬</a><a href="#q1">第1題</a><a href="#q2">第2題</a><a href="#q3">第3題</a><a href="#q4">第4題</a><a href="#adv">Advanced</a><a href="#online">線上編譯器</a><a href="#quiz">互動測驗</a><a href="#compile">本機編譯</a></div></nav>
+<main>
+<section id="slides" class="card"><h2>一、完整投影片式教學</h2><p class="note">這一區把 Structure 講義整理成可切換的投影片。重點依序是：為什麼需要 struct、如何宣告與初始化、如何使用 . 與 ->、struct 傳入函式時的複製行為，以及結構陣列。</p><div class="slide-controls"><button onclick="prevSlide()">上一張</button><button onclick="nextSlide()">下一張</button><button class="secondary" onclick="goSlide(0)">回到第 1 張</button><span id="slideNum" class="slide-num"></span></div><div class="slides">
+<div class="slidepane active"><h3>Slide 1：為什麼需要 Structure？</h3><div class="grid"><div><p>陣列只能把「同型態」資料放在一起，例如整數陣列、字元陣列。可是學生資料通常包含姓名、數學成績、CS 成績、英文成績，型態不同但邏輯上屬於同一個人。</p><p class="ok">struct 的目的：把相關資料包成同一筆資料，讓程式更容易管理。</p></div><div class="structviz"><div class="struct-card"><b>沒有 struct</b><div class="field"><span>name[0]</span><b>Tim</b></div><div class="field"><span>math[0]</span><b>60</b></div><div class="field"><span>cs[0]</span><b>70</b></div></div><div class="struct-card active"><b>使用 struct student</b><div class="field"><span>name</span><b>Tim</b></div><div class="field"><span>math</span><b>60</b></div><div class="field"><span>cs</span><b>70</b></div></div></div></div></div>
+<div class="slidepane"><h3>Slide 2：struct 變數宣告</h3><pre><code>struct {
+    char *studentName;
+    int mathGrade;
+    int csGrade;
+    int englishGrade;
+} s1, s2;</code></pre><p>這種寫法會建立兩個結構變數 <code>s1</code> 與 <code>s2</code>，每個變數都有四個欄位。欄位的型態可以不同，這就是 struct 和 array 最大的差異之一。</p></div>
+<div class="slidepane"><h3>Slide 3：Structure Initialization</h3><pre><code>struct student s1 = {"Tim", 60, 70, 70};
+struct student s2 = {"Joe", 70, 50, 80};</code></pre><p>初始化時，花括號中的值會依照欄位宣告順序填入。第一個值給 name，第二個值給 math，第三個值給 cs，第四個值給 english。</p></div>
+<div class="slidepane"><h3>Slide 4：用 dot operator 存取欄位</h3><pre><code>s1.mathGrade = 80;
+printf("%d", s1.mathGrade);</code></pre><p><code>.</code> 用在「結構變數本身」。如果你手上有的是 struct 變數，就用 <code>s1.mathGrade</code>。</p></div>
+<div class="slidepane"><h3>Slide 5：struct 可以直接複製</h3><pre><code>time1 = time2;</code></pre><p>這行會把 <code>time2</code> 的所有欄位複製到 <code>time1</code>。這和陣列不一樣；C 的陣列不能直接用 <code>a = b</code> 複製，但 struct 變數可以直接指定。</p></div>
+<div class="slidepane"><h3>Slide 6：Structure Tag</h3><pre><code>struct time {
+    int hours;
+    int minutes;
+    int seconds;
+};</code></pre><p><code>time</code> 是 structure tag。有了 tag 之後，可以在不同地方宣告 <code>struct time t1;</code>，把這種結構當成一種自訂資料型態使用。</p></div>
+<div class="slidepane"><h3>Slide 7：struct 傳入函式：傳值</h3><pre><code>void updateInfo(struct time t, int h, int m, int s) {
+    t.hours = h;
+}</code></pre><p class="warn">這種寫法只會修改函式內部的副本，不會改到 main 裡原本的變數。</p></div>
+<div class="slidepane"><h3>Slide 8：struct 傳入函式：傳址</h3><pre><code>void updateInfo(struct time *t, int h, int m, int s) {
+    t-&gt;hours = h;
+}</code></pre><p><code>t-&gt;hours</code> 等價於 <code>(*t).hours</code>。當函式拿到結構變數的位址，就可以修改原本的 struct。</p></div>
+<div class="slidepane"><h3>Slide 9：巢狀結構 Nested Structure</h3><pre><code>struct name { char *firstName; char *lastName; };
+struct student { struct name studentName; int mathGrade; };
+printf("%s", s1.studentName.firstName);</code></pre><p>struct 的欄位也可以是另一個 struct，所以可以做出更有層次的資料模型。</p></div>
+<div class="slidepane"><h3>Slide 10：結構陣列與動態配置</h3><pre><code>struct student *s;
+s = calloc(n, sizeof(struct student));
+free(s);</code></pre><p>如果學生人數執行時才知道，可以使用 <code>calloc()</code> 動態配置 n 筆 <code>struct student</code> 空間，最後記得 <code>free()</code>。</p></div>
+</div></section>
+<section id="concepts"><h2>二、核心觀念總整理</h2><div class="tri"><article class="concept"><h3>1. struct 是資料集合</h3><p>用來把相關資料放在一起，成為一筆完整資料，例如時間、學生、座標。</p></article><article class="concept"><h3>2. 欄位可以不同型態</h3><p>陣列元素型態必須相同；struct 成員可以是 int、char array、pointer 或另一個 struct。</p></article><article class="concept"><h3>3. 使用 . 與 -></h3><p>變數本身用 <code>.</code>；指向 struct 的指標用 <code>-></code>。</p></article><article class="concept"><h3>4. struct 可直接指定</h3><p><code>s2 = s1</code> 會複製所有欄位，但只限相容的結構型態。</p></article><article class="concept"><h3>5. 傳值會複製整包資料</h3><p>函式參數若是 struct 本身，會產生副本；修改副本不會影響原本資料。</p></article><article class="concept"><h3>6. 傳址可修改原資料</h3><p>傳入 <code>&s1</code> 並用 <code>struct student *p</code> 接收，可以修改原本資料。</p></article></div></section>
+<section id="interactive" class="card"><h2>三、互動模擬：time1 = time2 與 updateInfo(&t1)</h2><div class="time-sim"><div><h3>模擬 1：結構複製</h3><p>按下按鈕觀察 <code>time1 = time2</code> 前後變化。</p><button onclick="copyStruct(0)">複製前</button> <button onclick="copyStruct(1)">執行 time1 = time2</button><div class="structviz"><div id="simTime1" class="struct-card"><b>time1</b><div class="field"><span>hours</span><b id="t1h">7</b></div><div class="field"><span>minutes</span><b id="t1m">5</b></div><div class="field"><span>seconds</span><b id="t1s">0</b></div></div><div id="simTime2" class="struct-card"><b>time2</b><div class="field"><span>hours</span><b>20</b></div><div class="field"><span>minutes</span><b>59</b></div><div class="field"><span>seconds</span><b>0</b></div></div></div><p id="copyMsg" class="note"></p></div><div><h3>模擬 2：時間差計算</h3><p>Practice 11 第 3 題：20:59:00 與 07:05:00 相差多少？</p><div class="clock" id="clockDiff">13:54:00</div><div class="memory-row"><div class="memcell sel">20×3600<br><b>75540</b></div><div class="memcell sel">7×3600+5×60<br><b>25500</b></div><div class="memcell">差值<br><b>50040 秒</b></div></div><p class="note">50040 ÷ 3600 = 13 小時，剩下 3240 秒；3240 ÷ 60 = 54 分鐘，所以差距為 13:54:00。</p></div></div></section>
+<section id="q1" class="qcard"><h2>四、第 1 題：宣告 time1/time2、初始化、複製並檢查</h2><h3>題目</h3><p>(a) 宣告兩個結構變數 <code>time1</code> 與 <code>time2</code>，都有 <code>hours</code>、<code>minutes</code>、<code>seconds</code> 三個整數欄位。<br>(b) 初始化 time1 = 07:05:00，time2 = 20:59:00。<br>(c) 寫出 <code>time1 = time2;</code>。<br>(d) 用 main 檢查兩者內容。</p><h3>解題重點</h3><ul class="explain-list"><li>先定義 <code>struct timeStruct</code>，把三個時間欄位包成一筆資料。</li><li>struct 可以用 <code>{7,5,0}</code> 依欄位順序初始化。</li><li><code>time1 = time2</code> 會把三個欄位全部複製。</li></ul><details open class="codebox"><summary>完整程式：practice11_1.c <button onclick="event.preventDefault();copyCode('code1')">複製程式</button></summary><pre id="code1"><code>/*
+ * 檔名：practice11_1.c
+ * 主題：結構變數的指定與複製
+ * 說明：示範 struct 變數可以直接使用指定運算子 =，將一個結構的所有欄位複製到另一個結構。
+ */
+
+#include &lt;stdio.h&gt;  /* 引入標準輸入輸出函式庫，提供 printf() */
+
+/* 定義結構型別 timeStruct，用來表示時間資料 */
+struct timeStruct
+{
+    int hours;    /* 小時欄位，例如 7 或 20 */
+    int minutes;  /* 分鐘欄位，例如 5 或 59 */
+    int seconds;  /* 秒數欄位，例如 0 */
+};
+
+int main(void)
+{
+    struct timeStruct time1 = {7, 5, 0};     /* 宣告 time1，並初始化為 07:05:00 */
+    struct timeStruct time2 = {20, 59, 0};   /* 宣告 time2，並初始化為 20:59:00 */
+
+    printf(&quot;Before copy:\n&quot;);  /* 印出複製前的標題 */
+    printf(&quot;time1 = %02d:%02d:%02d\n&quot;, time1.hours, time1.minutes, time1.seconds);  /* 以兩位數格式印出 time1 */
+    printf(&quot;time2 = %02d:%02d:%02d\n&quot;, time2.hours, time2.minutes, time2.seconds);  /* 以兩位數格式印出 time2 */
+
+    time1 = time2;  /* 將 time2 的所有欄位值複製給 time1，包含 hours、minutes、seconds */
+
+    printf(&quot;\nAfter copy:\n&quot;);  /* 印出複製後的標題，前面的 \n 用來換行 */
+    printf(&quot;time1 = %02d:%02d:%02d\n&quot;, time1.hours, time1.minutes, time1.seconds);  /* 印出複製後的 time1，此時應與 time2 相同 */
+    printf(&quot;time2 = %02d:%02d:%02d\n&quot;, time2.hours, time2.minutes, time2.seconds);  /* 印出 time2，確認原資料沒有被改變 */
+
+    return 0;  /* 程式正常結束 */
+}
+</code></pre></details><h3>程式執行結果</h3><div class="terminal">Before copy:
+time1 = 07:05:00
+time2 = 20:59:00
+
+After copy:
+time1 = 20:59:00
+time2 = 20:59:00</div><h3>結果說明</h3><p>複製前 time1 是 07:05:00，time2 是 20:59:00。執行 <code>time1 = time2;</code> 後，time1 的 hours、minutes、seconds 全部變成與 time2 相同，因此兩者都顯示 20:59:00。</p></section>
+<section id="q2" class="qcard"><h2>五、第 2 題：createTime、showInfo、updateInfo</h2><h3>題目</h3><p>宣告 structure tag <code>time</code>，並完成三個函式：<code>createTime</code> 建立並回傳時間、<code>showInfo</code> 印出時間、<code>updateInfo</code> 更新時間內容。</p><h3>解題重點</h3><ul class="explain-list"><li><code>createTime()</code> 回傳一個 struct time，適合用來建立資料。</li><li><code>showInfo(struct time t)</code> 使用傳值，單純印出資料即可。</li><li><code>updateInfo(struct time *t,...)</code> 使用傳址，因為要修改 main 裡的原本時間。</li><li><code>t-&gt;hours</code> 是 <code>(*t).hours</code> 的簡寫。</li></ul><details open class="codebox"><summary>完整程式：practice11_2.c <button onclick="event.preventDefault();copyCode('code2')">複製程式</button></summary><pre id="code2"><code>/*
+ * 檔名：practice11_2.c
+ * 主題：結構函式、傳值與傳址修改
+ * 說明：示範如何用函式建立 struct time、印出時間，以及透過指標修改結構內容。
+ */
+
+#include &lt;stdio.h&gt;  /* 引入標準輸入輸出函式庫，提供 printf() */
+
+/* 定義 struct time，用來儲存一筆時間資料 */
+struct time
+{
+    int hours;    /* 小時 */
+    int minutes;  /* 分鐘 */
+    int seconds;  /* 秒 */
+};
+
+/*
+ * 函式名稱：createTime
+ * 函式功能：根據傳入的小時、分鐘、秒數建立一個 struct time 並回傳。
+ */
+struct time createTime(int hours, int minutes, int seconds)
+{
+    struct time t;  /* 宣告區域變數 t，用來暫存要建立的時間 */
+
+    t.hours = hours;      /* 將參數 hours 存入 t 的 hours 欄位 */
+    t.minutes = minutes;  /* 將參數 minutes 存入 t 的 minutes 欄位 */
+    t.seconds = seconds;  /* 將參數 seconds 存入 t 的 seconds 欄位 */
+
+    return t;  /* 回傳建立好的 struct time */
+}
+
+/*
+ * 函式名稱：showInfo
+ * 函式功能：印出 struct time 的內容。
+ * 注意：這裡使用傳值，所以函式內拿到的是 t 的副本，不會修改原本資料。
+ */
+void showInfo(struct time t)
+{
+    printf(&quot;%02d:%02d:%02d\n&quot;, t.hours, t.minutes, t.seconds);  /* 以 HH:MM:SS 格式印出時間 */
+}
+
+/*
+ * 函式名稱：updateInfo
+ * 函式功能：透過 struct time 指標修改原本的時間資料。
+ * 注意：t 是指標，所以使用 t-&gt;hours 等語法存取結構欄位。
+ */
+void updateInfo(struct time *t, int hours, int minutes, int seconds)
+{
+    t-&gt;hours = hours;      /* 修改原結構的 hours 欄位 */
+    t-&gt;minutes = minutes;  /* 修改原結構的 minutes 欄位 */
+    t-&gt;seconds = seconds;  /* 修改原結構的 seconds 欄位 */
+}
+
+int main(void)
+{
+    struct time t1;  /* 宣告一個 struct time 變數 t1 */
+
+    t1 = createTime(7, 5, 0);  /* 呼叫 createTime() 建立 07:05:00，並指定給 t1 */
+
+    printf(&quot;Original time:\n&quot;);  /* 印出原始時間標題 */
+    showInfo(t1);  /* 呼叫 showInfo() 顯示 t1 的目前內容 */
+
+    updateInfo(&amp;t1, 20, 59, 0);  /* 傳入 t1 的位址，將 t1 更新成 20:59:00 */
+
+    printf(&quot;Updated time:\n&quot;);  /* 印出更新後時間標題 */
+    showInfo(t1);  /* 再次顯示 t1，確認內容已被 updateInfo() 修改 */
+
+    return 0;  /* 程式正常結束 */
+}
+</code></pre></details><h3>程式執行結果</h3><div class="terminal">Original time:
+07:05:00
+Updated time:
+20:59:00</div><h3>結果說明</h3><p>一開始 <code>createTime(7,5,0)</code> 建立 07:05:00。接著 <code>updateInfo(&t1,20,59,0)</code> 傳入 t1 位址，所以函式可以修改原本 t1，最後輸出 20:59:00。</p></section>
+<section id="q3" class="qcard"><h2>六、第 3 題：deltaTime 計算兩個時間差</h2><h3>題目</h3><p>延伸第 2 題，定義 <code>deltaTime</code>，輸入兩個 <code>struct time</code>，輸出兩者時間差的 <code>struct time</code>。</p><h3>解題重點</h3><ul class="explain-list"><li>把 HH:MM:SS 轉成總秒數：<code>hours*3600 + minutes*60 + seconds</code>。</li><li>兩個總秒數相減並取絕對值。</li><li>再把秒數轉回小時、分鐘、秒。</li></ul><details open class="codebox"><summary>完整程式：practice11_3.c <button onclick="event.preventDefault();copyCode('code3')">複製程式</button></summary><pre id="code3"><code>/*
+ * 檔名：practice11_3.c
+ * 主題：計算兩個時間的差距
+ * 說明：將時間轉換成總秒數後相減，再把秒數轉回小時、分鐘、秒。
+ */
+
+#include &lt;stdio.h&gt;   /* 引入標準輸入輸出函式庫，提供 printf() */
+#include &lt;stdlib.h&gt;  /* 引入標準函式庫，提供 abs() 函式 */
+
+/* 定義 struct time，用來表示一個時間 */
+struct time
+{
+    int hours;    /* 小時欄位 */
+    int minutes;  /* 分鐘欄位 */
+    int seconds;  /* 秒數欄位 */
+};
+
+/* 建立並回傳一個 struct time */
+struct time createTime(int h, int m, int s)
+{
+    struct time t;  /* 宣告時間結構變數 t */
+
+    t.hours = h;    /* 將參數 h 指定給小時 */
+    t.minutes = m;  /* 將參數 m 指定給分鐘 */
+    t.seconds = s;  /* 將參數 s 指定給秒 */
+
+    return t;  /* 回傳建立好的時間 */
+}
+
+/* 以 HH:MM:SS 格式印出時間 */
+void showInfo(struct time t)
+{
+    printf(&quot;%02d:%02d:%02d\n&quot;, t.hours, t.minutes, t.seconds);  /* %02d 表示不足兩位數時補 0 */
+}
+
+/*
+ * 函式名稱：deltaTime
+ * 函式功能：計算 t1 與 t2 的絕對時間差。
+ * 作法：先把兩個時間都換算成總秒數，再相減取絕對值，最後換回時分秒。
+ */
+struct time deltaTime(struct time t1, struct time t2)
+{
+    struct time result;      /* 宣告 result，用來存放最後的時間差 */
+    int total1, total2, diff; /* total1/total2 存總秒數，diff 存秒數差 */
+
+    total1 = t1.hours * 3600 + t1.minutes * 60 + t1.seconds;  /* 將 t1 轉換為總秒數 */
+    total2 = t2.hours * 3600 + t2.minutes * 60 + t2.seconds;  /* 將 t2 轉換為總秒數 */
+
+    diff = abs(total1 - total2);  /* 計算兩個總秒數的差，並取絕對值，避免出現負數 */
+
+    result.hours = diff / 3600;  /* 由總秒數差計算相差幾小時 */
+    diff %= 3600;                /* 取出扣掉完整小時後剩下的秒數 */
+
+    result.minutes = diff / 60;  /* 用剩餘秒數計算相差幾分鐘 */
+    result.seconds = diff % 60;  /* 剩下不足 60 秒的部分就是秒數 */
+
+    return result;  /* 回傳計算完成的時間差 */
+}
+
+int main(void)
+{
+    struct time t1, t2, diff;  /* 宣告兩個時間 t1、t2，以及時間差 diff */
+
+    t1 = createTime(20, 59, 0);  /* 建立第一個時間 20:59:00 */
+    t2 = createTime(7, 5, 0);    /* 建立第二個時間 07:05:00 */
+
+    printf(&quot;Time 1: &quot;);  /* 印出 Time 1 標籤 */
+    showInfo(t1);         /* 顯示第一個時間 */
+
+    printf(&quot;Time 2: &quot;);  /* 印出 Time 2 標籤 */
+    showInfo(t2);         /* 顯示第二個時間 */
+
+    diff = deltaTime(t1, t2);  /* 呼叫 deltaTime() 計算兩時間的差距 */
+
+    printf(&quot;Difference: &quot;);  /* 印出 Difference 標籤 */
+    showInfo(diff);           /* 顯示時間差 */
+
+    return 0;  /* 程式正常結束 */
+}
+</code></pre></details><h3>程式執行結果</h3><div class="terminal">Time 1: 20:59:00
+Time 2: 07:05:00
+Difference: 13:54:00</div><h3>結果說明</h3><p>20:59:00 轉成 75540 秒，07:05:00 轉成 25500 秒，差距為 50040 秒。50040 秒等於 13 小時 54 分 0 秒，所以輸出 13:54:00。</p></section>
+<section id="q4" class="qcard"><h2>七、第 4 題：C 的 Structure 與 Java 的 Class 比較</h2><h3>題目</h3><p>比較 C 語言 structure 與 Java class 的相同與不同。</p><h3>參考答案</h3><pre><code>Comparison between Structure in C and Class in Java
+
+Similarities:
+1. Both can store related data together.
+2. Both can create variables containing multiple members.
+3. Both support nested data structures.
+
+Differences:
+1. Structure in C does not contain methods, but Java class can contain methods.
+2. Structure members are public by default, while Java class supports access control such as private and public.
+3. Java class supports object-oriented programming features such as inheritance and polymorphism.
+4. Structure is mainly used for grouping data, while Java class combines both data and behavior.
+</code></pre><h3>補充說明</h3><table class="table"><tr><th>比較項目</th><th>C Structure</th><th>Java Class</th></tr><tr><td>主要用途</td><td>將相關資料欄位群組化</td><td>將資料與行為包成物件</td></tr><tr><td>是否有 method</td><td>沒有自己的 method</td><td>可以有 method</td></tr><tr><td>封裝與權限</td><td>沒有 private/public 這種 class access control</td><td>支援 private、public、protected</td></tr><tr><td>物件導向特性</td><td>主要是資料聚合</td><td>支援繼承、多型、封裝</td></tr></table><h3>結果說明</h3><p>C 的 struct 較像「資料包裝盒」；Java 的 class 則是「資料＋操作方法＋物件導向設計」。因此在 C 中常用函式操作 struct，而 Java 通常把操作寫成 class 的 method。</p></section>
+<section id="adv" class="qcard"><h2>八、Advanced Training：用 calloc 重新實作 Struct_ary.c</h2><h3>題目</h3><p>使用 dynamic memory allocation 重新實作結構陣列，也就是用 pointer 與 <code>calloc()</code> 取代固定大小陣列。</p><h3>解題重點</h3><ul class="explain-list"><li><code>struct student *s;</code> 宣告指向學生資料的指標。</li><li><code>calloc(n, sizeof(struct student))</code> 配置 n 筆學生資料，並初始化為 0。</li><li>用 <code>s[i].firstName</code>、<code>s[i].mathGrade</code> 存取第 i 筆學生資料。</li><li>最後一定要 <code>free(s)</code>。</li></ul><details open class="codebox"><summary>完整程式：practice11_advanced.c <button onclick="event.preventDefault();copyCode('codeadv')">複製程式</button></summary><pre id="codeadv"><code>/*
+ * 檔名：practice11_advanced.c
+ * 主題：結構陣列與 calloc 動態配置
+ * 說明：使用 struct student 儲存學生姓名與成績，並用 calloc() 配置多筆學生資料空間。
+ */
+
+#include &lt;stdio.h&gt;   /* 引入標準輸入輸出函式庫，提供 printf()、sprintf() */
+#include &lt;stdlib.h&gt;  /* 引入標準函式庫，提供 calloc()、free() */
+
+/* 定義學生資料結構 */
+struct student
+{
+    char firstName[20];  /* 儲存學生名字，最多可存 19 個字元加上字串結尾 &#x27;\0&#x27; */
+    char lastName[20];   /* 儲存學生姓氏，最多可存 19 個字元加上字串結尾 &#x27;\0&#x27; */
+    int mathGrade;       /* 數學成績 */
+    int csGrade;         /* 電腦科學成績 */
+    int englishGrade;    /* 英文成績 */
+};
+
+int main(void)
+{
+    int n = 3;  /* 設定學生人數為 3 */
+    int i;      /* 宣告迴圈變數 i */
+
+    struct student *s;  /* 宣告 struct student 指標，用來指向動態配置出的學生陣列 */
+
+    s = (struct student *)calloc(n, sizeof(struct student));  /* 配置 n 個 student 結構空間，並自動初始化為 0 */
+
+    if (s == NULL)  /* 檢查 calloc() 是否配置失敗 */
+    {
+        printf(&quot;Memory allocation failed.\n&quot;);  /* 印出記憶體配置失敗訊息 */
+        return 1;  /* 回傳 1，表示程式錯誤結束 */
+    }
+
+    sprintf(s[0].firstName, &quot;Tim&quot;);     /* 將第一位學生的名字寫入 firstName */
+    sprintf(s[0].lastName, &quot;Robert&quot;);   /* 將第一位學生的姓氏寫入 lastName */
+    s[0].mathGrade = 60;                 /* 設定第一位學生的數學成績 */
+    s[0].csGrade = 45;                   /* 設定第一位學生的電腦科學成績 */
+    s[0].englishGrade = 82;              /* 設定第一位學生的英文成績 */
+
+    sprintf(s[1].firstName, &quot;Mary&quot;);    /* 將第二位學生的名字寫入 firstName */
+    sprintf(s[1].lastName, &quot;Hunter&quot;);   /* 將第二位學生的姓氏寫入 lastName */
+    s[1].mathGrade = 61;                 /* 設定第二位學生的數學成績 */
+    s[1].csGrade = 82;                   /* 設定第二位學生的電腦科學成績 */
+    s[1].englishGrade = 50;              /* 設定第二位學生的英文成績 */
+
+    sprintf(s[2].firstName, &quot;John&quot;);    /* 將第三位學生的名字寫入 firstName */
+    sprintf(s[2].lastName, &quot;Michael&quot;);  /* 將第三位學生的姓氏寫入 lastName */
+    s[2].mathGrade = 70;                 /* 設定第三位學生的數學成績 */
+    s[2].csGrade = 58;                   /* 設定第三位學生的電腦科學成績 */
+    s[2].englishGrade = 85;              /* 設定第三位學生的英文成績 */
+
+    for (i = 0; i &lt; n; i++)  /* 從第 0 位到第 n-1 位，依序印出所有學生資料 */
+    {
+        printf(&quot;%s %s\n&quot;, s[i].firstName, s[i].lastName);  /* 印出學生完整姓名 */
+        printf(&quot;Math: %d\n&quot;, s[i].mathGrade);              /* 印出數學成績 */
+        printf(&quot;CS: %d\n&quot;, s[i].csGrade);                  /* 印出電腦科學成績 */
+        printf(&quot;English: %d\n\n&quot;, s[i].englishGrade);      /* 印出英文成績，最後多換一行分隔資料 */
+    }
+
+    free(s);  /* 釋放 calloc() 配置的學生陣列記憶體 */
+
+    return 0;  /* 程式正常結束 */
+}
+</code></pre></details><h3>程式執行結果</h3><div class="terminal">Tim Robert
+Math: 60
+CS: 45
+English: 82
+
+Mary Hunter
+Math: 61
+CS: 82
+English: 50
+
+John Michael
+Math: 70
+CS: 58
+English: 85
+</div><h3>結果說明</h3><p>程式配置 3 筆 <code>struct student</code> 空間，依序寫入 Tim、Mary、John 的姓名與三科成績，再用迴圈印出。因為空間由 <code>calloc()</code> 配置，使用完畢後必須用 <code>free()</code> 釋放。</p></section>
+<section id="online" class="card"><h2>九、線上 C 編譯器連結與使用方式</h2><p class="warn">使用方式：按每題程式區塊右上方「複製程式」，再點下面任一線上編譯器，把程式貼上執行。若網站預設語言不是 C，請改成 C / GCC。</p><div class="compiler-grid">
+<a href="https://www.w3schools.com/c/c_compiler.php" target="_blank"><b>W3Schools C Compiler</b><span>初學者友善，貼上程式按 Run。</span></a>
+<a href="https://www.onlinegdb.com/online_c_compiler" target="_blank"><b>OnlineGDB</b><span>支援輸入、檔案與 Debug。</span></a>
+<a href="https://www.programiz.com/c-programming/online-compiler/" target="_blank"><b>Programiz C Compiler</b><span>適合快速測試小程式。</span></a>
+<a href="https://godbolt.org/" target="_blank"><b>Godbolt</b><span>可看編譯器輸出與組語。</span></a>
+<a href="https://www.jdoodle.com/c-online-compiler" target="_blank"><b>JDoodle C Compiler</b><span>可快速編譯執行 C 程式。</span></a>
+</div><h3>建議測試順序</h3><ol><li>先測第 1 題，確認 struct 可以直接複製。</li><li>再測第 2 題，觀察傳址 <code>&t1</code> 才能修改原資料。</li><li>接著測第 3 題，確認時間差運算。</li><li>最後測 Advanced，觀察 <code>calloc()</code> 與 <code>free()</code> 的使用。</li></ol></section>
+<section id="quiz" class="card"><h2>十、互動測驗</h2><div id="quizBox"></div><button class="secondary" onclick="renderQuiz()">重新作答</button></section>
+<section id="compile" class="card"><h2>十一、本機編譯與執行方式</h2><h3>單一檔案編譯</h3><pre><code>gcc practice11_1.c -o practice11_1
+./practice11_1</code></pre><h3>Windows CMD</h3><pre><code>gcc practice11_1.c -o practice11_1.exe
+practice11_1.exe</code></pre><h3>Advanced 題</h3><pre><code>gcc practice11_advanced.c -o practice11_advanced
+./practice11_advanced</code></pre><h3>常見錯誤提醒</h3><ul><li>使用 <code>calloc()</code> 與 <code>free()</code> 要 <code>#include &lt;stdlib.h&gt;</code>。</li><li>若函式要修改原 struct，要傳入位址，例如 <code>updateInfo(&t1,...)</code>。</li><li>struct 指標存取欄位可用 <code>p-&gt;field</code>，不要誤寫成 <code>p.field</code>。</li><li>用 <code>calloc()</code> 配置的記憶體，用完要 <code>free()</code>。</li></ul></section>
+<div class="footer">Practice 11 Structure in C Interactive Tutorial ｜ 同一題整合：題目、程式、執行結果、說明、線上編譯器</div>
+</main><script>
+let cur=0;const slides=[...document.querySelectorAll('.slidepane')];function updateSlide(){slides.forEach((s,i)=>s.classList.toggle('active',i===cur));document.getElementById('slideNum').textContent=`第 ${cur+1} / ${slides.length} 張`;}function nextSlide(){cur=(cur+1)%slides.length;updateSlide();}function prevSlide(){cur=(cur-1+slides.length)%slides.length;updateSlide();}function goSlide(i){cur=i;updateSlide();}updateSlide();
+function copyStruct(step){document.getElementById('simTime1').classList.add('active');document.getElementById('simTime2').classList.add('active');if(step===0){document.getElementById('t1h').textContent='7';document.getElementById('t1m').textContent='5';document.getElementById('t1s').textContent='0';document.getElementById('copyMsg').textContent='複製前：time1 與 time2 是兩筆不同資料，各自有 hours、minutes、seconds。';}else{document.getElementById('t1h').textContent='20';document.getElementById('t1m').textContent='59';document.getElementById('t1s').textContent='0';document.getElementById('copyMsg').textContent='執行 time1 = time2 後：time2 的三個欄位值全部被複製到 time1。';}}
+copyStruct(0);
+function copyCode(id){navigator.clipboard.writeText(document.getElementById(id).innerText).then(()=>alert('已複製程式碼'))}
+const quiz=[
+{q:'struct 和 array 最大差異之一是什麼？',opts:['struct 成員可以不同型態，array 元素通常同型態','struct 不能有 int','array 可以用 . 存取欄位','struct 只能存字串'],ans:0,why:'struct 可將不同型態但相關的資料包在一起。'},
+{q:'若 t 是 struct time 變數，要存取 hours 應寫？',opts:['t->hours','t.hours','*t.hours','&t.hours()'],ans:1,why:'變數本身用 dot operator，也就是 t.hours。'},
+{q:'若 p 是 struct time * 指標，要修改 hours 應寫？',opts:['p.hours=7','p->hours=7','time.hours=7','*p->hours=7'],ans:1,why:'struct 指標使用 ->，p->hours 等價於 (*p).hours。'},
+{q:'time1 = time2 的效果是？',opts:['只複製第一個欄位','複製所有欄位','讓兩個變數變成同一個位址','語法錯誤'],ans:1,why:'struct 相容型態可以直接指定，會複製所有欄位。'},
+{q:'updateInfo 若要修改 main 裡的 t1，應該傳入？',opts:['t1','&t1','*t1','struct t1'],ans:1,why:'要修改原資料必須傳入位址，函式參數用 struct time * 接收。'},
+{q:'calloc 配置的記憶體用完後應該？',opts:['不用處理','用 fclose','用 free','用 return'],ans:2,why:'動態配置的記憶體使用完要 free，避免 memory leak。'}];
+function renderQuiz(){let h='';quiz.forEach((q,qi)=>{h+=`<div class="quiz-card"><h3>Q${qi+1}. ${q.q}</h3>`;q.opts.forEach((o,oi)=>h+=`<button class="option" onclick="answerQuiz(${qi},${oi},this)">${o}</button>`);h+=`<div class="result" id="res${qi}"></div></div>`;});document.getElementById('quizBox').innerHTML=h;}
+function answerQuiz(qi,oi,btn){const q=quiz[qi];const card=btn.parentElement;card.querySelectorAll('.option').forEach((b,idx)=>{b.disabled=true;if(idx===q.ans)b.classList.add('correct');});if(oi!==q.ans)btn.classList.add('wrong');document.getElementById('res'+qi).textContent=(oi===q.ans?'答對！':'答錯。')+' '+q.why;}
+renderQuiz();
+</script></body></html>

@@ -1,0 +1,16 @@
+Practice 8-4
+
+scanf("%d%s%d", &i, s, &j);
+
+Input:
+12abc34 56def78
+
+Result:
+i = 12
+s = abc34
+j = 56
+
+Reason:
+%d reads 12.
+%s reads abc34 until whitespace.
+%d then reads 56 from 56def78.

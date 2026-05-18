@@ -1,0 +1,743 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Practice 07：Pointer II</title>
+<link rel="stylesheet" href="style.css">
+<script src="script.js"></script>
+</head>
+<body>
+<header>
+<h1>Practice 07：Pointer II</h1>
+<p>多網頁程式說明、每行註解、函式說明與執行結果動畫</p>
+</header>
+<nav><a href="index.html">首頁</a><a href="practice06.html">Practice 06</a><a href="practice07.html">Practice 07</a><a href="practice08.html">Practice 08</a><a href="practice09.html">Practice 09</a><a href="practice10.html">Practice 10</a><a href="practice11.html">Practice 11</a><a href="practice12.html">Practice 12</a></nav>
+<div class="wrap">
+
+<div class='card'><h2>Practice 07：Pointer II</h2><p>本頁將 Practice 07 的每個程式用下拉式介面呈現，並提供每行註解與函式功能說明。</p></div>
+
+<details open>
+<summary>practice07_1.c</summary>
+<div class="details-body">
+  <div class="grid">
+    <div>
+      <h3>原始程式碼</h3>
+      <pre>#include &lt;stdio.h&gt;
+
+void swap(int *p, int *q)
+{
+    int temp;
+
+    temp = *p;
+    *p = *q;
+    *q = temp;
+}
+
+int main(void)
+{
+    int i = 10;
+    int j = 5;
+
+    printf(&quot;Before swap: i = %d, j = %d\n&quot;, i, j);
+
+    swap(&amp;i, &amp;j);
+
+    printf(&quot;After swap: i = %d, j = %d\n&quot;, i, j);
+
+    return 0;
+}
+</pre>
+    </div>
+    <div>
+      <h3>函式說明</h3>
+      <ul class='func-list'><li><b>swap</b><br><span>參數：<code>int *p, int *q</code></span><br>使用指標交換兩個整數變數的值。</li>
+<li><b>main</b><br><span>參數：<code>void</code></span><br>主程式，負責建立測試資料、呼叫函式並印出結果。</li></ul>
+      <h3>預期執行結果</h3>
+      <pre>Before swap: i = 10, j = 5
+After swap: i = 5, j = 10
+</pre>
+    </div>
+  </div>
+
+  
+<h3>標頭檔 include 說明</h3>
+<ul class='func-list'><li><b>&lt;stdio.h&gt;</b><br>標準輸入輸出函式庫。提供 printf、scanf、puts、FILE、fopen、fclose、fgets、fprintf、fread、fwrite 等功能。</li></ul>
+<h3>完整函式與函式庫說明</h3>
+<ul class='func-list'><li><b>main()</b><br>自訂函式。參數：void。主程式進入點，負責建立測試資料、呼叫函式、顯示結果。</li>
+<li><b>swap()</b><br>自訂函式。參數：int *p, int *q。透過指標交換兩個整數變數的值。</li>
+<li><b>printf()</b><br>把格式化文字輸出到螢幕。</li></ul>
+
+<h3>如何編輯、編譯與執行</h3>
+<details open>
+<summary>Windows / PowerShell</summary>
+<div class="details-body">
+<ol>
+<li>用 VS Code、Dev-C++、Notepad++ 或 Visual Studio 開啟 <code>practice07_1.c</code>。</li>
+<li>修改程式後按儲存。</li>
+<li>在同一個資料夾開啟 PowerShell 或 cmd。</li>
+<li>編譯：<pre>gcc practice07_1.c -o practice07_1.exe</pre></li>
+<li>執行：<pre>.\practice07_1.exe</pre></li>
+</ol>
+<p class="note">若程式需要輸入，執行後依畫面提示輸入資料。</p>
+</div>
+</details>
+<details>
+<summary>Linux / Yellow Server</summary>
+<div class="details-body">
+<ol>
+<li>進入程式所在資料夾。</li>
+<li>用 <code>vim</code>、<code>nano</code> 或其他編輯器修改 <code>practice07_1.c</code>。</li>
+<li>編譯：<pre>gcc practice07_1.c -o practice07_1.out</pre></li>
+<li>執行：<pre>./practice07_1.out</pre></li>
+</ol>
+</div>
+</details>
+
+<h3>每一行程式註解</h3>
+  <table>
+    <thead><tr><th>行號</th><th>程式碼</th><th>說明</th></tr></thead>
+    <tbody>
+      <tr><td class='ln'>1</td><td><code>#include &lt;stdio.h&gt;</code></td><td>匯入標準輸入輸出函式庫，可使用 printf、scanf、FILE 等功能。</td></tr>
+<tr><td class='ln'>2</td><td><code></code></td><td>空白行，用來分隔程式區塊，增加可讀性。</td></tr>
+<tr><td class='ln'>3</td><td><code>void swap(int *p, int *q)</code></td><td>函式定義的開始，這裡宣告函式名稱、參數與回傳型態。</td></tr>
+<tr><td class='ln'>4</td><td><code>{</code></td><td>大括號，用來標示程式區塊的開始或結束。</td></tr>
+<tr><td class='ln'>5</td><td><code>    int temp;</code></td><td>一般 C 語言敘述，負責完成此題所需的運算或資料處理。</td></tr>
+<tr><td class='ln'>6</td><td><code></code></td><td>空白行，用來分隔程式區塊，增加可讀性。</td></tr>
+<tr><td class='ln'>7</td><td><code>    temp = *p;</code></td><td>指標或變數指定操作，可能透過位址間接修改資料。</td></tr>
+<tr><td class='ln'>8</td><td><code>    *p = *q;</code></td><td>指標或變數指定操作，可能透過位址間接修改資料。</td></tr>
+<tr><td class='ln'>9</td><td><code>    *q = temp;</code></td><td>指標或變數指定操作，可能透過位址間接修改資料。</td></tr>
+<tr><td class='ln'>10</td><td><code>}</code></td><td>大括號，用來標示程式區塊的開始或結束。</td></tr>
+<tr><td class='ln'>11</td><td><code></code></td><td>空白行，用來分隔程式區塊，增加可讀性。</td></tr>
+<tr><td class='ln'>12</td><td><code>int main(void)</code></td><td>函式定義的開始，這裡宣告函式名稱、參數與回傳型態。</td></tr>
+<tr><td class='ln'>13</td><td><code>{</code></td><td>大括號，用來標示程式區塊的開始或結束。</td></tr>
+<tr><td class='ln'>14</td><td><code>    int i = 10;</code></td><td>指定敘述，把右邊的值存入左邊的變數。</td></tr>
+<tr><td class='ln'>15</td><td><code>    int j = 5;</code></td><td>指定敘述，把右邊的值存入左邊的變數。</td></tr>
+<tr><td class='ln'>16</td><td><code></code></td><td>空白行，用來分隔程式區塊，增加可讀性。</td></tr>
+<tr><td class='ln'>17</td><td><code>    printf(&quot;Before swap: i = %d, j = %d\n&quot;, i, j);</code></td><td>將文字或變數內容輸出到螢幕。</td></tr>
+<tr><td class='ln'>18</td><td><code></code></td><td>空白行，用來分隔程式區塊，增加可讀性。</td></tr>
+<tr><td class='ln'>19</td><td><code>    swap(&amp;i, &amp;j);</code></td><td>使用 &amp; 取得變數位址，常用於指標或 scanf。</td></tr>
+<tr><td class='ln'>20</td><td><code></code></td><td>空白行，用來分隔程式區塊，增加可讀性。</td></tr>
+<tr><td class='ln'>21</td><td><code>    printf(&quot;After swap: i = %d, j = %d\n&quot;, i, j);</code></td><td>將文字或變數內容輸出到螢幕。</td></tr>
+<tr><td class='ln'>22</td><td><code></code></td><td>空白行，用來分隔程式區塊，增加可讀性。</td></tr>
+<tr><td class='ln'>23</td><td><code>    return 0;</code></td><td>結束函式並回傳結果給呼叫端。</td></tr>
+<tr><td class='ln'>24</td><td><code>}</code></td><td>大括號，用來標示程式區塊的開始或結束。</td></tr>
+    </tbody>
+  </table>
+
+  
+<div class="runner">
+  <h4>執行動畫</h4>
+  <p class="note">按「逐行執行」會逐步高亮程式碼，右側會模擬輸出逐漸出現。</p>
+  <div class="controls">
+    <button onclick="stepRunner('practice07_1')">逐行執行</button>
+    <button onclick="playRunner('practice07_1')">自動播放</button>
+    <button class="secondary" onclick="resetRunner('practice07_1')">重設</button>
+  </div>
+  <div class="stage">
+    <pre id="practice07_1_code"></pre>
+    <div class="output" id="practice07_1_out"></div>
+  </div>
+</div>
+<script>initRunner('practice07_1', ['#include <stdio.h>', '', 'void swap(int *p, int *q)', '{', '    int temp;', '', '    temp = *p;', '    *p = *q;', '    *q = temp;', '}', '', 'int main(void)', '{', '    int i = 10;', '    int j = 5;', '', '    printf("Before swap: i = %d, j = %d\\n", i, j);', '', '    swap(&i, &j);', '', '    printf("After swap: i = %d, j = %d\\n", i, j);', '', '    return 0;', '}'], 'Before swap: i = 10, j = 5\nAfter swap: i = 5, j = 10\n');</script>
+
+</div>
+</details>
+
+
+<details open>
+<summary>practice07_2.c</summary>
+<div class="details-body">
+  <div class="grid">
+    <div>
+      <h3>原始程式碼</h3>
+      <pre>#include &lt;stdio.h&gt;
+
+int *find_largest(int a[], int n)
+{
+    int i;
+    int *largest = &amp;a[0];
+
+    for (i = 1; i &lt; n; i++)
+    {
+        if (a[i] &gt; *largest)
+        {
+            largest = &amp;a[i];
+        }
+    }
+
+    return largest;
+}
+
+int main(void)
+{
+    int a[] = {10, 80, 30, 50, 20};
+    int n = sizeof(a) / sizeof(a[0]);
+    int *p;
+
+    p = find_largest(a, n);
+
+    printf(&quot;Largest value = %d\n&quot;, *p);
+
+    return 0;
+}
+</pre>
+    </div>
+    <div>
+      <h3>函式說明</h3>
+      <ul class='func-list'><li><b>main</b><br><span>參數：<code>void</code></span><br>主程式，負責建立測試資料、呼叫函式並印出結果。</li></ul>
+      <h3>預期執行結果</h3>
+      <pre>Largest value = 80
+</pre>
+    </div>
+  </div>
+
+  
+<h3>標頭檔 include 說明</h3>
+<ul class='func-list'><li><b>&lt;stdio.h&gt;</b><br>標準輸入輸出函式庫。提供 printf、scanf、puts、FILE、fopen、fclose、fgets、fprintf、fread、fwrite 等功能。</li></ul>
+<h3>完整函式與函式庫說明</h3>
+<ul class='func-list'><li><b>main()</b><br>自訂函式。參數：void。主程式進入點，負責建立測試資料、呼叫函式、顯示結果。</li>
+<li><b>printf()</b><br>把格式化文字輸出到螢幕。</li>
+<li><b>sizeof()</b><br>計算型別或變數所佔的記憶體大小。</li></ul>
+
+<h3>如何編輯、編譯與執行</h3>
+<details open>
+<summary>Windows / PowerShell</summary>
+<div class="details-body">
+<ol>
+<li>用 VS Code、Dev-C++、Notepad++ 或 Visual Studio 開啟 <code>practice07_2.c</code>。</li>
+<li>修改程式後按儲存。</li>
+<li>在同一個資料夾開啟 PowerShell 或 cmd。</li>
+<li>編譯：<pre>gcc practice07_2.c -o practice07_2.exe</pre></li>
+<li>執行：<pre>.\practice07_2.exe</pre></li>
+</ol>
+<p class="note">若程式需要輸入，執行後依畫面提示輸入資料。</p>
+</div>
+</details>
+<details>
+<summary>Linux / Yellow Server</summary>
+<div class="details-body">
+<ol>
+<li>進入程式所在資料夾。</li>
+<li>用 <code>vim</code>、<code>nano</code> 或其他編輯器修改 <code>practice07_2.c</code>。</li>
+<li>編譯：<pre>gcc practice07_2.c -o practice07_2.out</pre></li>
+<li>執行：<pre>./practice07_2.out</pre></li>
+</ol>
+</div>
+</details>
+
+<h3>每一行程式註解</h3>
+  <table>
+    <thead><tr><th>行號</th><th>程式碼</th><th>說明</th></tr></thead>
+    <tbody>
+      <tr><td class='ln'>1</td><td><code>#include &lt;stdio.h&gt;</code></td><td>匯入標準輸入輸出函式庫，可使用 printf、scanf、FILE 等功能。</td></tr>
+<tr><td class='ln'>2</td><td><code></code></td><td>空白行，用來分隔程式區塊，增加可讀性。</td></tr>
+<tr><td class='ln'>3</td><td><code>int *find_largest(int a[], int n)</code></td><td>一般 C 語言敘述，負責完成此題所需的運算或資料處理。</td></tr>
+<tr><td class='ln'>4</td><td><code>{</code></td><td>大括號，用來標示程式區塊的開始或結束。</td></tr>
+<tr><td class='ln'>5</td><td><code>    int i;</code></td><td>一般 C 語言敘述，負責完成此題所需的運算或資料處理。</td></tr>
+<tr><td class='ln'>6</td><td><code>    int *largest = &amp;a[0];</code></td><td>指標或變數指定操作，可能透過位址間接修改資料。</td></tr>
+<tr><td class='ln'>7</td><td><code></code></td><td>空白行，用來分隔程式區塊，增加可讀性。</td></tr>
+<tr><td class='ln'>8</td><td><code>    for (i = 1; i &lt; n; i++)</code></td><td>for 迴圈，用固定次數或範圍重複執行程式。</td></tr>
+<tr><td class='ln'>9</td><td><code>    {</code></td><td>大括號，用來標示程式區塊的開始或結束。</td></tr>
+<tr><td class='ln'>10</td><td><code>        if (a[i] &gt; *largest)</code></td><td>條件判斷，若條件成立就執行對應區塊。</td></tr>
+<tr><td class='ln'>11</td><td><code>        {</code></td><td>大括號，用來標示程式區塊的開始或結束。</td></tr>
+<tr><td class='ln'>12</td><td><code>            largest = &amp;a[i];</code></td><td>使用 &amp; 取得變數位址，常用於指標或 scanf。</td></tr>
+<tr><td class='ln'>13</td><td><code>        }</code></td><td>大括號，用來標示程式區塊的開始或結束。</td></tr>
+<tr><td class='ln'>14</td><td><code>    }</code></td><td>大括號，用來標示程式區塊的開始或結束。</td></tr>
+<tr><td class='ln'>15</td><td><code></code></td><td>空白行，用來分隔程式區塊，增加可讀性。</td></tr>
+<tr><td class='ln'>16</td><td><code>    return largest;</code></td><td>結束函式並回傳結果給呼叫端。</td></tr>
+<tr><td class='ln'>17</td><td><code>}</code></td><td>大括號，用來標示程式區塊的開始或結束。</td></tr>
+<tr><td class='ln'>18</td><td><code></code></td><td>空白行，用來分隔程式區塊，增加可讀性。</td></tr>
+<tr><td class='ln'>19</td><td><code>int main(void)</code></td><td>函式定義的開始，這裡宣告函式名稱、參數與回傳型態。</td></tr>
+<tr><td class='ln'>20</td><td><code>{</code></td><td>大括號，用來標示程式區塊的開始或結束。</td></tr>
+<tr><td class='ln'>21</td><td><code>    int a[] = {10, 80, 30, 50, 20};</code></td><td>指定敘述，把右邊的值存入左邊的變數。</td></tr>
+<tr><td class='ln'>22</td><td><code>    int n = sizeof(a) / sizeof(a[0]);</code></td><td>指定敘述，把右邊的值存入左邊的變數。</td></tr>
+<tr><td class='ln'>23</td><td><code>    int *p;</code></td><td>一般 C 語言敘述，負責完成此題所需的運算或資料處理。</td></tr>
+<tr><td class='ln'>24</td><td><code></code></td><td>空白行，用來分隔程式區塊，增加可讀性。</td></tr>
+<tr><td class='ln'>25</td><td><code>    p = find_largest(a, n);</code></td><td>指定敘述，把右邊的值存入左邊的變數。</td></tr>
+<tr><td class='ln'>26</td><td><code></code></td><td>空白行，用來分隔程式區塊，增加可讀性。</td></tr>
+<tr><td class='ln'>27</td><td><code>    printf(&quot;Largest value = %d\n&quot;, *p);</code></td><td>將文字或變數內容輸出到螢幕。</td></tr>
+<tr><td class='ln'>28</td><td><code></code></td><td>空白行，用來分隔程式區塊，增加可讀性。</td></tr>
+<tr><td class='ln'>29</td><td><code>    return 0;</code></td><td>結束函式並回傳結果給呼叫端。</td></tr>
+<tr><td class='ln'>30</td><td><code>}</code></td><td>大括號，用來標示程式區塊的開始或結束。</td></tr>
+    </tbody>
+  </table>
+
+  
+<div class="runner">
+  <h4>執行動畫</h4>
+  <p class="note">按「逐行執行」會逐步高亮程式碼，右側會模擬輸出逐漸出現。</p>
+  <div class="controls">
+    <button onclick="stepRunner('practice07_2')">逐行執行</button>
+    <button onclick="playRunner('practice07_2')">自動播放</button>
+    <button class="secondary" onclick="resetRunner('practice07_2')">重設</button>
+  </div>
+  <div class="stage">
+    <pre id="practice07_2_code"></pre>
+    <div class="output" id="practice07_2_out"></div>
+  </div>
+</div>
+<script>initRunner('practice07_2', ['#include <stdio.h>', '', 'int *find_largest(int a[], int n)', '{', '    int i;', '    int *largest = &a[0];', '', '    for (i = 1; i < n; i++)', '    {', '        if (a[i] > *largest)', '        {', '            largest = &a[i];', '        }', '    }', '', '    return largest;', '}', '', 'int main(void)', '{', '    int a[] = {10, 80, 30, 50, 20};', '    int n = sizeof(a) / sizeof(a[0]);', '    int *p;', '', '    p = find_largest(a, n);', '', '    printf("Largest value = %d\\n", *p);', '', '    return 0;', '}'], 'Largest value = 80\n');</script>
+
+</div>
+</details>
+
+
+<details open>
+<summary>practice07_3.c</summary>
+<div class="details-body">
+  <div class="grid">
+    <div>
+      <h3>原始程式碼</h3>
+      <pre>#include &lt;stdio.h&gt;
+
+#define row 3
+#define column 5
+
+int main(void)
+{
+    int a[row][column] =
+    {
+        {1, 2, 3, 4, 5},
+        {1, 4, 9, 16, 25},
+        {1, 8, 27, 64, 125}
+    };
+
+    int (*p)[column];
+    int i, j;
+
+    p = a;
+
+    for (i = 0; i &lt; row; i++)
+    {
+        for (j = 0; j &lt; column; j++)
+        {
+            printf(&quot;%d &quot;, *(*(p + i) + j));
+        }
+        printf(&quot;\n&quot;);
+    }
+
+    return 0;
+}
+</pre>
+    </div>
+    <div>
+      <h3>函式說明</h3>
+      <ul class='func-list'><li><b>main</b><br><span>參數：<code>void</code></span><br>主程式，負責建立測試資料、呼叫函式並印出結果。</li></ul>
+      <h3>預期執行結果</h3>
+      <pre>1 2 3 4 5 
+1 4 9 16 25 
+1 8 27 64 125 
+</pre>
+    </div>
+  </div>
+
+  
+<h3>標頭檔 include 說明</h3>
+<ul class='func-list'><li><b>&lt;stdio.h&gt;</b><br>標準輸入輸出函式庫。提供 printf、scanf、puts、FILE、fopen、fclose、fgets、fprintf、fread、fwrite 等功能。</li></ul>
+<h3>完整函式與函式庫說明</h3>
+<ul class='func-list'><li><b>main()</b><br>自訂函式。參數：void。主程式進入點，負責建立測試資料、呼叫函式、顯示結果。</li>
+<li><b>printf()</b><br>把格式化文字輸出到螢幕。</li></ul>
+
+<h3>如何編輯、編譯與執行</h3>
+<details open>
+<summary>Windows / PowerShell</summary>
+<div class="details-body">
+<ol>
+<li>用 VS Code、Dev-C++、Notepad++ 或 Visual Studio 開啟 <code>practice07_3.c</code>。</li>
+<li>修改程式後按儲存。</li>
+<li>在同一個資料夾開啟 PowerShell 或 cmd。</li>
+<li>編譯：<pre>gcc practice07_3.c -o practice07_3.exe</pre></li>
+<li>執行：<pre>.\practice07_3.exe</pre></li>
+</ol>
+<p class="note">若程式需要輸入，執行後依畫面提示輸入資料。</p>
+</div>
+</details>
+<details>
+<summary>Linux / Yellow Server</summary>
+<div class="details-body">
+<ol>
+<li>進入程式所在資料夾。</li>
+<li>用 <code>vim</code>、<code>nano</code> 或其他編輯器修改 <code>practice07_3.c</code>。</li>
+<li>編譯：<pre>gcc practice07_3.c -o practice07_3.out</pre></li>
+<li>執行：<pre>./practice07_3.out</pre></li>
+</ol>
+</div>
+</details>
+
+<h3>每一行程式註解</h3>
+  <table>
+    <thead><tr><th>行號</th><th>程式碼</th><th>說明</th></tr></thead>
+    <tbody>
+      <tr><td class='ln'>1</td><td><code>#include &lt;stdio.h&gt;</code></td><td>匯入標準輸入輸出函式庫，可使用 printf、scanf、FILE 等功能。</td></tr>
+<tr><td class='ln'>2</td><td><code></code></td><td>空白行，用來分隔程式區塊，增加可讀性。</td></tr>
+<tr><td class='ln'>3</td><td><code>#define row 3</code></td><td>定義前處理常數或巨集，讓後面程式可以直接使用這個名稱。</td></tr>
+<tr><td class='ln'>4</td><td><code>#define column 5</code></td><td>定義前處理常數或巨集，讓後面程式可以直接使用這個名稱。</td></tr>
+<tr><td class='ln'>5</td><td><code></code></td><td>空白行，用來分隔程式區塊，增加可讀性。</td></tr>
+<tr><td class='ln'>6</td><td><code>int main(void)</code></td><td>函式定義的開始，這裡宣告函式名稱、參數與回傳型態。</td></tr>
+<tr><td class='ln'>7</td><td><code>{</code></td><td>大括號，用來標示程式區塊的開始或結束。</td></tr>
+<tr><td class='ln'>8</td><td><code>    int a[row][column] =</code></td><td>指定敘述，把右邊的值存入左邊的變數。</td></tr>
+<tr><td class='ln'>9</td><td><code>    {</code></td><td>大括號，用來標示程式區塊的開始或結束。</td></tr>
+<tr><td class='ln'>10</td><td><code>        {1, 2, 3, 4, 5},</code></td><td>一般 C 語言敘述，負責完成此題所需的運算或資料處理。</td></tr>
+<tr><td class='ln'>11</td><td><code>        {1, 4, 9, 16, 25},</code></td><td>一般 C 語言敘述，負責完成此題所需的運算或資料處理。</td></tr>
+<tr><td class='ln'>12</td><td><code>        {1, 8, 27, 64, 125}</code></td><td>一般 C 語言敘述，負責完成此題所需的運算或資料處理。</td></tr>
+<tr><td class='ln'>13</td><td><code>    };</code></td><td>一般 C 語言敘述，負責完成此題所需的運算或資料處理。</td></tr>
+<tr><td class='ln'>14</td><td><code></code></td><td>空白行，用來分隔程式區塊，增加可讀性。</td></tr>
+<tr><td class='ln'>15</td><td><code>    int (*p)[column];</code></td><td>一般 C 語言敘述，負責完成此題所需的運算或資料處理。</td></tr>
+<tr><td class='ln'>16</td><td><code>    int i, j;</code></td><td>一般 C 語言敘述，負責完成此題所需的運算或資料處理。</td></tr>
+<tr><td class='ln'>17</td><td><code></code></td><td>空白行，用來分隔程式區塊，增加可讀性。</td></tr>
+<tr><td class='ln'>18</td><td><code>    p = a;</code></td><td>指定敘述，把右邊的值存入左邊的變數。</td></tr>
+<tr><td class='ln'>19</td><td><code></code></td><td>空白行，用來分隔程式區塊，增加可讀性。</td></tr>
+<tr><td class='ln'>20</td><td><code>    for (i = 0; i &lt; row; i++)</code></td><td>for 迴圈，用固定次數或範圍重複執行程式。</td></tr>
+<tr><td class='ln'>21</td><td><code>    {</code></td><td>大括號，用來標示程式區塊的開始或結束。</td></tr>
+<tr><td class='ln'>22</td><td><code>        for (j = 0; j &lt; column; j++)</code></td><td>for 迴圈，用固定次數或範圍重複執行程式。</td></tr>
+<tr><td class='ln'>23</td><td><code>        {</code></td><td>大括號，用來標示程式區塊的開始或結束。</td></tr>
+<tr><td class='ln'>24</td><td><code>            printf(&quot;%d &quot;, *(*(p + i) + j));</code></td><td>將文字或變數內容輸出到螢幕。</td></tr>
+<tr><td class='ln'>25</td><td><code>        }</code></td><td>大括號，用來標示程式區塊的開始或結束。</td></tr>
+<tr><td class='ln'>26</td><td><code>        printf(&quot;\n&quot;);</code></td><td>將文字或變數內容輸出到螢幕。</td></tr>
+<tr><td class='ln'>27</td><td><code>    }</code></td><td>大括號，用來標示程式區塊的開始或結束。</td></tr>
+<tr><td class='ln'>28</td><td><code></code></td><td>空白行，用來分隔程式區塊，增加可讀性。</td></tr>
+<tr><td class='ln'>29</td><td><code>    return 0;</code></td><td>結束函式並回傳結果給呼叫端。</td></tr>
+<tr><td class='ln'>30</td><td><code>}</code></td><td>大括號，用來標示程式區塊的開始或結束。</td></tr>
+    </tbody>
+  </table>
+
+  
+<div class="runner">
+  <h4>執行動畫</h4>
+  <p class="note">按「逐行執行」會逐步高亮程式碼，右側會模擬輸出逐漸出現。</p>
+  <div class="controls">
+    <button onclick="stepRunner('practice07_3')">逐行執行</button>
+    <button onclick="playRunner('practice07_3')">自動播放</button>
+    <button class="secondary" onclick="resetRunner('practice07_3')">重設</button>
+  </div>
+  <div class="stage">
+    <pre id="practice07_3_code"></pre>
+    <div class="output" id="practice07_3_out"></div>
+  </div>
+</div>
+<script>initRunner('practice07_3', ['#include <stdio.h>', '', '#define row 3', '#define column 5', '', 'int main(void)', '{', '    int a[row][column] =', '    {', '        {1, 2, 3, 4, 5},', '        {1, 4, 9, 16, 25},', '        {1, 8, 27, 64, 125}', '    };', '', '    int (*p)[column];', '    int i, j;', '', '    p = a;', '', '    for (i = 0; i < row; i++)', '    {', '        for (j = 0; j < column; j++)', '        {', '            printf("%d ", *(*(p + i) + j));', '        }', '        printf("\\n");', '    }', '', '    return 0;', '}'], '1 2 3 4 5 \n1 4 9 16 25 \n1 8 27 64 125 \n');</script>
+
+</div>
+</details>
+
+
+<details open>
+<summary>practice07_4.c</summary>
+<div class="details-body">
+  <div class="grid">
+    <div>
+      <h3>原始程式碼</h3>
+      <pre>#include &lt;stdio.h&gt;
+
+int main(void)
+{
+    int a[5] = {5, 4, 3, 2, 1};
+    int *p = a;
+    int *q = &amp;a[4];
+
+    printf(&quot;*(p + 2) = %d\n&quot;, *(p + 2));
+    printf(&quot;*(q - 3) = %d\n&quot;, *(q - 3));
+    printf(&quot;q - p = %ld\n&quot;, q - p);
+    printf(&quot;p &lt; q is %s\n&quot;, (p &lt; q) ? &quot;true&quot; : &quot;false&quot;);
+    printf(&quot;*p &lt; *q is %s\n&quot;, (*p &lt; *q) ? &quot;true&quot; : &quot;false&quot;);
+
+    return 0;
+}
+</pre>
+    </div>
+    <div>
+      <h3>函式說明</h3>
+      <ul class='func-list'><li><b>main</b><br><span>參數：<code>void</code></span><br>主程式，負責建立測試資料、呼叫函式並印出結果。</li></ul>
+      <h3>預期執行結果</h3>
+      <pre>*(p + 2) = 3
+*(q - 3) = 4
+q - p = 4
+p &lt; q is true
+*p &lt; *q is false
+</pre>
+    </div>
+  </div>
+
+  
+<h3>標頭檔 include 說明</h3>
+<ul class='func-list'><li><b>&lt;stdio.h&gt;</b><br>標準輸入輸出函式庫。提供 printf、scanf、puts、FILE、fopen、fclose、fgets、fprintf、fread、fwrite 等功能。</li></ul>
+<h3>完整函式與函式庫說明</h3>
+<ul class='func-list'><li><b>main()</b><br>自訂函式。參數：void。主程式進入點，負責建立測試資料、呼叫函式、顯示結果。</li>
+<li><b>printf()</b><br>把格式化文字輸出到螢幕。</li></ul>
+
+<h3>如何編輯、編譯與執行</h3>
+<details open>
+<summary>Windows / PowerShell</summary>
+<div class="details-body">
+<ol>
+<li>用 VS Code、Dev-C++、Notepad++ 或 Visual Studio 開啟 <code>practice07_4.c</code>。</li>
+<li>修改程式後按儲存。</li>
+<li>在同一個資料夾開啟 PowerShell 或 cmd。</li>
+<li>編譯：<pre>gcc practice07_4.c -o practice07_4.exe</pre></li>
+<li>執行：<pre>.\practice07_4.exe</pre></li>
+</ol>
+<p class="note">若程式需要輸入，執行後依畫面提示輸入資料。</p>
+</div>
+</details>
+<details>
+<summary>Linux / Yellow Server</summary>
+<div class="details-body">
+<ol>
+<li>進入程式所在資料夾。</li>
+<li>用 <code>vim</code>、<code>nano</code> 或其他編輯器修改 <code>practice07_4.c</code>。</li>
+<li>編譯：<pre>gcc practice07_4.c -o practice07_4.out</pre></li>
+<li>執行：<pre>./practice07_4.out</pre></li>
+</ol>
+</div>
+</details>
+
+<h3>每一行程式註解</h3>
+  <table>
+    <thead><tr><th>行號</th><th>程式碼</th><th>說明</th></tr></thead>
+    <tbody>
+      <tr><td class='ln'>1</td><td><code>#include &lt;stdio.h&gt;</code></td><td>匯入標準輸入輸出函式庫，可使用 printf、scanf、FILE 等功能。</td></tr>
+<tr><td class='ln'>2</td><td><code></code></td><td>空白行，用來分隔程式區塊，增加可讀性。</td></tr>
+<tr><td class='ln'>3</td><td><code>int main(void)</code></td><td>函式定義的開始，這裡宣告函式名稱、參數與回傳型態。</td></tr>
+<tr><td class='ln'>4</td><td><code>{</code></td><td>大括號，用來標示程式區塊的開始或結束。</td></tr>
+<tr><td class='ln'>5</td><td><code>    int a[5] = {5, 4, 3, 2, 1};</code></td><td>指定敘述，把右邊的值存入左邊的變數。</td></tr>
+<tr><td class='ln'>6</td><td><code>    int *p = a;</code></td><td>指標或變數指定操作，可能透過位址間接修改資料。</td></tr>
+<tr><td class='ln'>7</td><td><code>    int *q = &amp;a[4];</code></td><td>指標或變數指定操作，可能透過位址間接修改資料。</td></tr>
+<tr><td class='ln'>8</td><td><code></code></td><td>空白行，用來分隔程式區塊，增加可讀性。</td></tr>
+<tr><td class='ln'>9</td><td><code>    printf(&quot;*(p + 2) = %d\n&quot;, *(p + 2));</code></td><td>將文字或變數內容輸出到螢幕。</td></tr>
+<tr><td class='ln'>10</td><td><code>    printf(&quot;*(q - 3) = %d\n&quot;, *(q - 3));</code></td><td>將文字或變數內容輸出到螢幕。</td></tr>
+<tr><td class='ln'>11</td><td><code>    printf(&quot;q - p = %ld\n&quot;, q - p);</code></td><td>將文字或變數內容輸出到螢幕。</td></tr>
+<tr><td class='ln'>12</td><td><code>    printf(&quot;p &lt; q is %s\n&quot;, (p &lt; q) ? &quot;true&quot; : &quot;false&quot;);</code></td><td>將文字或變數內容輸出到螢幕。</td></tr>
+<tr><td class='ln'>13</td><td><code>    printf(&quot;*p &lt; *q is %s\n&quot;, (*p &lt; *q) ? &quot;true&quot; : &quot;false&quot;);</code></td><td>將文字或變數內容輸出到螢幕。</td></tr>
+<tr><td class='ln'>14</td><td><code></code></td><td>空白行，用來分隔程式區塊，增加可讀性。</td></tr>
+<tr><td class='ln'>15</td><td><code>    return 0;</code></td><td>結束函式並回傳結果給呼叫端。</td></tr>
+<tr><td class='ln'>16</td><td><code>}</code></td><td>大括號，用來標示程式區塊的開始或結束。</td></tr>
+    </tbody>
+  </table>
+
+  
+<div class="runner">
+  <h4>執行動畫</h4>
+  <p class="note">按「逐行執行」會逐步高亮程式碼，右側會模擬輸出逐漸出現。</p>
+  <div class="controls">
+    <button onclick="stepRunner('practice07_4')">逐行執行</button>
+    <button onclick="playRunner('practice07_4')">自動播放</button>
+    <button class="secondary" onclick="resetRunner('practice07_4')">重設</button>
+  </div>
+  <div class="stage">
+    <pre id="practice07_4_code"></pre>
+    <div class="output" id="practice07_4_out"></div>
+  </div>
+</div>
+<script>initRunner('practice07_4', ['#include <stdio.h>', '', 'int main(void)', '{', '    int a[5] = {5, 4, 3, 2, 1};', '    int *p = a;', '    int *q = &a[4];', '', '    printf("*(p + 2) = %d\\n", *(p + 2));', '    printf("*(q - 3) = %d\\n", *(q - 3));', '    printf("q - p = %ld\\n", q - p);', '    printf("p < q is %s\\n", (p < q) ? "true" : "false");', '    printf("*p < *q is %s\\n", (*p < *q) ? "true" : "false");', '', '    return 0;', '}'], '*(p + 2) = 3\n*(q - 3) = 4\nq - p = 4\np < q is true\n*p < *q is false\n');</script>
+
+</div>
+</details>
+
+
+<details open>
+<summary>practice07_5.c</summary>
+<div class="details-body">
+  <div class="grid">
+    <div>
+      <h3>原始程式碼</h3>
+      <pre>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+int *func(int a[], int size)
+{
+    int *r;
+    int i;
+
+    r = (int *)malloc(size * sizeof(int));
+
+    if (r == NULL)
+    {
+        return NULL;
+    }
+
+    for (i = 0; i &lt; size; i++)
+    {
+        if (a[i] &lt; 0)
+        {
+            a[i] = -a[i];
+        }
+
+        r[i] = a[i] * a[i];
+    }
+
+    return r;
+}
+
+int main(void)
+{
+    int a[] = {-1, 2, -3, 4, -5};
+    int size = sizeof(a) / sizeof(a[0]);
+    int *r;
+    int i;
+
+    r = func(a, size);
+
+    if (r == NULL)
+    {
+        printf(&quot;Memory allocation failed.\n&quot;);
+        return 1;
+    }
+
+    printf(&quot;Absolute array:\n&quot;);
+    for (i = 0; i &lt; size; i++)
+    {
+        printf(&quot;%d &quot;, a[i]);
+    }
+
+    printf(&quot;\nSquare array:\n&quot;);
+    for (i = 0; i &lt; size; i++)
+    {
+        printf(&quot;%d &quot;, r[i]);
+    }
+
+    printf(&quot;\n&quot;);
+
+    free(r);
+
+    return 0;
+}
+</pre>
+    </div>
+    <div>
+      <h3>函式說明</h3>
+      <ul class='func-list'><li><b>main</b><br><span>參數：<code>void</code></span><br>主程式，負責建立測試資料、呼叫函式並印出結果。</li></ul>
+      <h3>預期執行結果</h3>
+      <pre>Absolute array:
+1 2 3 4 5 
+Square array:
+1 4 9 16 25 
+</pre>
+    </div>
+  </div>
+
+  
+<h3>標頭檔 include 說明</h3>
+<ul class='func-list'><li><b>&lt;stdio.h&gt;</b><br>標準輸入輸出函式庫。提供 printf、scanf、puts、FILE、fopen、fclose、fgets、fprintf、fread、fwrite 等功能。</li>
+<li><b>&lt;stdlib.h&gt;</b><br>標準工具函式庫。提供 malloc、calloc、realloc、free、exit、abs 等動態記憶體與工具函式。</li></ul>
+<h3>完整函式與函式庫說明</h3>
+<ul class='func-list'><li><b>main()</b><br>自訂函式。參數：void。主程式進入點，負責建立測試資料、呼叫函式、顯示結果。</li>
+<li><b>printf()</b><br>把格式化文字輸出到螢幕。</li>
+<li><b>malloc()</b><br>配置指定大小的動態記憶體，但內容不會自動清為 0。</li>
+<li><b>free()</b><br>釋放動態配置的記憶體。</li>
+<li><b>sizeof()</b><br>計算型別或變數所佔的記憶體大小。</li></ul>
+
+<h3>如何編輯、編譯與執行</h3>
+<details open>
+<summary>Windows / PowerShell</summary>
+<div class="details-body">
+<ol>
+<li>用 VS Code、Dev-C++、Notepad++ 或 Visual Studio 開啟 <code>practice07_5.c</code>。</li>
+<li>修改程式後按儲存。</li>
+<li>在同一個資料夾開啟 PowerShell 或 cmd。</li>
+<li>編譯：<pre>gcc practice07_5.c -o practice07_5.exe</pre></li>
+<li>執行：<pre>.\practice07_5.exe</pre></li>
+</ol>
+<p class="note">若程式需要輸入，執行後依畫面提示輸入資料。</p>
+</div>
+</details>
+<details>
+<summary>Linux / Yellow Server</summary>
+<div class="details-body">
+<ol>
+<li>進入程式所在資料夾。</li>
+<li>用 <code>vim</code>、<code>nano</code> 或其他編輯器修改 <code>practice07_5.c</code>。</li>
+<li>編譯：<pre>gcc practice07_5.c -o practice07_5.out</pre></li>
+<li>執行：<pre>./practice07_5.out</pre></li>
+</ol>
+</div>
+</details>
+
+<h3>每一行程式註解</h3>
+  <table>
+    <thead><tr><th>行號</th><th>程式碼</th><th>說明</th></tr></thead>
+    <tbody>
+      <tr><td class='ln'>1</td><td><code>#include &lt;stdio.h&gt;</code></td><td>匯入標準輸入輸出函式庫，可使用 printf、scanf、FILE 等功能。</td></tr>
+<tr><td class='ln'>2</td><td><code>#include &lt;stdlib.h&gt;</code></td><td>匯入標準函式庫，可使用 malloc、calloc、free、exit、abs 等功能。</td></tr>
+<tr><td class='ln'>3</td><td><code></code></td><td>空白行，用來分隔程式區塊，增加可讀性。</td></tr>
+<tr><td class='ln'>4</td><td><code>int *func(int a[], int size)</code></td><td>一般 C 語言敘述，負責完成此題所需的運算或資料處理。</td></tr>
+<tr><td class='ln'>5</td><td><code>{</code></td><td>大括號，用來標示程式區塊的開始或結束。</td></tr>
+<tr><td class='ln'>6</td><td><code>    int *r;</code></td><td>一般 C 語言敘述，負責完成此題所需的運算或資料處理。</td></tr>
+<tr><td class='ln'>7</td><td><code>    int i;</code></td><td>一般 C 語言敘述，負責完成此題所需的運算或資料處理。</td></tr>
+<tr><td class='ln'>8</td><td><code></code></td><td>空白行，用來分隔程式區塊，增加可讀性。</td></tr>
+<tr><td class='ln'>9</td><td><code>    r = (int *)malloc(size * sizeof(int));</code></td><td>動態配置記憶體，大小由程式執行時決定。</td></tr>
+<tr><td class='ln'>10</td><td><code></code></td><td>空白行，用來分隔程式區塊，增加可讀性。</td></tr>
+<tr><td class='ln'>11</td><td><code>    if (r == NULL)</code></td><td>條件判斷，若條件成立就執行對應區塊。</td></tr>
+<tr><td class='ln'>12</td><td><code>    {</code></td><td>大括號，用來標示程式區塊的開始或結束。</td></tr>
+<tr><td class='ln'>13</td><td><code>        return NULL;</code></td><td>結束函式並回傳結果給呼叫端。</td></tr>
+<tr><td class='ln'>14</td><td><code>    }</code></td><td>大括號，用來標示程式區塊的開始或結束。</td></tr>
+<tr><td class='ln'>15</td><td><code></code></td><td>空白行，用來分隔程式區塊，增加可讀性。</td></tr>
+<tr><td class='ln'>16</td><td><code>    for (i = 0; i &lt; size; i++)</code></td><td>for 迴圈，用固定次數或範圍重複執行程式。</td></tr>
+<tr><td class='ln'>17</td><td><code>    {</code></td><td>大括號，用來標示程式區塊的開始或結束。</td></tr>
+<tr><td class='ln'>18</td><td><code>        if (a[i] &lt; 0)</code></td><td>條件判斷，若條件成立就執行對應區塊。</td></tr>
+<tr><td class='ln'>19</td><td><code>        {</code></td><td>大括號，用來標示程式區塊的開始或結束。</td></tr>
+<tr><td class='ln'>20</td><td><code>            a[i] = -a[i];</code></td><td>指定敘述，把右邊的值存入左邊的變數。</td></tr>
+<tr><td class='ln'>21</td><td><code>        }</code></td><td>大括號，用來標示程式區塊的開始或結束。</td></tr>
+<tr><td class='ln'>22</td><td><code></code></td><td>空白行，用來分隔程式區塊，增加可讀性。</td></tr>
+<tr><td class='ln'>23</td><td><code>        r[i] = a[i] * a[i];</code></td><td>指標或變數指定操作，可能透過位址間接修改資料。</td></tr>
+<tr><td class='ln'>24</td><td><code>    }</code></td><td>大括號，用來標示程式區塊的開始或結束。</td></tr>
+<tr><td class='ln'>25</td><td><code></code></td><td>空白行，用來分隔程式區塊，增加可讀性。</td></tr>
+<tr><td class='ln'>26</td><td><code>    return r;</code></td><td>結束函式並回傳結果給呼叫端。</td></tr>
+<tr><td class='ln'>27</td><td><code>}</code></td><td>大括號，用來標示程式區塊的開始或結束。</td></tr>
+<tr><td class='ln'>28</td><td><code></code></td><td>空白行，用來分隔程式區塊，增加可讀性。</td></tr>
+<tr><td class='ln'>29</td><td><code>int main(void)</code></td><td>函式定義的開始，這裡宣告函式名稱、參數與回傳型態。</td></tr>
+<tr><td class='ln'>30</td><td><code>{</code></td><td>大括號，用來標示程式區塊的開始或結束。</td></tr>
+<tr><td class='ln'>31</td><td><code>    int a[] = {-1, 2, -3, 4, -5};</code></td><td>指定敘述，把右邊的值存入左邊的變數。</td></tr>
+<tr><td class='ln'>32</td><td><code>    int size = sizeof(a) / sizeof(a[0]);</code></td><td>指定敘述，把右邊的值存入左邊的變數。</td></tr>
+<tr><td class='ln'>33</td><td><code>    int *r;</code></td><td>一般 C 語言敘述，負責完成此題所需的運算或資料處理。</td></tr>
+<tr><td class='ln'>34</td><td><code>    int i;</code></td><td>一般 C 語言敘述，負責完成此題所需的運算或資料處理。</td></tr>
+<tr><td class='ln'>35</td><td><code></code></td><td>空白行，用來分隔程式區塊，增加可讀性。</td></tr>
+<tr><td class='ln'>36</td><td><code>    r = func(a, size);</code></td><td>指定敘述，把右邊的值存入左邊的變數。</td></tr>
+<tr><td class='ln'>37</td><td><code></code></td><td>空白行，用來分隔程式區塊，增加可讀性。</td></tr>
+<tr><td class='ln'>38</td><td><code>    if (r == NULL)</code></td><td>條件判斷，若條件成立就執行對應區塊。</td></tr>
+<tr><td class='ln'>39</td><td><code>    {</code></td><td>大括號，用來標示程式區塊的開始或結束。</td></tr>
+<tr><td class='ln'>40</td><td><code>        printf(&quot;Memory allocation failed.\n&quot;);</code></td><td>將文字或變數內容輸出到螢幕。</td></tr>
+<tr><td class='ln'>41</td><td><code>        return 1;</code></td><td>結束函式並回傳結果給呼叫端。</td></tr>
+<tr><td class='ln'>42</td><td><code>    }</code></td><td>大括號，用來標示程式區塊的開始或結束。</td></tr>
+<tr><td class='ln'>43</td><td><code></code></td><td>空白行，用來分隔程式區塊，增加可讀性。</td></tr>
+<tr><td class='ln'>44</td><td><code>    printf(&quot;Absolute array:\n&quot;);</code></td><td>將文字或變數內容輸出到螢幕。</td></tr>
+<tr><td class='ln'>45</td><td><code>    for (i = 0; i &lt; size; i++)</code></td><td>for 迴圈，用固定次數或範圍重複執行程式。</td></tr>
+<tr><td class='ln'>46</td><td><code>    {</code></td><td>大括號，用來標示程式區塊的開始或結束。</td></tr>
+<tr><td class='ln'>47</td><td><code>        printf(&quot;%d &quot;, a[i]);</code></td><td>將文字或變數內容輸出到螢幕。</td></tr>
+<tr><td class='ln'>48</td><td><code>    }</code></td><td>大括號，用來標示程式區塊的開始或結束。</td></tr>
+<tr><td class='ln'>49</td><td><code></code></td><td>空白行，用來分隔程式區塊，增加可讀性。</td></tr>
+<tr><td class='ln'>50</td><td><code>    printf(&quot;\nSquare array:\n&quot;);</code></td><td>將文字或變數內容輸出到螢幕。</td></tr>
+<tr><td class='ln'>51</td><td><code>    for (i = 0; i &lt; size; i++)</code></td><td>for 迴圈，用固定次數或範圍重複執行程式。</td></tr>
+<tr><td class='ln'>52</td><td><code>    {</code></td><td>大括號，用來標示程式區塊的開始或結束。</td></tr>
+<tr><td class='ln'>53</td><td><code>        printf(&quot;%d &quot;, r[i]);</code></td><td>將文字或變數內容輸出到螢幕。</td></tr>
+<tr><td class='ln'>54</td><td><code>    }</code></td><td>大括號，用來標示程式區塊的開始或結束。</td></tr>
+<tr><td class='ln'>55</td><td><code></code></td><td>空白行，用來分隔程式區塊，增加可讀性。</td></tr>
+<tr><td class='ln'>56</td><td><code>    printf(&quot;\n&quot;);</code></td><td>將文字或變數內容輸出到螢幕。</td></tr>
+<tr><td class='ln'>57</td><td><code></code></td><td>空白行，用來分隔程式區塊，增加可讀性。</td></tr>
+<tr><td class='ln'>58</td><td><code>    free(r);</code></td><td>釋放動態配置的記憶體，避免 memory leak。</td></tr>
+<tr><td class='ln'>59</td><td><code></code></td><td>空白行，用來分隔程式區塊，增加可讀性。</td></tr>
+<tr><td class='ln'>60</td><td><code>    return 0;</code></td><td>結束函式並回傳結果給呼叫端。</td></tr>
+<tr><td class='ln'>61</td><td><code>}</code></td><td>大括號，用來標示程式區塊的開始或結束。</td></tr>
+    </tbody>
+  </table>
+
+  
+<div class="runner">
+  <h4>執行動畫</h4>
+  <p class="note">按「逐行執行」會逐步高亮程式碼，右側會模擬輸出逐漸出現。</p>
+  <div class="controls">
+    <button onclick="stepRunner('practice07_5')">逐行執行</button>
+    <button onclick="playRunner('practice07_5')">自動播放</button>
+    <button class="secondary" onclick="resetRunner('practice07_5')">重設</button>
+  </div>
+  <div class="stage">
+    <pre id="practice07_5_code"></pre>
+    <div class="output" id="practice07_5_out"></div>
+  </div>
+</div>
+<script>initRunner('practice07_5', ['#include <stdio.h>', '#include <stdlib.h>', '', 'int *func(int a[], int size)', '{', '    int *r;', '    int i;', '', '    r = (int *)malloc(size * sizeof(int));', '', '    if (r == NULL)', '    {', '        return NULL;', '    }', '', '    for (i = 0; i < size; i++)', '    {', '        if (a[i] < 0)', '        {', '            a[i] = -a[i];', '        }', '', '        r[i] = a[i] * a[i];', '    }', '', '    return r;', '}', '', 'int main(void)', '{', '    int a[] = {-1, 2, -3, 4, -5};', '    int size = sizeof(a) / sizeof(a[0]);', '    int *r;', '    int i;', '', '    r = func(a, size);', '', '    if (r == NULL)', '    {', '        printf("Memory allocation failed.\\n");', '        return 1;', '    }', '', '    printf("Absolute array:\\n");', '    for (i = 0; i < size; i++)', '    {', '        printf("%d ", a[i]);', '    }', '', '    printf("\\nSquare array:\\n");', '    for (i = 0; i < size; i++)', '    {', '        printf("%d ", r[i]);', '    }', '', '    printf("\\n");', '', '    free(r);', '', '    return 0;', '}'], 'Absolute array:\n1 2 3 4 5 \nSquare array:\n1 4 9 16 25 \n');</script>
+
+</div>
+</details>
+
+</div><div class="footer">Generated for Practice 06–12 C Programming Review</div></body></html>

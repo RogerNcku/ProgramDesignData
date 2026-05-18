@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>編輯與執行總說明</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+<h1>編輯與執行總說明</h1>
+<p>適用 Practice 06–12 所有 C 程式</p>
+</header>
+<nav><a href="index.html">首頁</a></nav>
+<div class="wrap">
+<div class="card">
+<h2>Windows / PowerShell</h2>
+<ol>
+<li>解壓縮 ZIP。</li>
+<li>進入 <code>source_codes</code> 資料夾。</li>
+<li>用 VS Code 或其他編輯器開啟 <code>.c</code> 檔。</li>
+<li>編譯：<pre>gcc 檔名.c -o 檔名.exe</pre></li>
+<li>執行：<pre>.\檔名.exe</pre></li>
+</ol>
+</div>
+<div class="card">
+<h2>Linux / Yellow Server</h2>
+<ol>
+<li>進入程式所在資料夾。</li>
+<li>編譯：<pre>gcc 檔名.c -o 檔名.out</pre></li>
+<li>執行：<pre>./檔名.out</pre></li>
+</ol>
+</div>
+<div class="card">
+<h2>常見問題</h2>
+<p>如果出現找不到 gcc，代表尚未安裝 gcc 或沒有設定環境變數。</p>
+<p>如果程式需要命令列參數，例如檔案名稱，執行時要把參數放在後面。</p>
+<pre>./practice9_1.out p9_1.txt</pre>
+</div>
+</div>
+<div class="footer">Generated for Practice 06–12 C Programming Review</div>
+</body>
+</html>

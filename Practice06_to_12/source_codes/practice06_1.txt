@@ -1,0 +1,15 @@
+Practice 6-1
+
+Assume:
+int i;
+int *p, *q;
+
+a. p = i;       illegal
+b. *p = &i;    illegal
+c. &p = q;     illegal
+d. p = &q;     illegal
+e. p = &*q;    legal
+f. p = q;      legal
+g. p = *q;     illegal
+h. *p = q;     illegal
+i. *p = *q;    legal

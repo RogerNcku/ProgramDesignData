@@ -1,0 +1,848 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Practice 08 String 完整互動式 HTML 教學</title>
+<style>
+:root {
+  --bg:#f6f8fc; --card:#ffffff; --ink:#172033; --muted:#64748b;
+  --brand:#2563eb; --brand2:#7c3aed; --ok:#16a34a; --bad:#dc2626;
+  --line:#d9e2ef; --soft:#eef4ff; --code:#0f172a; --terminal:#06111f;
+  --warn:#f97316;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Noto Sans TC","Microsoft JhengHei",Arial,sans-serif;color:var(--ink);background:linear-gradient(180deg,#dbeafe 0,#f8fafc 360px);line-height:1.72}
+header{max-width:1220px;margin:auto;padding:46px 18px 28px}
+h1{font-size:clamp(32px,5vw,58px);line-height:1.15;margin:0 0 12px}
+.subtitle{font-size:18px;color:var(--muted);max-width:920px}
+.tag{display:inline-block;background:#fff;color:#1d4ed8;border:1px solid #bfdbfe;border-radius:999px;padding:5px 12px;margin:10px 6px 0 0;font-size:14px}
+nav{position:sticky;top:0;background:rgba(255,255,255,.94);backdrop-filter:blur(10px);z-index:20;border-bottom:1px solid var(--line)}
+nav .bar{max-width:1220px;margin:auto;display:flex;gap:8px;overflow:auto;padding:10px 14px}
+nav a{white-space:nowrap;text-decoration:none;color:#1e3a8a;background:#fff;border:1px solid var(--line);padding:8px 12px;border-radius:999px;font-size:14px}
+main{max-width:1220px;margin:auto;padding:22px 16px 80px}
+.card,.slide,.question-card,.panel{background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:0 12px 30px rgba(15,23,42,.06)}
+.card{padding:22px;margin:18px 0}
+h2{font-size:28px;margin:0 0 14px}
+h3{font-size:20px;margin:0 0 10px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.three{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.note{background:#fff7ed;border-left:5px solid var(--warn);padding:12px 14px;border-radius:12px}
+.key{background:#eff6ff;border-left:5px solid var(--brand);padding:12px 14px;border-radius:12px}
+pre{background:var(--code);color:#e5e7eb;border-radius:15px;padding:16px;overflow:auto;line-height:1.55;font-size:14px}
+code{font-family:Consolas,Monaco,monospace}
+.btn,button{border:0;border-radius:12px;background:var(--brand);color:#fff;padding:10px 14px;font-weight:700;cursor:pointer}
+button.secondary{background:#e5e7eb;color:#111827}
+.slide-deck{margin:18px 0}
+.slide-controls{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.slide{padding:26px;min-height:290px;display:none}
+.slide.active{display:block}
+.slide-title{font-size:26px;font-weight:900;color:#1d4ed8;margin-bottom:10px}
+.memory-row{display:flex;gap:8px;align-items:end;flex-wrap:wrap;margin:18px 0}
+.mem-cell{width:54px;height:58px;border:2px solid var(--line);border-radius:12px;background:#fff;display:grid;place-items:center;font-weight:900;position:relative}
+.mem-cell small{position:absolute;bottom:-24px;color:var(--muted);font-weight:500;font-size:12px}
+.mem-cell.sel{background:#dbeafe;border-color:#2563eb;transform:translateY(-4px)}
+.question-card{padding:22px;margin:28px 0}
+.q-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;border-bottom:1px solid var(--line);padding-bottom:12px;margin-bottom:16px}
+.chapter{font-size:13px;color:#7c3aed;font-weight:800;text-transform:uppercase;letter-spacing:.06em}
+.small-link{text-decoration:none;background:#ede9fe;color:#5b21b6;padding:8px 12px;border-radius:999px;font-weight:700;white-space:nowrap}
+.same-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0}
+.panel{padding:18px;margin:14px 0;box-shadow:none}
+.panel.problem{background:#fcfcff}
+.panel.concept{background:#f8fbff}
+.panel.answer{background:#f0fdf4}
+.panel.output{background:#fbfdff}
+.code-head{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.terminal{background:var(--terminal);color:#bbf7d0;border:1px solid #1f2937;border-radius:15px;padding:16px;font-family:Consolas,Monaco,monospace;white-space:pre-wrap;line-height:1.55}
+.compiler-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(205px,1fr));gap:12px;margin-top:12px}
+.compiler-grid.mini{grid-template-columns:repeat(auto-fit,minmax(180px,1fr))}
+.compiler-card{display:block;text-decoration:none;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px;transition:.2s}
+.compiler-card:hover{transform:translateY(-3px);border-color:var(--brand);box-shadow:0 12px 24px rgba(37,99,235,.12)}
+.compiler-card b{display:block;color:#1d4ed8;margin-bottom:5px}
+.compiler-card span{color:var(--muted);font-size:14px}
+.mini-slide{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.tip-box{background:#eef4ff;border-left:5px solid #7c3aed;border-radius:12px;padding:12px;min-height:60px}
+.quiz-card{border:1px solid var(--line);border-radius:18px;padding:16px;margin:12px 0;background:#fff}
+.option{display:block;width:100%;text-align:left;margin:8px 0;background:#f8fafc;color:#111827;border:1px solid var(--line)}
+.option.correct{background:#dcfce7;border-color:#22c55e}
+.option.wrong{background:#fee2e2;border-color:#ef4444}
+.result{font-weight:900;margin-top:8px}
+.footer{text-align:center;color:var(--muted);margin-top:36px;font-size:13px}
+@media(max-width:900px){.grid,.three,.same-grid{grid-template-columns:1fr} .q-head{display:block}}
+</style>
+</head>
+<body>
+<header>
+  <h1>Practice 08：String 字串完整互動式 HTML 教學</h1>
+  <p class="subtitle">完整包含投影片教學、Practice 08 五題、每題完整程式、執行結果、逐步說明、互動動畫、測驗與線上 C 編譯器連結。</p>
+  <div><span class="tag">C 語言</span><span class="tag">String</span><span class="tag">char array</span><span class="tag">char pointer</span><span class="tag">string.h</span><span class="tag">scanf</span></div>
+</header>
+
+<nav>
+  <div class="bar">
+    <a href="#overview">課程總覽</a>
+    <a href="#slides">投影片教學</a>
+    <a href="#interactive">互動示範</a>
+    <a href="#q1">第1題</a>
+    <a href="#q2">第2題</a>
+    <a href="#q3">第3題</a>
+    <a href="#q4">第4題</a>
+    <a href="#q5">第5題</a>
+    <a href="#online">線上編譯器</a>
+    <a href="#quiz">互動測驗</a>
+    <a href="#local">本機編譯</a>
+  </div>
+</nav>
+
+<main>
+<section id="overview" class="card">
+  <h2>一 課程總覽</h2>
+  <div class="grid">
+    <div>
+      <p>String 在 C 語言中不是獨立型別，而是以 <code>char</code> 陣列加上結尾字元 <code>'\0'</code> 表示。理解字串時，要同時掌握「字元陣列」、「字串常值」、「指標」、「陣列空間大小」與 <code>string.h</code> 函式。</p>
+      <p class="key">最重要觀念：C 字串能不能被修改，取決於它放在哪裡。<code>char str[] = "Hello";</code> 是可修改陣列；<code>char *str = "Hello";</code> 通常指向唯讀字串常值，不應修改。</p>
+    </div>
+    <div>
+      <h3>本教學對應主題</h3>
+      <ul>
+        <li>String literal 與 <code>\0</code></li>
+        <li><code>char str[]</code> 與 <code>char *str</code> 差異</li>
+        <li><code>strlen</code>、<code>strcpy</code>、<code>strncpy</code>、<code>strcat</code>、<code>strcmp</code></li>
+        <li><code>scanf</code>、<code>fgets</code>、<code>puts</code></li>
+        <li>Command line arguments：<code>argc</code>、<code>argv</code></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="slides" class="card slide-deck">
+  <h2>二 完整投影片教學</h2>
+  <div class="slide-controls">
+    <button onclick="prevSlide()">上一張</button>
+    <button onclick="nextSlide()">下一張</button>
+    <button class="secondary" onclick="goSlide(0)">回到第 1 張</button>
+    <span id="slideCounter" class="key"></span>
+  </div>
+
+  <article class="slide active">
+    <div class="slide-title">Slide 1：什麼是 C 字串？</div>
+    <p>C 語言的字串是由一串 <code>char</code> 組成，最後一定要有 <code>'\0'</code> 表示字串結束。</p>
+    <div class="memory-row">
+      <div class="mem-cell">a<small>0</small></div><div class="mem-cell">b<small>1</small></div><div class="mem-cell">c<small>2</small></div><div class="mem-cell">\0<small>3</small></div>
+    </div>
+    <p class="note">沒有 <code>'\0'</code>，<code>printf("%s", str)</code> 就不知道要印到哪裡才停。</p>
+  </article>
+
+  <article class="slide">
+    <div class="slide-title">Slide 2：String literal</div>
+    <p><code>"abc"</code> 是 string literal，實際上會儲存成 <code>a b c \0</code>。呼叫 <code>printf("abc")</code> 時，傳入的是字串起始位置。</p>
+    <pre><code>printf("abc");  // 正確
+printf('a');    // 錯誤，'a' 是 char，不是 char*</code></pre>
+  </article>
+
+  <article class="slide">
+    <div class="slide-title">Slide 3：宣告字串變數</div>
+    <pre><code>char str[] = "Hello World!";
+char str[14] = "Hello World!";
+char str[10] = "Hello World!"; // 空間不足，危險或警告</code></pre>
+    <p>字串長度要包含最後的 <code>\0</code>。例如 <code>"Hello"</code> 需要 6 格。</p>
+  </article>
+
+  <article class="slide">
+    <div class="slide-title">Slide 4：char array vs char pointer</div>
+    <div class="grid">
+      <div><h3>可修改</h3><pre><code>char str[] = "Hello";
+str[0] = 'B'; // OK</code></pre></div>
+      <div><h3>不建議修改</h3><pre><code>char *str = "Hello";
+str[0] = 'B'; // 可能 Segmentation fault</code></pre></div>
+    </div>
+  </article>
+
+  <article class="slide">
+    <div class="slide-title">Slide 5：字串陣列</div>
+    <pre><code>char animals[][7] = {"cat", "rabbit", "horse"};
+char *animals[] = {"cat", "rabbit", "horse"};</code></pre>
+    <p>第一種是固定每列 7 格；第二種是指標陣列，每個指標指向不同字串。</p>
+  </article>
+
+  <article class="slide">
+    <div class="slide-title">Slide 6：string.h 常用函式</div>
+    <table class="table">
+      <tr><th>函式</th><th>用途</th></tr>
+      <tr><td>strlen(s)</td><td>回傳字串長度，不包含 \0</td></tr>
+      <tr><td>strcpy(dst, src)</td><td>複製整個字串</td></tr>
+      <tr><td>strncpy(dst, src, n)</td><td>最多複製 n 個字元</td></tr>
+      <tr><td>strcat(dst, src)</td><td>把 src 接到 dst 後面</td></tr>
+      <tr><td>strcmp(s1, s2)</td><td>比較兩個字串</td></tr>
+    </table>
+  </article>
+
+  <article class="slide">
+    <div class="slide-title">Slide 7：讀寫字串</div>
+    <pre><code>scanf("%s", sen);     // 讀到空白停止
+fgets(sen, 20, stdin); // 可讀入空白，較安全
+puts(sen);             // 輸出字串並自動換行</code></pre>
+    <p class="note">不建議使用 <code>gets</code>，因為容易造成 buffer overflow。</p>
+  </article>
+
+  <article class="slide">
+    <div class="slide-title">Slide 8：命令列參數 argc / argv</div>
+    <pre><code>int main(int argc, char *argv[]) {
+    for (int i = 1; i < argc; i++)
+        printf("%s\n", argv[i]);
+}</code></pre>
+    <p><code>argc</code> 是參數個數；<code>argv</code> 是字串指標陣列。</p>
+  </article>
+</section>
+
+<section id="interactive" class="card">
+  <h2>三 互動示範：字串記憶體變化</h2>
+  <p>移動滑桿，觀察 <code>strncpy(str, "123456", 4)</code> 如何只改前四個字元。</p>
+  <input type="range" id="strRange" min="0" max="4" value="0" oninput="drawStringDemo()">
+  <div id="strDemo" class="memory-row"></div>
+  <p id="strDemoText" class="key"></p>
+</section>
+
+
+<section class="question-card" id="q1">
+  <div class="q-head">
+    <div>
+      <div class="chapter">Practice 08 Question 1</div>
+      <h2>第 1 題：strncpy、strcpy 後字串內容變化</h2>
+    </div>
+    <a class="small-link" href="#online">線上編譯器</a>
+  </div>
+  <div class="same-grid">
+    <article class="panel problem">
+      <h3>一 題目</h3>
+      <pre><code>What will be the value of the string str after every string copy function in the following example are executed?
+
+char str[25] = &quot;This is a long string&quot;;
+strncpy(str, &quot;123456&quot;, 4);
+strcpy(str, &quot;New string&quot;);
+strcpy(&amp;str[5], &quot;contents&quot;);</code></pre>
+    </article>
+    <article class="panel concept">
+      <h3>二 本題觀念投影片</h3>
+      <p>本題重點是 C 字串是以字元陣列儲存，並以 \0 作為結尾。strncpy(str, &quot;123456&quot;, 4) 只複製前 4 個字元，因此只會把原本字串前四格改成 1、2、3、4，後面的內容仍保留。</p>
+      <div class="mini-slide">
+        <button onclick="showTip('q1',0)">觀念 1</button>
+        <button onclick="showTip('q1',1)">觀念 2</button>
+        <button onclick="showTip('q1',2)">常見錯誤</button>
+      </div>
+      <p class="tip-box" id="q1-tip"></p>
+    </article>
+  </div>
+  <article class="panel answer">
+    <h3>三 解答</h3>
+    <pre><code>Original:
+This is a long string
+
+After strncpy(str, &quot;123456&quot;, 4):
+1234 is a long string
+
+After strcpy(str, &quot;New string&quot;):
+New string
+
+After strcpy(&amp;str[5], &quot;contents&quot;):
+New contents</code></pre>
+  </article>
+  <article class="panel code-panel">
+    <div class="code-head">
+      <h3>四 完整程式與中文註解</h3>
+      <button onclick="copyCode('q1-code')">複製程式</button>
+    </div>
+    <pre id="q1-code"><code>/*
+ * Practice 08-1
+ * 主題：strncpy、strcpy 與字串內容變化
+ */
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+
+int main(void)
+{
+    char str[25] = &quot;This is a long string&quot;;
+
+    printf(&quot;Original: %s\n&quot;, str);
+
+    strncpy(str, &quot;123456&quot;, 4);
+    printf(&quot;After strncpy(str, \&quot;123456\&quot;, 4): %s\n&quot;, str);
+
+    strcpy(str, &quot;New string&quot;);
+    printf(&quot;After strcpy(str, \&quot;New string\&quot;): %s\n&quot;, str);
+
+    strcpy(&amp;str[5], &quot;contents&quot;);
+    printf(&quot;After strcpy(&amp;str[5], \&quot;contents\&quot;): %s\n&quot;, str);
+
+    return 0;
+}</code></pre>
+  </article>
+  <div class="same-grid">
+    <article class="panel output">
+      <h3>五 程式執行結果</h3>
+      <div class="terminal">Original: This is a long string
+After strncpy(str, &quot;123456&quot;, 4): 1234 is a long string
+After strcpy(str, &quot;New string&quot;): New string
+After strcpy(&amp;str[5], &quot;contents&quot;): New contents</div>
+    </article>
+    <article class="panel explain">
+      <h3>六 程式說明</h3>
+      <ol><li>一開始 str 內容是 This is a long string。</li>
+<li>strncpy 只複製 4 個字元，所以 T h i s 被 1 2 3 4 取代；後面仍是空白與 is a long string。</li>
+<li>strcpy(str, &quot;New string&quot;) 從 str[0] 開始完整複製 New string 與結尾字元 \0。</li>
+<li>strcpy(&amp;str[5], &quot;contents&quot;) 從 str[5] 的位置開始覆蓋，所以 New string 變成 New contents。</li></ol>
+    </article>
+  </div>
+  <article class="panel run-online">
+    <h3>七 這一題如何放到線上編譯器執行</h3>
+    <p>按「複製程式」後，貼到下方任一線上 C 編譯器。若是第 4 題，執行後請在輸入區輸入 <code>12abc34 56def78</code>。</p>
+    <div class="compiler-grid mini"><a class="compiler-card" href="https://www.w3schools.com/c/c_compiler.php" target="_blank" rel="noopener"><b>W3Schools C Compiler</b><span>介面簡單，適合直接貼上 C 程式快速執行。</span></a>
+<a class="compiler-card" href="https://www.onlinegdb.com/online_c_compiler" target="_blank" rel="noopener"><b>OnlineGDB</b><span>支援 stdin 輸入與 debug，適合測試 scanf 題目。</span></a>
+<a class="compiler-card" href="https://www.programiz.com/c-programming/online-compiler/" target="_blank" rel="noopener"><b>Programiz C Compiler</b><span>版面乾淨，適合初學者快速練習。</span></a>
+<a class="compiler-card" href="https://godbolt.org/" target="_blank" rel="noopener"><b>Godbolt Compiler Explorer</b><span>可觀察編譯後組合語言，適合理解字串與指標底層。</span></a>
+<a class="compiler-card" href="https://www.jdoodle.com/c-online-compiler" target="_blank" rel="noopener"><b>JDoodle C Compiler</b><span>可切換編譯器並快速執行程式。</span></a></div>
+  </article>
+</section>
+
+<section class="question-card" id="q2">
+  <div class="q-head">
+    <div>
+      <div class="chapter">Practice 08 Question 2</div>
+      <h2>第 2 題：函式 f(s,t) 回傳什麼？</h2>
+    </div>
+    <a class="small-link" href="#online">線上編譯器</a>
+  </div>
+  <div class="same-grid">
+    <article class="panel problem">
+      <h3>一 題目</h3>
+      <pre><code>Let f be the following function:
+int f(char *s, char *t){
+    char *p1, *p2;
+    for(p1 = s; *p1 != &#x27;\0&#x27;; p1++){
+        for(p2 = t; *p2; p2++)
+            if(*p1 == *p2) break;
+        if(*p2 == &#x27;\0&#x27;) break;
+    }
+    return p1 - s;
+}
+
+(a) f(&quot;abcd&quot;, &quot;babc&quot;) = ?
+(b) f(&quot;abcd&quot;, &quot;bcd&quot;) = ?
+(c) In general, what value does f return?</code></pre>
+    </article>
+    <article class="panel concept">
+      <h3>二 本題觀念投影片</h3>
+      <p>這題是字串指標走訪。外層 p1 逐一檢查 s 的每個字元；內層 p2 檢查該字元是否出現在 t 中。只要找到 s 中第一個不在 t 裡的字元，就停止並回傳該字元在 s 中的索引。</p>
+      <div class="mini-slide">
+        <button onclick="showTip('q2',0)">觀念 1</button>
+        <button onclick="showTip('q2',1)">觀念 2</button>
+        <button onclick="showTip('q2',2)">常見錯誤</button>
+      </div>
+      <p class="tip-box" id="q2-tip"></p>
+    </article>
+  </div>
+  <article class="panel answer">
+    <h3>三 解答</h3>
+    <pre><code>(a) f(&quot;abcd&quot;, &quot;babc&quot;) = 3
+原因：a、b、c 都在 &quot;babc&quot; 中，d 不在，因此 d 的索引是 3。
+
+(b) f(&quot;abcd&quot;, &quot;bcd&quot;) = 0
+原因：a 不在 &quot;bcd&quot; 中，因此第一個字元就停止，回傳索引 0。
+
+(c) 一般而言，f(s,t) 會回傳 s 中第一個「不屬於 t 內任一字元」的位置索引。
+若 s 的所有字元都在 t 中，則 p1 會走到 &#x27;\0&#x27;，回傳 strlen(s)。</code></pre>
+  </article>
+  <article class="panel code-panel">
+    <div class="code-head">
+      <h3>四 完整程式與中文註解</h3>
+      <button onclick="copyCode('q2-code')">複製程式</button>
+    </div>
+    <pre id="q2-code"><code>/*
+ * 檔名：practice08_2_annotated.c
+ * 主題：字串、指標與字元搜尋
+ * 功能：找出字串 s 中第一個「不屬於字串 t 內任一字元」的位置索引。
+ */
+#include &lt;stdio.h&gt; /* 提供 printf()。 */
+
+int f(char *s, char *t) /* s 是被檢查字串，t 是允許出現的字元集合。 */
+{
+    char *p1, *p2; /* p1 走訪 s；p2 走訪 t。 */
+
+    for (p1 = s; *p1 != &#x27;\0&#x27;; p1++) /* 從 s 第一個字元開始，直到字串結尾。 */
+    {
+        for (p2 = t; *p2; p2++) /* 對每個 s 的字元，到 t 裡面逐一比對。 */
+        {
+            if (*p1 == *p2) /* 若 s 目前字元有出現在 t 裡。 */
+            {
+                break; /* 找到了，跳出內層迴圈。 */
+            }
+        }
+
+        if (*p2 == &#x27;\0&#x27;) /* 若 p2 走到 t 結尾，表示沒有找到相同字元。 */
+        {
+            break; /* 找到第一個不屬於 t 的字元，跳出外層迴圈。 */
+        }
+    }
+
+    return p1 - s; /* 回傳 p1 與 s 起始位址的距離，也就是索引值。 */
+}
+
+int main(void) /* 主程式。 */
+{
+    printf(&quot;f(\&quot;abcd\&quot;, \&quot;babc\&quot;) = %d\n&quot;, f(&quot;abcd&quot;, &quot;babc&quot;)); /* d 不在 babc 中，回傳 3。 */
+    printf(&quot;f(\&quot;abcd\&quot;, \&quot;bcd\&quot;) = %d\n&quot;, f(&quot;abcd&quot;, &quot;bcd&quot;));   /* a 不在 bcd 中，回傳 0。 */
+
+    return 0; /* 正常結束。 */
+}
+</code></pre>
+  </article>
+  <div class="same-grid">
+    <article class="panel output">
+      <h3>五 程式執行結果</h3>
+      <div class="terminal">f(&quot;abcd&quot;, &quot;babc&quot;) = 3
+f(&quot;abcd&quot;, &quot;bcd&quot;) = 0</div>
+    </article>
+    <article class="panel explain">
+      <h3>六 程式說明</h3>
+      <ol><li>p1 從 s[0] 開始往後走。</li>
+<li>每一輪都用 p2 從 t[0] 開始找是否有相同字元。</li>
+<li>如果 p2 走到字串結尾 \0，表示沒有找到該字元。</li>
+<li>return p1 - s 代表目前 p1 與 s 起點差幾格，也就是索引值。</li></ol>
+    </article>
+  </div>
+  <article class="panel run-online">
+    <h3>七 這一題如何放到線上編譯器執行</h3>
+    <p>按「複製程式」後，貼到下方任一線上 C 編譯器。若是第 4 題，執行後請在輸入區輸入 <code>12abc34 56def78</code>。</p>
+    <div class="compiler-grid mini"><a class="compiler-card" href="https://www.w3schools.com/c/c_compiler.php" target="_blank" rel="noopener"><b>W3Schools C Compiler</b><span>介面簡單，適合直接貼上 C 程式快速執行。</span></a>
+<a class="compiler-card" href="https://www.onlinegdb.com/online_c_compiler" target="_blank" rel="noopener"><b>OnlineGDB</b><span>支援 stdin 輸入與 debug，適合測試 scanf 題目。</span></a>
+<a class="compiler-card" href="https://www.programiz.com/c-programming/online-compiler/" target="_blank" rel="noopener"><b>Programiz C Compiler</b><span>版面乾淨，適合初學者快速練習。</span></a>
+<a class="compiler-card" href="https://godbolt.org/" target="_blank" rel="noopener"><b>Godbolt Compiler Explorer</b><span>可觀察編譯後組合語言，適合理解字串與指標底層。</span></a>
+<a class="compiler-card" href="https://www.jdoodle.com/c-online-compiler" target="_blank" rel="noopener"><b>JDoodle C Compiler</b><span>可切換編譯器並快速執行程式。</span></a></div>
+  </article>
+</section>
+
+<section class="question-card" id="q3">
+  <div class="q-head">
+    <div>
+      <div class="chapter">Practice 08 Question 3</div>
+      <h2>第 3 題：create_txt_extension(char *file_name)</h2>
+    </div>
+    <a class="small-link" href="#online">線上編譯器</a>
+  </div>
+  <div class="same-grid">
+    <article class="panel problem">
+      <h3>一 題目</h3>
+      <pre><code>Write the following function:
+void create_txt_extension(char *file_name)
+
+file_name points to a string containing a file name. This function will append &quot;.txt&quot; to the end of the file name string if it does not have an extension. However, if the file name string has an extension, e.g. &quot;output.txt&quot;, its content will not be modified.</code></pre>
+    </article>
+    <article class="panel concept">
+      <h3>二 本題觀念投影片</h3>
+      <p>本題重點是使用 char * 修改原本字元陣列。函式要掃描檔名中是否有 &#x27;.&#x27;。如果沒有 &#x27;.&#x27;，就用 strcat(file_name, &quot;.txt&quot;) 把副檔名接到後面。注意：file_name 指向的陣列空間必須足夠放下新增的 .txt。</p>
+      <div class="mini-slide">
+        <button onclick="showTip('q3',0)">觀念 1</button>
+        <button onclick="showTip('q3',1)">觀念 2</button>
+        <button onclick="showTip('q3',2)">常見錯誤</button>
+      </div>
+      <p class="tip-box" id="q3-tip"></p>
+    </article>
+  </div>
+  <article class="panel answer">
+    <h3>三 解答</h3>
+    <pre><code>範例：
+file1 = &quot;output&quot;      → output.txt
+file2 = &quot;result.txt&quot;  → result.txt
+
+因為 output 沒有句點，所以補上 .txt。
+因為 result.txt 已經有副檔名，所以不修改。</code></pre>
+  </article>
+  <article class="panel code-panel">
+    <div class="code-head">
+      <h3>四 完整程式與中文註解</h3>
+      <button onclick="copyCode('q3-code')">複製程式</button>
+    </div>
+    <pre id="q3-code"><code>/*
+ * 檔名：practice08_3_annotated.c
+ * 主題：字串處理與 strcat
+ * 功能：若檔名沒有副檔名，就自動在後面加上 .txt。
+ */
+#include &lt;stdio.h&gt;  /* 提供 printf()。 */
+#include &lt;string.h&gt; /* 提供 strcat() 字串串接函式。 */
+
+void create_txt_extension(char *file_name) /* 檢查檔名是否需要補上 .txt。 */
+{
+    int i; /* 迴圈索引。 */
+    int has_extension = 0; /* 旗標：0 表示目前尚未發現句點，1 表示有副檔名。 */
+
+    for (i = 0; file_name[i] != &#x27;\0&#x27;; i++) /* 從字串開頭掃到結尾。 */
+    {
+        if (file_name[i] == &#x27;.&#x27;) /* 若檔名中出現句點，視為已有副檔名。 */
+        {
+            has_extension = 1; /* 標記已有副檔名。 */
+            break; /* 不需要繼續檢查。 */
+        }
+    }
+
+    if (!has_extension) /* 若沒有副檔名。 */
+    {
+        strcat(file_name, &quot;.txt&quot;); /* 將 .txt 接到原字串後面；陣列空間必須足夠。 */
+    }
+}
+
+int main(void) /* 主程式。 */
+{
+    char file1[50] = &quot;output&quot;;     /* 沒有副檔名，空間 50 足夠加上 .txt。 */
+    char file2[50] = &quot;result.txt&quot;; /* 已經有副檔名，不會再加一次。 */
+
+    create_txt_extension(file1); /* file1 會變成 output.txt。 */
+    create_txt_extension(file2); /* file2 保持 result.txt。 */
+
+    printf(&quot;file1 = %s\n&quot;, file1); /* 輸出 file1。 */
+    printf(&quot;file2 = %s\n&quot;, file2); /* 輸出 file2。 */
+
+    return 0; /* 正常結束。 */
+}
+</code></pre>
+  </article>
+  <div class="same-grid">
+    <article class="panel output">
+      <h3>五 程式執行結果</h3>
+      <div class="terminal">file1 = output.txt
+file2 = result.txt</div>
+    </article>
+    <article class="panel explain">
+      <h3>六 程式說明</h3>
+      <ol><li>has_extension 初始為 0，代表尚未發現副檔名。</li>
+<li>for 迴圈逐字檢查 file_name[i] 是否為 &#x27;.&#x27;。</li>
+<li>如果找到 &#x27;.&#x27;，就把 has_extension 設為 1，代表已有副檔名。</li>
+<li>如果掃完都沒有 &#x27;.&#x27;，才用 strcat 接上 .txt。</li></ol>
+    </article>
+  </div>
+  <article class="panel run-online">
+    <h3>七 這一題如何放到線上編譯器執行</h3>
+    <p>按「複製程式」後，貼到下方任一線上 C 編譯器。若是第 4 題，執行後請在輸入區輸入 <code>12abc34 56def78</code>。</p>
+    <div class="compiler-grid mini"><a class="compiler-card" href="https://www.w3schools.com/c/c_compiler.php" target="_blank" rel="noopener"><b>W3Schools C Compiler</b><span>介面簡單，適合直接貼上 C 程式快速執行。</span></a>
+<a class="compiler-card" href="https://www.onlinegdb.com/online_c_compiler" target="_blank" rel="noopener"><b>OnlineGDB</b><span>支援 stdin 輸入與 debug，適合測試 scanf 題目。</span></a>
+<a class="compiler-card" href="https://www.programiz.com/c-programming/online-compiler/" target="_blank" rel="noopener"><b>Programiz C Compiler</b><span>版面乾淨，適合初學者快速練習。</span></a>
+<a class="compiler-card" href="https://godbolt.org/" target="_blank" rel="noopener"><b>Godbolt Compiler Explorer</b><span>可觀察編譯後組合語言，適合理解字串與指標底層。</span></a>
+<a class="compiler-card" href="https://www.jdoodle.com/c-online-compiler" target="_blank" rel="noopener"><b>JDoodle C Compiler</b><span>可切換編譯器並快速執行程式。</span></a></div>
+  </article>
+</section>
+
+<section class="question-card" id="q4">
+  <div class="q-head">
+    <div>
+      <div class="chapter">Practice 08 Question 4</div>
+      <h2>第 4 題：scanf(&quot;%d%s%d&quot;) 的讀取結果</h2>
+    </div>
+    <a class="small-link" href="#online">線上編譯器</a>
+  </div>
+  <div class="same-grid">
+    <article class="panel problem">
+      <h3>一 題目</h3>
+      <pre><code>Suppose that we call scanf as follows:
+scanf(&quot;%d%s%d&quot;, &amp;i, s, &amp;j);
+
+If the user enters:
+12abc34 56def78
+
+What will be the values of i, s, and j after the call?</code></pre>
+    </article>
+    <article class="panel concept">
+      <h3>二 本題觀念投影片</h3>
+      <p>scanf 會依照格式逐段讀取。%d 讀整數，遇到非數字停止；%s 讀字串，遇到空白停止；下一個 %d 會跳過空白後讀下一段整數。</p>
+      <div class="mini-slide">
+        <button onclick="showTip('q4',0)">觀念 1</button>
+        <button onclick="showTip('q4',1)">觀念 2</button>
+        <button onclick="showTip('q4',2)">常見錯誤</button>
+      </div>
+      <p class="tip-box" id="q4-tip"></p>
+    </article>
+  </div>
+  <article class="panel answer">
+    <h3>三 解答</h3>
+    <pre><code>i = 12
+s = abc34
+j = 56
+
+說明：
+%d 先讀到 12，遇到 a 停止。
+%s 從 a 開始讀到空白前，所以讀到 abc34。
+%d 跳過空白後讀 56，遇到 d 停止。</code></pre>
+  </article>
+  <article class="panel code-panel">
+    <div class="code-head">
+      <h3>四 完整程式與中文註解</h3>
+      <button onclick="copyCode('q4-code')">複製程式</button>
+    </div>
+    <pre id="q4-code"><code>/*
+ * Practice 08-4
+ * 主題：scanf(&quot;%d%s%d&quot;, &amp;i, s, &amp;j) 的讀取規則
+ */
+#include &lt;stdio.h&gt;
+
+int main(void)
+{
+    int i, j;
+    char s[100];
+
+    printf(&quot;Please input: &quot;);
+    scanf(&quot;%d%s%d&quot;, &amp;i, s, &amp;j);
+
+    printf(&quot;i = %d\n&quot;, i);
+    printf(&quot;s = %s\n&quot;, s);
+    printf(&quot;j = %d\n&quot;, j);
+
+    return 0;
+}</code></pre>
+  </article>
+  <div class="same-grid">
+    <article class="panel output">
+      <h3>五 程式執行結果</h3>
+      <div class="terminal">Please input: 12abc34 56def78
+i = 12
+s = abc34
+j = 56</div>
+    </article>
+    <article class="panel explain">
+      <h3>六 程式說明</h3>
+      <ol><li>%d 會讀取可形成整數的部分，所以從 12abc34 讀到 12 後停止。</li>
+<li>%s 會讀到空白為止，所以接著讀入 abc34。</li>
+<li>下一個 %d 會略過空白，讀取 56def78 的開頭整數 56。</li>
+<li>def78 會留在輸入緩衝區中，這次 scanf 不再處理它。</li></ol>
+    </article>
+  </div>
+  <article class="panel run-online">
+    <h3>七 這一題如何放到線上編譯器執行</h3>
+    <p>按「複製程式」後，貼到下方任一線上 C 編譯器。若是第 4 題，執行後請在輸入區輸入 <code>12abc34 56def78</code>。</p>
+    <div class="compiler-grid mini"><a class="compiler-card" href="https://www.w3schools.com/c/c_compiler.php" target="_blank" rel="noopener"><b>W3Schools C Compiler</b><span>介面簡單，適合直接貼上 C 程式快速執行。</span></a>
+<a class="compiler-card" href="https://www.onlinegdb.com/online_c_compiler" target="_blank" rel="noopener"><b>OnlineGDB</b><span>支援 stdin 輸入與 debug，適合測試 scanf 題目。</span></a>
+<a class="compiler-card" href="https://www.programiz.com/c-programming/online-compiler/" target="_blank" rel="noopener"><b>Programiz C Compiler</b><span>版面乾淨，適合初學者快速練習。</span></a>
+<a class="compiler-card" href="https://godbolt.org/" target="_blank" rel="noopener"><b>Godbolt Compiler Explorer</b><span>可觀察編譯後組合語言，適合理解字串與指標底層。</span></a>
+<a class="compiler-card" href="https://www.jdoodle.com/c-online-compiler" target="_blank" rel="noopener"><b>JDoodle C Compiler</b><span>可切換編譯器並快速執行程式。</span></a></div>
+  </article>
+</section>
+
+<section class="question-card" id="q5">
+  <div class="q-head">
+    <div>
+      <div class="chapter">Practice 08 Question 5</div>
+      <h2>第 5 題：字元 ASCII 減 1 後輸出</h2>
+    </div>
+    <a class="small-link" href="#online">線上編譯器</a>
+  </div>
+  <div class="same-grid">
+    <article class="panel problem">
+      <h3>一 題目</h3>
+      <pre><code>What does the following program print?
+
+#include&lt;stdio.h&gt;
+int main(void){
+    char s[] = &quot;Hsjodi&quot;, *p;
+    for ( p = s; *p != &#x27;\0&#x27;; p++)
+        --*p;
+    puts(s);
+    return 0;
+}</code></pre>
+    </article>
+    <article class="panel concept">
+      <h3>二 本題觀念投影片</h3>
+      <p>本題重點是 char s[] 是可修改的字元陣列，p 逐一指向每個字元。--*p 代表把 p 指向的那個字元 ASCII 值減 1。</p>
+      <div class="mini-slide">
+        <button onclick="showTip('q5',0)">觀念 1</button>
+        <button onclick="showTip('q5',1)">觀念 2</button>
+        <button onclick="showTip('q5',2)">常見錯誤</button>
+      </div>
+      <p class="tip-box" id="q5-tip"></p>
+    </article>
+  </div>
+  <article class="panel answer">
+    <h3>三 解答</h3>
+    <pre><code>輸出：
+Grinch
+
+原因：
+H → G
+s → r
+j → i
+o → n
+d → c
+i → h</code></pre>
+  </article>
+  <article class="panel code-panel">
+    <div class="code-head">
+      <h3>四 完整程式與中文註解</h3>
+      <button onclick="copyCode('q5-code')">複製程式</button>
+    </div>
+    <pre id="q5-code"><code>/*
+ * 檔名：practice08_5_annotated.c
+ * 主題：字元陣列與指標走訪
+ * 功能：把字串中每個字元的 ASCII 值減 1，形成新的字串。
+ */
+#include &lt;stdio.h&gt; /* 提供 puts()。 */
+
+int main(void) /* 主程式。 */
+{
+    char s[] = &quot;Hsjodi&quot;; /* 宣告可修改的字元陣列；內容包含結尾字元 &#x27;\0&#x27;。 */
+    char *p;             /* p 用來逐一指向字串中的每個字元。 */
+
+    for (p = s; *p != &#x27;\0&#x27;; p++) /* 從第一個字元開始，直到遇到字串結尾。 */
+    {
+        --*p; /* 先取出 p 指向的字元，再將該字元 ASCII 值減 1；例如 H 變 G。 */
+    }
+
+    puts(s); /* 輸出修改後的字串，並自動換行。 */
+
+    return 0; /* 正常結束。 */
+}
+</code></pre>
+  </article>
+  <div class="same-grid">
+    <article class="panel output">
+      <h3>五 程式執行結果</h3>
+      <div class="terminal">Grinch</div>
+    </article>
+    <article class="panel explain">
+      <h3>六 程式說明</h3>
+      <ol><li>p = s，表示 p 指向 s[0]。</li>
+<li>for 迴圈每次 p++，讓 p 指向下一個字元。</li>
+<li>--*p 會把目前字元減 1。</li>
+<li>Hsjodi 每個字元都減 1 後變成 Grinch。</li></ol>
+    </article>
+  </div>
+  <article class="panel run-online">
+    <h3>七 這一題如何放到線上編譯器執行</h3>
+    <p>按「複製程式」後，貼到下方任一線上 C 編譯器。若是第 4 題，執行後請在輸入區輸入 <code>12abc34 56def78</code>。</p>
+    <div class="compiler-grid mini"><a class="compiler-card" href="https://www.w3schools.com/c/c_compiler.php" target="_blank" rel="noopener"><b>W3Schools C Compiler</b><span>介面簡單，適合直接貼上 C 程式快速執行。</span></a>
+<a class="compiler-card" href="https://www.onlinegdb.com/online_c_compiler" target="_blank" rel="noopener"><b>OnlineGDB</b><span>支援 stdin 輸入與 debug，適合測試 scanf 題目。</span></a>
+<a class="compiler-card" href="https://www.programiz.com/c-programming/online-compiler/" target="_blank" rel="noopener"><b>Programiz C Compiler</b><span>版面乾淨，適合初學者快速練習。</span></a>
+<a class="compiler-card" href="https://godbolt.org/" target="_blank" rel="noopener"><b>Godbolt Compiler Explorer</b><span>可觀察編譯後組合語言，適合理解字串與指標底層。</span></a>
+<a class="compiler-card" href="https://www.jdoodle.com/c-online-compiler" target="_blank" rel="noopener"><b>JDoodle C Compiler</b><span>可切換編譯器並快速執行程式。</span></a></div>
+  </article>
+</section>
+
+
+<section id="online" class="card">
+  <h2>線上 C 編譯器連結</h2>
+  <p class="note">使用方式：在任一題按「複製程式」，再打開下面網站貼上程式碼執行。第 4 題需要輸入 <code>12abc34 56def78</code>。</p>
+  <div class="compiler-grid"><a class="compiler-card" href="https://www.w3schools.com/c/c_compiler.php" target="_blank" rel="noopener"><b>W3Schools C Compiler</b><span>介面簡單，適合直接貼上 C 程式快速執行。</span></a>
+<a class="compiler-card" href="https://www.onlinegdb.com/online_c_compiler" target="_blank" rel="noopener"><b>OnlineGDB</b><span>支援 stdin 輸入與 debug，適合測試 scanf 題目。</span></a>
+<a class="compiler-card" href="https://www.programiz.com/c-programming/online-compiler/" target="_blank" rel="noopener"><b>Programiz C Compiler</b><span>版面乾淨，適合初學者快速練習。</span></a>
+<a class="compiler-card" href="https://godbolt.org/" target="_blank" rel="noopener"><b>Godbolt Compiler Explorer</b><span>可觀察編譯後組合語言，適合理解字串與指標底層。</span></a>
+<a class="compiler-card" href="https://www.jdoodle.com/c-online-compiler" target="_blank" rel="noopener"><b>JDoodle C Compiler</b><span>可切換編譯器並快速執行程式。</span></a></div>
+</section>
+
+<section id="quiz" class="card">
+  <h2>互動測驗</h2>
+  <div id="quizBox"></div>
+  <button class="secondary" onclick="resetQuiz()">重新作答</button>
+</section>
+
+<section id="local" class="card">
+  <h2>本機編譯與執行方式</h2>
+  <div class="grid">
+    <div>
+      <h3>Linux / macOS / Git Bash</h3>
+      <pre><code>gcc practice08_1.c -o practice08_1
+./practice08_1</code></pre>
+    </div>
+    <div>
+      <h3>Windows CMD</h3>
+      <pre><code>gcc practice08_1.c -o practice08_1.exe
+practice08_1.exe</code></pre>
+    </div>
+  </div>
+  <p class="note">如果程式使用 <code>strcpy</code>、<code>strncpy</code>、<code>strcat</code>，請記得加入 <code>#include &lt;string.h&gt;</code>。</p>
+</section>
+
+<div class="footer">Practice 08 String Full Interactive Tutorial ｜ 題目、程式、結果、說明同一題整合版</div>
+</main>
+
+<script>
+let slideIndex = 0;
+const slides = [...document.querySelectorAll('.slide')];
+function updateSlide(){
+  slides.forEach((s,i)=>s.classList.toggle('active', i===slideIndex));
+  document.getElementById('slideCounter').textContent = `第 ${slideIndex+1} / ${slides.length} 張`;
+}
+function nextSlide(){ slideIndex = (slideIndex + 1) % slides.length; updateSlide(); }
+function prevSlide(){ slideIndex = (slideIndex - 1 + slides.length) % slides.length; updateSlide(); }
+function goSlide(i){ slideIndex = i; updateSlide(); }
+
+const tips = {
+  q1:[
+    'strncpy 不一定會自動補上 \\0；本題因為原本後面還有字元，所以可以看到後半段保留。',
+    'strcpy 會複製來源字串直到 \\0，因此會覆蓋成新的完整字串。',
+    '常見錯誤：以為 strncpy(str,"123456",4) 後 str 只剩 1234；其實後面舊內容仍存在。'
+  ],
+  q2:[
+    'p1 - s 是指標相減，代表 p1 距離字串起點幾個 char。',
+    '內層迴圈的 p2 用來確認目前字元是否出現在 t 中。',
+    '常見錯誤：把此函式誤解成找子字串；其實它是在找第一個不屬於 t 字元集合的字元。'
+  ],
+  q3:[
+    'file_name 是 char*，所以函式可以修改呼叫端傳入的字元陣列。',
+    'strcat 需要目的陣列有足夠空間，否則會造成越界寫入。',
+    '常見錯誤：用 char *file = "output"; 再 strcat，這可能修改字串常值而出錯。'
+  ],
+  q4:[
+    '%d 讀數字，遇到非數字停止；%s 讀到空白停止。',
+    'scanf 中 s 不需要加 &，因為陣列名稱 s 通常已代表起始位址。',
+    '常見錯誤：以為第一個 %d 會讀到 1234；其實遇到 a 就停止。'
+  ],
+  q5:[
+    '--*p 等價於 --(*p)，代表修改 p 指向的字元。',
+    'char s[] 是可修改陣列，所以可以逐字改內容。',
+    '常見錯誤：若寫 char *s = "Hsjodi"; 再修改 *p，可能 Segmentation fault。'
+  ]
+};
+function showTip(qid,idx){ document.getElementById(qid+'-tip').textContent = tips[qid][idx]; }
+
+function drawStringDemo(){
+  const original = ['T','h','i','s',' ','i','s',' ','a',' ','l','o','n','g',' ','s','t','r','i','n','g','\\0'];
+  const repl = ['1','2','3','4'];
+  const n = +document.getElementById('strRange').value;
+  let arr = original.slice();
+  for(let i=0;i<n;i++) arr[i]=repl[i];
+  let html = arr.map((ch,i)=>`<div class="mem-cell ${i<n?'sel':''}">${ch}<small>${i}</small></div>`).join('');
+  document.getElementById('strDemo').innerHTML = html;
+  document.getElementById('strDemoText').innerHTML = n===0 ? '原始字串：This is a long string' : `已複製前 ${n} 個字元，所以目前開頭被改成：${arr.slice(0,Math.max(n,4)).join('')}`;
+}
+
+function copyCode(id){
+  const text = document.getElementById(id).innerText;
+  navigator.clipboard.writeText(text);
+}
+
+const quiz = [
+  {q:'C 字串結尾必須有哪個字元？', opts:['\\n','\\0','空白','EOF'], ans:1, why:'C 字串以 null character \\0 作為結尾。'},
+  {q:'char str[] = "Hello"; 與 char *str = "Hello"; 最大差異是？', opts:['前者通常可修改內容，後者不應修改字串常值','兩者完全相同','後者一定比較安全','前者不能用 printf'], ans:0, why:'字元陣列有自己的可修改空間；指標可能指向唯讀字串常值。'},
+  {q:'scanf("%s", s) 讀字串時會在何處停止？', opts:['逗號','空白字元','數字','字母'], ans:1, why:'%s 會讀到 whitespace 前停止。'},
+  {q:'strcpy(&str[5], "contents") 代表什麼？', opts:['從 str[0] 開始複製','從 str[5] 開始覆蓋','只複製 5 個字元','刪除 str[5]'], ans:1, why:'&str[5] 是第 5 格的位址，所以從該位置開始寫入。'},
+  {q:'--*p 在字元指標中代表什麼？', opts:['p 往前移一格','p 往後移一格','p 指向的字元 ASCII 減 1','刪除字串結尾'], ans:2, why:'--*p 等於 --(*p)，修改的是 p 指向的內容。'}
+];
+function renderQuiz(){
+  let h = '';
+  quiz.forEach((q,qi)=>{
+    h += `<div class="quiz-card"><h3>Q${qi+1}. ${q.q}</h3>`;
+    q.opts.forEach((o,oi)=> h += `<button class="option" onclick="answerQuiz(${qi},${oi},this)">${o}</button>`);
+    h += `<div class="result" id="res${qi}"></div></div>`;
+  });
+  document.getElementById('quizBox').innerHTML = h;
+}
+function answerQuiz(qi,oi,btn){
+  const q=quiz[qi], card=btn.parentElement;
+  card.querySelectorAll('.option').forEach((b,idx)=>{ b.disabled=true; if(idx===q.ans)b.classList.add('correct'); });
+  if(oi!==q.ans) btn.classList.add('wrong');
+  document.getElementById('res'+qi).textContent = (oi===q.ans?'答對！':'答錯。') + ' ' + q.why;
+}
+function resetQuiz(){ renderQuiz(); }
+
+updateSlide();
+drawStringDemo();
+renderQuiz();
+Object.keys(tips).forEach(k=>showTip(k,0));
+</script>
+</body>
+</html>

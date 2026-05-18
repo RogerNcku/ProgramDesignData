@@ -1,0 +1,16 @@
+Practice 8-1
+
+Original:
+char str[25] = "This is a long string";
+
+After:
+strncpy(str, "123456", 4);
+str = "1234 is a long string"
+
+After:
+strcpy(str, "New string");
+str = "New string"
+
+After:
+strcpy(&str[5], "contents");
+str = "New contents"
