@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="zh-Hant"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/><title>Lesson 8 主題十八｜死結系統模型與資源配置圖</title><link href="assets/style.css" rel="stylesheet"/>
+<style>
+.program-flow-card{background:#ffffff;border:1px solid #dbeafe;border-radius:20px;padding:22px;margin:24px 0;box-shadow:0 12px 30px rgba(15,23,42,.08)}
+.program-flow-card h2{margin-top:0;color:#0f172a}
+.program-flow-img{width:100%;border-radius:18px;border:1px solid #e2e8f0;background:#f8fafc}
+.flow-explain{line-height:1.9;background:#f8fafc;border-left:6px solid #2563eb;border-radius:14px;padding:16px 18px;white-space:pre-line}
+.code-card{background:#0f172a;color:#e5e7eb;border-radius:20px;padding:0;margin:24px 0;overflow:hidden;box-shadow:0 12px 32px rgba(15,23,42,.20)}
+.code-card .code-head{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between;background:#111827;padding:14px 16px;border-bottom:1px solid #334155}
+.code-card .code-title{font-weight:700;color:#f8fafc}
+.code-card .code-actions{display:flex;gap:8px;flex-wrap:wrap}
+.code-card button,.code-card a{border:0;border-radius:999px;padding:8px 12px;font-weight:700;text-decoration:none;cursor:pointer;background:#2563eb;color:white;font-size:14px}
+.code-card a{background:#475569}
+.code-card button.download-btn{background:#f97316}
+.code-card textarea{width:100%;min-height:380px;box-sizing:border-box;background:#020617;color:#e5e7eb;border:0;padding:18px;font-family:Consolas,'Courier New',monospace;font-size:15px;line-height:1.55;resize:vertical}
+.editor-links{margin-top:12px;line-height:1.8}
+.editor-links a{display:inline-block;margin:4px 8px 4px 0;padding:8px 12px;border-radius:999px;background:#e0f2fe;color:#075985;text-decoration:none;font-weight:700}
+</style>
+<script>
+function copyCode(id){
+  const el=document.getElementById(id);
+  if(!el) return;
+  el.select();
+  document.execCommand('copy');
+  alert('程式碼已複製');
+}
+function downloadCode(id, filename){
+  const el=document.getElementById(id);
+  if(!el) return;
+  const blob=new Blob([el.value], {type:'text/plain;charset=utf-8'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download=filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(()=>URL.revokeObjectURL(a.href), 500);
+}
+</script>
+
+<style id="slide-dropdown-explanation-style">
+.slide-explain-wrapper{margin:20px 0}
+.slide-intro-note{line-height:1.9;background:#eff6ff;border-left:6px solid #2563eb;border-radius:14px;padding:14px 16px;color:#1e3a8a}
+.single-slide-detail{margin:18px 0;border:1px solid #dbeafe;border-radius:18px;background:#ffffff;box-shadow:0 10px 24px rgba(15,23,42,.07);overflow:hidden}
+.single-slide-detail>summary{cursor:pointer;padding:16px 18px;font-weight:800;color:#0f172a;background:linear-gradient(135deg,#eff6ff,#f8fafc);list-style:none}
+.single-slide-detail>summary::-webkit-details-marker{display:none}
+.single-slide-detail>summary::before{content:"＋";display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;margin-right:10px;border-radius:999px;background:#2563eb;color:white;font-weight:900}
+.single-slide-detail[open]>summary::before{content:"－";background:#f97316}
+.slide-explain-grid{display:grid;grid-template-columns:minmax(280px,46%) 1fr;gap:22px;padding:20px;align-items:start}
+.slide-explain-image{background:#f8fafc;border:1px solid #e2e8f0;border-radius:16px;padding:12px}
+.slide-explain-image .slide-img{width:100%;height:auto;border-radius:12px;border:1px solid #e5e7eb;background:white}
+.slide-caption{text-align:center;color:#475569;font-size:14px;margin-top:8px;line-height:1.6}
+.slide-explain-text{line-height:1.9;color:#1f2937}
+.slide-explain-text h3{margin:8px 0 6px;color:#0f172a;font-size:1.05rem}
+.slide-explain-text p{margin:0 0 12px}
+.slide-explain-text ul{margin:0 0 12px 1.2em;padding:0}
+.slide-explain-text li{margin:4px 0}
+.memory-line{background:#fff7ed;border-left:6px solid #f97316;border-radius:12px;padding:10px 12px;color:#7c2d12}
+@media (max-width: 860px){
+  .slide-explain-grid{grid-template-columns:1fr}
+}
+</style>
+
+<style id="teaching-content-style">
+.teaching-content-card{background:#ffffff;border:1px solid #c7d2fe;border-radius:20px;padding:22px;margin:24px 0;box-shadow:0 12px 30px rgba(15,23,42,.08)}
+.teaching-content-card h2{margin-top:0;color:#1e1b4b}
+.teaching-content-card h3{margin-top:18px;color:#0f172a}
+.teaching-content-card p,.teaching-content-card li{line-height:1.9;color:#1f2937}
+.teaching-code-block,.teaching-output-block{white-space:pre-wrap;background:#020617;color:#e5e7eb;border-radius:16px;padding:16px;overflow:auto;font-family:Consolas,'Courier New',monospace;line-height:1.55}
+.teaching-output-block{background:#f8fafc;color:#0f172a;border:1px solid #e2e8f0}
+.teaching-mini-note{background:#eff6ff;border-left:6px solid #2563eb;border-radius:14px;padding:12px 14px;line-height:1.9;color:#1e3a8a}
+</style>
+</head><body>
+<section class="hero"><div class="hero-inner"><span class="badge">主題十八｜投影片 67–71</span><h1>死結系統模型與資源配置圖</h1><p>本主題說明 Deadlock 的系統模型與 Resource-Allocation Graph。重點是：process 會 request、use、release resource，而資源配置圖可以用圓形、方形與箭頭表示目前系統中的等待與分配關係。</p><div class="nav"><a class="btn" href="../index.html">回首頁</a><a class="btn" href="topic17.html">上一主題</a></div></div></section>
+<main class="wrap">
+<details class="slide-explain-wrapper" open=""><summary>一、投影片逐張下拉式詳細講解</summary><div class="detail-body"><p class="slide-intro-note">每張投影片都已把「圖片」與「自己的文字講解」放在同一個下拉式區塊中，方便一邊看圖、一邊理解重點。</p><details class="single-slide-detail" open=""><summary>投影片 67｜System Model</summary><div class="slide-explain-grid"><div class="slide-explain-image"><img alt="投影片67 System Model" class="slide-img" src="assets/slide67.jpg"/><div class="slide-caption">投影片 67｜System Model</div></div><div class="slide-explain-text"><h3>（一）這張投影片在說什麼？</h3><p>這張建立死結的系統模型。系統由多種 resource types 組成，每種資源可能有一個或多個 instances。Process 會 request、use、release 資源。</p><h3>（二）核心觀念</h3><ul><li>Resource type 可有多個 instance。</li><li>Process 使用資源通常經過 request → use → release。</li></ul><h3>（三）學習與考試重點</h3><p>死結分析前要先定義資源與行程模型。</p><h3>（四）一句話記憶</h3><p class="memory-line">一句話記憶：死結分析前要先定義資源與行程模型。</p></div></div></details><details class="single-slide-detail"><summary>投影片 68｜Resource Allocation Graph</summary><div class="slide-explain-grid"><div class="slide-explain-image"><img alt="投影片68 Resource Allocation Graph" class="slide-img" src="assets/slide68.jpg"/><div class="slide-caption">投影片 68｜Resource Allocation Graph</div></div><div class="slide-explain-text"><h3>（一）這張投影片在說什麼？</h3><p>這張介紹資源配置圖。圖中有 process vertices 與 resource vertices；request edge 表示 process 正在要求資源，assignment edge 表示資源已分配給 process。</p><h3>（二）核心觀念</h3><ul><li>Process 通常用圓形表示，resource type 通常用方形表示。</li><li>P → R 是 request，R → P 是 assignment。</li></ul><h3>（三）學習與考試重點</h3><p>要能從箭頭方向判斷是要求還是已分配。</p><h3>（四）一句話記憶</h3><p class="memory-line">一句話記憶：要能從箭頭方向判斷是要求還是已分配。</p></div></div></details><details class="single-slide-detail"><summary>投影片 69｜Resource Allocation Graph continued</summary><div class="slide-explain-grid"><div class="slide-explain-image"><img alt="投影片69 Resource Allocation Graph continued" class="slide-img" src="assets/slide69.jpg"/><div class="slide-caption">投影片 69｜Resource Allocation Graph continued</div></div><div class="slide-explain-text"><h3>（一）這張投影片在說什麼？</h3><p>這張介紹資源配置圖。圖中有 process vertices 與 resource vertices；request edge 表示 process 正在要求資源，assignment edge 表示資源已分配給 process。</p><h3>（二）核心觀念</h3><ul><li>Process 通常用圓形表示，resource type 通常用方形表示。</li><li>P → R 是 request，R → P 是 assignment。</li></ul><h3>（三）學習與考試重點</h3><p>要能從箭頭方向判斷是要求還是已分配。</p><h3>（四）一句話記憶</h3><p class="memory-line">一句話記憶：要能從箭頭方向判斷是要求還是已分配。</p></div></div></details><details class="single-slide-detail"><summary>投影片 70｜Example of Resource Allocation Graph</summary><div class="slide-explain-grid"><div class="slide-explain-image"><img alt="投影片70 Example of Resource Allocation Graph" class="slide-img" src="assets/slide70.jpg"/><div class="slide-caption">投影片 70｜Example of Resource Allocation Graph</div></div><div class="slide-explain-text"><h3>（一）這張投影片在說什麼？</h3><p>這張介紹資源配置圖。圖中有 process vertices 與 resource vertices；request edge 表示 process 正在要求資源，assignment edge 表示資源已分配給 process。</p><h3>（二）核心觀念</h3><ul><li>Process 通常用圓形表示，resource type 通常用方形表示。</li><li>P → R 是 request，R → P 是 assignment。</li></ul><h3>（三）學習與考試重點</h3><p>要能從箭頭方向判斷是要求還是已分配。</p><h3>（四）一句話記憶</h3><p class="memory-line">一句話記憶：要能從箭頭方向判斷是要求還是已分配。</p></div></div></details><details class="single-slide-detail"><summary>投影片 71｜Resource Allocation Graph with a Cycle</summary><div class="slide-explain-grid"><div class="slide-explain-image"><img alt="投影片71 Resource Allocation Graph with a Cycle" class="slide-img" src="assets/slide71.jpg"/><div class="slide-caption">投影片 71｜Resource Allocation Graph with a Cycle</div></div><div class="slide-explain-text"><h3>（一）這張投影片在說什麼？</h3><p>這張介紹資源配置圖。圖中有 process vertices 與 resource vertices；request edge 表示 process 正在要求資源，assignment edge 表示資源已分配給 process。</p><h3>（二）核心觀念</h3><ul><li>Process 通常用圓形表示，resource type 通常用方形表示。</li><li>P → R 是 request，R → P 是 assignment。</li></ul><h3>（三）學習與考試重點</h3><p>要能從箭頭方向判斷是要求還是已分配。</p><h3>（四）一句話記憶</h3><p class="memory-line">一句話記憶：要能從箭頭方向判斷是要求還是已分配。</p></div></div></details></div></details>
+<details open=""><summary>二、System Model：系統模型</summary><div class="detail-body"><p><span class="pill">核心觀念</span> 系統由多種 resource types 組成，例如 CPU cycles、memory space、I/O devices。每一種 resource type 可能有多個 instances。</p><div class="three-col"><div class="mini-card"><h4>Request</h4><p>Process 先要求資源。如果資源不能立刻取得，process 可能進入等待。</p></div><div class="mini-card"><h4>Use</h4><p>Process 取得資源後開始使用，例如使用印表機、檔案或 I/O 裝置。</p></div><div class="mini-card"><h4>Release</h4><p>Process 使用完後釋放資源，讓其他 process 可以取得。</p></div></div></div></details>
+<details open=""><summary>三、Resource-Allocation Graph 的符號</summary><div class="detail-body"><p>Resource-Allocation Graph 可以把 deadlock 問題畫成圖。圖中的節點分成 process 與 resource type，箭頭分成 request edge 與 assignment edge。</p><div class="symbol-list"><div class="symbol-card"><h4>Process</h4><p><span class="circle">Pi</span></p><p>圓形代表 process，例如 P1、P2、P3。</p></div><div class="symbol-card"><h4>Resource Type</h4><p><span class="square">Rj</span></p><p>方形代表 resource type，方形內的小點代表此資源類型有幾個 instance。</p></div><div class="symbol-card"><h4>Request Edge</h4><p><span class="circle">Pi</span><span class="edge">→</span><span class="square">Rj</span></p><p>表示 process Pi 正在要求 Rj 的某個 instance。</p></div><div class="symbol-card"><h4>Assignment Edge</h4><p><span class="square">Rj</span><span class="edge">→</span><span class="circle">Pi</span></p><p>表示 Rj 的某個 instance 已經分配給 process Pi。</p></div></div><div class="flowbox" id="flow-rag"><h3>符號動畫</h3><div class="flow-steps"><div class="flow-step">Process / Resource</div><div class="flow-step">Request Edge</div><div class="flow-step">Assignment Edge</div></div><div class="flow-caption"></div><div class="flow-controls"><button class="btn mini prev">上一步</button><button class="btn mini next">下一步</button><button class="btn mini reset">重新播放</button></div></div></div></details>
+<details><summary>四、Cycle 與 Deadlock 的判斷</summary><div class="detail-body"><p>Resource-Allocation Graph 最重要的判斷是看有沒有 cycle。</p><div class="rag-demo"><div class="rag-card solution-card"><h3>沒有 Cycle</h3><p>如果圖中沒有 cycle，則沒有 deadlock。</p><div class="graph-line"><span class="graph-token">P1</span><span class="edge">→</span><span class="graph-token resource">R1</span><span class="edge">→</span><span class="graph-token">P2</span></div></div><div class="rag-card warning-card"><h3>有 Cycle</h3><p>如果圖中有 cycle，可能發生 deadlock；若每種 resource type 只有一個 instance，則一定 deadlock。</p><div class="graph-line"><span class="graph-token">P1</span><span class="edge">→</span><span class="graph-token resource">R1</span><span class="edge">→</span><span class="graph-token">P2</span><span class="edge">→</span><span class="graph-token resource">R2</span><span class="edge">→</span><span class="graph-token">P1</span></div></div></div><div class="flowbox" id="flow-cycle"><h3>Cycle 判斷動畫</h3><div class="flow-steps"><div class="flow-step">No Cycle</div><div class="flow-step">Cycle + Single Instance</div><div class="flow-step">Cycle + Multiple Instances</div></div><div class="flow-caption"></div><div class="flow-controls"><button class="btn mini prev">上一步</button><button class="btn mini next">下一步</button><button class="btn mini reset">重新播放</button></div></div></div></details>
+<details><summary>五、投影片 71 的重點：有 Cycle 不一定都是 Deadlock</summary><div class="detail-body"><p>投影片 71 對比兩張資源配置圖：左邊有 cycle 且是 deadlock；右邊也有 cycle，但沒有 deadlock。原因是 resource type 可能有多個 instance，只要其中一個 process 可以先完成並釋放資源，其他 process 就可能繼續執行。</p><div class="two-col"><div class="mini-card warning-card"><h4>Deadlock</h4><p>Cycle 中的每個 process 都等不到需要的資源，沒有 process 能先完成。</p></div><div class="mini-card solution-card"><h4>No Deadlock</h4><p>雖然圖中有 cycle，但仍可能有某個 resource instance 釋放出來，讓等待鏈被打破。</p></div></div></div></details>
+<details><summary>六、連到下一主題：死結必要條件</summary><div class="detail-body"><p>本主題先用系統模型與資源配置圖理解 deadlock 的「形狀」。下一個主題會整理 deadlock 發生的四個必要條件：Mutual Exclusion、Hold and Wait、No Preemption、Circular Wait。</p></div></details>
+<details class="program-flow-card" open=""><summary>程式流程圖與流程講解</summary>
+<div class="detail-body">
+<h2>程式流程圖：死結系統模型與資源配置圖</h2>
+<img alt="主題 18 程式流程圖" class="program-flow-img" src="assets/program_flow_topic18.svg"/>
+<h3>流程講解</h3>
+<div class="flow-explain">這張流程圖對應本頁「死結系統模型與資源配置圖」的 C 程式執行邏輯。
+1、建立行程與資源。
+2、行程持有部分資源。
+3、再請求其他資源。
+4、形成循環等待。
+5、判定可能死結。
+學生可以先看流程圖理解整體順序，再對照下方程式中的中文註解，確認每一段程式碼負責哪一個步驟。</div>
+</div>
+</details>
+<details class="program-flow-card" open=""><summary>可編輯 C 程式範例與線上編輯器</summary>
+<div class="detail-body">
+<h2>可編輯 C 程式：死結系統模型與資源配置圖</h2>
+<p>這段程式依照上方流程圖設計，包含中文註解，適合貼到線上編輯器直接執行與修改。</p>
+<div class="code-card">
+<div class="code-head">
+<span class="code-title">lesson8_topic18_demo.c</span>
+<div class="code-actions">
+<button onclick="copyCode('code_topic_18')">複製程式</button>
+<button class="download-btn" onclick="downloadCode('code_topic_18','lesson8_topic18_demo.c')">下載 .c</button>
+<a href="https://www.onlinegdb.com/online_c_compiler" target="_blank">OnlineGDB</a>
+<a href="https://www.programiz.com/c-programming/online-compiler/" target="_blank">Programiz</a>
+<a href="https://onecompiler.com/c" target="_blank">OneCompiler</a>
+</div>
+</div>
+<textarea id="code_topic_18" spellcheck="false">#include &lt;stdio.h&gt;
+
+/*
+  主題 18：死結系統模型與資源配置圖
+  功能：用簡單條件判斷是否形成 circular wait。
+*/
+
+int main(void) {
+    int p1_hold_r1 = 1;
+    int p2_hold_r2 = 1;
+    int p1_request_r2 = 1;
+    int p2_request_r1 = 1;
+
+    if (p1_hold_r1 &amp;&amp; p2_hold_r2 &amp;&amp; p1_request_r2 &amp;&amp; p2_request_r1) {
+        printf("P1 持有 R1 並等待 R2。\n");
+        printf("P2 持有 R2 並等待 R1。\n");
+        printf("形成 circular wait，可能發生 deadlock。\n");
+    } else {
+        printf("未形成循環等待。\n");
+    }
+    return 0;
+}</textarea>
+</div>
+<div class="editor-links">
+      線上編輯器：
+      <a href="https://www.onlinegdb.com/online_c_compiler" target="_blank">OnlineGDB C Compiler</a>
+<a href="https://www.programiz.com/c-programming/online-compiler/" target="_blank">Programiz C Compiler</a>
+<a href="https://onecompiler.com/c" target="_blank">OneCompiler C</a>
+</div>
+</div>
+</details>
+
+<details class="teaching-content-card" open=""><summary>程式題目完整教學內容</summary>
+<div class="detail-body">
+<h2>程式題目完整教學：死結系統模型與資源配置圖</h2>
+<h3>一、程式題目講解</h3>
+<p>用條件判斷模擬 P1、P2 互相持有與等待資源時形成 circular wait。</p>
+<p>重點是 circular wait：P1 持有 R1 等 R2，P2 持有 R2 等 R1，就可能造成 deadlock。</p>
+<h3>二、完整程式碼</h3>
+<p>以下程式碼可直接複製到 C 語言線上編譯器執行。程式中已加入中文註解，說明主要變數、判斷流程與輸出目的。</p>
+<pre class="teaching-code-block"><code>#include &lt;stdio.h&gt;
+
+/*
+  主題 18：死結系統模型與資源配置圖
+  功能：用簡單條件判斷是否形成 circular wait。
+*/
+
+int main(void) {
+    int p1_hold_r1 = 1;
+    int p2_hold_r2 = 1;
+    int p1_request_r2 = 1;
+    int p2_request_r1 = 1;
+
+    if (p1_hold_r1 &amp;&amp; p2_hold_r2 &amp;&amp; p1_request_r2 &amp;&amp; p2_request_r1) {
+        printf(&quot;P1 持有 R1 並等待 R2。\n&quot;);
+        printf(&quot;P2 持有 R2 並等待 R1。\n&quot;);
+        printf(&quot;形成 circular wait，可能發生 deadlock。\n&quot;);
+    } else {
+        printf(&quot;未形成循環等待。\n&quot;);
+    }
+    return 0;
+}</code></pre>
+<h3>三、程式執行結果</h3>
+<pre class="teaching-output-block"><code>P1 持有 R1 並等待 R2。
+P2 持有 R2 並等待 R1。
+形成 circular wait，可能發生 deadlock。</code></pre>
+<p class="teaching-mini-note">結果說明：重點是 circular wait：P1 持有 R1 等 R2，P2 持有 R2 等 R1，就可能造成 deadlock。 程式依照設定的資料與控制流程逐步輸出，因此可以從結果看到每個步驟的執行順序與狀態變化。</p>
+<h3>四、程式流程圖與流程圖說明</h3>
+<p>本頁上方已提供對應的程式流程圖，圖中以「開始、資料設定、條件判斷、重複處理、輸出結果、結束」呈現程式執行順序。</p>
+<p>程式設定四個條件皆為真，再用 if 判斷是否形成循環等待；成立就輸出死結風險。</p>
+<h3>五、重要函數與語法說明</h3>
+<p>多個 int 變數代表資源持有與請求狀態；&amp;&amp; 連接所有必要條件；if/else 輸出判斷結果。</p>
+<h3>六、整體說明</h3>
+<p>本題的學習重點是把作業系統概念轉成可觀察的 C 程式流程。學生應先理解題目概念，再對照程式碼、流程圖與執行結果，掌握變數設定、條件判斷、迴圈處理與輸出結果之間的關係。</p>
+</div>
+</details>
+
+</main><div class="footer">Lesson 8 Topic 18｜System Model and Resource-Allocation Graph</div><script src="assets/script.js"></script></body></html>

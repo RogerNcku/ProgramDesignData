@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="zh-Hant"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/><link href="assets/style.css" rel="stylesheet"/><script src="assets/script.js"></script><title>Lesson 5 主題 6：Polynomial Representation 多項式表示法</title></head><body>
+<header class="hero"><div class="inner"><span class="badge">Lesson 5｜主題 6｜投影片 14</span><h1>主題 6：Polynomial Representation 多項式表示法</h1><p>比較用 Array 與 Linked List 表示多項式：Array 存位置，Linked List 存非零項。</p><div class="toolbar"><a class="btn secondary" href="../index.html">回 L5 首頁</a><a class="btn secondary" href="topic5.html">上一個：主題 5</a></div></div></header>
+<div class="wrap"><div class="layout"><aside class="sidebar"><div class="side-title">Lesson 5 主題導覽</div><nav class="nav"><a href="../index.html">L5 首頁</a><a href="topic5.html">5. Singly Linked List 的程式實作</a>
+<a class="active" href="topic6.html">6. Polynomial Representation 多項式表示法</a></nav></aside><main>
+<section class="card"><span class="badge">投影片 14</span><h2>一、主題核心概念</h2><p>多項式的每一項可以拆成 coefficient 與 exponent。Array 表示法可依指數位置存係數；Linked List 表示法只建立非零項節點，適合稀疏多項式。</p></section>
+<section class="card"><h2>二、投影片逐張下拉式詳細講解</h2><p>每一張投影片都已把圖片與自己的文字講解合併在同一個下拉式區塊中。點開後可以直接對照圖片閱讀說明。</p><div class="slide-detail-list"><details class="slide-detail"><summary>投影片 14｜Polynomial Representation 多項式表示法</summary><div class="slide-detail-body"><div class="slide-detail-grid"><div><img alt="投影片 14：Polynomial Representation 多項式表示法" class="slide-detail-img" src="assets/slide14.jpg"/><div class="figure-caption">投影片 14</div></div><div class="slide-explain"><h3>Polynomial Representation 多項式表示法</h3><h4>詳細說明與講解</h4><p>1、這張投影片說明如何用資料結構表示多項式。多項式可以用 Array 表示，也可以用 Linked List 表示，兩者適合的情況不同。</p><p>2、若使用 Array，通常用指數當作 index，係數放在對應位置。這種方法查詢特定次方的係數很直接，但如果多項式很稀疏，例如只有少數幾項非零，會浪費大量空間。</p><p>3、若使用 Linked List，每個節點可以保存一個非零項，例如 coefficient 與 exponent。這樣只儲存真正出現的項，對稀疏多項式比較節省空間。</p><p>4、圖中 A(x)、B(x) 同時用 Array 與 Linked List 表示，目的是讓學生比較：Array 是固定位置表示法，Linked List 是逐項串接表示法。</p><div class="slide-memory">一句話記憶：稀疏多項式適合用 Linked List 儲存非零項。</div></div></div></div></details></div></section>
+<section class="card"><h2>三、動畫流程圖：Polynomial Representation 多項式表示法</h2><div class="flow-area" id="flow6"><div class="flow"><div class="node">拆成 coef/exp</div><div class="node">選擇表示法</div><div class="node">Array 存係數</div><div class="node">List 存非零項</div><div class="node">依 exp 排序</div><div class="node">準備相加</div></div><div class="progress"><div class="bar"></div></div><div class="stepbox"></div><div class="btns" style="margin-top:12px"><button class="btn secondary" onclick="prevFlow('flow6')">上一步</button><button class="btn" onclick="nextFlow('flow6')">下一步</button><button class="btn orange" onclick="playFlow('flow6')">自動播放</button><button class="btn secondary" onclick="resetFlow('flow6')">重新開始</button></div></div><script>initFlow('flow6',['每一項如 9x^20 可記成 coef=9, exp=20。','根據多項式是否稀疏決定表示法。','Array 用 index 對應 exponent，概念簡單但可能浪費。','Linked List 只存非零項，節省空間。','通常依 exp 由大到小排序，方便相加。','下一步即可用兩條串列合併完成 polynomial addition。']);</script></section>
+<section class="card"><h2>四、動畫表格：步驟與重點整理</h2><p>請按「下一步」或「自動播放」觀察本主題的操作流程與注意事項。</p><div class="flow-area" id="table6"><div class="anim-table-wrap"><table class="anim-table"><thead><tr><th>表示/概念</th><th>做法</th><th>優點</th><th>注意事項</th></tr></thead><tbody><tr><td>Array</td><td>coef[exp] 存係數</td><td>存取快</td><td>最高次方大且稀疏會浪費</td></tr><tr><td>Linked List</td><td>節點存 coef 與 exp</td><td>節省稀疏多項式空間</td><td>搜尋需走訪</td></tr><tr><td>Term</td><td>一個多項式項</td><td>coef + exp</td><td>係數為 0 通常不存</td></tr><tr><td>排序</td><td>由大指數到小指數</td><td>方便合併</td><td>相加時比較 exp</td></tr><tr><td>尾端</td><td>next=NULL</td><td>表示沒有下一項</td><td>插入新項時要維護</td></tr></tbody></table></div><div class="progress"><div class="bar"></div></div><div class="table-note"></div><div class="btns" style="margin-top:12px"><button class="btn secondary" onclick="prevTable('table6')">上一步</button><button class="btn" onclick="nextTable('table6')">下一步</button><button class="btn orange" onclick="playTable('table6')">自動播放</button><button class="btn secondary" onclick="resetTable('table6')">重新開始</button></div></div><script>initTable('table6',['Array → coef[exp] 存係數 → 存取快 → 最高次方大且稀疏會浪費','Linked List → 節點存 coef 與 exp → 節省稀疏多項式空間 → 搜尋需走訪','Term → 一個多項式項 → coef + exp → 係數為 0 通常不存','排序 → 由大指數到小指數 → 方便合併 → 相加時比較 exp','尾端 → next=NULL → 表示沒有下一項 → 插入新項時要維護']);</script></section>
+<details open=""><summary>五、完整中文講解</summary><div class="content"><h3>（一）本主題要學會什麼？</h3><p>多項式的每一項可以拆成 coefficient 與 exponent。Array 表示法可依指數位置存係數；Linked List 表示法只建立非零項節點，適合稀疏多項式。</p><h3>（二）實作時最重要的觀念</h3><div class="grid2"><div class="mini"><b>資料結構</b><br/>先看清楚資料是用 Array、Node、Singly List、Circular List 或 Doubly List 表示。</div><div class="mini"><b>指標方向</b><br/>Linked List 題目幾乎都在考指標怎麼接、怎麼斷、怎麼重新連起來。</div><div class="mini"><b>特殊情況</b><br/>空串列、頭節點、尾節點、找不到資料，都是程式容易錯的地方。</div><div class="mini"><b>測試方式</b><br/>每做完 insert/delete，都用 print 檢查目前串列是否符合預期。</div></div><div class="example">多項式若用 Array 表示，指數可以直接對應 index；若用 Linked List 表示，通常只保存非零項，因此對稀疏多項式更省空間。</div></div></details>
+<details open=""><summary>六、可編輯 C 程式範例：含中文註解與線上編輯器</summary><div class="content"><div class="codewrap"><div class="codebar"><span>polynomial_representation.c</span><div class="btns"><button class="btn green" onclick="copyCode('code6')">複製程式</button><button class="btn orange" onclick="downloadCode('code6','polynomial_representation.c')">下載 .c</button><a class="btn secondary" href="https://www.onlinegdb.com/online_c_compiler" target="_blank">OnlineGDB</a><a class="btn secondary" href="https://www.programiz.com/c-programming/online-compiler/" target="_blank">Programiz</a><a class="btn secondary" href="https://onecompiler.com/c" target="_blank">OneCompiler</a></div></div><textarea class="codearea" id="code6" spellcheck="false">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+/*
+    Polynomial Representation：用 Linked List 表示多項式
+    每一個節點代表一個非零項：coef * x^exp
+*/
+
+typedef struct Term {
+    int coef;              // 係數 coefficient
+    int exp;               // 指數 exponent
+    struct Term *next;     // 下一個非零項
+} Term;
+
+Term* createTerm(int coef, int exp) {
+    Term *t = (Term*)malloc(sizeof(Term));
+    if (!t) exit(1);
+    t-&gt;coef = coef;
+    t-&gt;exp = exp;
+    t-&gt;next = NULL;
+    return t;
+}
+
+void appendTerm(Term **poly, int coef, int exp) {
+    if (coef == 0) return; // 係數為 0 的項通常不存
+    Term *newTerm = createTerm(coef, exp);
+    if (*poly == NULL) {
+        *poly = newTerm;
+        return;
+    }
+    Term *p = *poly;
+    while (p-&gt;next != NULL) p = p-&gt;next;
+    p-&gt;next = newTerm;
+}
+
+void printPoly(Term *poly) {
+    while (poly != NULL) {
+        printf("%dx^%d", poly-&gt;coef, poly-&gt;exp);
+        if (poly-&gt;next != NULL) printf(" + ");
+        poly = poly-&gt;next;
+    }
+    printf("\n");
+}
+
+int main(void) {
+    Term *A = NULL;
+    appendTerm(&amp;A, 9, 20);
+    appendTerm(&amp;A, -1, 10);
+    appendTerm(&amp;A, 12, 0);
+    printf("A(x) = ");
+    printPoly(A);
+    return 0;
+}
+</textarea></div></div></details>
+
+<section class="card program-teaching-card">
+<h2>新增：程式題目教學內容（依指定格式）</h2>
+<div class="content">
+<h3>一、程式題目講解</h3>
+<p>本題示範用 Linked List 表示多項式。學生需要理解一個節點可以代表一個非零項，節點中保存係數 coef、指數 exp 與下一項 next。</p>
+<h3>二、完整程式碼</h3>
+<p>以下為本頁程式題目的完整可執行 C 程式碼，已在重要程式區塊加入中文註解，方便初學者理解程式功能與流程。</p>
+<pre class="codearea" style="height:auto;min-height:0;white-space:pre-wrap;overflow:auto;">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+/*
+    Polynomial Representation：用 Linked List 表示多項式
+    每一個節點代表一個非零項：coef * x^exp
+*/
+
+typedef struct Term {
+    int coef;              // 係數 coefficient
+    int exp;               // 指數 exponent
+    struct Term *next;     // 下一個非零項
+} Term;
+
+Term* createTerm(int coef, int exp) {
+    Term *t = (Term*)malloc(sizeof(Term));
+    if (!t) exit(1);
+    t-&gt;coef = coef;
+    t-&gt;exp = exp;
+    t-&gt;next = NULL;
+    return t;
+}
+
+void appendTerm(Term **poly, int coef, int exp) {
+    if (coef == 0) return; // 係數為 0 的項通常不存
+    Term *newTerm = createTerm(coef, exp);
+    if (*poly == NULL) {
+        *poly = newTerm;
+        return;
+    }
+    Term *p = *poly;
+    while (p-&gt;next != NULL) p = p-&gt;next;
+    p-&gt;next = newTerm;
+}
+
+void printPoly(Term *poly) {
+    while (poly != NULL) {
+        printf(&quot;%dx^%d&quot;, poly-&gt;coef, poly-&gt;exp);
+        if (poly-&gt;next != NULL) printf(&quot; + &quot;);
+        poly = poly-&gt;next;
+    }
+    printf(&quot;\n&quot;);
+}
+
+int main(void) {
+    Term *A = NULL;
+    appendTerm(&amp;A, 9, 20);
+    appendTerm(&amp;A, -1, 10);
+    appendTerm(&amp;A, 12, 0);
+    printf(&quot;A(x) = &quot;);
+    printPoly(A);
+    return 0;
+}
+</pre>
+<h3>三、程式執行結果</h3>
+<p>程式執行後會得到以下輸出：</p>
+<pre class="codearea" style="height:auto;min-height:0;white-space:pre-wrap;overflow:auto;">A(x) = 9x^20 + -1x^10 + 12x^0</pre>
+<p>程式建立多項式 A(x)，依序加入 9x^20、-1x^10、12x^0 三個非零項。printPoly 依照節點順序輸出每一項，所以結果顯示 A(x) = 9x^20 + -1x^10 + 12x^0。</p>
+<h3>四、程式流程圖與流程圖說明</h3>
+<p>本題流程圖如下，呈現程式的主要執行順序、判斷條件與資料處理流程。</p>
+<div class="program-flow-figure"><img alt="主題 6 程式流程圖" class="program-flow-img" src="assets/program_flow_topic6.svg"/><div class="figure-caption">主題 6：Polynomial Representation 多項式表示法：程式流程圖</div></div>
+<p>流程先宣告 Term *A = NULL，再呼叫 appendTerm 將每一個非零項加入串列尾端。輸出時 printPoly 從第一項開始印出 coef 與 exp，遇到 next 不為 NULL 時加上 +，直到所有項目輸出完畢。</p>
+<h3>五、重要函數與語法說明</h3>
+<ol><li>typedef struct Term：定義多項式項目節點。</li><li>coef：保存係數。</li><li>exp：保存指數。</li><li>appendTerm：把新的非零項加到多項式尾端。</li><li>printPoly：依序輸出多項式每一項。</li></ol>
+<h3>六、整體說明</h3>
+<p>本題讓學生知道 Linked List 不只可以存一般數字，也可以存複合資料。多項式只需要保存非零項，因此用鏈結串列比固定陣列更節省空間。</p>
+</div>
+</section>
+<section class="card program-flow-card">
+<h2>七、程式流程圖：Polynomial Term Array 表示法</h2>
+<p>下圖是本主題對應的程式執行流程，適合搭配下方 C 程式碼一起看。</p>
+<div class="program-flow-figure"><img alt="主題 6 程式流程圖" class="program-flow-img" src="assets/program_flow_topic6.svg"/><div class="figure-caption">主題 6 程式流程圖：Polynomial Term Array 表示法</div></div>
+<div class="flow-explain"><h3>流程講解</h3><ol><li>多項式可用一個一個 term 表示，每個 term 包含係數 coef 與指數 exp。</li><li>程式讀入非零項後，依序存入 termArray。</li><li>若要方便相加，通常會讓 termArray 依照 exponent 大到小排列。</li><li>輸出時逐項顯示，例如 3x^2、2x、-4。</li><li>這種表示法適合 sparse polynomial，因為只儲存非零項。</li></ol><p>這張流程圖把本頁程式的執行順序整理成一條清楚路徑。閱讀時先看資料如何被建立，再看條件判斷與指標如何改變，最後用輸出結果確認程式邏輯是否正確。</p></div>
+</section>
+</main></div></div><footer class="footer">Lesson 5｜主題 6：Polynomial Representation 多項式表示法</footer></body></html>

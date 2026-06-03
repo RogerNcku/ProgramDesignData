@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+
+<html lang="zh-Hant"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/><title>主題三 Binary Trees 二元樹基本概念</title><link href="assets/style.css" rel="stylesheet"/><script src="assets/script.js"></script>
+<style>
+.slide-dropdown-section{margin-top:22px}.slide-dropdown-section>.note{margin-bottom:14px}.slide-explain-item{border:1px solid rgba(100,116,139,.28);border-radius:16px;margin:14px 0;background:rgba(255,255,255,.86);overflow:hidden}.slide-explain-item>summary{cursor:pointer;font-weight:700;padding:16px 18px;line-height:1.5;background:linear-gradient(90deg,rgba(241,245,249,.95),rgba(255,255,255,.88));list-style:none}.slide-explain-item>summary::-webkit-details-marker{display:none}.slide-explain-item>summary:before{content:'▸';display:inline-block;margin-right:8px;transition:transform .2s}.slide-explain-item[open]>summary:before{transform:rotate(90deg)}.slide-explain-body{display:grid;grid-template-columns:minmax(280px,46%) 1fr;gap:22px;padding:18px}.slide-explain-media{align-self:start}.slide-explain-img{width:100%;height:auto;border-radius:14px;box-shadow:0 10px 28px rgba(15,23,42,.18);background:white}.slide-explain-text h3{font-size:1.04rem;margin:0.9rem 0 .35rem}.slide-explain-text h3:first-child{margin-top:0}.slide-explain-text p,.slide-explain-text li{line-height:1.85}.slide-explain-text ul{margin-top:.2rem;padding-left:1.4rem}.memory-box{margin-top:14px;padding:12px 14px;border-left:5px solid #f59e0b;background:#fff7ed;border-radius:10px;line-height:1.75;font-weight:600}@media(max-width:820px){.slide-explain-body{grid-template-columns:1fr}.slide-explain-item>summary{padding:14px}.slide-explain-body{padding:14px}}
+</style>
+</head><body>
+<section class="hero"><div class="hero-inner"><span class="badge">主題三｜投影片 10</span><h1>Binary Trees 二元樹基本概念</h1><p>二元樹是樹狀結構中最常見也最重要的形式。它的核心規則是：每個節點最多只能有兩個子節點，而且要分成 left subtree 與 right subtree。</p><div class="nav"><a class="btn" href="../index.html">回 L6 首頁</a><a class="btn primary" href="topic4.html">下一章：二元樹表示法</a></div></div></section>
+<main class="wrap">
+<section class="card slide-dropdown-section"><h2>投影片逐張下拉式詳細講解</h2><p class="note">每一張投影片都把圖片與自己的中文講解放在同一個下拉式區塊中，打開後可以直接對照圖與文字。</p><details class="slide-explain-item"><summary>投影片 10：Binary Trees 二元樹定義與性質</summary><div class="slide-explain-body"><div class="slide-explain-media"><img alt="投影片 10：Binary Trees 的定義與性質" class="slide-explain-img" src="assets/slide10.png"/><div class="figure-caption">投影片 10：Binary Trees 的定義與性質</div></div><div class="slide-explain-text"><h3>（一）這張投影片在說什麼？</h3><p>這張投影片介紹 binary tree。Binary tree 可以是空樹，也可以由 root、left subtree、right subtree 組成。它會區分左子樹與右子樹，因此左右交換通常代表不同的樹。</p><h3>（二）核心觀念</h3><ul><li>Binary tree 每個節點最多有兩個孩子。</li><li>左子樹與右子樹有順序差異。</li><li>Binary tree 可以是 empty，一般 tree 通常至少有 root。</li><li>定義同樣具有遞迴性。</li></ul><h3>（三）學習與考試重點</h3><p>Binary tree 不是單純「degree = 2 的一般樹」；最大差異是 binary tree 明確區分 left 和 right。</p><div class="memory-box">一句話記憶：二元樹最重要的兩個字：左右。</div></div></div></details></section>
+<details open=""><summary>一、Binary Tree 是什麼？</summary><div class="detail-body"><p><span class="pill">核心概念</span></p><p>Binary tree 可以翻成「二元樹」或「二叉樹」。它和一般 tree 最大的不同，是每個節點最多只能分出兩個子節點。這兩個子節點不是單純的第一個、第二個，而是有明確方向：一個叫做 <span class="k">left child</span>，另一個叫做 <span class="k">right child</span>。</p><div class="concept-map"><div class="concept">Root<span>根節點</span></div><div class="arrow">→</div><div class="concept">Left Subtree<span>左子樹</span></div><div class="arrow">＋</div><div class="concept">Right Subtree<span>右子樹</span></div></div><p>投影片定義：一棵 binary tree 是有限個節點的集合；它可以是空的，也可以由一個 root 和兩棵互不相交的 binary trees 組成，這兩棵子樹分別稱為 left subtree 與 right subtree。</p></div></details>
+<details open=""><summary>二、互動示意：Root、Left、Right、Leaf</summary><div class="detail-body"><p>請點選下方按鈕，觀察二元樹中不同位置的節點。</p><div class="binary-stage"><div class="btree"><div class="btree-level"><div class="bnode root" data-bnode="root">A</div></div><div class="btree-level"><div class="bnode" data-bnode="left">B</div><div class="bnode" data-bnode="right">C</div></div><div class="btree-level"><div class="bnode" data-bnode="leaf left">D</div><div class="bnode" data-bnode="leaf left">E</div><div class="bnode empty" data-bnode="right">空</div><div class="bnode" data-bnode="leaf right">F</div></div></div><p class="tree-caption" id="binaryText">Root 是二元樹最上面的節點。二元樹可以是空樹；若非空，會由 root、left subtree、right subtree 組成。</p><div class="flow-controls"><button class="btn mini primary" onclick="binaryFocus('root')">Root</button><button class="btn mini" onclick="binaryFocus('left')">Left subtree</button><button class="btn mini" onclick="binaryFocus('right')">Right subtree</button><button class="btn mini" onclick="binaryFocus('leaf')">Leaf</button></div></div></div></details>
+<details open=""><summary>三、Binary Tree 的三個重點性質</summary><div class="detail-body"><div class="compare"><div class="box"><h3>1、可以是空樹</h3><p>一般 tree 通常至少要有 root；但 binary tree 的定義允許它是 empty。這個性質很重要，因為在遞迴處理 left subtree 或 right subtree 時，遇到沒有節點就可以視為空的 binary tree。</p></div><div class="box"><h3>2、每個節點最多兩個孩子</h3><p>一個節點可以沒有孩子、一個孩子或兩個孩子，但最多就是兩個。這使得 binary tree 在演算法設計上很規律。</p></div><div class="box"><h3>3、左與右不能混淆</h3><p>Binary tree 會區分 left child 和 right child。即使兩棵樹有相同節點，只要左右位置不同，就可能被視為不同的 binary tree。</p></div><div class="box"><h3>4、具有遞迴性</h3><p>root 的 left subtree 本身也是 binary tree；right subtree 本身也是 binary tree。因此後面的 traversal、search、insert 常常會用 recursive algorithm 表示。</p></div></div></div></details>
+<details open=""><summary>四、動畫流程圖：如何判斷是不是 Binary Tree？</summary><div class="detail-body"><div class="flowbox" data-flow="bt"><div class="flow-steps"><div class="flow-step" data-caption="先確認是否沒有任何節點。如果沒有節點，它仍然可以是 binary tree，稱為 empty binary tree。">檢查是否為空</div><div class="flow-step" data-caption="如果不是空樹，先找出最上層的 root node。">找出 root</div><div class="flow-step" data-caption="檢查 root 是否最多只有 left child 和 right child 兩個方向。">檢查孩子數量</div><div class="flow-step" data-caption="分別確認 left subtree 與 right subtree 本身也符合 binary tree 定義。">檢查左右子樹</div><div class="flow-step" data-caption="若每個節點都最多兩個孩子，且左右子樹都符合定義，就可以判定為 binary tree。">完成判斷</div></div><div class="flow-caption"></div><div class="flow-controls"><button class="btn mini" onclick="prevFlow('bt')">上一步</button><button class="btn mini primary" onclick="nextFlow('bt')">下一步</button><button class="btn mini" onclick="autoFlow('bt')">自動播放</button><button class="btn mini" onclick="resetFlow('bt')">重新開始</button></div></div></div></details>
+<details open=""><summary>五、為什麼二元樹重要？</summary><div class="detail-body"><p>二元樹是後面很多資料結構的基礎。例如 binary search tree 會利用「左小右大」快速搜尋資料；heap 會利用 complete binary tree 的形狀維持最大值或最小值；expression tree 可以表示算術式。換句話說，binary tree 不只是圖形，它是許多演算法的基本骨架。</p><div class="note">學習建議：看到 binary tree 題目時，先不要急著看程式。先畫出 root、left subtree、right subtree，再判斷每個節點是否符合「最多兩個孩子」與「左右位置有意義」這兩個條件。</div></div></details>
+<details class="lab7-code-section" open=""><summary>可編輯 C 程式範例：含中文註解與線上編輯器</summary><div class="content detail-body"><p>這一段提供可直接修改的 C 程式碼。可以按「複製程式」貼到線上編輯器執行，也可以下載 .c 檔案。</p><div class="codewrap"><div class="codebar"><span>lesson6_topic3_demo.c</span><div class="btns"><button class="btn green" onclick="copyCode('code3')">複製程式</button><button class="btn orange" onclick="downloadCode('code3','lesson6_topic3_demo.c')">下載 .c</button><a class="btn secondary" href="https://www.onlinegdb.com/online_c_compiler" target="_blank">OnlineGDB</a><a class="btn secondary" href="https://www.programiz.com/c-programming/online-compiler/" target="_blank">Programiz</a><a class="btn secondary" href="https://onecompiler.com/c" target="_blank">OneCompiler</a></div></div><textarea class="codearea" id="code3" spellcheck="false">/*
+  中文註解版程式：lesson6_topic3_demo.c
+  說明：主題 3：Binary Tree 基本結構示範。每個節點最多只有 left 與 right 兩個孩子。
+  閱讀方式：先看資料結構定義，再看操作函式，最後看 main() 如何測試。
+*/
+
+// 匯入標準輸入輸出函式庫，提供 printf / scanf 等功能。
+#include &lt;stdio.h&gt;
+// 匯入標準函式庫，提供 malloc / free / exit 等記憶體與程式控制功能。
+#include &lt;stdlib.h&gt;
+
+// 定義節點結構：資料欄位存節點內容，指標欄位負責連到其他節點。
+typedef struct TreeNode {
+    char data;
+    struct TreeNode *left;
+    struct TreeNode *right;
+} TreeNode;
+
+// 建立新節點：配置記憶體、填入資料，並把指標初始化為 NULL。
+TreeNode* createNode(char data) {
+    TreeNode* n = (TreeNode*)malloc(sizeof(TreeNode));
+    n-&gt;data = data;
+    n-&gt;left = NULL;
+    n-&gt;right = NULL;
+    return n;
+}
+
+// 主程式：建立測試資料，呼叫上方函式，觀察輸出結果。
+int main(void) {
+    TreeNode *root = createNode('A');
+    root-&gt;left = createNode('B');
+    root-&gt;right = createNode('C');
+    printf("Binary Tree Root: %c\n", root-&gt;data);
+    return 0;
+}
+</textarea></div></div></details>
+<details class="lab7-teaching-content" open=""><summary>程式題目教學內容：Binary Tree 基本建立</summary><div class="content detail-body">
+<h3>一、程式題目講解</h3>
+<p>本題用 C 程式建立一個簡單二元樹 root，讓學生理解 binary tree 的節點最多只有 left 與 right 兩個子節點。</p>
+<h3>二、完整程式碼</h3>
+<p>完整可執行程式碼已保留在上方「可編輯 C 程式範例：含中文註解與線上編輯器」區塊中，檔名為 <code>lesson6_topic3_demo.c</code>。該程式碼已加入中文註解，學生可以直接複製到 OnlineGDB、Programiz 或 OneCompiler 執行。</p>
+<h3>三、程式執行結果</h3>
+<pre><code>Binary Tree Root: A</code></pre>
+<p>輸出 Binary Tree Root: A，表示程式已建立根節點 A。雖然範例很簡單，但它呈現二元樹節點資料與左右指標初始化的基本方法。</p>
+<h3>四、程式流程圖與流程圖說明</h3>
+<p>本頁下方已保留原本的程式流程圖。閱讀流程圖時，可以依序掌握「初始化資料或節點 → 執行主要函式或判斷 → 輸出結果」的過程。流程先定義 Node 結構，再建立 root 節點，將資料放入 A，左右指標初始化為 NULL，最後印出 root 的資料。</p>
+<h3>五、重要函數與語法說明</h3>
+<p>createNode(char data)：建立二元樹節點；malloc()：配置節點記憶體；NULL：代表目前沒有左子樹或右子樹；printf()：印出 root 資料。</p>
+<h3>六、整體說明</h3>
+<p>本題重點在於二元樹節點的基本型態：一個資料欄位加上 left、right 兩個指標。</p>
+</div></details>
+
+<section class="card program-flow-card">
+<h2>程式流程圖：Binary Tree 建立流程</h2>
+<p>下圖是本主題對應的程式執行流程，適合搭配本頁 C 程式碼一起看。</p>
+<div class="program-flow-figure"><img alt="主題 3 程式流程圖" class="program-flow-img" src="assets/program_flow_topic3.svg"/><div class="figure-caption">主題 3 程式流程圖：Binary Tree 建立流程</div></div>
+<div class="flow-explain"><h3>流程講解</h3><ol><li>Binary tree 每個節點最多只有 left child 與 right child。</li><li>建立節點後，程式要分別判斷左子樹與右子樹是否存在。</li><li>若子樹存在，就遞迴建立；若不存在，就保留 NULL。</li><li>完成後 root 會指向整棵二元樹的起點。</li></ol><p>這張流程圖把本頁程式的執行順序整理成一條清楚路徑。閱讀時先看輸入與資料如何建立，再看條件判斷、指標或陣列索引如何改變，最後用輸出結果確認程式邏輯是否正確。</p></div>
+</section>
+</main><div class="footer">Lesson 6 Trees｜主題三：Binary Trees</div></body></html>

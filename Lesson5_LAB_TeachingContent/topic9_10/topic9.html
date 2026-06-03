@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh-Hant"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/><link href="assets/style.css" rel="stylesheet"/><script src="assets/script.js"></script><title>Lesson 5 主題 9：Doubly Linked List 雙向鏈結串列基本概念</title></head><body>
+<header class="hero"><div class="inner"><span class="badge">Lesson 5｜主題 9｜投影片 19–20</span><h1>主題 9：Doubly Linked List 雙向鏈結串列基本概念</h1><p>每個節點有 llink 與 rlink，因此可以往前也可以往後走。</p><div class="toolbar"><a class="btn secondary" href="../index.html">回 L5 首頁</a><a class="btn secondary" href="topic10.html">下一個：主題 10</a></div></div></header>
+<div class="wrap"><div class="layout"><aside class="sidebar"><div class="side-title">Lesson 5 主題導覽</div><nav class="nav"><a href="../index.html">L5 首頁</a><a class="active" href="topic9.html">9. Doubly Linked List 雙向鏈結串列基本概念</a>
+<a href="topic10.html">10. Doubly Linked List 的插入與刪除</a></nav></aside><main>
+<section class="card"><span class="badge">投影片 19–20</span><h2>一、主題核心概念</h2><p>Doubly Linked List 的每個節點包含 llink、data、rlink。llink 指向前一個節點，rlink 指向下一個節點，讓串列可以雙向走訪。</p></section>
+<section class="card"><h2>二、投影片逐張下拉式詳細講解</h2><p>每一張投影片都已把圖片與自己的文字講解合併在同一個下拉式區塊中。點開後可以直接對照圖片閱讀說明。</p><div class="slide-detail-list"><details class="slide-detail"><summary>投影片 19｜Doubly Linked List 雙向鏈結串列基本概念</summary><div class="slide-detail-body"><div class="slide-detail-grid"><div><img alt="投影片 19：Doubly Linked List 雙向鏈結串列基本概念" class="slide-detail-img" src="assets/slide19.jpg"/><div class="figure-caption">投影片 19</div></div><div class="slide-explain"><h3>Doubly Linked List 雙向鏈結串列基本概念</h3><h4>詳細說明與講解</h4><p>1、這張投影片介紹 Doubly Linked List。它的每個節點除了 data 之外，還有兩個 link：一個指向前一個節點，另一個指向下一個節點。</p><p>2、相較於 Singly Linked List，雙向鏈結串列可以往前也可以往後走，因此刪除某個節點時比較方便，不一定需要從 head 開始找前一個節點。</p><p>3、投影片提到單向鏈結串列刪除效率不高，是因為要刪除節點時常常需要知道前一個節點。雙向串列透過 left link 或 prev link 解決這個問題。</p><p>4、代價是每個節點需要多存一個 pointer，因此空間成本比單向鏈結串列高，而且插入刪除時要更新的 pointer 數量也比較多。</p><div class="slide-memory">一句話記憶：Doubly Linked List 用 prev 與 next 支援雙向移動。</div></div></div></div></details><details class="slide-detail"><summary>投影片 20｜Doubly Linked List 的結構與 Head Node</summary><div class="slide-detail-body"><div class="slide-detail-grid"><div><img alt="投影片 20：Doubly Linked List 的結構與 Head Node" class="slide-detail-img" src="assets/slide20.jpg"/><div class="figure-caption">投影片 20</div></div><div class="slide-explain"><h3>Doubly Linked List 的結構與 Head Node</h3><h4>詳細說明與講解</h4><p>1、這張投影片展示雙向鏈結串列的圖形結構。每個節點左右都有箭頭，左箭頭指回前一個節點，右箭頭指向下一個節點。</p><p>2、圖中也出現 head node 或 header node 的概念。Header node 可以作為固定的起點，讓空串列、頭端插入、尾端刪除等情況比較容易處理。</p><p>3、在雙向串列中，若使用 header node，常可以避免很多 if-else 特殊判斷，因為即使沒有真正資料節點，也仍然有一個 head 作為連結基準。</p><p>4、學這張時要確認自己看得懂兩種方向：從左到右是 next，從右到左是 prev。任何一個方向接錯，都可能讓串列一邊能走、另一邊壞掉。</p><div class="slide-memory">一句話記憶：Header node 是用來簡化雙向串列邊界情況的假節點。</div></div></div></div></details></div></section>
+<section class="card"><h2>三、動畫流程圖：Doubly Linked List 雙向鏈結串列基本概念</h2><div class="flow-area" id="flow9"><div class="flow"><div class="node">建立 head node</div><div class="node">節點含 llink</div><div class="node">節點含 rlink</div><div class="node">往前走訪</div><div class="node">往後走訪</div><div class="node">可做 circular</div></div><div class="progress"><div class="bar"></div></div><div class="stepbox"></div><div class="btns" style="margin-top:12px"><button class="btn secondary" onclick="prevFlow('flow9')">上一步</button><button class="btn" onclick="nextFlow('flow9')">下一步</button><button class="btn orange" onclick="playFlow('flow9')">自動播放</button><button class="btn secondary" onclick="resetFlow('flow9')">重新開始</button></div></div><script>initFlow('flow9',['head node 可當作入口與邊界，降低特殊情況。','llink 指向前一個節點。','rlink 指向下一個節點。','需要回頭時可用 current->llink。','需要往後時可用 current->rlink。','雙向串列也可以做成環狀版本，頭尾互相接回。']);</script></section>
+<section class="card"><h2>四、動畫表格：步驟與重點整理</h2><p>請按「下一步」或「自動播放」觀察本主題的操作流程與注意事項。</p><div class="flow-area" id="table9"><div class="anim-table-wrap"><table class="anim-table"><thead><tr><th>欄位/概念</th><th>意義</th><th>功能</th><th>注意事項</th></tr></thead><tbody><tr><td>llink</td><td>指向前一個節點</td><td>支援反向走訪</td><td>頭端可能指向 head 或 NULL</td></tr><tr><td>data</td><td>保存資料</td><td>節點內容</td><td>可為任意資料型態</td></tr><tr><td>rlink</td><td>指向下一個節點</td><td>支援正向走訪</td><td>尾端可能指向 head 或 NULL</td></tr><tr><td>head node</td><td>輔助節點</td><td>統一邊界處理</td><td>通常不存真正資料</td></tr><tr><td>circular</td><td>頭尾相接</td><td>避免 NULL 特殊狀況</td><td>停止條件要明確</td></tr></tbody></table></div><div class="progress"><div class="bar"></div></div><div class="table-note"></div><div class="btns" style="margin-top:12px"><button class="btn secondary" onclick="prevTable('table9')">上一步</button><button class="btn" onclick="nextTable('table9')">下一步</button><button class="btn orange" onclick="playTable('table9')">自動播放</button><button class="btn secondary" onclick="resetTable('table9')">重新開始</button></div></div><script>initTable('table9',['llink → 指向前一個節點 → 支援反向走訪 → 頭端可能指向 head 或 NULL','data → 保存資料 → 節點內容 → 可為任意資料型態','rlink → 指向下一個節點 → 支援正向走訪 → 尾端可能指向 head 或 NULL','head node → 輔助節點 → 統一邊界處理 → 通常不存真正資料','circular → 頭尾相接 → 避免 NULL 特殊狀況 → 停止條件要明確']);</script></section>
+<details open=""><summary>五、完整中文講解</summary><div class="content"><h3>（一）本主題要學會什麼？</h3><p>Doubly Linked List 的每個節點包含 llink、data、rlink。llink 指向前一個節點，rlink 指向下一個節點，讓串列可以雙向走訪。</p><h3>（二）實作時最重要的觀念</h3><div class="grid2"><div class="mini"><b>資料結構</b><br/>先看清楚資料是用 Array、Node、Singly List、Circular List 或 Doubly List 表示。</div><div class="mini"><b>指標方向</b><br/>Linked List 題目幾乎都在考指標怎麼接、怎麼斷、怎麼重新連起來。</div><div class="mini"><b>特殊情況</b><br/>空串列、頭節點、尾節點、找不到資料，都是程式容易錯的地方。</div><div class="mini"><b>測試方式</b><br/>每做完 insert/delete，都用 print 檢查目前串列是否符合預期。</div></div><div class="example">雙向鏈結串列的好處是可以往前與往後移動，但代價是每個節點要多存一個指標，插入刪除時也要多改幾條連線。</div></div></details>
+<details open=""><summary>六、可編輯 C 程式範例：含中文註解與線上編輯器</summary><div class="content"><div class="codewrap"><div class="codebar"><span>doubly_list.c</span><div class="btns"><button class="btn green" onclick="copyCode('code9')">複製程式</button><button class="btn orange" onclick="downloadCode('code9','doubly_list.c')">下載 .c</button><a class="btn secondary" href="https://www.onlinegdb.com/online_c_compiler" target="_blank">OnlineGDB</a><a class="btn secondary" href="https://www.programiz.com/c-programming/online-compiler/" target="_blank">Programiz</a><a class="btn secondary" href="https://onecompiler.com/c" target="_blank">OneCompiler</a></div></div><textarea class="codearea" id="code9" spellcheck="false">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+/*
+    Doubly Linked List
+    每個節點都有 prev 與 next，因此可以往前也可以往後走。
+*/
+
+typedef struct DNode {
+    int data;
+    struct DNode *prev;
+    struct DNode *next;
+} DNode;
+
+DNode* createNode(int data) {
+    DNode *n = (DNode*)malloc(sizeof(DNode));
+    if (!n) exit(1);
+    n-&gt;data = data;
+    n-&gt;prev = NULL;
+    n-&gt;next = NULL;
+    return n;
+}
+
+void insertEnd(DNode **head, int data) {
+    DNode *newNode = createNode(data);
+    if (*head == NULL) { *head = newNode; return; }
+    DNode *tail = *head;
+    while (tail-&gt;next != NULL) tail = tail-&gt;next;
+    tail-&gt;next = newNode;
+    newNode-&gt;prev = tail;
+}
+
+void printForward(DNode *head) {
+    while (head != NULL) {
+        printf("%d &lt;-&gt; ", head-&gt;data);
+        head = head-&gt;next;
+    }
+    printf("NULL\n");
+}
+
+int main(void) {
+    DNode *head = NULL;
+    insertEnd(&amp;head, 10);
+    insertEnd(&amp;head, 20);
+    insertEnd(&amp;head, 30);
+    printForward(head);
+    return 0;
+}
+</textarea></div></div></details>
+
+<section class="card program-teaching-card">
+<h2>新增：程式題目教學內容（依指定格式）</h2>
+<div class="content">
+<h3>一、程式題目講解</h3>
+<p>本題示範雙向鏈結串列的基本建立與往前、往後連接概念。學生需要理解每個節點同時保存 prev 與 next，因此可以記錄前一個與下一個節點。</p>
+<h3>二、完整程式碼</h3>
+<p>以下為本頁程式題目的完整可執行 C 程式碼，已在重要程式區塊加入中文註解，方便初學者理解程式功能與流程。</p>
+<pre class="codearea" style="height:auto;min-height:0;white-space:pre-wrap;overflow:auto;">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+/*
+    Doubly Linked List
+    每個節點都有 prev 與 next，因此可以往前也可以往後走。
+*/
+
+typedef struct DNode {
+    int data;
+    struct DNode *prev;
+    struct DNode *next;
+} DNode;
+
+DNode* createNode(int data) {
+    DNode *n = (DNode*)malloc(sizeof(DNode));
+    if (!n) exit(1);
+    n-&gt;data = data;
+    n-&gt;prev = NULL;
+    n-&gt;next = NULL;
+    return n;
+}
+
+void insertEnd(DNode **head, int data) {
+    DNode *newNode = createNode(data);
+    if (*head == NULL) { *head = newNode; return; }
+    DNode *tail = *head;
+    while (tail-&gt;next != NULL) tail = tail-&gt;next;
+    tail-&gt;next = newNode;
+    newNode-&gt;prev = tail;
+}
+
+void printForward(DNode *head) {
+    while (head != NULL) {
+        printf(&quot;%d &lt;-&gt; &quot;, head-&gt;data);
+        head = head-&gt;next;
+    }
+    printf(&quot;NULL\n&quot;);
+}
+
+int main(void) {
+    DNode *head = NULL;
+    insertEnd(&amp;head, 10);
+    insertEnd(&amp;head, 20);
+    insertEnd(&amp;head, 30);
+    printForward(head);
+    return 0;
+}
+</pre>
+<h3>三、程式執行結果</h3>
+<p>程式執行後會得到以下輸出：</p>
+<pre class="codearea" style="height:auto;min-height:0;white-space:pre-wrap;overflow:auto;">10 &lt;-&gt; 20 &lt;-&gt; 30 &lt;-&gt; NULL</pre>
+<p>程式依序在尾端插入 10、20、30。每次新增節點時，原本尾端的 next 指向新節點，新節點的 prev 指回原本尾端。printForward 從 head 往 next 方向輸出，所以得到 10 &lt;-&gt; 20 &lt;-&gt; 30 &lt;-&gt; NULL。</p>
+<h3>四、程式流程圖與流程圖說明</h3>
+<p>本題流程圖如下，呈現程式的主要執行順序、判斷條件與資料處理流程。</p>
+<div class="program-flow-figure"><img alt="主題 9 程式流程圖" class="program-flow-img" src="assets/program_flow_topic9.svg"/><div class="figure-caption">主題 9：Doubly Linked List 雙向鏈結串列基本概念：程式流程圖</div></div>
+<p>流程先宣告 head 為 NULL。insertEnd 插入第一個節點時直接讓 head 指向新節點；之後先走到尾端，再讓 tail-&gt;next 接新節點，newNode-&gt;prev 接 tail。輸出時沿著 next 方向走到 NULL。</p>
+<h3>五、重要函數與語法說明</h3>
+<ol><li>DNode：雙向鏈結串列節點。</li><li>prev：指向前一個節點。</li><li>next：指向下一個節點。</li><li>insertEnd：把節點加入尾端並維護雙向連結。</li><li>printForward：由前往後輸出雙向串列。</li></ol>
+<h3>六、整體說明</h3>
+<p>本題重點是雙向連結。和單向串列相比，雙向串列多了 prev，因此刪除或反向走訪更方便，但插入與刪除時也必須同時維護兩個方向的指標。</p>
+</div>
+</section>
+<section class="card program-flow-card">
+<h2>七、程式流程圖：Doubly Linked List 基本節點</h2>
+<p>下圖是本主題對應的程式執行流程，適合搭配下方 C 程式碼一起看。</p>
+<div class="program-flow-figure"><img alt="主題 9 程式流程圖" class="program-flow-img" src="assets/program_flow_topic9.svg"/><div class="figure-caption">主題 9 程式流程圖：Doubly Linked List 基本節點</div></div>
+<div class="flow-explain"><h3>流程講解</h3><ol><li>雙向鏈結串列的節點比單向多一個 prev 指標。</li><li>next 指向後一個節點，prev 指向前一個節點。</li><li>建立節點時要同時初始化 prev 與 next，通常先設為 NULL。</li><li>往前或往後走訪都可以，因此刪除某個節點時更方便。</li><li>但每次插入或刪除，都要注意兩邊指標是否同步更新。</li></ol><p>這張流程圖把本頁程式的執行順序整理成一條清楚路徑。閱讀時先看資料如何被建立，再看條件判斷與指標如何改變，最後用輸出結果確認程式邏輯是否正確。</p></div>
+</section>
+</main></div></div><footer class="footer">Lesson 5｜主題 9：Doubly Linked List 雙向鏈結串列基本概念</footer></body></html>

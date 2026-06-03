@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+
+<html lang="zh-Hant"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/><title>Lesson 6 Topic 16</title><link href="assets/style.css" rel="stylesheet"/><script src="assets/script.js"></script>
+<style>
+.slide-dropdown-section{margin-top:22px}.slide-dropdown-section>.note{margin-bottom:14px}.slide-explain-item{border:1px solid rgba(100,116,139,.28);border-radius:16px;margin:14px 0;background:rgba(255,255,255,.86);overflow:hidden}.slide-explain-item>summary{cursor:pointer;font-weight:700;padding:16px 18px;line-height:1.5;background:linear-gradient(90deg,rgba(241,245,249,.95),rgba(255,255,255,.88));list-style:none}.slide-explain-item>summary::-webkit-details-marker{display:none}.slide-explain-item>summary:before{content:'▸';display:inline-block;margin-right:8px;transition:transform .2s}.slide-explain-item[open]>summary:before{transform:rotate(90deg)}.slide-explain-body{display:grid;grid-template-columns:minmax(280px,46%) 1fr;gap:22px;padding:18px}.slide-explain-media{align-self:start}.slide-explain-img{width:100%;height:auto;border-radius:14px;box-shadow:0 10px 28px rgba(15,23,42,.18);background:white}.slide-explain-text h3{font-size:1.04rem;margin:0.9rem 0 .35rem}.slide-explain-text h3:first-child{margin-top:0}.slide-explain-text p,.slide-explain-text li{line-height:1.85}.slide-explain-text ul{margin-top:.2rem;padding-left:1.4rem}.memory-box{margin-top:14px;padding:12px 14px;border-left:5px solid #f59e0b;background:#fff7ed;border-radius:10px;line-height:1.75;font-weight:600}@media(max-width:820px){.slide-explain-body{grid-template-columns:1fr}.slide-explain-item>summary{padding:14px}.slide-explain-body{padding:14px}}
+</style>
+</head><body><section class="hero"><h1>主題 16：Tree Traversal in C：走訪與 main</h1><p>頁碼：51–52。這一部分完成 inOrder、postOrder 與 main 測試。核心是用遞迴走訪樹：先判斷 root 是否為 NULL，再決定訪問節點的順序。</p><div class="nav"><a class="btn" href="../index.html">回 L6 首頁</a><a class="btn" href="topic15.html">上一主題</a></div></section><main class="wrap">
+<section class="card slide-dropdown-section"><h2>投影片逐張下拉式詳細講解</h2><p class="note">每一張投影片都把圖片與自己的中文講解放在同一個下拉式區塊中，打開後可以直接對照圖與文字。</p><details class="slide-explain-item"><summary>投影片 51：inOrder 與 postOrder 函式</summary><div class="slide-explain-body"><div class="slide-explain-media"><img alt="Slide 51：inOrder 與 postOrder 函式" class="slide-explain-img" src="assets/slide51.jpg"/><div class="figure-caption">Slide 51：inOrder 與 postOrder 函式</div></div><div class="slide-explain-text"><h3>（一）這張投影片在說什麼？</h3><p>這張投影片呈現 C 語言中的 inOrder 與 postOrder traversal 函式。兩者都以遞迴方式處理 left subtree、right subtree 與輸出節點。</p><h3>（二）核心觀念</h3><ul><li>inOrder：left、print、right。</li><li>postOrder：left、right、print。</li><li>遞迴前要檢查 root 是否為 NULL。</li><li>函式參數通常是目前節點指標。</li></ul><h3>（三）學習與考試重點</h3><p>只要掌握 print 的位置，就能分辨不同 traversal 函式。</p><div class="memory-box">一句話記憶：print 在中間是 inOrder；print 在最後是 postOrder。</div></div></div></details><details class="slide-explain-item"><summary>投影片 52：main 建立節點與執行結果</summary><div class="slide-explain-body"><div class="slide-explain-media"><img alt="Slide 52：main 建立節點與執行結果" class="slide-explain-img" src="assets/slide52.jpg"/><div class="figure-caption">Slide 52：main 建立節點與執行結果</div></div><div class="slide-explain-text"><h3>（一）這張投影片在說什麼？</h3><p>這張投影片展示 main function 如何手動建立節點、連接左右子樹，最後呼叫 traversal 函式輸出結果。</p><h3>（二）核心觀念</h3><ul><li>main 中建立多個 node。</li><li>用 left/right 指標連成樹。</li><li>呼叫 traversal 驗證樹是否建立正確。</li><li>輸出結果可用來檢查走訪順序。</li></ul><h3>（三）學習與考試重點</h3><p>寫 tree 程式時，建立結構與走訪輸出要一起檢查，才能確認指標連接沒有錯。</p><div class="memory-box">一句話記憶：先建節點，再接指標，最後用 traversal 檢查。</div></div></div></details></section>
+<section class="card"><h2>走訪順序動畫流程</h2><div class="twocol"><div><h3>Inorder：Left → Root → Right</h3><div class="flow"><div class="node">走左子樹</div><div class="arrow">→</div><div class="node">印 root</div><div class="arrow">→</div><div class="node">走右子樹</div></div><div class="array"><span class="cell">D</span><span class="cell">B</span><span class="cell">E</span><span class="cell">A</span><span class="cell">C</span><span class="cell">F</span></div></div><div><h3>Postorder：Left → Right → Root</h3><div class="flow"><div class="node">走左子樹</div><div class="arrow">→</div><div class="node">走右子樹</div><div class="arrow">→</div><div class="node">印 root</div></div><div class="array"><span class="cell">D</span><span class="cell">E</span><span class="cell">B</span><span class="cell">F</span><span class="cell">C</span><span class="cell">A</span></div></div></div></section>
+<section class="accordion"><details open=""><summary>一、inOrder() 怎麼看？</summary><div><p>inOrder 的順序是 LVR：Left、Visit、Right。也就是先遞迴走左子樹，左邊走完才印出目前節點，最後再走右子樹。</p></div></details><details><summary>二、postOrder() 怎麼看？</summary><div><p>postOrder 的順序是 LRV：Left、Right、Visit。也就是左右子樹都處理完，最後才印出目前 root。這種順序很適合刪除整棵樹，因為要先處理孩子，再處理父節點。</p></div></details><details><summary>三、main() 如何把節點接成樹？</summary><div><p>main() 會先 createNode 建立 A、B、C、D、E、F，接著用 root-&gt;left、root-&gt;right 等指標指定節點關係。這些指標一接起來，原本分散的節點就形成一棵 binary tree。</p></div></details><details><summary>四、考試最重要判斷方式</summary><div><p>看到 traversal 題目時，先畫出樹，再用 L、V、R 三個字母判斷順序：inorder 是 LVR，preorder 是 VLR，postorder 是 LRV。不要只背輸出，要能照樹一步一步走。</p></div></details></section>
+<section class="card"><h2>C 程式碼：完整 Tree Traversal</h2><p><a class="btn primary" download="" href="tree_traversal_c.c">下載 .c 檔</a> <button class="btn" onclick="copyCode('code16')">複製程式碼</button></p><pre class="codebox"><code id="code16">/*
+  中文註解版程式：tree_traversal_c.c
+  說明：主題 15/16：樹節點建立與走訪示範。建立二元樹後輸出 inorder 與 postorder。
+  閱讀方式：先看資料結構定義，再看操作函式，最後看 main() 如何測試。
+*/
+
+// 匯入標準輸入輸出函式庫，提供 printf / scanf 等功能。
+#include &lt;stdio.h&gt;
+// 匯入標準函式庫，提供 malloc / free / exit 等記憶體與程式控制功能。
+#include &lt;stdlib.h&gt;
+
+// 定義節點結構：資料欄位存節點內容，指標欄位負責連到其他節點。
+typedef struct Node {
+    char data;
+    struct Node *left;
+    struct Node *right;
+} Node;
+
+// 建立新節點：配置記憶體、填入資料，並把左右指標初始化為 NULL。
+Node* createNode(char data) {
+    Node* newNode = (Node*)malloc(sizeof(Node));
+    newNode-&gt;data = data;
+    newNode-&gt;left = NULL;
+    newNode-&gt;right = NULL;
+    return newNode;
+}
+
+// Inorder 走訪：Left → Visit → Right。
+void inOrder(Node* root) {
+    if (root == NULL) return;  // 遞迴終止條件：空節點不需要處理
+    inOrder(root-&gt;left);
+    printf("%c ", root-&gt;data);  // 拜訪目前節點並輸出資料
+    inOrder(root-&gt;right);
+}
+
+// Postorder 走訪：Left → Right → Visit。
+void postOrder(Node* root) {
+    if (root == NULL) return;  // 遞迴終止條件：空節點不需要處理
+    postOrder(root-&gt;left);
+    postOrder(root-&gt;right);
+    printf("%c ", root-&gt;data);  // 拜訪目前節點並輸出資料
+}
+
+// 主程式：建立測試資料，呼叫上方函式，觀察輸出結果。
+int main() {
+    Node* root = createNode('A');
+    Node* n1 = createNode('B');
+    Node* n2 = createNode('C');
+    Node* n3 = createNode('D');
+    Node* n4 = createNode('E');
+    Node* n5 = createNode('F');
+
+    root-&gt;left = n1;
+    root-&gt;right = n2;
+    n1-&gt;left = n3;
+    n1-&gt;right = n4;
+    n2-&gt;right = n5;
+
+    printf("Inorder traversal: ");
+    inOrder(root);
+    printf("\n");
+
+    printf("Postorder traversal: ");
+    postOrder(root);
+    printf("\n");
+
+    return 0;
+}
+</code></pre></section>
+<details class="lab7-code-section" open=""><summary>可編輯 C 程式範例：含中文註解與線上編輯器</summary><div class="content detail-body"><p>這一段提供可直接修改的 C 程式碼。可以按「複製程式」貼到線上編輯器執行，也可以下載 .c 檔案。</p><div class="codewrap"><div class="codebar"><span>tree_traversal_c.c</span><div class="btns"><button class="btn green" onclick="copyCode('code16')">複製程式</button><button class="btn orange" onclick="downloadCode('code16','tree_traversal_c.c')">下載 .c</button><a class="btn secondary" href="https://www.onlinegdb.com/online_c_compiler" target="_blank">OnlineGDB</a><a class="btn secondary" href="https://www.programiz.com/c-programming/online-compiler/" target="_blank">Programiz</a><a class="btn secondary" href="https://onecompiler.com/c" target="_blank">OneCompiler</a></div></div><textarea class="codearea" id="code16" spellcheck="false">/*
+  中文註解版程式：tree_traversal_c.c
+  說明：主題 15/16：樹節點建立與走訪示範。建立二元樹後輸出 inorder 與 postorder。
+  閱讀方式：先看資料結構定義，再看操作函式，最後看 main() 如何測試。
+*/
+
+// 匯入標準輸入輸出函式庫，提供 printf / scanf 等功能。
+#include &lt;stdio.h&gt;
+// 匯入標準函式庫，提供 malloc / free / exit 等記憶體與程式控制功能。
+#include &lt;stdlib.h&gt;
+
+// 定義節點結構：資料欄位存節點內容，指標欄位負責連到其他節點。
+typedef struct Node {
+    char data;
+    struct Node *left;
+    struct Node *right;
+} Node;
+
+// 建立新節點：配置記憶體、填入資料，並把左右指標初始化為 NULL。
+Node* createNode(char data) {
+    Node* newNode = (Node*)malloc(sizeof(Node));
+    newNode-&gt;data = data;
+    newNode-&gt;left = NULL;
+    newNode-&gt;right = NULL;
+    return newNode;
+}
+
+// Inorder 走訪：Left → Visit → Right。
+void inOrder(Node* root) {
+    if (root == NULL) return;  // 遞迴終止條件：空節點不需要處理
+    inOrder(root-&gt;left);
+    printf("%c ", root-&gt;data);  // 拜訪目前節點並輸出資料
+    inOrder(root-&gt;right);
+}
+
+// Postorder 走訪：Left → Right → Visit。
+void postOrder(Node* root) {
+    if (root == NULL) return;  // 遞迴終止條件：空節點不需要處理
+    postOrder(root-&gt;left);
+    postOrder(root-&gt;right);
+    printf("%c ", root-&gt;data);  // 拜訪目前節點並輸出資料
+}
+
+// 主程式：建立測試資料，呼叫上方函式，觀察輸出結果。
+int main() {
+    Node* root = createNode('A');
+    Node* n1 = createNode('B');
+    Node* n2 = createNode('C');
+    Node* n3 = createNode('D');
+    Node* n4 = createNode('E');
+    Node* n5 = createNode('F');
+
+    root-&gt;left = n1;
+    root-&gt;right = n2;
+    n1-&gt;left = n3;
+    n1-&gt;right = n4;
+    n2-&gt;right = n5;
+
+    printf("Inorder traversal: ");
+    inOrder(root);
+    printf("\n");
+
+    printf("Postorder traversal: ");
+    postOrder(root);
+    printf("\n");
+
+    return 0;
+}
+</textarea></div></div></details>
+<details class="lab7-teaching-content" open=""><summary>程式題目教學內容：Tree Traversal in C：走訪與 main</summary><div class="content detail-body">
+<h3>一、程式題目講解</h3>
+<p>本題聚焦 main() 建立樹以及 inOrder、postOrder 走訪函式。學生需要理解遞迴走訪如何從 root 展開到左右子樹。</p>
+<h3>二、完整程式碼</h3>
+<p>完整可執行程式碼已保留在上方「可編輯 C 程式範例：含中文註解與線上編輯器」區塊中，檔名為 <code>tree_traversal_c.c</code>。該程式碼已加入中文註解，學生可以直接複製到 OnlineGDB、Programiz 或 OneCompiler 執行。</p>
+<h3>三、程式執行結果</h3>
+<pre><code>Inorder traversal: D B E A C F 
+Postorder traversal: D E B F C A </code></pre>
+<p>Inorder 輸出 D B E A C F，代表走訪順序是左子樹、root、右子樹；Postorder 輸出 D E B F C A，代表 root 會在所有子樹處理完後才輸出。</p>
+<h3>四、程式流程圖與流程圖說明</h3>
+<p>本頁下方已保留原本的程式流程圖。閱讀流程圖時，可以依序掌握「初始化資料或節點 → 執行主要函式或判斷 → 輸出結果」的過程。main() 先建立完整二元樹，再呼叫 inOrder(root) 與 postOrder(root)。函式遇到 NULL 就返回，否則依照走訪規則處理 left、right 與目前節點。</p>
+<h3>五、重要函數與語法說明</h3>
+<p>inOrder(Node* root)：中序走訪函式；postOrder(Node* root)：後序走訪函式；if(root == NULL)：遞迴停止條件；main()：建立測試樹並呼叫函式。</p>
+<h3>六、整體說明</h3>
+<p>本題重點是遞迴走訪一定要有停止條件，並且 root 的輸出位置決定走訪種類。</p>
+</div></details>
+
+<section class="card program-flow-card">
+<h2>程式流程圖：Tree Traversal in C 主程式流程</h2>
+<p>下圖是本主題對應的程式執行流程，適合搭配本頁 C 程式碼一起看。</p>
+<div class="program-flow-figure"><img alt="主題 16 程式流程圖" class="program-flow-img" src="assets/program_flow_topic16.svg"/><div class="figure-caption">主題 16 程式流程圖：Tree Traversal in C 主程式流程</div></div>
+<div class="flow-explain"><h3>流程講解</h3><ol><li>主程式先建立完整的二元樹結構。</li><li>接著分別呼叫 preorder、inorder、postorder 函式。</li><li>每個走訪函式都會遞迴處理左右子樹。</li><li>最後輸出的三種序列，可用來比較不同走訪規則。</li></ol><p>這張流程圖把本頁程式的執行順序整理成一條清楚路徑。閱讀時先看輸入與資料如何建立，再看條件判斷、指標或陣列索引如何改變，最後用輸出結果確認程式邏輯是否正確。</p></div>
+</section>
+</main></body></html>

@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+
+<html lang="zh-Hant"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/><title>主題七 Building a Binary Search Tree</title><link href="assets/style.css" rel="stylesheet"/><script src="assets/script.js"></script>
+<style>
+.slide-dropdown-section{margin-top:22px}.slide-dropdown-section>.note{margin-bottom:14px}.slide-explain-item{border:1px solid rgba(100,116,139,.28);border-radius:16px;margin:14px 0;background:rgba(255,255,255,.86);overflow:hidden}.slide-explain-item>summary{cursor:pointer;font-weight:700;padding:16px 18px;line-height:1.5;background:linear-gradient(90deg,rgba(241,245,249,.95),rgba(255,255,255,.88));list-style:none}.slide-explain-item>summary::-webkit-details-marker{display:none}.slide-explain-item>summary:before{content:'▸';display:inline-block;margin-right:8px;transition:transform .2s}.slide-explain-item[open]>summary:before{transform:rotate(90deg)}.slide-explain-body{display:grid;grid-template-columns:minmax(280px,46%) 1fr;gap:22px;padding:18px}.slide-explain-media{align-self:start}.slide-explain-img{width:100%;height:auto;border-radius:14px;box-shadow:0 10px 28px rgba(15,23,42,.18);background:white}.slide-explain-text h3{font-size:1.04rem;margin:0.9rem 0 .35rem}.slide-explain-text h3:first-child{margin-top:0}.slide-explain-text p,.slide-explain-text li{line-height:1.85}.slide-explain-text ul{margin-top:.2rem;padding-left:1.4rem}.memory-box{margin-top:14px;padding:12px 14px;border-left:5px solid #f59e0b;background:#fff7ed;border-radius:10px;line-height:1.75;font-weight:600}@media(max-width:820px){.slide-explain-body{grid-template-columns:1fr}.slide-explain-item>summary{padding:14px}.slide-explain-body{padding:14px}}
+</style>
+</head><body><section class="hero"><div class="hero-inner"><span class="badge">主題七｜投影片 23–25</span><h1>Building a Binary Search Tree 建立二元搜尋樹</h1><p>BST 的建立不是一次排好，而是把資料一筆一筆插入。每插入一筆，就從 root 開始比較：比較小走左邊，比較大走右邊，走到空的位置就放進去。</p><div class="nav"><a class="btn" href="../index.html">回 L6 首頁</a><a class="btn" href="topic8.html">下一章：Insertion and Deletion</a><a class="btn" href="build_bst.c">下載本章 C 程式</a></div></div></section><main class="wrap"><section class="card slide-dropdown-section"><h2>投影片逐張下拉式詳細講解</h2><p class="note">每一張投影片都把圖片與自己的中文講解放在同一個下拉式區塊中，打開後可以直接對照圖與文字。</p><details class="slide-explain-item"><summary>投影片 23：由資料序列建立 BST</summary><div class="slide-explain-body"><div class="slide-explain-media"><img alt="投影片 23：由資料序列建立 BST" class="slide-explain-img" src="assets/slide23.jpg"/><div class="figure-caption">投影片 23：由資料序列建立 BST</div></div><div class="slide-explain-text"><h3>（一）這張投影片在說什麼？</h3><p>這張投影片示範根據輸入順序逐一插入資料建立 BST。第一個資料成為 root，後續每個資料從 root 開始比較，小往左、大往右，直到找到空位置。</p><h3>（二）核心觀念</h3><ul><li>插入順序會影響 BST 的形狀。</li><li>每次插入都從 root 開始比較。</li><li>遇到較小值往 left subtree。</li><li>遇到較大值往 right subtree。</li></ul><h3>（三）學習與考試重點</h3><p>同一組數字若輸入順序不同，可能形成不同高度的 BST，搜尋效率也會不同。</p><div class="memory-box">一句話記憶：建 BST 就像一路比較大小找座位。</div></div></div></details><details class="slide-explain-item"><summary>投影片 24：插入時的比較路徑</summary><div class="slide-explain-body"><div class="slide-explain-media"><img alt="投影片 24：插入時的比較路徑" class="slide-explain-img" src="assets/slide24.jpg"/><div class="figure-caption">投影片 24：插入時的比較路徑</div></div><div class="slide-explain-text"><h3>（一）這張投影片在說什麼？</h3><p>這張投影片強調插入新節點時會形成一條比較路徑。新資料不會任意放置，而是沿著 BST 規則一層一層往下走。</p><h3>（二）核心觀念</h3><ul><li>從 root 開始。</li><li>比目前節點小就往左。</li><li>比目前節點大就往右。</li><li>走到 NULL 的位置才插入。</li></ul><h3>（三）學習與考試重點</h3><p>插入時要同時記住目前節點與父節點，因為最後要把新節點接到父節點的 left 或 right。</p><div class="memory-box">一句話記憶：找到 NULL，就是新節點的位置。</div></div></div></details><details class="slide-explain-item"><summary>投影片 25：BST 建立後的形狀與搜尋關係</summary><div class="slide-explain-body"><div class="slide-explain-media"><img alt="投影片 25：BST 建立後的形狀與搜尋關係" class="slide-explain-img" src="assets/slide25.jpg"/><div class="figure-caption">投影片 25：BST 建立後的形狀與搜尋關係</div></div><div class="slide-explain-text"><h3>（一）這張投影片在說什麼？</h3><p>這張投影片展示 BST 建立完成後的整體形狀，並說明搜尋會沿著同樣的比較規則進行。</p><h3>（二）核心觀念</h3><ul><li>BST 形狀由插入順序決定。</li><li>搜尋路徑也是比較大小的路徑。</li><li>高度越小，搜尋越快。</li><li>若退化成 skewed tree，搜尋可能接近 O(n)。</li></ul><h3>（三）學習與考試重點</h3><p>BST 的平均效率通常比線性搜尋好，但前提是樹不要太不平衡。</p><div class="memory-box">一句話記憶：BST 好不好用，關鍵看高度。</div></div></div></details></section><details open=""><summary>一、建立 BST 的核心規則</summary><div class="detail-body"><p><span class="pill">核心概念</span></p><p>建立 Binary Search Tree 時，每一個新節點都要從 root 開始比較。新值比目前節點小，就往 left child；新值比目前節點大，就往 right child；如果走到 NULL，就把新節點放在那個位置。</p><div class="concept-map"><div class="concept">新資料 key<span>準備插入</span></div><div class="arrow">→</div><div class="concept">從 root 比較<span>小往左，大往右</span></div><div class="arrow">→</div><div class="concept">遇到 NULL<span>建立新節點</span></div></div><p class="note">重點：BST 的形狀會受到「插入順序」影響。同一組資料，用不同順序插入，可能長出不同形狀的 BST。</p></div></details><details open=""><summary>二、動畫流程：一筆一筆建立 BST</summary><div class="detail-body"><div class="flowbox" data-flow="buildflow"><div class="flow-steps"><div class="flow-step" data-caption="先讓 root 指向 NULL，代表目前是一棵空樹。">空樹開始</div><div class="flow-step" data-caption="讀入第一筆資料，因為 root 是空，所以第一筆資料成為 root。">第一筆成為 root</div><div class="flow-step" data-caption="後面的資料都從 root 開始比較。">從 root 比較</div><div class="flow-step" data-caption="比目前節點小就往左，比目前節點大就往右。">小左大右</div><div class="flow-step" data-caption="一直走到 NULL，建立新節點並連到 parent。">NULL 處插入</div><div class="flow-step" data-caption="重複直到所有資料都插入完成。">重複完成</div></div><div class="flow-caption"></div><div class="flow-controls"><button class="btn mini" onclick="prevFlow('buildflow')">上一步</button><button class="btn mini primary" onclick="nextFlow('buildflow')">下一步</button><button class="btn mini" onclick="autoFlow('buildflow')">自動播放</button><button class="btn mini" onclick="resetFlow('buildflow')">重新開始</button></div></div></div></details><details open=""><summary>三、互動示範：依序插入 7, 3, 14, 2, 4, 10, 16, 1, 8</summary><div class="detail-body"><div class="build-stage"><div class="insert-list"><span class="insert-item" id="ins7">7</span><span class="insert-item" id="ins3">3</span><span class="insert-item" id="ins14">14</span><span class="insert-item" id="ins2">2</span><span class="insert-item" id="ins4">4</span><span class="insert-item" id="ins10">10</span><span class="insert-item" id="ins16">16</span><span class="insert-item" id="ins1">1</span><span class="insert-item" id="ins8">8</span></div><div class="bst-diagram"><div class="tree-row"><div class="node" id="build7">7</div></div><div class="link-note">╱ ╲</div><div class="tree-row"><div class="node small" id="build3">3</div><div class="node small" id="build14">14</div></div><div class="link-note">╱ ╲　　　　　╱ ╲</div><div class="tree-row level3"><div class="node small" id="build2">2</div><div class="node small" id="build4">4</div><div class="node small" id="build10">10</div><div class="node small" id="build16">16</div></div><div class="link-note">╱　　　　　　　　╱</div><div class="tree-row level4"><div class="node small leaf" id="build1">1</div><div class="node small leaf" id="build8">8</div></div></div><div class="traversal-controls"><button class="btn mini primary" onclick="stepBuild()">下一步插入</button><button class="btn mini" onclick="autoBuild()">自動建立</button><button class="btn mini" onclick="resetBuild()">重新開始</button></div><div class="search-log" id="buildLog">按「下一步」開始一筆一筆建立 BST。</div><div class="legend"><span>黃色：正在插入的位置</span><span>藍色：走過的比較路徑</span><span>綠色：已完成的葉節點</span></div></div><p class="good">建立完後，若對 BST 做 inorder traversal，會得到 1 2 3 4 7 8 10 14 16，也就是由小到大的排序結果。</p></div></details><details open=""><summary>四、容易考的觀念</summary><div class="detail-body"><p>BST 的平均搜尋、插入效率和樹高有關。如果樹接近平衡，高度約是 log n，效率較好；如果資料剛好照排序順序插入，樹可能變成一條斜線，高度接近 n，效率就會變差。</p><div class="compare"><div class="box"><h3>好的情況</h3><p>樹比較平衡，每次比較可以排除一大半資料，搜尋較快。</p></div><div class="box"><h3>壞的情況</h3><p>樹變成 skewed tree，搜尋可能像 linked list 一樣，要一路往下找。</p></div></div></div></details><details open=""><summary>五、C 程式碼：建立 BST</summary><div class="detail-body"><div class="download-card"><div><h3>build_bst.c</h3><p>包含節點建立、insert、preorder、inorder 與 main 測試。可觀察建立後的樹形與排序結果。</p></div><a class="btn primary" href="build_bst.c">下載 C 程式</a></div><div class="codebox"><div class="bar"><span>build_bst.c</span><div class="code-actions"><button class="btn mini" onclick="copyCode('codeBuildBST')">複製程式碼</button></div></div><pre><code id="codeBuildBST">/*
+  中文註解版程式：build_bst.c
+  說明：主題 7：建立 Binary Search Tree。依序插入資料並用 preorder/inorder 觀察樹形與排序結果。
+  閱讀方式：先看資料結構定義，再看操作函式，最後看 main() 如何測試。
+*/
+
+// 匯入標準輸入輸出函式庫，提供 printf / scanf 等功能。
+#include &lt;stdio.h&gt;
+// 匯入標準函式庫，提供 malloc / free / exit 等記憶體與程式控制功能。
+#include &lt;stdlib.h&gt;
+
+// 定義節點結構：資料欄位存節點內容，指標欄位負責連到其他節點。
+typedef struct Node {
+    int key;
+    struct Node *left;
+    struct Node *right;
+} Node;
+
+// 建立新節點：配置記憶體、填入資料，並把左右指標初始化為 NULL。
+Node* createNode(int key) {
+    Node* n = (Node*)malloc(sizeof(Node));
+    if (n == NULL) {
+        printf("Memory allocation failed.\n");
+        exit(1);
+    }
+    n-&gt;key = key;
+    n-&gt;left = NULL;
+    n-&gt;right = NULL;
+    return n;
+}
+
+// BST 插入：比目前節點小往左，大往右；空位置就是新節點位置。
+Node* insert(Node* root, int key) {
+    if (root == NULL) {
+        return createNode(key);
+    }
+
+    if (key &lt; root-&gt;key) {
+        root-&gt;left = insert(root-&gt;left, key);  // 較小的 key 放左子樹
+    } else if (key &gt; root-&gt;key) {
+        root-&gt;right = insert(root-&gt;right, key);  // 較大的 key 放右子樹
+    } else {
+        printf("%d already exists, skip duplicate.\n", key);
+    }
+    return root;
+}
+
+// Inorder 走訪：Left → Visit → Right；套用在 BST 會得到由小到大的排序。
+void inorder(Node* root) {
+    if (root == NULL) return;  // 遞迴終止條件：空節點不需要處理
+    inorder(root-&gt;left);   // 先走左子樹
+    printf("%d ", root-&gt;key);  // 再拜訪目前節點
+    inorder(root-&gt;right);  // 最後走右子樹
+}
+
+// Preorder 走訪：Visit → Left → Right，常用來觀察樹建立的形狀。
+void preorder(Node* root) {
+    if (root == NULL) return;  // 遞迴終止條件：空節點不需要處理
+    printf("%d ", root-&gt;key);  // 再拜訪目前節點
+    preorder(root-&gt;left);  // 再走左子樹
+    preorder(root-&gt;right); // 最後走右子樹
+}
+
+// 釋放整棵樹：先釋放左右子樹，再釋放目前節點，避免記憶體洩漏。
+void freeTree(Node* root) {
+    if (root == NULL) return;  // 遞迴終止條件：空節點不需要處理
+    freeTree(root-&gt;left);
+    freeTree(root-&gt;right);
+    free(root);
+}
+
+// 主程式：建立測試資料，呼叫上方函式，觀察輸出結果。
+int main(void) {
+    int data[] = {7, 3, 14, 2, 4, 10, 16, 1, 8};
+    int n = sizeof(data) / sizeof(data[0]);
+    Node* root = NULL;
+
+    for (int i = 0; i &lt; n; i++) {
+        root = insert(root, data[i]);
+    }
+
+    printf("Preorder building shape: ");
+    preorder(root);
+    printf("\n");
+
+    printf("Inorder sorted result: ");
+    inorder(root);
+    printf("\n");
+
+    freeTree(root);
+    return 0;
+}
+</code></pre></div></div></details>
+<details class="lab7-code-section" open=""><summary>可編輯 C 程式範例：含中文註解與線上編輯器</summary><div class="content detail-body"><p>這一段提供可直接修改的 C 程式碼。可以按「複製程式」貼到線上編輯器執行，也可以下載 .c 檔案。</p><div class="codewrap"><div class="codebar"><span>build_bst.c</span><div class="btns"><button class="btn green" onclick="copyCode('code7')">複製程式</button><button class="btn orange" onclick="downloadCode('code7','build_bst.c')">下載 .c</button><a class="btn secondary" href="https://www.onlinegdb.com/online_c_compiler" target="_blank">OnlineGDB</a><a class="btn secondary" href="https://www.programiz.com/c-programming/online-compiler/" target="_blank">Programiz</a><a class="btn secondary" href="https://onecompiler.com/c" target="_blank">OneCompiler</a></div></div><textarea class="codearea" id="code7" spellcheck="false">/*
+  中文註解版程式：build_bst.c
+  說明：主題 7：建立 Binary Search Tree。依序插入資料並用 preorder/inorder 觀察樹形與排序結果。
+  閱讀方式：先看資料結構定義，再看操作函式，最後看 main() 如何測試。
+*/
+
+// 匯入標準輸入輸出函式庫，提供 printf / scanf 等功能。
+#include &lt;stdio.h&gt;
+// 匯入標準函式庫，提供 malloc / free / exit 等記憶體與程式控制功能。
+#include &lt;stdlib.h&gt;
+
+// 定義節點結構：資料欄位存節點內容，指標欄位負責連到其他節點。
+typedef struct Node {
+    int key;
+    struct Node *left;
+    struct Node *right;
+} Node;
+
+// 建立新節點：配置記憶體、填入資料，並把左右指標初始化為 NULL。
+Node* createNode(int key) {
+    Node* n = (Node*)malloc(sizeof(Node));
+    if (n == NULL) {
+        printf("Memory allocation failed.\n");
+        exit(1);
+    }
+    n-&gt;key = key;
+    n-&gt;left = NULL;
+    n-&gt;right = NULL;
+    return n;
+}
+
+// BST 插入：比目前節點小往左，大往右；空位置就是新節點位置。
+Node* insert(Node* root, int key) {
+    if (root == NULL) {
+        return createNode(key);
+    }
+
+    if (key &lt; root-&gt;key) {
+        root-&gt;left = insert(root-&gt;left, key);  // 較小的 key 放左子樹
+    } else if (key &gt; root-&gt;key) {
+        root-&gt;right = insert(root-&gt;right, key);  // 較大的 key 放右子樹
+    } else {
+        printf("%d already exists, skip duplicate.\n", key);
+    }
+    return root;
+}
+
+// Inorder 走訪：Left → Visit → Right；套用在 BST 會得到由小到大的排序。
+void inorder(Node* root) {
+    if (root == NULL) return;  // 遞迴終止條件：空節點不需要處理
+    inorder(root-&gt;left);   // 先走左子樹
+    printf("%d ", root-&gt;key);  // 再拜訪目前節點
+    inorder(root-&gt;right);  // 最後走右子樹
+}
+
+// Preorder 走訪：Visit → Left → Right，常用來觀察樹建立的形狀。
+void preorder(Node* root) {
+    if (root == NULL) return;  // 遞迴終止條件：空節點不需要處理
+    printf("%d ", root-&gt;key);  // 再拜訪目前節點
+    preorder(root-&gt;left);  // 再走左子樹
+    preorder(root-&gt;right); // 最後走右子樹
+}
+
+// 釋放整棵樹：先釋放左右子樹，再釋放目前節點，避免記憶體洩漏。
+void freeTree(Node* root) {
+    if (root == NULL) return;  // 遞迴終止條件：空節點不需要處理
+    freeTree(root-&gt;left);
+    freeTree(root-&gt;right);
+    free(root);
+}
+
+// 主程式：建立測試資料，呼叫上方函式，觀察輸出結果。
+int main(void) {
+    int data[] = {7, 3, 14, 2, 4, 10, 16, 1, 8};
+    int n = sizeof(data) / sizeof(data[0]);
+    Node* root = NULL;
+
+    for (int i = 0; i &lt; n; i++) {
+        root = insert(root, data[i]);
+    }
+
+    printf("Preorder building shape: ");
+    preorder(root);
+    printf("\n");
+
+    printf("Inorder sorted result: ");
+    inorder(root);
+    printf("\n");
+
+    freeTree(root);
+    return 0;
+}
+</textarea></div></div></details>
+<details class="lab7-teaching-content" open=""><summary>程式題目教學內容：建立 Binary Search Tree</summary><div class="content detail-body">
+<h3>一、程式題目講解</h3>
+<p>本題示範依序插入資料如何形成一棵 BST。學生需要理解資料插入順序會影響樹的形狀，也會影響搜尋效率。</p>
+<h3>二、完整程式碼</h3>
+<p>完整可執行程式碼已保留在上方「可編輯 C 程式範例：含中文註解與線上編輯器」區塊中，檔名為 <code>build_bst.c</code>。該程式碼已加入中文註解，學生可以直接複製到 OnlineGDB、Programiz 或 OneCompiler 執行。</p>
+<h3>三、程式執行結果</h3>
+<pre><code>Preorder building shape: 7 3 2 1 4 14 10 8 16 
+Inorder sorted result: 1 2 3 4 7 8 10 14 16 </code></pre>
+<p>Preorder 顯示建立後的樹形大致順序；Inorder 顯示排序結果 1 2 3 4 7 8 10 14 16，證明 BST 建立正確。</p>
+<h3>四、程式流程圖與流程圖說明</h3>
+<p>本頁下方已保留原本的程式流程圖。閱讀流程圖時，可以依序掌握「初始化資料或節點 → 執行主要函式或判斷 → 輸出結果」的過程。先設定一組資料，再從第一筆開始逐一呼叫 insert。每次插入都從 root 開始比較，小的往左，大的往右，直到找到 NULL 位置放入新節點。</p>
+<h3>五、重要函數與語法說明</h3>
+<p>insert()：建立 BST 的核心函式；createNode()：配置新節點；preorder()：觀察樹的建立形狀；inorder()：確認排序結果。</p>
+<h3>六、整體說明</h3>
+<p>本題重點是 BST 不是直接排序陣列，而是透過插入規則把資料組成一棵可搜尋的樹。</p>
+</div></details>
+
+<section class="card program-flow-card">
+<h2>程式流程圖：建立 BST 流程</h2>
+<p>下圖是本主題對應的程式執行流程，適合搭配本頁 C 程式碼一起看。</p>
+<div class="program-flow-figure"><img alt="主題 7 程式流程圖" class="program-flow-img" src="assets/program_flow_topic7.svg"/><div class="figure-caption">主題 7 程式流程圖：建立 BST 流程</div></div>
+<div class="flow-explain"><h3>流程講解</h3><ol><li>建立 BST 時，每讀入一個 key 就從 root 開始比較。</li><li>小於目前節點往左，大於目前節點往右。</li><li>當走到 NULL 位置時，代表找到新節點應該插入的位置。</li><li>重複插入所有資料後，整棵 BST 就建立完成。</li></ol><p>這張流程圖把本頁程式的執行順序整理成一條清楚路徑。閱讀時先看輸入與資料如何建立，再看條件判斷、指標或陣列索引如何改變，最後用輸出結果確認程式邏輯是否正確。</p></div>
+</section>
+</main><div class="footer">Lesson 6 Trees｜主題七：Building a Binary Search Tree</div></body></html>

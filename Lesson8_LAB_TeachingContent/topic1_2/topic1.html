@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="zh-Hant"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/><title>Lesson 8 主題一｜作業系統基本概念</title><link href="assets/style.css" rel="stylesheet"/>
+<style>
+.program-flow-card{background:#ffffff;border:1px solid #dbeafe;border-radius:20px;padding:22px;margin:24px 0;box-shadow:0 12px 30px rgba(15,23,42,.08)}
+.program-flow-card h2{margin-top:0;color:#0f172a}
+.program-flow-img{width:100%;border-radius:18px;border:1px solid #e2e8f0;background:#f8fafc}
+.flow-explain{line-height:1.9;background:#f8fafc;border-left:6px solid #2563eb;border-radius:14px;padding:16px 18px;white-space:pre-line}
+.code-card{background:#0f172a;color:#e5e7eb;border-radius:20px;padding:0;margin:24px 0;overflow:hidden;box-shadow:0 12px 32px rgba(15,23,42,.20)}
+.code-card .code-head{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between;background:#111827;padding:14px 16px;border-bottom:1px solid #334155}
+.code-card .code-title{font-weight:700;color:#f8fafc}
+.code-card .code-actions{display:flex;gap:8px;flex-wrap:wrap}
+.code-card button,.code-card a{border:0;border-radius:999px;padding:8px 12px;font-weight:700;text-decoration:none;cursor:pointer;background:#2563eb;color:white;font-size:14px}
+.code-card a{background:#475569}
+.code-card button.download-btn{background:#f97316}
+.code-card textarea{width:100%;min-height:380px;box-sizing:border-box;background:#020617;color:#e5e7eb;border:0;padding:18px;font-family:Consolas,'Courier New',monospace;font-size:15px;line-height:1.55;resize:vertical}
+.editor-links{margin-top:12px;line-height:1.8}
+.editor-links a{display:inline-block;margin:4px 8px 4px 0;padding:8px 12px;border-radius:999px;background:#e0f2fe;color:#075985;text-decoration:none;font-weight:700}
+</style>
+<script>
+function copyCode(id){
+  const el=document.getElementById(id);
+  if(!el) return;
+  el.select();
+  document.execCommand('copy');
+  alert('程式碼已複製');
+}
+function downloadCode(id, filename){
+  const el=document.getElementById(id);
+  if(!el) return;
+  const blob=new Blob([el.value], {type:'text/plain;charset=utf-8'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download=filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(()=>URL.revokeObjectURL(a.href), 500);
+}
+</script>
+
+<style id="slide-dropdown-explanation-style">
+.slide-explain-wrapper{margin:20px 0}
+.slide-intro-note{line-height:1.9;background:#eff6ff;border-left:6px solid #2563eb;border-radius:14px;padding:14px 16px;color:#1e3a8a}
+.single-slide-detail{margin:18px 0;border:1px solid #dbeafe;border-radius:18px;background:#ffffff;box-shadow:0 10px 24px rgba(15,23,42,.07);overflow:hidden}
+.single-slide-detail>summary{cursor:pointer;padding:16px 18px;font-weight:800;color:#0f172a;background:linear-gradient(135deg,#eff6ff,#f8fafc);list-style:none}
+.single-slide-detail>summary::-webkit-details-marker{display:none}
+.single-slide-detail>summary::before{content:"＋";display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;margin-right:10px;border-radius:999px;background:#2563eb;color:white;font-weight:900}
+.single-slide-detail[open]>summary::before{content:"－";background:#f97316}
+.slide-explain-grid{display:grid;grid-template-columns:minmax(280px,46%) 1fr;gap:22px;padding:20px;align-items:start}
+.slide-explain-image{background:#f8fafc;border:1px solid #e2e8f0;border-radius:16px;padding:12px}
+.slide-explain-image .slide-img{width:100%;height:auto;border-radius:12px;border:1px solid #e5e7eb;background:white}
+.slide-caption{text-align:center;color:#475569;font-size:14px;margin-top:8px;line-height:1.6}
+.slide-explain-text{line-height:1.9;color:#1f2937}
+.slide-explain-text h3{margin:8px 0 6px;color:#0f172a;font-size:1.05rem}
+.slide-explain-text p{margin:0 0 12px}
+.slide-explain-text ul{margin:0 0 12px 1.2em;padding:0}
+.slide-explain-text li{margin:4px 0}
+.memory-line{background:#fff7ed;border-left:6px solid #f97316;border-radius:12px;padding:10px 12px;color:#7c2d12}
+@media (max-width: 860px){
+  .slide-explain-grid{grid-template-columns:1fr}
+}
+</style>
+
+<style id="teaching-content-style">
+.teaching-content-card{background:#ffffff;border:1px solid #c7d2fe;border-radius:20px;padding:22px;margin:24px 0;box-shadow:0 12px 30px rgba(15,23,42,.08)}
+.teaching-content-card h2{margin-top:0;color:#1e1b4b}
+.teaching-content-card h3{margin-top:18px;color:#0f172a}
+.teaching-content-card p,.teaching-content-card li{line-height:1.9;color:#1f2937}
+.teaching-code-block,.teaching-output-block{white-space:pre-wrap;background:#020617;color:#e5e7eb;border-radius:16px;padding:16px;overflow:auto;font-family:Consolas,'Courier New',monospace;line-height:1.55}
+.teaching-output-block{background:#f8fafc;color:#0f172a;border:1px solid #e2e8f0}
+.teaching-mini-note{background:#eff6ff;border-left:6px solid #2563eb;border-radius:14px;padding:12px 14px;line-height:1.9;color:#1e3a8a}
+</style>
+</head><body>
+<section class="hero"><div class="hero-inner"><span class="badge">主題一｜投影片 1–6</span><h1>作業系統基本概念</h1><p>本主題先建立作業系統的整體觀念：作業系統不是單純一個程式，而是位在使用者、應用程式與硬體之間的管理核心。</p><div class="nav"><a class="btn" href="../index.html">回首頁</a><a class="btn primary" href="topic2.html">下一主題</a></div></div></section>
+<main class="wrap">
+<details class="slide-explain-wrapper" open=""><summary>一、投影片逐張下拉式詳細講解</summary><div class="detail-body"><p class="slide-intro-note">每張投影片都已把「圖片」與「自己的文字講解」放在同一個下拉式區塊中，方便一邊看圖、一邊理解重點。</p><details class="single-slide-detail" open=""><summary>投影片 1｜Operating Systems 課程章節封面</summary><div class="slide-explain-grid"><div class="slide-explain-image"><img alt="投影片1" class="slide-img" src="assets/slide1.png"/><div class="slide-caption">投影片 1｜Operating Systems 課程章節封面</div></div><div class="slide-explain-text"><h3>（一）這張投影片在說什麼？</h3><p>這張是 Lesson 8 的章節封面，主題是作業系統。它提醒我們本章不是只學單一指令，而是要理解電腦從開機、執行程式、管理記憶體、排程 CPU 到處理死結的整體運作。</p><h3>（二）核心觀念</h3><ul><li>作業系統是使用者、應用程式與硬體之間的核心管理者。</li><li>後續主題會逐步拆成記憶體、行程、排程、通訊與死結。</li></ul><h3>（三）學習與考試重點</h3><p>先建立大架構：OS 的功能是管理資源、控制程式執行、提高系統效率與穩定性。</p><h3>（四）一句話記憶</h3><p class="memory-line">一句話記憶：先建立大架構：OS 的功能是管理資源、控制程式執行、提高系統效率與穩定性。</p></div></div></details><details class="single-slide-detail"><summary>投影片 2｜What is an Operating System?</summary><div class="slide-explain-grid"><div class="slide-explain-image"><img alt="投影片2" class="slide-img" src="assets/slide2.png"/><div class="slide-caption">投影片 2｜What is an Operating System?</div></div><div class="slide-explain-text"><h3>（一）這張投影片在說什麼？</h3><p>這張投影片定義作業系統：它是使用者與電腦硬體之間的中介程式。使用者不需要直接操作 CPU、記憶體或硬碟，而是透過應用程式提出需求，再由作業系統安排硬體完成工作。</p><h3>（二）核心觀念</h3><ul><li>OS 的位置在 application programs 與 hardware 中間。</li><li>OS 的目標是讓使用者方便操作，也讓硬體被有效率地使用。</li></ul><h3>（三）學習與考試重點</h3><p>考試常問 OS 的角色：intermediary、resource allocator、control program。</p><h3>（四）一句話記憶</h3><p class="memory-line">一句話記憶：考試常問 OS 的角色：intermediary、resource allocator、control program。</p></div></div></details><details class="single-slide-detail"><summary>投影片 3｜Computer System Structure</summary><div class="slide-explain-grid"><div class="slide-explain-image"><img alt="投影片3" class="slide-img" src="assets/slide3.png"/><div class="slide-caption">投影片 3｜Computer System Structure</div></div><div class="slide-explain-text"><h3>（一）這張投影片在說什麼？</h3><p>這張說明電腦系統的分層結構。最底層是硬體，往上是作業系統，再往上是應用程式，最上層是使用者。這個圖是理解作業系統的基礎，因為 OS 正是負責把上層需求轉換成下層硬體動作。</p><h3>（二）核心觀念</h3><ul><li>Hardware 提供 CPU、memory、I/O 等基本資源。</li><li>Application programs 透過 OS 使用硬體。</li><li>Users 可以是人、其他電腦或服務。</li></ul><h3>（三）學習與考試重點</h3><p>要能說明四層之間的關係，而不是只背名詞。</p><h3>（四）一句話記憶</h3><p class="memory-line">一句話記憶：要能說明四層之間的關係，而不是只背名詞。</p></div></div></details><details class="single-slide-detail"><summary>投影片 4｜Four Components of a Computer System</summary><div class="slide-explain-grid"><div class="slide-explain-image"><img alt="投影片4" class="slide-img" src="assets/slide4.png"/><div class="slide-caption">投影片 4｜Four Components of a Computer System</div></div><div class="slide-explain-text"><h3>（一）這張投影片在說什麼？</h3><p>這張說明電腦系統的分層結構。最底層是硬體，往上是作業系統，再往上是應用程式，最上層是使用者。這個圖是理解作業系統的基礎，因為 OS 正是負責把上層需求轉換成下層硬體動作。</p><h3>（二）核心觀念</h3><ul><li>Hardware 提供 CPU、memory、I/O 等基本資源。</li><li>Application programs 透過 OS 使用硬體。</li><li>Users 可以是人、其他電腦或服務。</li></ul><h3>（三）學習與考試重點</h3><p>要能說明四層之間的關係，而不是只背名詞。</p><h3>（四）一句話記憶</h3><p class="memory-line">一句話記憶：要能說明四層之間的關係，而不是只背名詞。</p></div></div></details><details class="single-slide-detail"><summary>投影片 5｜What Operating Systems Do</summary><div class="slide-explain-grid"><div class="slide-explain-image"><img alt="投影片5" class="slide-img" src="assets/slide5.png"/><div class="slide-caption">投影片 5｜What Operating Systems Do</div></div><div class="slide-explain-text"><h3>（一）這張投影片在說什麼？</h3><p>這張投影片從不同角度說明 OS 在做什麼。對使用者來說，OS 要好用、方便、反應快；對系統來說，OS 要有效率地分配 CPU、記憶體與 I/O 資源。不同設備，例如桌機、伺服器或嵌入式系統，對 OS 的需求也會不同。</p><h3>（二）核心觀念</h3><ul><li>User view 重視便利性與易用性。</li><li>System view 重視資源管理與系統效率。</li></ul><h3>（三）學習與考試重點</h3><p>同一個 OS 定義可以從使用者觀點與系統觀點回答。</p><h3>（四）一句話記憶</h3><p class="memory-line">一句話記憶：同一個 OS 定義可以從使用者觀點與系統觀點回答。</p></div></div></details><details class="single-slide-detail"><summary>投影片 6｜Operating System Definition</summary><div class="slide-explain-grid"><div class="slide-explain-image"><img alt="投影片6" class="slide-img" src="assets/slide6.png"/><div class="slide-caption">投影片 6｜Operating System Definition</div></div><div class="slide-explain-text"><h3>（一）這張投影片在說什麼？</h3><p>這張整理作業系統的正式定義。OS 可視為資源分配器，負責管理 CPU、memory、storage、I/O；也可視為控制程式，負責控制程式執行並避免錯誤或不當使用。</p><h3>（二）核心觀念</h3><ul><li>Resource allocator：決定資源如何分配。</li><li>Control program：管理程式行為，避免衝突與錯誤。</li></ul><h3>（三）學習與考試重點</h3><p>記住兩個關鍵詞：分配資源與控制執行。</p><h3>（四）一句話記憶</h3><p class="memory-line">一句話記憶：記住兩個關鍵詞：分配資源與控制執行。</p></div></div></details></div></details>
+<details open=""><summary>二、作業系統是什麼？</summary><div class="detail-body"><p><span class="pill">核心定義</span> 作業系統是一個介於使用者與電腦硬體之間的中介程式。使用者通常不會直接控制 CPU、記憶體、硬碟或 I/O 裝置，而是透過應用程式提出需求，再由作業系統安排硬體完成工作。</p><div class="flowbox" id="flow-os"><h3>作業系統的中介角色動畫</h3><div class="os-visual"><div class="layer user">使用者 User</div><div class="arrow-down">↓</div><div class="layer app">應用程式 Application Programs</div><div class="arrow-down">↓</div><div class="layer os">作業系統 Operating System</div><div class="arrow-down">↓</div><div class="layer hw">電腦硬體 Computer Hardware</div></div><div class="flow-steps"><div class="flow-step">使用者需求</div><div class="flow-step">應用程式提出請求</div><div class="flow-step">OS 管理與分配</div><div class="flow-step">硬體執行</div></div><div class="flow-caption"></div><div class="flow-controls"><button class="btn mini prev">上一步</button><button class="btn mini next">下一步</button><button class="btn mini reset">重新播放</button></div></div></div></details>
+<details><summary>三、作業系統的三個主要目標</summary><div class="detail-body"><div class="three-col"><div class="mini-card"><h4>1、讓使用者容易解決問題</h4><p>作業系統提供介面與服務，讓使用者不用理解硬體細節，也能執行程式、存取檔案與使用網路。</p></div><div class="mini-card"><h4>2、讓電腦系統方便使用</h4><p>作業系統把複雜硬體包裝成較容易操作的功能，例如檔案系統、視窗介面、指令列與程式執行環境。</p></div><div class="mini-card"><h4>3、有效率地使用硬體</h4><p>CPU、記憶體、硬碟與 I/O 裝置都是有限資源，作業系統必須安排誰先用、用多久、如何避免衝突。</p></div></div></div></details>
+<details><summary>四、電腦系統的四個組成</summary><div class="detail-body"><p>投影片將電腦系統分成四層：硬體、作業系統、應用程式、使用者。這個圖很重要，因為後面所有單元都在說明作業系統如何替不同程式與使用者管理硬體。</p><div class="compare"><div class="mini-card"><h4>下層：Computer Hardware</h4><p>包含 CPU、memory、I/O devices。硬體提供真正的運算與儲存能力，但本身不會決定資源如何分配。</p></div><div class="mini-card"><h4>中層：Operating System</h4><p>控制並協調硬體使用，是整個系統的管理中心，也可被視為資源分配器與控制程式。</p></div><div class="mini-card"><h4>上層：Application Programs</h4><p>例如 compiler、database system、video games、web browser。應用程式透過 OS 使用硬體。</p></div><div class="mini-card"><h4>最上層：Users</h4><p>使用者可能是人、機器、其他電腦或網路上的服務。不同使用情境對 OS 的要求也不同。</p></div></div></div></details>
+<details><summary>五、OS 作為 Resource Allocator 與 Control Program</summary><div class="detail-body"><div class="two-col"><div class="mini-card"><h4>Resource Allocator 資源分配器</h4><p>作業系統要管理所有資源，並在多個互相競爭的請求之間，做有效率且公平的分配。例如多個程式都想使用 CPU 或記憶體時，OS 要決定誰先執行。</p></div><div class="mini-card"><h4>Control Program 控制程式</h4><p>作業系統也要控制程式執行，避免錯誤與不當使用。例如防止某個程式任意修改其他程式的記憶體，或不合理地獨佔硬體資源。</p></div></div><p class="note">簡單記法：OS 一方面要「分配資源」，另一方面要「控制行為」。前者重視效率與公平，後者重視穩定與安全。</p></div></details>
+<details class="program-flow-card" open=""><summary>程式流程圖與流程講解</summary>
+<div class="detail-body">
+<h2>程式流程圖：作業系統基本概念</h2>
+<img alt="主題 1 程式流程圖" class="program-flow-img" src="assets/program_flow_topic1.svg"/>
+<h3>流程講解</h3>
+<div class="flow-explain">這張流程圖對應本頁「作業系統基本概念」的 C 程式執行邏輯。
+1、使用者提出需求。
+2、應用程式呼叫系統服務。
+3、OS 分配 CPU/Memory/I/O。
+4、硬體執行工作。
+5、回傳執行結果。
+學生可以先看流程圖理解整體順序，再對照下方程式中的中文註解，確認每一段程式碼負責哪一個步驟。</div>
+</div>
+</details>
+<details class="program-flow-card" open=""><summary>可編輯 C 程式範例與線上編輯器</summary>
+<div class="detail-body">
+<h2>可編輯 C 程式：作業系統基本概念</h2>
+<p>這段程式依照上方流程圖設計，包含中文註解，適合貼到線上編輯器直接執行與修改。</p>
+<div class="code-card">
+<div class="code-head">
+<span class="code-title">lesson8_topic1_demo.c</span>
+<div class="code-actions">
+<button onclick="copyCode('code_topic_1')">複製程式</button>
+<button class="download-btn" onclick="downloadCode('code_topic_1','lesson8_topic1_demo.c')">下載 .c</button>
+<a href="https://www.onlinegdb.com/online_c_compiler" target="_blank">OnlineGDB</a>
+<a href="https://www.programiz.com/c-programming/online-compiler/" target="_blank">Programiz</a>
+<a href="https://onecompiler.com/c" target="_blank">OneCompiler</a>
+</div>
+</div>
+<textarea id="code_topic_1" spellcheck="false">#include &lt;stdio.h&gt;
+
+/*
+  主題 1：作業系統基本概念
+  功能：用簡單文字模擬 User → Application → OS → Hardware 的服務流程。
+*/
+
+int main(void) {
+    printf("User：我要開啟一個程式。\n");
+    printf("Application：向作業系統提出系統呼叫。\n");
+    printf("Operating System：檢查資源，分配 CPU、記憶體與 I/O。\n");
+    printf("Hardware：依照 OS 安排執行工作。\n");
+    printf("Operating System：把結果回傳給應用程式與使用者。\n");
+    return 0;
+}</textarea>
+</div>
+<div class="editor-links">
+      線上編輯器：
+      <a href="https://www.onlinegdb.com/online_c_compiler" target="_blank">OnlineGDB C Compiler</a>
+<a href="https://www.programiz.com/c-programming/online-compiler/" target="_blank">Programiz C Compiler</a>
+<a href="https://onecompiler.com/c" target="_blank">OneCompiler C</a>
+</div>
+</div>
+</details>
+
+<details class="teaching-content-card" open=""><summary>程式題目完整教學內容</summary>
+<div class="detail-body">
+<h2>程式題目完整教學：作業系統基本概念</h2>
+<h3>一、程式題目講解</h3>
+<p>用 C 程式把「使用者、應用程式、作業系統、硬體」之間的互動順序印出來，讓學生理解 OS 是中介者、資源分配者與控制程式。</p>
+<p>核心觀念是分層架構與系統服務流程：使用者提出需求，應用程式向 OS 請求服務，OS 再安排硬體工作。</p>
+<h3>二、完整程式碼</h3>
+<p>以下程式碼可直接複製到 C 語言線上編譯器執行。程式中已加入中文註解，說明主要變數、判斷流程與輸出目的。</p>
+<pre class="teaching-code-block"><code>#include &lt;stdio.h&gt;
+
+/*
+  主題 1：作業系統基本概念
+  功能：用簡單文字模擬 User → Application → OS → Hardware 的服務流程。
+*/
+
+int main(void) {
+    printf(&quot;User：我要開啟一個程式。\n&quot;);
+    printf(&quot;Application：向作業系統提出系統呼叫。\n&quot;);
+    printf(&quot;Operating System：檢查資源，分配 CPU、記憶體與 I/O。\n&quot;);
+    printf(&quot;Hardware：依照 OS 安排執行工作。\n&quot;);
+    printf(&quot;Operating System：把結果回傳給應用程式與使用者。\n&quot;);
+    return 0;
+}</code></pre>
+<h3>三、程式執行結果</h3>
+<pre class="teaching-output-block"><code>User：我要開啟一個程式。
+Application：向作業系統提出系統呼叫。
+Operating System：檢查資源，分配 CPU、記憶體與 I/O。
+Hardware：依照 OS 安排執行工作。
+Operating System：把結果回傳給應用程式與使用者。</code></pre>
+<p class="teaching-mini-note">結果說明：核心觀念是分層架構與系統服務流程：使用者提出需求，應用程式向 OS 請求服務，OS 再安排硬體工作。 程式依照設定的資料與控制流程逐步輸出，因此可以從結果看到每個步驟的執行順序與狀態變化。</p>
+<h3>四、程式流程圖與流程圖說明</h3>
+<p>本頁上方已提供對應的程式流程圖，圖中以「開始、資料設定、條件判斷、重複處理、輸出結果、結束」呈現程式執行順序。</p>
+<p>開始後依序輸出 User、Application、Operating System、Hardware 的處理步驟，最後回傳結果並結束程式。</p>
+<h3>五、重要函數與語法說明</h3>
+<p>printf() 用來輸出每一個角色的動作；return 0 表示 main() 正常結束。</p>
+<h3>六、整體說明</h3>
+<p>本題的學習重點是把作業系統概念轉成可觀察的 C 程式流程。學生應先理解題目概念，再對照程式碼、流程圖與執行結果，掌握變數設定、條件判斷、迴圈處理與輸出結果之間的關係。</p>
+</div>
+</details>
+
+</main><div class="footer">Lesson 8 Topic 1｜Operating Systems Basic Concepts</div><script src="assets/script.js"></script></body></html>

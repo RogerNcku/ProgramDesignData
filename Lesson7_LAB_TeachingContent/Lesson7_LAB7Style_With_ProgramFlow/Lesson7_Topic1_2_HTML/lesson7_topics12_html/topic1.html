@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="zh-Hant"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/><title>主題一 Expressions 表達式基本概念</title><link href="assets/style.css" rel="stylesheet"/>
+<style>
+.slide-dropdown-card{margin-top:18px;}
+.slide-dropdown-card h2{margin-bottom:12px;}
+.slide-detail-block{border:1px solid rgba(120,120,120,.25);border-radius:16px;margin:14px 0;background:rgba(255,255,255,.04);overflow:hidden;}
+.slide-detail-block summary{cursor:pointer;font-weight:700;padding:14px 18px;line-height:1.5;background:rgba(0,0,0,.035);}
+.slide-detail-inner{display:grid;grid-template-columns:minmax(280px,46%) 1fr;gap:18px;align-items:start;padding:18px;}
+.slide-detail-image{width:100%;max-width:100%;border-radius:14px;box-shadow:0 8px 24px rgba(0,0,0,.16);background:#fff;}
+.slide-detail-caption{text-align:center;font-size:.92rem;opacity:.82;margin-top:8px;}
+.slide-detail-text h3{margin-top:0;margin-bottom:10px;}
+.slide-detail-text p{line-height:1.85;margin:.55rem 0;}
+.slide-memory{padding:10px 12px;border-left:4px solid #f59e0b;background:rgba(245,158,11,.10);border-radius:10px;margin-top:10px;}
+@media(max-width:820px){.slide-detail-inner{grid-template-columns:1fr}.slide-detail-block summary{padding:12px 14px}.slide-detail-inner{padding:14px}}
+</style>
+</head><body>
+<section class="hero"><div class="hero-inner"><span class="badge">主題一｜投影片 1–2</span><h1>Expressions 表達式基本概念</h1><p>Expression 是由運算元與運算子組成的計算式。本章先建立基本觀念，再比較 Infix、Postfix、Prefix 三種表示方式。</p><div class="nav"><a class="btn" href="../../index.html">回主頁</a><a class="btn" href="topic2.html">下一章：Infix Expressions</a></div></div></section>
+<main class="wrap">
+<section class="card slide-dropdown-card"><h2>一、投影片逐張下拉式詳細講解</h2><p>每一張投影片都已和自己的圖片、詳細中文說明、核心觀念、學習重點與一句話記憶整合在同一個下拉式區塊中。</p><details class="slide-detail-block" open=""><summary>投影片 1：Lesson 7 Expressions</summary><div class="slide-detail-inner"><figure><img alt="投影片 1：Lesson 7 Expressions" class="slide-detail-image slide-img" src="assets/slide1.png"/><figcaption class="slide-detail-caption">投影片 1：Lesson 7 Expressions</figcaption></figure><div class="slide-detail-text"><h3>CHAPTER 3：Expressions 章節導入</h3><p><b>（一）這張投影片在說什麼？</b> 這張投影片是 Lesson 7 的入口，主題是 Expressions，也就是運算式或表達式。它提醒我們本章不是只在學「算答案」，而是在學電腦如何讀懂一串由數字、變數、運算子與括號組成的式子。</p><p><b>（二）核心觀念</b> 核心觀念是：Expression 可以被不同形式表示，例如 Infix、Postfix、Prefix，也可以進一步轉成 Expression Tree。這些形式看起來不同，但代表的運算邏輯可以是同一個。</p><p><b>（三）為什麼重要？</b> 後面所有 Stack、轉換演算法、後序求值與表達式樹，都是建立在這個章節主軸上。因此看到這張投影片，要先把重點放在「表示法」與「計算順序」兩件事。</p><p><b>（四）學習與考試重點</b> 考試常問的不是章名，而是你是否能分辨運算元、運算子，以及不同表示法在電腦處理上的差異。</p><div class="slide-memory">一句話記憶：Expression 是電腦理解運算邏輯的基本單位。</div></div></div></details><details class="slide-detail-block"><summary>投影片 2：Expressions definitions</summary><div class="slide-detail-inner"><figure><img alt="投影片 2：Expressions definitions" class="slide-detail-image slide-img" src="assets/slide2.png"/><figcaption class="slide-detail-caption">投影片 2：Expressions definitions</figcaption></figure><div class="slide-detail-text"><h3>Expressions、Infix、Postfix、Prefix 基本定義</h3><p><b>（一）這張投影片在說什麼？</b> 這張投影片正式定義 Expression 是由 operands 與 operators 組成。Operand 是被運算的資料，例如 A、B、5、10；Operator 是負責計算的符號，例如 +、-、*、/。</p><p><b>（二）核心觀念</b> 同一個運算可以有三種常見寫法：Infix 是運算子放中間，例如 A+B；Postfix 是運算子放後面，例如 AB+；Prefix 是運算子放前面，例如 +AB。差別只在符號位置，但會影響程式如何解析。</p><p><b>（三）為什麼重要？</b> 人類習慣 Infix，因為它接近數學課本的寫法；電腦常用 Postfix 或 Prefix，因為它們可以減少括號與優先順序的判斷。</p><p><b>（四）學習與考試重點</b> 請特別記住：Infix 要考慮括號與優先順序；Postfix 與 Prefix 通常可以直接配合 Stack 或 Tree 處理。</p><div class="slide-memory">一句話記憶：Infix 給人看，Postfix / Prefix 更方便給電腦算。</div></div></div></details></section>
+<details open=""><summary>一、完整中文講解</summary><div class="detail-body"><p><span class="pill">核心定義</span></p><p>Expression 可以翻成「表達式」或「運算式」。它是由 <span class="k">operands</span>（運算元）與 <span class="k">operators</span>（運算子）組合而成，用來完成計算。例如 <span class="k">5 / 3 * 8 * 6 + 1</span> 裡面，<span class="k">5、3、8、6、1</span> 是運算元，<span class="k">/、*、*、+</span> 是運算子。</p><p>投影片 2 進一步說明三種表示法：Infix、Postfix、Prefix。它們表示的是同一個計算概念，但運算子擺放的位置不同。</p><ul><li><b>Infix 中序：</b>運算子放在兩個運算元中間，例如 <span class="k">A + B</span>。</li><li><b>Postfix 後序：</b>運算子放在兩個運算元後面，例如 <span class="k">A B +</span>。</li><li><b>Prefix 前序：</b>運算子放在兩個運算元前面，例如 <span class="k">+ A B</span>。</li></ul><p>人類通常習慣 Infix，因為它符合一般數學書寫方式；但是電腦在計算時，Postfix 與 Prefix 比較容易處理，因為它們不太需要額外判斷括號與優先順序。</p></div></details>
+<details open=""><summary>二、動畫流程圖：Expression 如何被電腦理解？</summary><div class="detail-body"><div class="flowbox" data-flow="t1"><div class="flow-steps"><div class="flow-step" data-caption="先輸入一個 expression，例如 5/3*8*6+1。">輸入 Expression</div><div class="flow-step" data-caption="程式從左到右讀取每一個字元。">逐字讀取</div><div class="flow-step" data-caption="如果是數字或英文字母，通常視為 operand。">判斷 Operand</div><div class="flow-step" data-caption="如果是 +、-、*、/、^，通常視為 operator。">判斷 Operator</div><div class="flow-step" data-caption="整理出這個 expression 的結構，之後才能轉換或計算。">完成分析</div></div><div class="flow-caption"></div><div class="flow-controls"><button class="btn mini" onclick="prevFlow('t1')">上一步</button><button class="btn mini primary" onclick="nextFlow('t1')">下一步</button><button class="btn mini" onclick="autoFlow('t1')">自動播放</button><button class="btn mini" onclick="resetFlow('t1')">重新開始</button></div></div></div></details>
+<details open=""><summary>三、範例說明</summary><div class="detail-body"><p>以 <span class="k">A + B</span> 為例：</p><ul><li><span class="k">A + B</span>：Infix，因為 + 在 A 和 B 中間。</li><li><span class="k">A B +</span>：Postfix，因為 + 放在 A 和 B 後面。</li><li><span class="k">+ A B</span>：Prefix，因為 + 放在 A 和 B 前面。</li></ul><p>再以投影片中的 <span class="k">5 / 3 * 8 * 6 + 1</span> 為例，它可以轉換成 Postfix 或 Prefix。這也是後續課程會學到的「中序轉後序」與「中序轉前序」。</p></div></details>
+<details open=""><summary>四、C 程式範例：辨認 Expression 的運算元與運算子</summary><div class="detail-body"><p class="note">這個程式適合放在本章第一個範例，重點是讓學生看懂 expression 的組成，而不是直接計算答案。</p><div class="code-panel"><div class="code-toolbar"><span>expression_scanner.c</span><div class="code-actions"><button data-copy="code1" onclick="copyCode('code1')">複製程式碼</button><a href="https://www.onlinegdb.com/online_c_compiler" target="_blank">OnlineGDB</a><a href="https://www.programiz.com/c-programming/online-compiler/" target="_blank">Programiz</a><a href="https://onecompiler.com/c" target="_blank">OneCompiler</a></div></div><textarea class="code" id="code1">#include &lt;stdio.h&gt;
+#include &lt;ctype.h&gt;
+#include &lt;string.h&gt;
+
+/*
+    主題一：Expressions 表達式基本概念
+    目的：讀取一個 expression，判斷每一個字元是：
+          1. 運算元 operand，例如 A、B、5、3
+          2. 運算子 operator，例如 +、-、*、/
+          3. 括號或其他符號
+
+    這個程式不是為了計算答案，而是先讓電腦能夠「看懂」表達式的組成。
+*/
+
+// 判斷字元是不是運算子
+int isOperator(char ch) {
+    return ch == '+' || ch == '-' || ch == '*' || ch == '/' || ch == '^';
+}
+
+int main() {
+    // 你可以修改這一行，換成自己的 expression
+    char exp[] = "5/3*8*6+1";
+
+    int operandCount = 0;
+    int operatorCount = 0;
+
+    printf("原始 Expression：%s\n\n", exp);
+    printf("逐一分析 expression 裡面的元素：\n");
+
+    for (int i = 0; i &lt; strlen(exp); i++) {
+        char ch = exp[i];
+
+        // 如果是空白，就跳過
+        if (ch == ' ') {
+            continue;
+        }
+
+        // isalnum() 可以判斷是否為英文字母或數字
+        if (isalnum(ch)) {
+            printf("%c  是 Operand（運算元）\n", ch);
+            operandCount++;
+        }
+        else if (isOperator(ch)) {
+            printf("%c  是 Operator（運算子）\n", ch);
+            operatorCount++;
+        }
+        else if (ch == '(' || ch == ')') {
+            printf("%c  是 Parenthesis（括號）\n", ch);
+        }
+        else {
+            printf("%c  是其他符號\n", ch);
+        }
+    }
+
+    printf("\n統計結果：\n");
+    printf("Operand 數量：%d\n", operandCount);
+    printf("Operator 數量：%d\n", operatorCount);
+
+    printf("\n三種表示法的概念：\n");
+    printf("Infix   ：A + B  （運算子在中間）\n");
+    printf("Postfix ：A B +  （運算子在後面）\n");
+    printf("Prefix  ：+ A B  （運算子在前面）\n");
+
+    return 0;
+}
+</textarea></div></div></details>
+
+<section class="card program-teaching-card" id="program-teaching-content" style="margin-top:18px;">
+  <h2>程式題目教學內容</h2>
+
+  <details class="details" open>
+    <summary>一、程式題目講解</summary>
+    <p>這個程式的目的不是計算數學答案，而是讓學生理解「表達式」是由運算元、運算子與其他符號組成。學生需要先學會辨認每個字元的角色，後面才能理解中序、後序、前序與運算式樹。</p>
+  </details>
+
+  <details class="details">
+    <summary>二、完整程式碼</summary>
+    <p>以下保留本頁原本的完整 C 程式碼，並搭配中文註解說明主要功能與流程。</p>
+    <pre class="codebox" style="white-space:pre-wrap;overflow:auto;max-height:520px;"><code>#include &lt;stdio.h&gt;
+#include &lt;ctype.h&gt;
+#include &lt;string.h&gt;
+
+/*
+    主題一：Expressions 表達式基本概念
+    目的：讀取一個 expression，判斷每一個字元是：
+          1. 運算元 operand，例如 A、B、5、3
+          2. 運算子 operator，例如 +、-、*、/
+          3. 括號或其他符號
+
+    這個程式不是為了計算答案，而是先讓電腦能夠「看懂」表達式的組成。
+*/
+
+// 判斷字元是不是運算子
+int isOperator(char ch) {
+    return ch == &#x27;+&#x27; || ch == &#x27;-&#x27; || ch == &#x27;*&#x27; || ch == &#x27;/&#x27; || ch == &#x27;^&#x27;;
+}
+
+int main() {
+    // 你可以修改這一行，換成自己的 expression
+    char exp[] = &quot;5/3*8*6+1&quot;;
+
+    int operandCount = 0;
+    int operatorCount = 0;
+
+    printf(&quot;原始 Expression：%s\n\n&quot;, exp);
+    printf(&quot;逐一分析 expression 裡面的元素：\n&quot;);
+
+    for (int i = 0; i &lt; strlen(exp); i++) {
+        char ch = exp[i];
+
+        // 如果是空白，就跳過
+        if (ch == &#x27; &#x27;) {
+            continue;
+        }
+
+        // isalnum() 可以判斷是否為英文字母或數字
+        if (isalnum(ch)) {
+            printf(&quot;%c  是 Operand（運算元）\n&quot;, ch);
+            operandCount++;
+        }
+        else if (isOperator(ch)) {
+            printf(&quot;%c  是 Operator（運算子）\n&quot;, ch);
+            operatorCount++;
+        }
+        else if (ch == &#x27;(&#x27; || ch == &#x27;)&#x27;) {
+            printf(&quot;%c  是 Parenthesis（括號）\n&quot;, ch);
+        }
+        else {
+            printf(&quot;%c  是其他符號\n&quot;, ch);
+        }
+    }
+
+    printf(&quot;\n統計結果：\n&quot;);
+    printf(&quot;Operand 數量：%d\n&quot;, operandCount);
+    printf(&quot;Operator 數量：%d\n&quot;, operatorCount);
+
+    printf(&quot;\n三種表示法的概念：\n&quot;);
+    printf(&quot;Infix   ：A + B  （運算子在中間）\n&quot;);
+    printf(&quot;Postfix ：A B +  （運算子在後面）\n&quot;);
+    printf(&quot;Prefix  ：+ A B  （運算子在前面）\n&quot;);
+
+    return 0;
+}
+</code></pre>
+  </details>
+
+  <details class="details" open>
+    <summary>三、程式執行結果</summary>
+    <p><strong>程式內建 expression：5/3*8*6+1</strong></p>
+    <pre class="codebox" style="white-space:pre-wrap;overflow:auto;max-height:420px;"><code>原始 Expression：5/3*8*6+1
+
+逐一分析 expression 裡面的元素：
+5  是 Operand（運算元）
+/  是 Operator（運算子）
+3  是 Operand（運算元）
+*  是 Operator（運算子）
+8  是 Operand（運算元）
+*  是 Operator（運算子）
+6  是 Operand（運算元）
++  是 Operator（運算子）
+1  是 Operand（運算元）
+
+統計結果：
+Operand 數量：5
+Operator 數量：4
+
+三種表示法的概念：
+Infix   ：A + B  （運算子在中間）
+Postfix ：A B +  （運算子在後面）
+Prefix  ：+ A B  （運算子在前面）</code></pre>
+    <p>輸出會逐一列出 5、3、8、6、1 是 Operand，/、*、*、+ 是 Operator，所以最後統計出 5 個運算元與 4 個運算子。這表示程式已經能把表達式拆成基本元素。</p>
+  </details>
+
+  <details class="details">
+    <summary>四、程式流程圖與流程圖說明</summary>
+    <svg class="teaching-flow-svg" viewBox="0 0 760 474" role="img" aria-label="Expressions 表達式基本概念 流程圖" style="width:100%;max-width:820px;height:auto;display:block;margin:12px auto;"><defs><linearGradient id="g" x1="0" x2="1"><stop offset="0%" stop-color="#eef6ff"/><stop offset="100%" stop-color="#ffffff"/></linearGradient></defs><rect x="70" y="50" width="620" height="46" rx="14" fill="url(#g)" stroke="#7aa7d9" stroke-width="2"></rect><text x="380" y="79" text-anchor="middle" font-size="16" fill="#1f2937">1. 設定一個 expression 字串</text><line x1="380" y1="96" x2="380" y2="108" stroke="#7aa7d9" stroke-width="2"></line><polygon points="374,108 386,108 380,114" fill="#7aa7d9"></polygon><rect x="70" y="114" width="620" height="46" rx="14" fill="url(#g)" stroke="#7aa7d9" stroke-width="2"></rect><text x="380" y="143" text-anchor="middle" font-size="16" fill="#1f2937">2. 從左到右讀取每個字元</text><line x1="380" y1="160" x2="380" y2="172" stroke="#7aa7d9" stroke-width="2"></line><polygon points="374,172 386,172 380,178" fill="#7aa7d9"></polygon><rect x="70" y="178" width="620" height="46" rx="14" fill="url(#g)" stroke="#7aa7d9" stroke-width="2"></rect><text x="380" y="207" text-anchor="middle" font-size="16" fill="#1f2937">3. 遇到空白就略過</text><line x1="380" y1="224" x2="380" y2="236" stroke="#7aa7d9" stroke-width="2"></line><polygon points="374,236 386,236 380,242" fill="#7aa7d9"></polygon><rect x="70" y="242" width="620" height="46" rx="14" fill="url(#g)" stroke="#7aa7d9" stroke-width="2"></rect><text x="380" y="271" text-anchor="middle" font-size="16" fill="#1f2937">4. 用 isalnum() 判斷是否為運算元</text><line x1="380" y1="288" x2="380" y2="300" stroke="#7aa7d9" stroke-width="2"></line><polygon points="374,300 386,300 380,306" fill="#7aa7d9"></polygon><rect x="70" y="306" width="620" height="46" rx="14" fill="url(#g)" stroke="#7aa7d9" stroke-width="2"></rect><text x="380" y="335" text-anchor="middle" font-size="16" fill="#1f2937">5. 用 isOperator() 判斷是否為運算子</text><line x1="380" y1="352" x2="380" y2="364" stroke="#7aa7d9" stroke-width="2"></line><polygon points="374,364 386,364 380,370" fill="#7aa7d9"></polygon><rect x="70" y="370" width="620" height="46" rx="14" fill="url(#g)" stroke="#7aa7d9" stroke-width="2"></rect><text x="380" y="399" text-anchor="middle" font-size="16" fill="#1f2937">6. 統計並輸出分析結果</text></svg>
+    <p>流程圖說明：本程式的主要邏輯可以依照下列順序理解：</p>
+    <ol><li>設定一個 expression 字串</li><li>從左到右讀取每個字元</li><li>遇到空白就略過</li><li>用 isalnum() 判斷是否為運算元</li><li>用 isOperator() 判斷是否為運算子</li><li>統計並輸出分析結果</li></ol>
+  </details>
+
+  <details class="details">
+    <summary>五、重要函數與語法說明</summary>
+    <ul><li>isOperator(ch)：自訂函數，用來判斷字元是否為 +、-、*、/、^ 等運算子。</li><li>isalnum(ch)：C 標準函數，用來判斷字元是否為英文字母或數字，本程式用它來判斷 Operand。</li><li>strlen(exp)：取得字串長度，讓 for 迴圈知道要掃描幾個字元。</li><li>printf()：輸出分析結果與統計數量。</li></ul>
+  </details>
+
+  <details class="details" open>
+    <summary>六、整體說明</summary>
+    <p>本題重點是表達式的基本拆解。學生要理解 Operand 與 Operator 的差異，並知道程式可以透過逐字掃描來分析一個 expression 的結構。</p>
+  </details>
+</section>
+</main><div class="footer">Lesson 7 Expressions｜下拉式多 HTML 教學頁｜含圖片、動畫流程圖、中文註解 C 程式範例</div><script src="assets/script.js"></script></body></html>

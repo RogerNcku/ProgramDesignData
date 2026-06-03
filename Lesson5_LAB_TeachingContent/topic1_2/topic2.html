@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="zh-Hant"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/><link href="assets/style.css" rel="stylesheet"/><script src="assets/script.js"></script><title>Lesson 5 主題 2：Array 限制與 List 基本概念</title></head><body>
+<header class="hero"><div class="inner"><span class="badge">Lesson 5｜主題 2｜投影片 2–4</span><h1>主題 2：Array 限制與 List 基本概念</h1><p>說明 Array 大小固定、插入刪除需搬移資料，並導入 List 的動態結構與基本操作。</p><div class="toolbar"><a class="btn secondary" href="../index.html">回 L5 首頁</a><a class="btn secondary" href="topic1.html">上一個：主題 1</a></div></div></header>
+<div class="wrap"><div class="layout"><aside class="sidebar"><div class="side-title">Lesson 5 主題導覽</div><nav class="nav"><a href="../index.html">L5 首頁</a><a href="topic1.html">1. Linked Lists 鏈結串列導論</a>
+<a class="active" href="topic2.html">2. Array 限制與 List 基本概念</a></nav></aside><main>
+<section class="card"><span class="badge">投影片 2–4</span><h2>一、主題核心概念</h2><p>Array 的大小通常在建立時就決定，若要在中間插入或刪除資料，後面的元素常常必須搬移。List 則是一種 dynamic structure，可以隨資料增減改變長度。</p></section>
+<section class="card"><h2>二、投影片逐張下拉式詳細講解</h2><p>每一張投影片都已把圖片與自己的文字講解合併在同一個下拉式區塊中。點開後可以直接對照圖片閱讀說明。</p><div class="slide-detail-list"><details class="slide-detail"><summary>投影片 2｜Array 的限制：插入與刪除成本</summary><div class="slide-detail-body"><div class="slide-detail-grid"><div><img alt="投影片 2：Array 的限制：插入與刪除成本" class="slide-detail-img" src="assets/slide2.jpg"/><div class="figure-caption">投影片 2</div></div><div class="slide-explain"><h3>Array 的限制：插入與刪除成本</h3><h4>詳細說明與講解</h4><p>1、這張投影片說明使用 Array 儲存資料時的主要缺點。Array 的大小在建立時通常已經固定，若資料量超過原本容量，就不能直接增加空間；此外，如果要在中間插入或刪除資料，後面的元素常常都必須搬移。</p><p>2、左邊的插入例子中，若要把新資料 Gina 插入到中間位置，原本在後面的元素必須往後移，才有空位可以放入 Gina。這代表插入不是只放一筆資料，而是可能牽動後面很多筆資料。</p><p>3、右邊的刪除例子中，若刪除中間某筆資料，後面的元素又必須往前補位，否則 Array 中間會留下空洞。這也是為什麼 Array 在中間插入與中間刪除時，時間成本通常是 O(n)。</p><p>4、這張圖是導入 Linked List 的理由：如果資料經常需要插入與刪除，Array 的搬移成本會很高，因此需要一種更彈性的結構，也就是 List 或 Linked List。</p><div class="slide-memory">一句話記憶：Array 查詢快，但中間插入與刪除常常要搬移資料。</div></div></div></div></details><details class="slide-detail"><summary>投影片 3｜List 的基本概念：動態大小與節點結構</summary><div class="slide-detail-body"><div class="slide-detail-grid"><div><img alt="投影片 3：List 的基本概念：動態大小與節點結構" class="slide-detail-img" src="assets/slide3.jpg"/><div class="figure-caption">投影片 3</div></div><div class="slide-explain"><h3>List 的基本概念：動態大小與節點結構</h3><h4>詳細說明與講解</h4><p>1、這張投影片介紹 List 的基本定義。List 是一種 dynamic structure，也就是它的大小可以隨著資料增加或刪除而改變，不像 Array 一開始就固定容量。</p><p>2、投影片中把 List 描述成由 nodes 組成。每個 node 通常包含兩個部分：一個是 data，用來保存真正的資料；另一個是 pointer 或 link，用來指出下一個節點在哪裡。</p><p>3、Head 是非常重要的起點，它指向串列的第一個節點。程式要走訪整個 List 時，通常從 head 開始，沿著每個節點的 next pointer 一直往後走。</p><p>4、最後一個節點的 pointer 通常指向 NIL 或 NULL，表示後面沒有下一個節點。這個 NULL 是走訪串列的停止條件，若忘記判斷 NULL，就可能造成程式錯誤。</p><div class="slide-memory">一句話記憶：List 用 head 找到第一個節點，再靠 pointer 一路走到 NULL。</div></div></div></div></details><details class="slide-detail"><summary>投影片 4｜List 的操作與應用</summary><div class="slide-detail-body"><div class="slide-detail-grid"><div><img alt="投影片 4：List 的操作與應用" class="slide-detail-img" src="assets/slide4.jpg"/><div class="figure-caption">投影片 4</div></div><div class="slide-explain"><h3>List 的操作與應用</h3><h4>詳細說明與講解</h4><p>1、這張投影片整理 List 常見操作，包括 Add、Insert、Delete、Search 等。Add 通常是把新節點加到串列尾端；Insert 是插入到指定位置；Delete 是刪除某個節點；Search 是沿著串列尋找指定資料。</p><p>2、投影片中特別提到 Insert 和 Delete 時，指標的順序很重要。插入節點不是移動資料，而是改變節點之間的連結；刪除節點也不是把資料往前搬，而是讓前一個節點跳過目標節點。</p><p>3、下方圖示中的 free space 與 file 可以幫助理解 List 的用途。List 常被用來管理資料集合、記憶體空間、檔案區塊或其他需要動態增減的項目。</p><p>4、學習這張時要記得：List 的優點不是所有操作都比 Array 快，而是在資料需要頻繁插入、刪除或大小不固定時更彈性。</p><div class="slide-memory">一句話記憶：List 操作的本質是改 pointer，不是搬資料。</div></div></div></div></details></div></section>
+<section class="card"><h2>三、動畫流程圖：Array 限制與 List 基本概念</h2><div class="flow-area" id="flow2"><div class="flow"><div class="node">固定容量</div><div class="node">插入要搬移</div><div class="node">刪除要補位</div><div class="node">改用 Node</div><div class="node">Head 指向開頭</div><div class="node">基本操作</div></div><div class="progress"><div class="bar"></div></div><div class="stepbox"></div><div class="btns" style="margin-top:12px"><button class="btn secondary" onclick="prevFlow('flow2')">上一步</button><button class="btn" onclick="nextFlow('flow2')">下一步</button><button class="btn orange" onclick="playFlow('flow2')">自動播放</button><button class="btn secondary" onclick="resetFlow('flow2')">重新開始</button></div></div><script>initFlow('flow2',['Array size is fixed，容量不足時無法直接放入更多資料。','若在中間插入新元素，後面資料通常要往後搬。','若刪除中間元素，後面資料通常要往前補位。','List 改用節點保存資料，不要求連續空間。','Head pointer 記住第一個節點，最後一個節點指向 NULL。','常見操作包含 add、append、insert、delete、search。']);</script></section>
+<section class="card"><h2>四、動畫表格：步驟與重點整理</h2><p>請按「下一步」或「自動播放」觀察本主題的操作流程與注意事項。</p><div class="flow-area" id="table2"><div class="anim-table-wrap"><table class="anim-table"><thead><tr><th>List 操作</th><th>目的</th><th>做法</th><th>重點</th></tr></thead><tbody><tr><td>Add / Append</td><td>加入新節點</td><td>通常加在尾端</td><td>需找到尾節點或維護 tail</td></tr><tr><td>Insert</td><td>插入到指定位置</td><td>改變前後連結</td><td>要小心 pointer 順序</td></tr><tr><td>Delete</td><td>刪除指定資料</td><td>讓前一節點跳過目標</td><td>單向串列需知道前一個節點</td></tr><tr><td>Search</td><td>尋找資料</td><td>從 head 開始逐一比較</td><td>時間通常是 O(n)</td></tr><tr><td>Traversal</td><td>走訪全部節點</td><td>一路跟著 link 前進</td><td>遇到 NULL 停止</td></tr></tbody></table></div><div class="progress"><div class="bar"></div></div><div class="table-note"></div><div class="btns" style="margin-top:12px"><button class="btn secondary" onclick="prevTable('table2')">上一步</button><button class="btn" onclick="nextTable('table2')">下一步</button><button class="btn orange" onclick="playTable('table2')">自動播放</button><button class="btn secondary" onclick="resetTable('table2')">重新開始</button></div></div><script>initTable('table2',['Add / Append → 加入新節點 → 通常加在尾端 → 需找到尾節點或維護 tail','Insert → 插入到指定位置 → 改變前後連結 → 要小心 pointer 順序','Delete → 刪除指定資料 → 讓前一節點跳過目標 → 單向串列需知道前一個節點','Search → 尋找資料 → 從 head 開始逐一比較 → 時間通常是 O(n)','Traversal → 走訪全部節點 → 一路跟著 link 前進 → 遇到 NULL 停止']);</script></section>
+<details open=""><summary>五、完整中文講解</summary><div class="content"><h3>（一）本主題要學會什麼？</h3><p>Array 的大小通常在建立時就決定，若要在中間插入或刪除資料，後面的元素常常必須搬移。List 則是一種 dynamic structure，可以隨資料增減改變長度。</p><h3>（二）實作時最重要的觀念</h3><div class="grid2"><div class="mini"><b>資料結構</b><br/>先看清楚資料是用 Array、Node、Singly List、Circular List 或 Doubly List 表示。</div><div class="mini"><b>指標方向</b><br/>Linked List 題目幾乎都在考指標怎麼接、怎麼斷、怎麼重新連起來。</div><div class="mini"><b>特殊情況</b><br/>空串列、頭節點、尾節點、找不到資料，都是程式容易錯的地方。</div><div class="mini"><b>測試方式</b><br/>每做完 insert/delete，都用 print 檢查目前串列是否符合預期。</div></div><div class="example">List 的優勢不是每一種操作都比較快，而是面對插入、刪除與動態長度時更彈性。考題常會要求比較 Array 與 Linked List 的時間與空間特性。</div></div></details>
+<details open=""><summary>六、可編輯 C 程式範例：含中文註解與線上編輯器</summary><div class="content"><div class="codewrap"><div class="codebar"><span>array_vs_list.c</span><div class="btns"><button class="btn green" onclick="copyCode('code2')">複製程式</button><button class="btn orange" onclick="downloadCode('code2','array_vs_list.c')">下載 .c</button><a class="btn secondary" href="https://www.onlinegdb.com/online_c_compiler" target="_blank">OnlineGDB</a><a class="btn secondary" href="https://www.programiz.com/c-programming/online-compiler/" target="_blank">Programiz</a><a class="btn secondary" href="https://onecompiler.com/c" target="_blank">OneCompiler</a></div></div><textarea class="codearea" id="code2" spellcheck="false">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+/*
+    Lesson 5：Linked List 基本節點示範
+    功能：建立三個節點，並用 next pointer 串成一條 linked list。
+*/
+
+typedef struct Node {
+    int data;              // data：節點中保存的資料
+    struct Node *next;     // next：指向下一個節點的指標
+} Node;
+
+Node* createNode(int value) {
+    Node *newNode = (Node*)malloc(sizeof(Node));
+    if (newNode == NULL) {
+        printf("記憶體配置失敗\n");
+        exit(1);
+    }
+    newNode-&gt;data = value; // 設定資料
+    newNode-&gt;next = NULL;  // 一開始還沒有接到下一個節點
+    return newNode;
+}
+
+void printList(Node *head) {
+    Node *current = head;  // 從 head 開始走訪
+    while (current != NULL) {
+        printf("%d -&gt; ", current-&gt;data);
+        current = current-&gt;next;
+    }
+    printf("NULL\n");
+}
+
+int main(void) {
+    Node *head = createNode(10);
+    head-&gt;next = createNode(20);
+    head-&gt;next-&gt;next = createNode(30);
+
+    printf("Linked List 內容：");
+    printList(head);
+    return 0;
+}
+</textarea></div></div></details>
+
+<section class="card program-teaching-card">
+<h2>新增：程式題目教學內容（依指定格式）</h2>
+<div class="content">
+<h3>一、程式題目講解</h3>
+<p>本題用 Linked List 程式對照 Array 的限制，讓學生了解資料不一定要放在連續位置，也可以透過節點與指標動態連接。核心概念是動態配置節點、用 next 串接資料，以及走訪串列輸出內容。</p>
+<h3>二、完整程式碼</h3>
+<p>以下為本頁程式題目的完整可執行 C 程式碼，已在重要程式區塊加入中文註解，方便初學者理解程式功能與流程。</p>
+<pre class="codearea" style="height:auto;min-height:0;white-space:pre-wrap;overflow:auto;">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+/*
+    Lesson 5：Linked List 基本節點示範
+    功能：建立三個節點，並用 next pointer 串成一條 linked list。
+*/
+
+typedef struct Node {
+    int data;              // data：節點中保存的資料
+    struct Node *next;     // next：指向下一個節點的指標
+} Node;
+
+Node* createNode(int value) {
+    Node *newNode = (Node*)malloc(sizeof(Node));
+    if (newNode == NULL) {
+        printf(&quot;記憶體配置失敗\n&quot;);
+        exit(1);
+    }
+    newNode-&gt;data = value; // 設定資料
+    newNode-&gt;next = NULL;  // 一開始還沒有接到下一個節點
+    return newNode;
+}
+
+void printList(Node *head) {
+    Node *current = head;  // 從 head 開始走訪
+    while (current != NULL) {
+        printf(&quot;%d -&gt; &quot;, current-&gt;data);
+        current = current-&gt;next;
+    }
+    printf(&quot;NULL\n&quot;);
+}
+
+int main(void) {
+    Node *head = createNode(10);
+    head-&gt;next = createNode(20);
+    head-&gt;next-&gt;next = createNode(30);
+
+    printf(&quot;Linked List 內容：&quot;);
+    printList(head);
+    return 0;
+}
+</pre>
+<h3>三、程式執行結果</h3>
+<p>程式執行後會得到以下輸出：</p>
+<pre class="codearea" style="height:auto;min-height:0;white-space:pre-wrap;overflow:auto;">Linked List 內容：10 -&gt; 20 -&gt; 30 -&gt; NULL</pre>
+<p>程式建立三個節點 10、20、30，再用 next 指標把節點接成一條串列。因為 printList 會從第一個節點一路走到 NULL，所以輸出結果會依照連接順序顯示 10、20、30。</p>
+<h3>四、程式流程圖與流程圖說明</h3>
+<p>本題流程圖如下，呈現程式的主要執行順序、判斷條件與資料處理流程。</p>
+<div class="program-flow-figure"><img alt="主題 2 程式流程圖" class="program-flow-img" src="assets/program_flow_topic2.svg"/><div class="figure-caption">主題 2：Array 限制與 List 基本概念：程式流程圖</div></div>
+<p>流程先建立 head 節點，再建立第二與第三個節點並接到前一個節點的 next。輸出時從 head 開始，每次印出目前節點資料後往 next 移動，直到沒有下一個節點為止。</p>
+<h3>五、重要函數與語法說明</h3>
+<ol><li>struct Node：表示一個串列節點。</li><li>Node *next：保存下一個節點的位置。</li><li>malloc：動態產生節點，避免像 Array 一樣需要固定大小。</li><li>createNode：封裝節點建立流程，讓 main 更清楚。</li><li>printList：示範 Linked List 的基本走訪。</li></ol>
+<h3>六、整體說明</h3>
+<p>本題讓學生看到 Linked List 的資料連接方式。Array 偏向用索引找位置，Linked List 則是用指標找下一個節點；這也是後面學插入與刪除時最重要的基礎。</p>
+</div>
+</section>
+<section class="card program-flow-card">
+<h2>七、程式流程圖：Array 與 Linked List 操作比較</h2>
+<p>下圖是本主題對應的程式執行流程，適合搭配下方 C 程式碼一起看。</p>
+<div class="program-flow-figure"><img alt="主題 2 程式流程圖" class="program-flow-img" src="assets/program_flow_topic2.svg"/><div class="figure-caption">主題 2 程式流程圖：Array 與 Linked List 操作比較</div></div>
+<div class="flow-explain"><h3>流程講解</h3><ol><li>程式先準備一組資料，作為 Array 與 Linked List 的共同測試資料。</li><li>若使用 Array，在中間插入或刪除時，後方元素通常要依序搬移。</li><li>若使用 Linked List，重點不是搬移資料，而是找到節點並改變 next 指標。</li><li>流程圖刻意把兩條路徑分開，幫助理解兩種資料結構的成本差異。</li><li>最後輸出目前資料順序，檢查插入或刪除是否正確。</li></ol><p>這張流程圖把本頁程式的執行順序整理成一條清楚路徑。閱讀時先看資料如何被建立，再看條件判斷與指標如何改變，最後用輸出結果確認程式邏輯是否正確。</p></div>
+</section>
+</main></div></div><footer class="footer">Lesson 5｜主題 2：Array 限制與 List 基本概念</footer></body></html>

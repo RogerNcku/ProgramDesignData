@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+
+<html lang="zh-Hant"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/><title>Lesson 6 Topic 14</title><link href="assets/style.css" rel="stylesheet"/><script src="assets/script.js"></script>
+<style>
+.slide-dropdown-section{margin-top:22px}.slide-dropdown-section>.note{margin-bottom:14px}.slide-explain-item{border:1px solid rgba(100,116,139,.28);border-radius:16px;margin:14px 0;background:rgba(255,255,255,.86);overflow:hidden}.slide-explain-item>summary{cursor:pointer;font-weight:700;padding:16px 18px;line-height:1.5;background:linear-gradient(90deg,rgba(241,245,249,.95),rgba(255,255,255,.88));list-style:none}.slide-explain-item>summary::-webkit-details-marker{display:none}.slide-explain-item>summary:before{content:'▸';display:inline-block;margin-right:8px;transition:transform .2s}.slide-explain-item[open]>summary:before{transform:rotate(90deg)}.slide-explain-body{display:grid;grid-template-columns:minmax(280px,46%) 1fr;gap:22px;padding:18px}.slide-explain-media{align-self:start}.slide-explain-img{width:100%;height:auto;border-radius:14px;box-shadow:0 10px 28px rgba(15,23,42,.18);background:white}.slide-explain-text h3{font-size:1.04rem;margin:0.9rem 0 .35rem}.slide-explain-text h3:first-child{margin-top:0}.slide-explain-text p,.slide-explain-text li{line-height:1.85}.slide-explain-text ul{margin-top:.2rem;padding-left:1.4rem}.memory-box{margin-top:14px;padding:12px 14px;border-left:5px solid #f59e0b;background:#fff7ed;border-radius:10px;line-height:1.75;font-weight:600}@media(max-width:820px){.slide-explain-body{grid-template-columns:1fr}.slide-explain-item>summary{padding:14px}.slide-explain-body{padding:14px}}
+</style>
+</head><body><section class="hero"><h1>主題 14：Forests 森林</h1><p>頁碼：49。Forest 是由 0 個或多個互不相交的 trees 組成。投影片也說明如何把森林轉成二元樹：使用 left-child right-sibling representation。</p><div class="nav"><a class="btn" href="../index.html">回 L6 首頁</a><a class="btn" href="topic13.html">上一主題</a><a class="btn" href="topic15.html">下一主題</a></div></section><main class="wrap">
+<section class="card slide-dropdown-section"><h2>投影片逐張下拉式詳細講解</h2><p class="note">每一張投影片都把圖片與自己的中文講解放在同一個下拉式區塊中，打開後可以直接對照圖與文字。</p><details class="slide-explain-item"><summary>投影片 49：Forests 與 Left-Child Right-Sibling</summary><div class="slide-explain-body"><div class="slide-explain-media"><img alt="Slide 49：Forests 與 left-child right-sibling" class="slide-explain-img" src="assets/slide49.jpg"/><div class="figure-caption">Slide 49：Forests 與 left-child right-sibling</div></div><div class="slide-explain-text"><h3>（一）這張投影片在說什麼？</h3><p>這張投影片介紹 forest。Forest 是多棵互不相交的 trees 的集合；一般樹移除 root 後可以得到 forest，而 forest 也可加上 pseudo root 變成一棵樹。</p><h3>（二）核心觀念</h3><ul><li>Forest 是 0 棵或多棵 disjoint trees。</li><li>Tree 去掉 root 後，子樹集合就是 forest。</li><li>Forest 可透過 pseudo root 轉成 tree。</li><li>再用 left-child right-sibling 表示，可轉成 binary tree。</li></ul><h3>（三）學習與考試重點</h3><p>Forest 與 tree 可以互相轉換，這讓我們能用二元樹表示法處理更一般的多樹結構。</p><div class="memory-box">一句話記憶：Forest 是很多棵樹；加一個假 root 就能變一棵樹。</div></div></div></details></section>
+<section class="card"><h2>森林轉二元樹流程圖</h2><div class="flow"><div class="node">多棵樹</div><div class="arrow">→</div><div class="node">每個節點保留 first child</div><div class="arrow">→</div><div class="node">兄弟節點用 right sibling 串起來</div><div class="arrow">→</div><div class="node">形成 binary-tree-like structure</div></div>
+<svg class="mini-svg" viewbox="0 0 760 230"><defs><marker id="arr" markerheight="10" markerwidth="10" orient="auto" refx="9" refy="3"><path d="M0,0 L0,6 L9,3 z" fill="#7a5cff"></path></marker></defs><text font-size="18" font-weight="700" x="80" y="28">Forest</text><circle cx="90" cy="70" fill="#fff" r="22" stroke="#00a88f" stroke-width="3"></circle><text x="82" y="77">A</text><circle cx="45" cy="140" fill="#fff" r="22" stroke="#00a88f" stroke-width="3"></circle><text x="37" y="147">B</text><circle cx="90" cy="140" fill="#fff" r="22" stroke="#00a88f" stroke-width="3"></circle><text x="82" y="147">C</text><circle cx="135" cy="140" fill="#fff" r="22" stroke="#00a88f" stroke-width="3"></circle><text x="127" y="147">D</text><line stroke="#607d8b" stroke-width="3" x1="80" x2="50" y1="90" y2="122"></line><line stroke="#607d8b" stroke-width="3" x1="90" x2="90" y1="94" y2="118"></line><line stroke="#607d8b" stroke-width="3" x1="102" x2="130" y1="90" y2="122"></line><circle cx="240" cy="70" fill="#fff" r="22" stroke="#00a88f" stroke-width="3"></circle><text x="232" y="77">E</text><circle cx="240" cy="140" fill="#fff" r="22" stroke="#00a88f" stroke-width="3"></circle><text x="232" y="147">F</text><line stroke="#607d8b" stroke-width="3" x1="240" x2="240" y1="92" y2="118"></line><path d="M315 110 L405 110" marker-end="url(#arr)" stroke="#7a5cff" stroke-width="5"></path><text font-size="18" font-weight="700" x="500" y="28">Left-child right-sibling</text><circle cx="500" cy="70" fill="#fff" r="22" stroke="#7a5cff" stroke-width="3"></circle><text x="492" y="77">A</text><circle cx="455" cy="140" fill="#fff" r="22" stroke="#7a5cff" stroke-width="3"></circle><text x="447" y="147">B</text><circle cx="525" cy="140" fill="#fff" r="22" stroke="#7a5cff" stroke-width="3"></circle><text x="517" y="147">C</text><circle cx="595" cy="140" fill="#fff" r="22" stroke="#7a5cff" stroke-width="3"></circle><text x="587" y="147">D</text><circle cx="665" cy="70" fill="#fff" r="22" stroke="#7a5cff" stroke-width="3"></circle><text x="657" y="77">E</text><circle cx="665" cy="140" fill="#fff" r="22" stroke="#7a5cff" stroke-width="3"></circle><text x="657" y="147">F</text><line stroke="#607d8b" stroke-width="3" x1="488" x2="463" y1="90" y2="122"></line><line stroke="#607d8b" stroke-width="3" x1="477" x2="503" y1="140" y2="140"></line><line stroke="#607d8b" stroke-width="3" x1="547" x2="573" y1="140" y2="140"></line><line stroke="#607d8b" stroke-width="3" x1="522" x2="643" y1="70" y2="70"></line><line stroke="#607d8b" stroke-width="3" x1="665" x2="665" y1="92" y2="118"></line></svg></section>
+<section class="accordion"><details open=""><summary>一、Forest 的定義</summary><div><p>Forest 是一組互不相交的 trees。若一棵 tree 移除 root，root 底下的每一棵 subtree 就會形成一個 forest。因此 tree 和 forest 可以互相轉換。</p></div></details><details><summary>二、為什麼森林可以轉成二元樹？</summary><div><p>一般樹的每個節點可能有很多 children，不容易用固定欄位表示。left-child right-sibling 的想法是：每個節點只需要兩個指標，一個指向最左邊的 child，另一個指向右邊最近的 sibling。這樣就能用二元樹節點形式表示一般樹或森林。</p></div></details><details><summary>三、轉換規則</summary><div><p>第一個 child 放在 leftChild；同一層的其他 sibling 依序用 rightSibling 串起來。若有多棵樹，第一棵樹的 root 與第二棵樹的 root 也可以用 rightSibling 串接。</p></div></details></section>
+<section class="card"><h2>C 程式碼：Forest 的 Left-Child Right-Sibling 表示</h2><p><a class="btn primary" download="" href="forest_lcrs_demo.c">下載 .c 檔</a> <button class="btn" onclick="copyCode('code14')">複製程式碼</button></p><pre class="codebox"><code id="code14">/*
+  中文註解版程式：forest_lcrs_demo.c
+  說明：主題 14：Forest 的 Left-Child Right-Sibling 表示法。將多棵一般樹串成可用二元指標處理的結構。
+  閱讀方式：先看資料結構定義，再看操作函式，最後看 main() 如何測試。
+*/
+
+// 匯入標準輸入輸出函式庫，提供 printf / scanf 等功能。
+#include &lt;stdio.h&gt;
+// 匯入標準函式庫，提供 malloc / free / exit 等記憶體與程式控制功能。
+#include &lt;stdlib.h&gt;
+
+// 定義節點結構：資料欄位存節點內容，指標欄位負責連到其他節點。
+typedef struct Node {
+    char data;
+    struct Node *leftChild;     // first child
+    struct Node *rightSibling;  // next sibling
+} Node;
+
+// 建立新節點：配置記憶體、填入資料，並把左右指標初始化為 NULL。
+Node* createNode(char data) {
+    Node* node = (Node*)malloc(sizeof(Node));
+    node-&gt;data = data;
+    node-&gt;leftChild = NULL;
+    node-&gt;rightSibling = NULL;
+    return node;
+}
+
+// LCRS 的 preorder：先拜訪目前節點，再走 leftChild，最後走 rightSibling。
+void preorderLCRS(Node* root) {
+    if (root == NULL) return;  // 遞迴終止條件：空節點不需要處理
+    printf("%c ", root-&gt;data);  // 拜訪目前節點並輸出資料
+    preorderLCRS(root-&gt;leftChild);
+    preorderLCRS(root-&gt;rightSibling);
+}
+
+// 主程式：建立測試資料，呼叫上方函式，觀察輸出結果。
+int main() {
+    Node *A = createNode('A');
+    Node *B = createNode('B');
+    Node *C = createNode('C');
+    Node *D = createNode('D');
+    Node *E = createNode('E');
+    Node *F = createNode('F');
+    Node *G = createNode('G');
+    Node *H = createNode('H');
+    Node *I = createNode('I');
+
+    // Forest: A has children B,C,D; E has child F; G has children H,I
+    // Convert to left-child right-sibling form.
+    A-&gt;leftChild = B;  B-&gt;rightSibling = C;  C-&gt;rightSibling = D;
+    A-&gt;rightSibling = E;
+    E-&gt;leftChild = F;
+    E-&gt;rightSibling = G;
+    G-&gt;leftChild = H;  H-&gt;rightSibling = I;
+
+    printf("Preorder of forest in LCRS form: ");
+    preorderLCRS(A);
+    printf("\n");
+    return 0;
+}
+</code></pre></section>
+<details class="lab7-code-section" open=""><summary>可編輯 C 程式範例：含中文註解與線上編輯器</summary><div class="content detail-body"><p>這一段提供可直接修改的 C 程式碼。可以按「複製程式」貼到線上編輯器執行，也可以下載 .c 檔案。</p><div class="codewrap"><div class="codebar"><span>forest_lcrs_demo.c</span><div class="btns"><button class="btn green" onclick="copyCode('code14')">複製程式</button><button class="btn orange" onclick="downloadCode('code14','forest_lcrs_demo.c')">下載 .c</button><a class="btn secondary" href="https://www.onlinegdb.com/online_c_compiler" target="_blank">OnlineGDB</a><a class="btn secondary" href="https://www.programiz.com/c-programming/online-compiler/" target="_blank">Programiz</a><a class="btn secondary" href="https://onecompiler.com/c" target="_blank">OneCompiler</a></div></div><textarea class="codearea" id="code14" spellcheck="false">/*
+  中文註解版程式：forest_lcrs_demo.c
+  說明：主題 14：Forest 的 Left-Child Right-Sibling 表示法。將多棵一般樹串成可用二元指標處理的結構。
+  閱讀方式：先看資料結構定義，再看操作函式，最後看 main() 如何測試。
+*/
+
+// 匯入標準輸入輸出函式庫，提供 printf / scanf 等功能。
+#include &lt;stdio.h&gt;
+// 匯入標準函式庫，提供 malloc / free / exit 等記憶體與程式控制功能。
+#include &lt;stdlib.h&gt;
+
+// 定義節點結構：資料欄位存節點內容，指標欄位負責連到其他節點。
+typedef struct Node {
+    char data;
+    struct Node *leftChild;     // first child
+    struct Node *rightSibling;  // next sibling
+} Node;
+
+// 建立新節點：配置記憶體、填入資料，並把左右指標初始化為 NULL。
+Node* createNode(char data) {
+    Node* node = (Node*)malloc(sizeof(Node));
+    node-&gt;data = data;
+    node-&gt;leftChild = NULL;
+    node-&gt;rightSibling = NULL;
+    return node;
+}
+
+// LCRS 的 preorder：先拜訪目前節點，再走 leftChild，最後走 rightSibling。
+void preorderLCRS(Node* root) {
+    if (root == NULL) return;  // 遞迴終止條件：空節點不需要處理
+    printf("%c ", root-&gt;data);  // 拜訪目前節點並輸出資料
+    preorderLCRS(root-&gt;leftChild);
+    preorderLCRS(root-&gt;rightSibling);
+}
+
+// 主程式：建立測試資料，呼叫上方函式，觀察輸出結果。
+int main() {
+    Node *A = createNode('A');
+    Node *B = createNode('B');
+    Node *C = createNode('C');
+    Node *D = createNode('D');
+    Node *E = createNode('E');
+    Node *F = createNode('F');
+    Node *G = createNode('G');
+    Node *H = createNode('H');
+    Node *I = createNode('I');
+
+    // Forest: A has children B,C,D; E has child F; G has children H,I
+    // Convert to left-child right-sibling form.
+    A-&gt;leftChild = B;  B-&gt;rightSibling = C;  C-&gt;rightSibling = D;
+    A-&gt;rightSibling = E;
+    E-&gt;leftChild = F;
+    E-&gt;rightSibling = G;
+    G-&gt;leftChild = H;  H-&gt;rightSibling = I;
+
+    printf("Preorder of forest in LCRS form: ");
+    preorderLCRS(A);
+    printf("\n");
+    return 0;
+}
+</textarea></div></div></details>
+<details class="lab7-teaching-content" open=""><summary>程式題目教學內容：Forest 的 Left-Child Right-Sibling 表示</summary><div class="content detail-body">
+<h3>一、程式題目講解</h3>
+<p>本題示範如何把森林或一般樹用 Left-Child Right-Sibling 形式表示。學生需要理解 forest 可以轉成類似二元樹的指標結構。</p>
+<h3>二、完整程式碼</h3>
+<p>完整可執行程式碼已保留在上方「可編輯 C 程式範例：含中文註解與線上編輯器」區塊中，檔名為 <code>forest_lcrs_demo.c</code>。該程式碼已加入中文註解，學生可以直接複製到 OnlineGDB、Programiz 或 OneCompiler 執行。</p>
+<h3>三、程式執行結果</h3>
+<pre><code>Preorder of forest in LCRS form: A B C D E F G H I </code></pre>
+<p>Preorder 輸出 A B C D E F G H I，代表程式依照 LCRS 連結順序走訪整個森林；leftChild 代表進入子樹，rightSibling 代表移到下一棵同層節點或下一棵樹。</p>
+<h3>四、程式流程圖與流程圖說明</h3>
+<p>本頁下方已保留原本的程式流程圖。閱讀流程圖時，可以依序掌握「初始化資料或節點 → 執行主要函式或判斷 → 輸出結果」的過程。先建立多個節點並設定 leftChild 與 rightSibling，再從森林第一棵樹的 root 開始 preorder。每拜訪一個節點後，先走 leftChild，再走 rightSibling。</p>
+<h3>五、重要函數與語法說明</h3>
+<p>createNode()：建立森林節點；preorderForest()：走訪 LCRS 結構；leftChild：連到第一個孩子；rightSibling：連到下一個兄弟或下一棵樹。</p>
+<h3>六、整體說明</h3>
+<p>本題重點是森林不一定需要每個節點存很多孩子指標，只要用 leftChild 與 rightSibling 就能表示多分支結構。</p>
+</div></details>
+
+<section class="card program-flow-card">
+<h2>程式流程圖：Forest 轉換流程</h2>
+<p>下圖是本主題對應的程式執行流程，適合搭配本頁 C 程式碼一起看。</p>
+<div class="program-flow-figure"><img alt="主題 14 程式流程圖" class="program-flow-img" src="assets/program_flow_topic14.svg"/><div class="figure-caption">主題 14 程式流程圖：Forest 轉換流程</div></div>
+<div class="flow-explain"><h3>流程講解</h3><ol><li>Forest 是多棵互不相交的樹。</li><li>程式可先想像加入一個 pseudo root，把多棵樹接成一棵。</li><li>接著用 left-child right-sibling 規則轉換。</li><li>最後移除 pseudo root，就得到 forest 對應的 binary tree 表示。</li></ol><p>這張流程圖把本頁程式的執行順序整理成一條清楚路徑。閱讀時先看輸入與資料如何建立，再看條件判斷、指標或陣列索引如何改變，最後用輸出結果確認程式邏輯是否正確。</p></div>
+</section>
+</main></body></html>

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+
+<html lang="zh-Hant"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/><title>Lesson 6 Topic 15</title><link href="assets/style.css" rel="stylesheet"/><script src="assets/script.js"></script>
+<style>
+.slide-dropdown-section{margin-top:22px}.slide-dropdown-section>.note{margin-bottom:14px}.slide-explain-item{border:1px solid rgba(100,116,139,.28);border-radius:16px;margin:14px 0;background:rgba(255,255,255,.86);overflow:hidden}.slide-explain-item>summary{cursor:pointer;font-weight:700;padding:16px 18px;line-height:1.5;background:linear-gradient(90deg,rgba(241,245,249,.95),rgba(255,255,255,.88));list-style:none}.slide-explain-item>summary::-webkit-details-marker{display:none}.slide-explain-item>summary:before{content:'▸';display:inline-block;margin-right:8px;transition:transform .2s}.slide-explain-item[open]>summary:before{transform:rotate(90deg)}.slide-explain-body{display:grid;grid-template-columns:minmax(280px,46%) 1fr;gap:22px;padding:18px}.slide-explain-media{align-self:start}.slide-explain-img{width:100%;height:auto;border-radius:14px;box-shadow:0 10px 28px rgba(15,23,42,.18);background:white}.slide-explain-text h3{font-size:1.04rem;margin:0.9rem 0 .35rem}.slide-explain-text h3:first-child{margin-top:0}.slide-explain-text p,.slide-explain-text li{line-height:1.85}.slide-explain-text ul{margin-top:.2rem;padding-left:1.4rem}.memory-box{margin-top:14px;padding:12px 14px;border-left:5px solid #f59e0b;background:#fff7ed;border-radius:10px;line-height:1.75;font-weight:600}@media(max-width:820px){.slide-explain-body{grid-template-columns:1fr}.slide-explain-item>summary{padding:14px}.slide-explain-body{padding:14px}}
+</style>
+</head><body><section class="hero"><h1>主題 15：Tree Traversal in C：節點建立</h1><p>頁碼：50。這一頁開始用 C 語言實作 binary tree，重點是 Node 結構、left/right 指標，以及 createNode() 如何配置記憶體。</p><div class="nav"><a class="btn" href="../index.html">回 L6 首頁</a><a class="btn" href="topic14.html">上一主題</a><a class="btn" href="topic16.html">下一主題</a></div></section><main class="wrap">
+<section class="card slide-dropdown-section"><h2>投影片逐張下拉式詳細講解</h2><p class="note">每一張投影片都把圖片與自己的中文講解放在同一個下拉式區塊中，打開後可以直接對照圖與文字。</p><details class="slide-explain-item"><summary>投影片 50：Tree Traversal in C：節點建立</summary><div class="slide-explain-body"><div class="slide-explain-media"><img alt="Slide 50：Tree Traversal in C 節點建立" class="slide-explain-img" src="assets/slide50.jpg"/><div class="figure-caption">Slide 50：Tree Traversal in C 節點建立</div></div><div class="slide-explain-text"><h3>（一）這張投影片在說什麼？</h3><p>這張投影片進入 C 程式實作，說明如何建立樹節點。通常會定義 struct node，內含 data、left、right，並用函式配置記憶體與初始化欄位。</p><h3>（二）核心觀念</h3><ul><li>struct node 保存資料與左右指標。</li><li>建立節點時需要 malloc。</li><li>left 與 right 初始通常設為 NULL。</li><li>回傳新節點指標給呼叫端使用。</li></ul><h3>（三）學習與考試重點</h3><p>建立節點時一定要初始化左右指標，否則 traversal 時可能走到未定義位址。</p><div class="memory-box">一句話記憶：C 裡建立 tree node：配置、填資料、左右設 NULL。</div></div></div></details></section>
+<section class="card"><h2>Node 結構觀念圖</h2><div class="flow"><div class="node">data</div><div class="arrow">＋</div><div class="node">left pointer</div><div class="arrow">＋</div><div class="node">right pointer</div><div class="arrow">→</div><div class="node">一個 Tree Node</div></div><div class="tree-demo"><div class="level"><div class="tree-node hot">A</div></div><div class="level"><div class="tree-node">B</div><div class="tree-node">C</div></div></div><p class="note">C 語言沒有內建 tree，所以必須用 struct 自己定義節點，再用指標把節點串成樹。</p></section>
+<section class="accordion"><details open=""><summary>一、struct Node 是什麼？</summary><div><p>struct Node 是用來描述「一個樹節點」的資料型態。每個節點至少包含資料欄位 data，以及兩個指標欄位 left、right。left 指向左子節點，right 指向右子節點。</p></div></details><details><summary>二、為什麼 left 和 right 要寫成 struct Node*？</summary><div><p>因為 left 和 right 不是存放子節點的資料，而是存放「子節點的位置」。在 C 語言中，位置通常用 pointer 表示，所以 left 與 right 的型態會是 struct Node*。</p></div></details><details><summary>三、createNode() 在做什麼？</summary><div><p>createNode() 會用 malloc 配置一塊記憶體，建立一個新的節點，然後把 data 放進去，再把 left 與 right 設成 NULL。這代表新節點剛建立時還沒有孩子。</p></div></details><details><summary>四、NULL 的意義</summary><div><p>NULL 代表目前沒有指向任何節點。在 tree traversal 中，遇到 NULL 就表示已經走到底，所以遞迴要停止。</p></div></details></section>
+<section class="card"><h2>C 程式碼：Node 與 createNode</h2><p><a class="btn primary" download="" href="tree_traversal_c.c">下載完整 .c 檔</a> <button class="btn" onclick="copyCode('code15')">複製程式碼</button></p><pre class="codebox"><code id="code15">/*
+  中文註解版程式：tree_traversal_c.c
+  說明：主題 15/16：樹節點建立與走訪示範。建立二元樹後輸出 inorder 與 postorder。
+  閱讀方式：先看資料結構定義，再看操作函式，最後看 main() 如何測試。
+*/
+
+// 匯入標準輸入輸出函式庫，提供 printf / scanf 等功能。
+#include &lt;stdio.h&gt;
+// 匯入標準函式庫，提供 malloc / free / exit 等記憶體與程式控制功能。
+#include &lt;stdlib.h&gt;
+
+// 定義節點結構：資料欄位存節點內容，指標欄位負責連到其他節點。
+typedef struct Node {
+    char data;
+    struct Node *left;
+    struct Node *right;
+} Node;
+
+// 建立新節點：配置記憶體、填入資料，並把左右指標初始化為 NULL。
+Node* createNode(char data) {
+    Node* newNode = (Node*)malloc(sizeof(Node));
+    newNode-&gt;data = data;
+    newNode-&gt;left = NULL;
+    newNode-&gt;right = NULL;
+    return newNode;
+}
+
+// Inorder 走訪：Left → Visit → Right。
+void inOrder(Node* root) {
+    if (root == NULL) return;  // 遞迴終止條件：空節點不需要處理
+    inOrder(root-&gt;left);
+    printf("%c ", root-&gt;data);  // 拜訪目前節點並輸出資料
+    inOrder(root-&gt;right);
+}
+
+// Postorder 走訪：Left → Right → Visit。
+void postOrder(Node* root) {
+    if (root == NULL) return;  // 遞迴終止條件：空節點不需要處理
+    postOrder(root-&gt;left);
+    postOrder(root-&gt;right);
+    printf("%c ", root-&gt;data);  // 拜訪目前節點並輸出資料
+}
+
+// 主程式：建立測試資料，呼叫上方函式，觀察輸出結果。
+int main() {
+    Node* root = createNode('A');
+    Node* n1 = createNode('B');
+    Node* n2 = createNode('C');
+    Node* n3 = createNode('D');
+    Node* n4 = createNode('E');
+    Node* n5 = createNode('F');
+
+    root-&gt;left = n1;
+    root-&gt;right = n2;
+    n1-&gt;left = n3;
+    n1-&gt;right = n4;
+    n2-&gt;right = n5;
+
+    printf("Inorder traversal: ");
+    inOrder(root);
+    printf("\n");
+
+    printf("Postorder traversal: ");
+    postOrder(root);
+    printf("\n");
+
+    return 0;
+}
+</code></pre></section>
+<details class="lab7-code-section" open=""><summary>可編輯 C 程式範例：含中文註解與線上編輯器</summary><div class="content detail-body"><p>這一段提供可直接修改的 C 程式碼。可以按「複製程式」貼到線上編輯器執行，也可以下載 .c 檔案。</p><div class="codewrap"><div class="codebar"><span>tree_traversal_c.c</span><div class="btns"><button class="btn green" onclick="copyCode('code15')">複製程式</button><button class="btn orange" onclick="downloadCode('code15','tree_traversal_c.c')">下載 .c</button><a class="btn secondary" href="https://www.onlinegdb.com/online_c_compiler" target="_blank">OnlineGDB</a><a class="btn secondary" href="https://www.programiz.com/c-programming/online-compiler/" target="_blank">Programiz</a><a class="btn secondary" href="https://onecompiler.com/c" target="_blank">OneCompiler</a></div></div><textarea class="codearea" id="code15" spellcheck="false">/*
+  中文註解版程式：tree_traversal_c.c
+  說明：主題 15/16：樹節點建立與走訪示範。建立二元樹後輸出 inorder 與 postorder。
+  閱讀方式：先看資料結構定義，再看操作函式，最後看 main() 如何測試。
+*/
+
+// 匯入標準輸入輸出函式庫，提供 printf / scanf 等功能。
+#include &lt;stdio.h&gt;
+// 匯入標準函式庫，提供 malloc / free / exit 等記憶體與程式控制功能。
+#include &lt;stdlib.h&gt;
+
+// 定義節點結構：資料欄位存節點內容，指標欄位負責連到其他節點。
+typedef struct Node {
+    char data;
+    struct Node *left;
+    struct Node *right;
+} Node;
+
+// 建立新節點：配置記憶體、填入資料，並把左右指標初始化為 NULL。
+Node* createNode(char data) {
+    Node* newNode = (Node*)malloc(sizeof(Node));
+    newNode-&gt;data = data;
+    newNode-&gt;left = NULL;
+    newNode-&gt;right = NULL;
+    return newNode;
+}
+
+// Inorder 走訪：Left → Visit → Right。
+void inOrder(Node* root) {
+    if (root == NULL) return;  // 遞迴終止條件：空節點不需要處理
+    inOrder(root-&gt;left);
+    printf("%c ", root-&gt;data);  // 拜訪目前節點並輸出資料
+    inOrder(root-&gt;right);
+}
+
+// Postorder 走訪：Left → Right → Visit。
+void postOrder(Node* root) {
+    if (root == NULL) return;  // 遞迴終止條件：空節點不需要處理
+    postOrder(root-&gt;left);
+    postOrder(root-&gt;right);
+    printf("%c ", root-&gt;data);  // 拜訪目前節點並輸出資料
+}
+
+// 主程式：建立測試資料，呼叫上方函式，觀察輸出結果。
+int main() {
+    Node* root = createNode('A');
+    Node* n1 = createNode('B');
+    Node* n2 = createNode('C');
+    Node* n3 = createNode('D');
+    Node* n4 = createNode('E');
+    Node* n5 = createNode('F');
+
+    root-&gt;left = n1;
+    root-&gt;right = n2;
+    n1-&gt;left = n3;
+    n1-&gt;right = n4;
+    n2-&gt;right = n5;
+
+    printf("Inorder traversal: ");
+    inOrder(root);
+    printf("\n");
+
+    printf("Postorder traversal: ");
+    postOrder(root);
+    printf("\n");
+
+    return 0;
+}
+</textarea></div></div></details>
+<details class="lab7-teaching-content" open=""><summary>程式題目教學內容：Tree Traversal in C：節點建立</summary><div class="content detail-body">
+<h3>一、程式題目講解</h3>
+<p>本題示範二元樹節點的建立與連接，並用走訪函式檢查節點是否正確接成樹。學生需要理解 struct Node、指標與 createNode() 的作用。</p>
+<h3>二、完整程式碼</h3>
+<p>完整可執行程式碼已保留在上方「可編輯 C 程式範例：含中文註解與線上編輯器」區塊中，檔名為 <code>tree_traversal_c.c</code>。該程式碼已加入中文註解，學生可以直接複製到 OnlineGDB、Programiz 或 OneCompiler 執行。</p>
+<h3>三、程式執行結果</h3>
+<pre><code>Inorder traversal: D B E A C F 
+Postorder traversal: D E B F C A </code></pre>
+<p>Inorder 與 Postorder 的輸出顯示樹已成功建立。Inorder 依左、根、右順序拜訪；Postorder 則將 root A 放在最後輸出。</p>
+<h3>四、程式流程圖與流程圖說明</h3>
+<p>本頁下方已保留原本的程式流程圖。閱讀流程圖時，可以依序掌握「初始化資料或節點 → 執行主要函式或判斷 → 輸出結果」的過程。先定義 Node 結構，再用 createNode 建立 A 到 F 節點，接著用 left、right 指標把節點接成樹，最後呼叫走訪函式輸出結果。</p>
+<h3>五、重要函數與語法說明</h3>
+<p>typedef struct Node：定義節點型別；createNode()：配置與初始化節點；malloc()：取得節點記憶體；inOrder() / postOrder()：驗證樹的連接與走訪順序。</p>
+<h3>六、整體說明</h3>
+<p>本題重點是二元樹在 C 語言中通常靠 struct 與指標建立；節點連接正確，走訪輸出才會符合預期。</p>
+</div></details>
+
+<section class="card program-flow-card">
+<h2>程式流程圖：Tree Traversal in C 節點建立流程</h2>
+<p>下圖是本主題對應的程式執行流程，適合搭配本頁 C 程式碼一起看。</p>
+<div class="program-flow-figure"><img alt="主題 15 程式流程圖" class="program-flow-img" src="assets/program_flow_topic15.svg"/><div class="figure-caption">主題 15 程式流程圖：Tree Traversal in C 節點建立流程</div></div>
+<div class="flow-explain"><h3>流程講解</h3><ol><li>C 程式會先定義 TreeNode，包含 data、left、right。</li><li>createNode 負責 malloc 記憶體並初始化欄位。</li><li>left 與 right 一開始設為 NULL，避免野指標。</li><li>main 再利用回傳的指標把節點接成樹。</li></ol><p>這張流程圖把本頁程式的執行順序整理成一條清楚路徑。閱讀時先看輸入與資料如何建立，再看條件判斷、指標或陣列索引如何改變，最後用輸出結果確認程式邏輯是否正確。</p></div>
+</section>
+</main></body></html>

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="zh-Hant"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/><title>Lesson 8 主題十七｜飢餓與死結概念</title><link href="assets/style.css" rel="stylesheet"/>
+<style>
+.program-flow-card{background:#ffffff;border:1px solid #dbeafe;border-radius:20px;padding:22px;margin:24px 0;box-shadow:0 12px 30px rgba(15,23,42,.08)}
+.program-flow-card h2{margin-top:0;color:#0f172a}
+.program-flow-img{width:100%;border-radius:18px;border:1px solid #e2e8f0;background:#f8fafc}
+.flow-explain{line-height:1.9;background:#f8fafc;border-left:6px solid #2563eb;border-radius:14px;padding:16px 18px;white-space:pre-line}
+.code-card{background:#0f172a;color:#e5e7eb;border-radius:20px;padding:0;margin:24px 0;overflow:hidden;box-shadow:0 12px 32px rgba(15,23,42,.20)}
+.code-card .code-head{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between;background:#111827;padding:14px 16px;border-bottom:1px solid #334155}
+.code-card .code-title{font-weight:700;color:#f8fafc}
+.code-card .code-actions{display:flex;gap:8px;flex-wrap:wrap}
+.code-card button,.code-card a{border:0;border-radius:999px;padding:8px 12px;font-weight:700;text-decoration:none;cursor:pointer;background:#2563eb;color:white;font-size:14px}
+.code-card a{background:#475569}
+.code-card button.download-btn{background:#f97316}
+.code-card textarea{width:100%;min-height:380px;box-sizing:border-box;background:#020617;color:#e5e7eb;border:0;padding:18px;font-family:Consolas,'Courier New',monospace;font-size:15px;line-height:1.55;resize:vertical}
+.editor-links{margin-top:12px;line-height:1.8}
+.editor-links a{display:inline-block;margin:4px 8px 4px 0;padding:8px 12px;border-radius:999px;background:#e0f2fe;color:#075985;text-decoration:none;font-weight:700}
+</style>
+<script>
+function copyCode(id){
+  const el=document.getElementById(id);
+  if(!el) return;
+  el.select();
+  document.execCommand('copy');
+  alert('程式碼已複製');
+}
+function downloadCode(id, filename){
+  const el=document.getElementById(id);
+  if(!el) return;
+  const blob=new Blob([el.value], {type:'text/plain;charset=utf-8'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download=filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(()=>URL.revokeObjectURL(a.href), 500);
+}
+</script>
+
+<style id="slide-dropdown-explanation-style">
+.slide-explain-wrapper{margin:20px 0}
+.slide-intro-note{line-height:1.9;background:#eff6ff;border-left:6px solid #2563eb;border-radius:14px;padding:14px 16px;color:#1e3a8a}
+.single-slide-detail{margin:18px 0;border:1px solid #dbeafe;border-radius:18px;background:#ffffff;box-shadow:0 10px 24px rgba(15,23,42,.07);overflow:hidden}
+.single-slide-detail>summary{cursor:pointer;padding:16px 18px;font-weight:800;color:#0f172a;background:linear-gradient(135deg,#eff6ff,#f8fafc);list-style:none}
+.single-slide-detail>summary::-webkit-details-marker{display:none}
+.single-slide-detail>summary::before{content:"＋";display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;margin-right:10px;border-radius:999px;background:#2563eb;color:white;font-weight:900}
+.single-slide-detail[open]>summary::before{content:"－";background:#f97316}
+.slide-explain-grid{display:grid;grid-template-columns:minmax(280px,46%) 1fr;gap:22px;padding:20px;align-items:start}
+.slide-explain-image{background:#f8fafc;border:1px solid #e2e8f0;border-radius:16px;padding:12px}
+.slide-explain-image .slide-img{width:100%;height:auto;border-radius:12px;border:1px solid #e5e7eb;background:white}
+.slide-caption{text-align:center;color:#475569;font-size:14px;margin-top:8px;line-height:1.6}
+.slide-explain-text{line-height:1.9;color:#1f2937}
+.slide-explain-text h3{margin:8px 0 6px;color:#0f172a;font-size:1.05rem}
+.slide-explain-text p{margin:0 0 12px}
+.slide-explain-text ul{margin:0 0 12px 1.2em;padding:0}
+.slide-explain-text li{margin:4px 0}
+.memory-line{background:#fff7ed;border-left:6px solid #f97316;border-radius:12px;padding:10px 12px;color:#7c2d12}
+@media (max-width: 860px){
+  .slide-explain-grid{grid-template-columns:1fr}
+}
+</style>
+
+<style id="teaching-content-style">
+.teaching-content-card{background:#ffffff;border:1px solid #c7d2fe;border-radius:20px;padding:22px;margin:24px 0;box-shadow:0 12px 30px rgba(15,23,42,.08)}
+.teaching-content-card h2{margin-top:0;color:#1e1b4b}
+.teaching-content-card h3{margin-top:18px;color:#0f172a}
+.teaching-content-card p,.teaching-content-card li{line-height:1.9;color:#1f2937}
+.teaching-code-block,.teaching-output-block{white-space:pre-wrap;background:#020617;color:#e5e7eb;border-radius:16px;padding:16px;overflow:auto;font-family:Consolas,'Courier New',monospace;line-height:1.55}
+.teaching-output-block{background:#f8fafc;color:#0f172a;border:1px solid #e2e8f0}
+.teaching-mini-note{background:#eff6ff;border-left:6px solid #2563eb;border-radius:14px;padding:12px 14px;line-height:1.9;color:#1e3a8a}
+</style>
+</head><body>
+<section class="hero"><div class="hero-inner"><span class="badge">主題十七｜投影片 64–66</span><h1>飢餓與死結概念</h1><p>本主題先說明 Starvation，再進入 Deadlock。兩者都和「等待資源」有關，但 Starvation 是長期等不到資源；Deadlock 則是多個 process 彼此卡住、互相等待，導致全部無法繼續。</p><div class="nav"><a class="btn" href="../index.html">回首頁</a><a class="btn" href="topic18.html">下一主題</a></div></div></section>
+<main class="wrap">
+<details class="slide-explain-wrapper" open=""><summary>一、投影片逐張下拉式詳細講解</summary><div class="detail-body"><p class="slide-intro-note">每張投影片都已把「圖片」與「自己的文字講解」放在同一個下拉式區塊中，方便一邊看圖、一邊理解重點。</p><details class="single-slide-detail" open=""><summary>投影片 64｜Starvation</summary><div class="slide-explain-grid"><div class="slide-explain-image"><img alt="投影片64 Starvation" class="slide-img" src="assets/slide64.jpg"/><div class="slide-caption">投影片 64｜Starvation</div></div><div class="slide-explain-text"><h3>（一）這張投影片在說什麼？</h3><p>這張介紹飢餓。當資源總是被其他 process 取得時，某些 process 可能長期等待，雖然系統仍在運作，但該 process 幾乎沒有進展。</p><h3>（二）核心觀念</h3><ul><li>Starvation 常出現在 priority scheduling。</li><li>Aging 可逐漸提高等待太久的 process 優先權。</li></ul><h3>（三）學習與考試重點</h3><p>Starvation 是長期等不到資源，不一定是所有行程都停止。</p><h3>（四）一句話記憶</h3><p class="memory-line">一句話記憶：Starvation 是長期等不到資源，不一定是所有行程都停止。</p></div></div></details><details class="single-slide-detail"><summary>投影片 65｜Deadlocks</summary><div class="slide-explain-grid"><div class="slide-explain-image"><img alt="投影片65 Deadlocks" class="slide-img" src="assets/slide65.jpg"/><div class="slide-caption">投影片 65｜Deadlocks</div></div><div class="slide-explain-text"><h3>（一）這張投影片在說什麼？</h3><p>這張介紹死結。Deadlock 指兩個或多個 process 因為互相等待對方持有的資源而無法繼續前進。與 starvation 不同，deadlock 中相關行程形成互相等待的封閉循環。</p><h3>（二）核心觀念</h3><ul><li>每個 process 都等待其他 process 釋放資源。</li><li>若沒有外力介入，通常無法自行解開。</li></ul><h3>（三）學習與考試重點</h3><p>Deadlock 的關鍵是 circular waiting。</p><h3>（四）一句話記憶</h3><p class="memory-line">一句話記憶：Deadlock 的關鍵是 circular waiting。</p></div></div></details><details class="single-slide-detail"><summary>投影片 66｜Example Deadlock</summary><div class="slide-explain-grid"><div class="slide-explain-image"><img alt="投影片66 Example Deadlock" class="slide-img" src="assets/slide66.jpg"/><div class="slide-caption">投影片 66｜Example Deadlock</div></div><div class="slide-explain-text"><h3>（一）這張投影片在說什麼？</h3><p>這張用列印檔案的例子說明死結。若 process A 持有 file A 並等待 file B，process B 持有 file B 並等待 file A，再加上 printer 等資源競爭，就可能互相卡住。</p><h3>（二）核心觀念</h3><ul><li>每個 process 已持有部分資源。</li><li>又等待別人手上的資源。</li></ul><h3>（三）學習與考試重點</h3><p>用例子理解 deadlock：我等你，你也等我。</p><h3>（四）一句話記憶</h3><p class="memory-line">一句話記憶：用例子理解 deadlock：我等你，你也等我。</p></div></div></details></div></details>
+<details open=""><summary>二、Starvation：飢餓問題</summary><div class="detail-body"><p><span class="pill">核心觀念</span> Starvation 是指某個 process 一直在等待資源，但系統總是把資源分給別人，所以它長時間無法執行。它不一定是死結，因為系統仍然有其他 process 在執行，只是某些 process 被「餓」很久。</p><div class="two-col"><div class="mini-card warning-card"><h4>容易發生的情況</h4><p>當資源有限，而且排程或資源分配偏向某些 process 時，低優先權 process 可能一直拿不到 CPU、檔案、印表機或其他資源。</p></div><div class="mini-card solution-card"><h4>常見改善方法</h4><p>Aging。等待時間越長，process 的優先權逐漸提高，避免它永遠被排在後面。</p></div></div><div class="flowbox" id="flow-starvation"><h3>Starvation 動畫</h3><div class="flow-steps"><div class="flow-step">Process 等待資源</div><div class="flow-step">資源一直分給別人</div><div class="flow-step">使用 Aging 改善</div></div><div class="flow-caption"></div><div class="flow-controls"><button class="btn mini prev">上一步</button><button class="btn mini next">下一步</button><button class="btn mini reset">重新播放</button></div></div></div></details>
+<details open=""><summary>三、Deadlock：死結概念</summary><div class="detail-body"><p><span class="pill">核心觀念</span> Deadlock 是指兩個或多個 process 被永久阻塞，因為每個 process 都在等待其他 process 已經持有的資源。</p><div class="cycle-demo"><h3>互相等待概念圖</h3><div class="cycle-row"><div class="cycle-node">Process A<br/>持有 R1</div><div class="cycle-arrow">→ 等 R2 →</div><div class="cycle-node resource-node">Resource R2<br/>被 B 持有</div><div class="cycle-arrow">→</div><div class="cycle-node">Process B<br/>持有 R2</div><div class="cycle-arrow">→ 等 R1 →</div><div class="cycle-node resource-node">Resource R1<br/>被 A 持有</div></div></div><p class="note">Starvation 像是「我一直排不到」；Deadlock 像是「大家都卡住，因為每個人都在等別人放手」。</p><div class="flowbox" id="flow-deadlock"><h3>Deadlock 形成動畫</h3><div class="flow-steps"><div class="flow-step">A 持有 R1</div><div class="flow-step">B 持有 R2</div><div class="flow-step">A 等 R2，B 等 R1</div></div><div class="flow-caption"></div><div class="flow-controls"><button class="btn mini prev">上一步</button><button class="btn mini next">下一步</button><button class="btn mini reset">重新播放</button></div></div></div></details>
+<details><summary>四、投影片 65 的道路例子</summary><div class="detail-body"><p>投影片用道路與車輛堵住交叉路口來說明 deadlock：每台車都想前進，但前方被其他車占住，因此沒有任何一台車能先移動。</p><div class="deadlock-road"><div class="road-box"><h3>正常情況</h3><div class="road-lane">車輛可以依序通過</div><div class="road-lane">道路仍有出口</div></div><div class="map-arrow">→</div><div class="road-box"><h3>Deadlock 情況</h3><div class="road-lane blocked">每台車都被擋住</div><div class="road-lane blocked">沒有車能先離開</div></div></div></div></details>
+<details><summary>五、投影片 66 的檔案與印表機例子</summary><div class="detail-body"><p>投影片 66 的例子是：Process A 需要印表機、File A、File B；Process B 也需要印表機、File B、File C。當 A 與 B 各自持有部分資源，又等待對方手上的資源時，就會卡住。</p><div class="three-col"><div class="mini-card"><h4>Step 1</h4><p>A 拿到 File A，並要求 File B。</p></div><div class="mini-card"><h4>Step 2</h4><p>B 拿到 File B，並要求 File A 或其他 A 需要的資源。</p></div><div class="mini-card"><h4>Step 3</h4><p>A 與 B 互相等待，形成 deadlock。</p></div></div></div></details>
+<details><summary>六、主題十七重點整理</summary><div class="detail-body"><p>Starvation 是某些 process 長時間等不到資源，但系統仍然可能繼續運作；Deadlock 是多個 process 彼此等待，導致相關 process 都無法往下執行。理解這兩個概念後，後面才能用 Resource-Allocation Graph 判斷系統是否可能出現死結。</p></div></details>
+<details class="program-flow-card" open=""><summary>程式流程圖與流程講解</summary>
+<div class="detail-body">
+<h2>程式流程圖：飢餓與死結概念</h2>
+<img alt="主題 17 程式流程圖" class="program-flow-img" src="assets/program_flow_topic17.svg"/>
+<h3>流程講解</h3>
+<div class="flow-explain">這張流程圖對應本頁「飢餓與死結概念」的 C 程式執行邏輯。
+1、多個行程等待資源。
+2、檢查是否長時間等不到。
+3、若低優先權一直被延後。
+4、產生 starvation。
+5、用 aging 提升優先權。
+學生可以先看流程圖理解整體順序，再對照下方程式中的中文註解，確認每一段程式碼負責哪一個步驟。</div>
+</div>
+</details>
+<details class="program-flow-card" open=""><summary>可編輯 C 程式範例與線上編輯器</summary>
+<div class="detail-body">
+<h2>可編輯 C 程式：飢餓與死結概念</h2>
+<p>這段程式依照上方流程圖設計，包含中文註解，適合貼到線上編輯器直接執行與修改。</p>
+<div class="code-card">
+<div class="code-head">
+<span class="code-title">lesson8_topic17_demo.c</span>
+<div class="code-actions">
+<button onclick="copyCode('code_topic_17')">複製程式</button>
+<button class="download-btn" onclick="downloadCode('code_topic_17','lesson8_topic17_demo.c')">下載 .c</button>
+<a href="https://www.onlinegdb.com/online_c_compiler" target="_blank">OnlineGDB</a>
+<a href="https://www.programiz.com/c-programming/online-compiler/" target="_blank">Programiz</a>
+<a href="https://onecompiler.com/c" target="_blank">OneCompiler</a>
+</div>
+</div>
+<textarea id="code_topic_17" spellcheck="false">#include &lt;stdio.h&gt;
+
+/*
+  主題 17：飢餓 Starvation
+  功能：示範 aging 如何逐步提高等待行程的優先權。
+*/
+
+int main(void) {
+    int priority = 1;   // 數字越大代表越高優先權
+    int waitTime;
+
+    for (waitTime = 1; waitTime &lt;= 5; waitTime++) {
+        printf("等待時間=%d，Priority=%d\n", waitTime, priority);
+        if (waitTime % 2 == 0) {
+            priority++;
+            printf("Aging：等待太久，提升優先權為 %d\n", priority);
+        }
+    }
+    return 0;
+}</textarea>
+</div>
+<div class="editor-links">
+      線上編輯器：
+      <a href="https://www.onlinegdb.com/online_c_compiler" target="_blank">OnlineGDB C Compiler</a>
+<a href="https://www.programiz.com/c-programming/online-compiler/" target="_blank">Programiz C Compiler</a>
+<a href="https://onecompiler.com/c" target="_blank">OneCompiler C</a>
+</div>
+</div>
+</details>
+
+<details class="teaching-content-card" open=""><summary>程式題目完整教學內容</summary>
+<div class="detail-body">
+<h2>程式題目完整教學：飢餓與死結概念</h2>
+<h3>一、程式題目講解</h3>
+<p>用 aging 模擬等待太久的行程逐步提高優先權，避免 starvation。</p>
+<p>核心觀念是 Aging：等待時間越久，低優先權行程會逐步提高優先權，避免永遠等不到 CPU。</p>
+<h3>二、完整程式碼</h3>
+<p>以下程式碼可直接複製到 C 語言線上編譯器執行。程式中已加入中文註解，說明主要變數、判斷流程與輸出目的。</p>
+<pre class="teaching-code-block"><code>#include &lt;stdio.h&gt;
+
+/*
+  主題 17：飢餓 Starvation
+  功能：示範 aging 如何逐步提高等待行程的優先權。
+*/
+
+int main(void) {
+    int priority = 1;   // 數字越大代表越高優先權
+    int waitTime;
+
+    for (waitTime = 1; waitTime &lt;= 5; waitTime++) {
+        printf(&quot;等待時間=%d，Priority=%d\n&quot;, waitTime, priority);
+        if (waitTime % 2 == 0) {
+            priority++;
+            printf(&quot;Aging：等待太久，提升優先權為 %d\n&quot;, priority);
+        }
+    }
+    return 0;
+}</code></pre>
+<h3>三、程式執行結果</h3>
+<pre class="teaching-output-block"><code>等待時間=1，Priority=1
+等待時間=2，Priority=1
+Aging：等待太久，提升優先權為 2
+等待時間=3，Priority=2
+等待時間=4，Priority=2
+Aging：等待太久，提升優先權為 3
+等待時間=5，Priority=3</code></pre>
+<p class="teaching-mini-note">結果說明：核心觀念是 Aging：等待時間越久，低優先權行程會逐步提高優先權，避免永遠等不到 CPU。 程式依照設定的資料與控制流程逐步輸出，因此可以從結果看到每個步驟的執行順序與狀態變化。</p>
+<h3>四、程式流程圖與流程圖說明</h3>
+<p>本頁上方已提供對應的程式流程圖，圖中以「開始、資料設定、條件判斷、重複處理、輸出結果、結束」呈現程式執行順序。</p>
+<p>for 迴圈模擬等待時間 1 到 5，當 waitTime 為偶數時提升 priority，並輸出調整結果。</p>
+<h3>五、重要函數與語法說明</h3>
+<p>waitTime % 2 == 0 判斷等待時間是否為偶數；priority++ 提升優先權；for 迴圈模擬時間推進。</p>
+<h3>六、整體說明</h3>
+<p>本題的學習重點是把作業系統概念轉成可觀察的 C 程式流程。學生應先理解題目概念，再對照程式碼、流程圖與執行結果，掌握變數設定、條件判斷、迴圈處理與輸出結果之間的關係。</p>
+</div>
+</details>
+
+</main><div class="footer">Lesson 8 Topic 17｜Starvation and Deadlocks</div><script src="assets/script.js"></script></body></html>

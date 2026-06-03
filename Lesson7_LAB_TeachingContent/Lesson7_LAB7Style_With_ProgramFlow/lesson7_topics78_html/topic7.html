@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="zh-Hant"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/><link href="assets/style.css" rel="stylesheet"/><script src="assets/script.js"></script><title>主題 7：Evaluation of a Postfix Expression</title>
+<style>
+.slide-dropdown-card{margin-top:18px;}
+.slide-dropdown-card h2{margin-bottom:12px;}
+.slide-detail-block{border:1px solid rgba(120,120,120,.25);border-radius:16px;margin:14px 0;background:rgba(255,255,255,.04);overflow:hidden;}
+.slide-detail-block summary{cursor:pointer;font-weight:700;padding:14px 18px;line-height:1.5;background:rgba(0,0,0,.035);}
+.slide-detail-inner{display:grid;grid-template-columns:minmax(280px,46%) 1fr;gap:18px;align-items:start;padding:18px;}
+.slide-detail-image{width:100%;max-width:100%;border-radius:14px;box-shadow:0 8px 24px rgba(0,0,0,.16);background:#fff;}
+.slide-detail-caption{text-align:center;font-size:.92rem;opacity:.82;margin-top:8px;}
+.slide-detail-text h3{margin-top:0;margin-bottom:10px;}
+.slide-detail-text p{line-height:1.85;margin:.55rem 0;}
+.slide-memory{padding:10px 12px;border-left:4px solid #f59e0b;background:rgba(245,158,11,.10);border-radius:10px;margin-top:10px;}
+@media(max-width:820px){.slide-detail-inner{grid-template-columns:1fr}.slide-detail-block summary{padding:12px 14px}.slide-detail-inner{padding:14px}}
+</style>
+</head><body><header class="hero"><div class="inner"><h1>主題 7：Evaluation of a Postfix Expression</h1><p>包含投影片 12–13｜使用 Stack 計算後序表示式，並用動畫表格一步一步展示 Stack 的變化。</p><div class="toolbar"><a class="btn secondary" href="../index.html">回主頁</a><a class="btn secondary" href="topic7.html">主題 7</a><a class="btn secondary" href="topic8.html">主題 8</a></div></div></header><div class="wrap"><div class="layout"><aside class="sidebar"><div class="side-title">Lesson 7 主題 7–8</div><nav class="nav"><a href="../index.html">主頁</a><a class="active" href="topic7.html">7. Postfix 求值</a><a href="topic8.html">8. Expression Trees</a></nav></aside><main>
+<section class="card"><span class="badge">投影片 12–13</span><h2>七、Evaluation of a Postfix Expression 後序表示式求值</h2><p>Postfix Expression 的特點是運算子出現在運算元之後，所以電腦可以由左到右掃描，並用 Stack 自動完成計算。遇到運算元就 push；遇到運算子就 pop 出需要的運算元進行計算，最後 Stack 只剩一個值，就是答案。</p></section>
+<section class="card slide-dropdown-card"><h2>一、投影片逐張下拉式詳細講解</h2><p>每一張投影片都已和自己的圖片、詳細中文說明、核心觀念、學習重點與一句話記憶整合在同一個下拉式區塊中。</p><details class="slide-detail-block" open=""><summary>投影片 12：後序表示式求值演算法</summary><div class="slide-detail-inner"><figure><img alt="投影片 12：後序表示式求值演算法" class="slide-detail-image slide-img" src="assets/slide12.jpg"/><figcaption class="slide-detail-caption">投影片 12：後序表示式求值演算法</figcaption></figure><div class="slide-detail-text"><h3>Evaluation of a Postfix Expression 後序式求值演算法</h3><p><b>（一）這張投影片在說什麼？</b> 這張投影片說明如何計算 Postfix Expression。因為 operator 已經放在對應 operand 後面，所以可以由左到右掃描，用 Stack 完成計算。</p><p><b>（二）核心觀念</b> 遇到 operand 就 push 進 Stack；遇到 operator 就 pop 出需要的兩個 operand，計算後把結果再 push 回 Stack。最後 Stack 裡剩下的唯一元素就是答案。</p><p><b>（三）為什麼重要？</b> 這是 Postfix 最重要的優勢：不需要括號，也不需要重新判斷優先順序，只要照順序掃描即可。</p><p><b>（四）學習與考試重點</b> 要特別注意 pop 的順序。若遇到減法或除法，先 pop 出來的通常是右運算元，後 pop 出來的是左運算元。</p><div class="slide-memory">一句話記憶：Postfix 求值就是 operand push、operator pop-and-calculate。</div></div></div></details><details class="slide-detail-block"><summary>投影片 13：後序表示式求值表格範例</summary><div class="slide-detail-inner"><figure><img alt="投影片 13：後序表示式求值表格範例" class="slide-detail-image slide-img" src="assets/slide13.jpg"/><figcaption class="slide-detail-caption">投影片 13：後序表示式求值表格範例</figcaption></figure><div class="slide-detail-text"><h3>Postfix 求值 Stack 表格範例</h3><p><b>（一）這張投影片在說什麼？</b> 這張投影片用表格展示 Postfix Expression 的實際求值過程。每一步都列出讀到的符號，以及 Stack 內容如何改變。</p><p><b>（二）核心觀念</b> 當讀到數字或變數值時，Stack 會增加一個元素；當讀到 operator 時，Stack 會先減少兩個元素，再放回一個計算結果。</p><p><b>（三）為什麼重要？</b> 這張表格能幫助你理解 Stack 在運算中的變化，也能檢查自己是否有把 operand 的左右順序弄反。</p><p><b>（四）學習與考試重點</b> 若題目要求算 postfix 的值，請不要先轉回 infix；直接照 Stack 表格做，速度更快也比較不容易錯。</p><div class="slide-memory">一句話記憶：每遇到一個 operator，Stack 會把兩個值合成一個值。</div></div></div></details></section>
+<section class="card"><h2>二、動畫流程圖：Postfix 如何用 Stack 求值？</h2><div class="flow-area" id="flow7"><div class="flow"><div class="node">初始化 Stack</div><div class="node">讀取下一個 X</div><div class="node">Operand → Push</div><div class="node">Operator → Pop</div><div class="node">計算後 Push</div><div class="node">輸出結果</div></div><div class="progress"><div class="bar"></div></div><div class="stepbox"></div><div class="btns" style="margin-top:12px"><button class="btn secondary" onclick="prevFlow('flow7')">上一步</button><button class="btn" onclick="nextFlow('flow7')">下一步</button><button class="btn orange" onclick="playFlow('flow7')">自動播放</button><button class="btn secondary" onclick="resetFlow('flow7')">重新開始</button></div></div><script>initFlow('flow7',['先建立一個空 Stack S。','由左到右讀取 postfix expression 的下一個符號 X。','如果 X 是運算元，例如 6、3、8，就 push 到 Stack。','如果 X 是運算子，例如 +、*、/，就 pop 出兩個運算元。','用 pop 出來的運算元計算，再把計算結果 push 回 Stack。','當 expression 讀完，Stack 最上方的數值就是最後答案。']);</script></section>
+<section class="card"><h2>三、動畫表格：Postfix 求值逐步示範</h2><p>範例採用投影片 13 的形式：<b>633^2*81++//</b>。請按「下一步」或「自動播放」觀察 Stack 變化。</p><div class="flow-area" id="table7"><div class="anim-table-wrap"><table class="anim-table"><thead><tr><th>讀到的符號</th><th>剩餘 Expression</th><th>Stack S</th><th>Comments 說明</th></tr></thead><tbody>
+<tr><td>開始</td><td>633^2*81++//</td><td>Empty</td><td>初始化 Stack。</td></tr>
+<tr><td>6</td><td>33^2*81++//</td><td>6</td><td>6 是運算元，push。</td></tr>
+<tr><td>3</td><td>3^2*81++//</td><td>6, 3</td><td>3 是運算元，push。</td></tr>
+<tr><td>3</td><td>^2*81++//</td><td>6, 3, 3</td><td>3 是運算元，push。</td></tr>
+<tr><td>^</td><td>2*81++//</td><td>6, 27</td><td>pop 3 與 3，計算 3^3 = 27。</td></tr>
+<tr><td>2</td><td>*81++//</td><td>6, 27, 2</td><td>2 是運算元，push。</td></tr>
+<tr><td>*</td><td>81++//</td><td>6, 54</td><td>pop 27 與 2，計算 27*2 = 54。</td></tr>
+<tr><td>8</td><td>1++//</td><td>6, 54, 8</td><td>8 是運算元，push。</td></tr>
+<tr><td>1</td><td>++//</td><td>6, 54, 8, 1</td><td>1 是運算元，push。</td></tr>
+<tr><td>+</td><td>+//</td><td>6, 54, 9</td><td>pop 8 與 1，計算 8+1 = 9。</td></tr>
+<tr><td>+</td><td>//</td><td>6, 63</td><td>pop 54 與 9，計算 54+9 = 63。</td></tr>
+<tr><td>/</td><td>/</td><td>0.095...</td><td>pop 6 與 63，依照程式的二元運算順序計算。</td></tr>
+<tr><td>/</td><td>Empty</td><td>最後結果</td><td>再執行最後一個除法，得到最終結果。</td></tr>
+</tbody></table></div><div class="progress"><div class="bar"></div></div><div class="table-note"></div><div class="btns" style="margin-top:12px"><button class="btn secondary" onclick="prevTable('table7')">上一步</button><button class="btn" onclick="nextTable('table7')">下一步</button><button class="btn orange" onclick="playTable('table7')">自動播放</button><button class="btn secondary" onclick="resetTable('table7')">重新開始</button></div></div><script>initTable('table7',['初始化 Stack。','6 是運算元，push。','3 是運算元，push。','3 是運算元，push。','遇到 ^，pop 3 與 3，計算 3^3。','2 是運算元，push。','遇到 *，計算 27*2。','8 是運算元，push。','1 是運算元，push。','遇到 +，計算 8+1。','遇到 +，計算 54+9。','遇到 /，依照 pop 順序做除法。','讀完 expression，Stack 中留下最後答案。']);</script></section>
+<details open=""><summary>四、完整中文講解</summary><div class="content"><h3>（一）Postfix 求值的核心</h3><p>後序表示式的最大優點是不用括號，也不用再判斷運算優先順序。因為運算子已經被放在正確的位置，所以只要由左到右掃描即可。</p><h3>（二）Stack 的運作方式</h3><div class="grid2"><div class="mini"><b>遇到運算元</b><br/>直接 push 到 Stack，等待之後的運算子使用。</div><div class="mini"><b>遇到運算子</b><br/>從 Stack pop 出兩個值，進行運算。</div><div class="mini"><b>運算後</b><br/>把計算結果再 push 回 Stack，讓後續運算使用。</div><div class="mini"><b>結束時</b><br/>Stack 中最後留下的值，就是整個 expression 的答案。</div></div><div class="example"><b>簡單範例：</b><br/>Postfix：<code>23+</code><br/>讀 2 → push 2<br/>讀 3 → push 3<br/>讀 + → pop 2 和 3，計算 2 + 3 = 5<br/>答案：5</div><h3>（三）注意左運算元與右運算元</h3><p>遇到二元運算子時，先 pop 出來的是右運算元，後 pop 出來的是左運算元。例如 Stack 中有 6、3，遇到 / 時，應該是 6 / 3，而不是 3 / 6。</p></div></details>
+<details open=""><summary>五、可編輯 C 程式範例：Postfix Expression 求值</summary><div class="content"><div class="codewrap"><div class="codebar"><span>postfix_evaluation.c</span><div class="btns"><button class="btn green" onclick="copyCode('code7')">複製程式</button><button class="btn orange" onclick="downloadCode('code7','postfix_evaluation.c')">下載 .c</button><a class="btn secondary" href="https://www.onlinegdb.com/online_c_compiler" target="_blank">OnlineGDB</a><a class="btn secondary" href="https://www.programiz.com/c-programming/online-compiler/" target="_blank">Programiz</a><a class="btn secondary" href="https://onecompiler.com/c" target="_blank">OneCompiler</a></div></div><textarea class="codearea" id="code7" spellcheck="false">#include &lt;stdio.h&gt;
+#include &lt;ctype.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+
+/*
+    主題 7：Evaluation of a Postfix Expression
+    功能：使用 Stack 計算後序表示式（Postfix Expression）
+
+    後序表示式規則：
+    1. 遇到運算元 operand：push 到 stack
+    2. 遇到運算子 operator：pop 出右運算元與左運算元
+    3. 計算後，把結果 push 回 stack
+    4. 表達式讀完後，stack 最上方就是最後答案
+
+    範例：633^2*81++//
+    意思相當於：6 / ((3^3 * 2) / (8 + 1))
+*/
+
+#define MAX 200
+
+double stack[MAX];
+int top = -1;
+
+void push(double value) {
+    if (top &gt;= MAX - 1) {
+        printf("Stack 已滿，無法 push。\n");
+        exit(1);
+    }
+    stack[++top] = value;
+}
+
+double pop(void) {
+    if (top &lt; 0) {
+        printf("Stack 為空，無法 pop。請檢查 postfix 是否正確。\n");
+        exit(1);
+    }
+    return stack[top--];
+}
+
+void printStack(void) {
+    int i;
+    printf("Stack：");
+    if (top &lt; 0) {
+        printf("Empty");
+    } else {
+        for (i = 0; i &lt;= top; i++) {
+            printf("%.2f ", stack[i]);
+        }
+    }
+    printf("\n");
+}
+
+int isOperator(char ch) {
+    return ch == '+' || ch == '-' || ch == '*' || ch == '/' || ch == '^';
+}
+
+double power(double base, double exp) {
+    double result = 1;
+    int i;
+    for (i = 0; i &lt; (int)exp; i++) {
+        result *= base;
+    }
+    return result;
+}
+
+double calculate(double left, double right, char op) {
+    switch (op) {
+        case '+': return left + right;
+        case '-': return left - right;
+        case '*': return left * right;
+        case '/': return left / right;
+        case '^': return power(left, right);
+        default:
+            printf("未知運算子：%c\n", op);
+            exit(1);
+    }
+}
+
+int main(void) {
+    char postfix[MAX];
+    int i;
+
+    printf("請輸入後序表示式，例如 633^2*81++//：");
+    scanf("%199s", postfix);
+
+    printf("\n開始計算 Postfix Expression：%s\n", postfix);
+    printf("----------------------------------------\n");
+
+    for (i = 0; postfix[i] != '\0'; i++) {
+        char x = postfix[i];
+
+        if (isdigit(x)) {
+            /* 字元數字轉成真正數值，例如 '6' - '0' = 6 */
+            double value = x - '0';
+            printf("讀到 %c：這是運算元，push %.2f\n", x, value);
+            push(value);
+            printStack();
+        }
+        else if (isOperator(x)) {
+            /* 注意：先 pop 出來的是右運算元，後 pop 出來的是左運算元 */
+            double right = pop();
+            double left = pop();
+            double result = calculate(left, right, x);
+
+            printf("讀到 %c：這是運算子，pop %.2f 和 %.2f，計算 %.2f %c %.2f = %.2f\n",
+                   x, right, left, left, x, right, result);
+
+            push(result);
+            printStack();
+        }
+        else {
+            printf("忽略無效字元：%c\n", x);
+        }
+
+        printf("----------------------------------------\n");
+    }
+
+    if (top == 0) {
+        printf("最後答案 = %.2f\n", pop());
+    } else {
+        printf("Postfix 格式可能不正確，Stack 中還有多個值。\n");
+    }
+
+    return 0;
+}
+</textarea></div></div></details>
+
+<section class="card program-teaching-card" id="program-teaching-content" style="margin-top:18px;">
+  <h2>程式題目教學內容</h2>
+
+  <details class="details" open>
+    <summary>一、程式題目講解</summary>
+    <p>這個程式示範如何使用 Stack 計算後序表示式。學生需要理解 Postfix 不需要括號，只要從左到右讀取，遇到運算元 push，遇到運算子就 pop 兩個數字來計算。</p>
+  </details>
+
+  <details class="details">
+    <summary>二、完整程式碼</summary>
+    <p>以下保留本頁原本的完整 C 程式碼，並搭配中文註解說明主要功能與流程。</p>
+    <pre class="codebox" style="white-space:pre-wrap;overflow:auto;max-height:520px;"><code>#include &lt;stdio.h&gt;
+#include &lt;ctype.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+
+/*
+    主題 7：Evaluation of a Postfix Expression
+    功能：使用 Stack 計算後序表示式（Postfix Expression）
+
+    後序表示式規則：
+    1. 遇到運算元 operand：push 到 stack
+    2. 遇到運算子 operator：pop 出右運算元與左運算元
+    3. 計算後，把結果 push 回 stack
+    4. 表達式讀完後，stack 最上方就是最後答案
+
+    範例：633^2*81++//
+    意思相當於：6 / ((3^3 * 2) / (8 + 1))
+*/
+
+#define MAX 200
+
+double stack[MAX];
+int top = -1;
+
+void push(double value) {
+    if (top &gt;= MAX - 1) {
+        printf(&quot;Stack 已滿，無法 push。\n&quot;);
+        exit(1);
+    }
+    stack[++top] = value;
+}
+
+double pop(void) {
+    if (top &lt; 0) {
+        printf(&quot;Stack 為空，無法 pop。請檢查 postfix 是否正確。\n&quot;);
+        exit(1);
+    }
+    return stack[top--];
+}
+
+void printStack(void) {
+    int i;
+    printf(&quot;Stack：&quot;);
+    if (top &lt; 0) {
+        printf(&quot;Empty&quot;);
+    } else {
+        for (i = 0; i &lt;= top; i++) {
+            printf(&quot;%.2f &quot;, stack[i]);
+        }
+    }
+    printf(&quot;\n&quot;);
+}
+
+int isOperator(char ch) {
+    return ch == &#x27;+&#x27; || ch == &#x27;-&#x27; || ch == &#x27;*&#x27; || ch == &#x27;/&#x27; || ch == &#x27;^&#x27;;
+}
+
+double power(double base, double exp) {
+    double result = 1;
+    int i;
+    for (i = 0; i &lt; (int)exp; i++) {
+        result *= base;
+    }
+    return result;
+}
+
+double calculate(double left, double right, char op) {
+    switch (op) {
+        case &#x27;+&#x27;: return left + right;
+        case &#x27;-&#x27;: return left - right;
+        case &#x27;*&#x27;: return left * right;
+        case &#x27;/&#x27;: return left / right;
+        case &#x27;^&#x27;: return power(left, right);
+        default:
+            printf(&quot;未知運算子：%c\n&quot;, op);
+            exit(1);
+    }
+}
+
+int main(void) {
+    char postfix[MAX];
+    int i;
+
+    printf(&quot;請輸入後序表示式，例如 633^2*81++//：&quot;);
+    scanf(&quot;%199s&quot;, postfix);
+
+    printf(&quot;\n開始計算 Postfix Expression：%s\n&quot;, postfix);
+    printf(&quot;----------------------------------------\n&quot;);
+
+    for (i = 0; postfix[i] != &#x27;\0&#x27;; i++) {
+        char x = postfix[i];
+
+        if (isdigit(x)) {
+            /* 字元數字轉成真正數值，例如 &#x27;6&#x27; - &#x27;0&#x27; = 6 */
+            double value = x - &#x27;0&#x27;;
+            printf(&quot;讀到 %c：這是運算元，push %.2f\n&quot;, x, value);
+            push(value);
+            printStack();
+        }
+        else if (isOperator(x)) {
+            /* 注意：先 pop 出來的是右運算元，後 pop 出來的是左運算元 */
+            double right = pop();
+            double left = pop();
+            double result = calculate(left, right, x);
+
+            printf(&quot;讀到 %c：這是運算子，pop %.2f 和 %.2f，計算 %.2f %c %.2f = %.2f\n&quot;,
+                   x, right, left, left, x, right, result);
+
+            push(result);
+            printStack();
+        }
+        else {
+            printf(&quot;忽略無效字元：%c\n&quot;, x);
+        }
+
+        printf(&quot;----------------------------------------\n&quot;);
+    }
+
+    if (top == 0) {
+        printf(&quot;最後答案 = %.2f\n&quot;, pop());
+    } else {
+        printf(&quot;Postfix 格式可能不正確，Stack 中還有多個值。\n&quot;);
+    }
+
+    return 0;
+}
+</code></pre>
+  </details>
+
+  <details class="details" open>
+    <summary>三、程式執行結果</summary>
+    <p><strong>範例輸入：23+</strong></p>
+    <pre class="codebox" style="white-space:pre-wrap;overflow:auto;max-height:420px;"><code>請輸入後序表示式，例如 633^2*81++//：
+開始計算 Postfix Expression：23+
+----------------------------------------
+讀到 2：這是運算元，push 2.00
+Stack：2.00 
+----------------------------------------
+讀到 3：這是運算元，push 3.00
+Stack：2.00 3.00 
+----------------------------------------
+讀到 +：這是運算子，pop 3.00 和 2.00，計算 2.00 + 3.00 = 5.00
+Stack：5.00 
+----------------------------------------
+最後答案 = 5.00</code></pre>
+    <p>程式先把 2 push 到 Stack，再把 3 push 到 Stack。讀到 + 時，pop 出 3 與 2，計算 2+3=5，再把 5 push 回 Stack。最後 Stack 中唯一的值就是答案 5。</p>
+  </details>
+
+  <details class="details">
+    <summary>四、程式流程圖與流程圖說明</summary>
+    <svg class="teaching-flow-svg" viewBox="0 0 760 474" role="img" aria-label="Evaluation of a Postfix Expression 流程圖" style="width:100%;max-width:820px;height:auto;display:block;margin:12px auto;"><defs><linearGradient id="g" x1="0" x2="1"><stop offset="0%" stop-color="#eef6ff"/><stop offset="100%" stop-color="#ffffff"/></linearGradient></defs><rect x="70" y="50" width="620" height="46" rx="14" fill="url(#g)" stroke="#7aa7d9" stroke-width="2"></rect><text x="380" y="79" text-anchor="middle" font-size="16" fill="#1f2937">1. 輸入 Postfix expression</text><line x1="380" y1="96" x2="380" y2="108" stroke="#7aa7d9" stroke-width="2"></line><polygon points="374,108 386,108 380,114" fill="#7aa7d9"></polygon><rect x="70" y="114" width="620" height="46" rx="14" fill="url(#g)" stroke="#7aa7d9" stroke-width="2"></rect><text x="380" y="143" text-anchor="middle" font-size="16" fill="#1f2937">2. 從左到右讀取每個字元</text><line x1="380" y1="160" x2="380" y2="172" stroke="#7aa7d9" stroke-width="2"></line><polygon points="374,172 386,172 380,178" fill="#7aa7d9"></polygon><rect x="70" y="178" width="620" height="46" rx="14" fill="url(#g)" stroke="#7aa7d9" stroke-width="2"></rect><text x="380" y="207" text-anchor="middle" font-size="16" fill="#1f2937">3. 遇到數字就 push 到 Stack</text><line x1="380" y1="224" x2="380" y2="236" stroke="#7aa7d9" stroke-width="2"></line><polygon points="374,236 386,236 380,242" fill="#7aa7d9"></polygon><rect x="70" y="242" width="620" height="46" rx="14" fill="url(#g)" stroke="#7aa7d9" stroke-width="2"></rect><text x="380" y="271" text-anchor="middle" font-size="16" fill="#1f2937">4. 遇到運算子就 pop 右運算元與左運算元</text><line x1="380" y1="288" x2="380" y2="300" stroke="#7aa7d9" stroke-width="2"></line><polygon points="374,300 386,300 380,306" fill="#7aa7d9"></polygon><rect x="70" y="306" width="620" height="46" rx="14" fill="url(#g)" stroke="#7aa7d9" stroke-width="2"></rect><text x="380" y="335" text-anchor="middle" font-size="16" fill="#1f2937">5. 完成運算後把結果 push 回 Stack</text><line x1="380" y1="352" x2="380" y2="364" stroke="#7aa7d9" stroke-width="2"></line><polygon points="374,364 386,364 380,370" fill="#7aa7d9"></polygon><rect x="70" y="370" width="620" height="46" rx="14" fill="url(#g)" stroke="#7aa7d9" stroke-width="2"></rect><text x="380" y="399" text-anchor="middle" font-size="16" fill="#1f2937">6. 讀完後 Stack 最上方就是答案</text></svg>
+    <p>流程圖說明：本程式的主要邏輯可以依照下列順序理解：</p>
+    <ol><li>輸入 Postfix expression</li><li>從左到右讀取每個字元</li><li>遇到數字就 push 到 Stack</li><li>遇到運算子就 pop 右運算元與左運算元</li><li>完成運算後把結果 push 回 Stack</li><li>讀完後 Stack 最上方就是答案</li></ol>
+  </details>
+
+  <details class="details">
+    <summary>五、重要函數與語法說明</summary>
+    <ul><li>push(value)：把數值放到 Stack 頂端。</li><li>pop()：取出 Stack 頂端數值，供運算使用。</li><li>printStack()：顯示目前 Stack 狀態。</li><li>isOperator(ch)：判斷字元是否為運算子。</li><li>pow(a,b)：計算次方運算。</li></ul>
+  </details>
+
+  <details class="details" open>
+    <summary>六、整體說明</summary>
+    <p>本題重點是 Postfix 求值規則。只要掌握「運算元 push、運算子 pop 兩個再計算」，就能理解後序表示式為何適合電腦處理。</p>
+  </details>
+</section>
+</main></div></div><footer class="footer">Lesson 7｜主題 7：Evaluation of a Postfix Expression</footer></body></html>

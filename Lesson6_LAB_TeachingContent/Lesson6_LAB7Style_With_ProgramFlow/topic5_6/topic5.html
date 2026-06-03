@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+
+<html lang="zh-Hant"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/><title>主題五 Binary Tree Traversals</title><link href="assets/style.css" rel="stylesheet"/><script src="assets/script.js"></script>
+<style>
+.slide-dropdown-section{margin-top:22px}.slide-dropdown-section>.note{margin-bottom:14px}.slide-explain-item{border:1px solid rgba(100,116,139,.28);border-radius:16px;margin:14px 0;background:rgba(255,255,255,.86);overflow:hidden}.slide-explain-item>summary{cursor:pointer;font-weight:700;padding:16px 18px;line-height:1.5;background:linear-gradient(90deg,rgba(241,245,249,.95),rgba(255,255,255,.88));list-style:none}.slide-explain-item>summary::-webkit-details-marker{display:none}.slide-explain-item>summary:before{content:'▸';display:inline-block;margin-right:8px;transition:transform .2s}.slide-explain-item[open]>summary:before{transform:rotate(90deg)}.slide-explain-body{display:grid;grid-template-columns:minmax(280px,46%) 1fr;gap:22px;padding:18px}.slide-explain-media{align-self:start}.slide-explain-img{width:100%;height:auto;border-radius:14px;box-shadow:0 10px 28px rgba(15,23,42,.18);background:white}.slide-explain-text h3{font-size:1.04rem;margin:0.9rem 0 .35rem}.slide-explain-text h3:first-child{margin-top:0}.slide-explain-text p,.slide-explain-text li{line-height:1.85}.slide-explain-text ul{margin-top:.2rem;padding-left:1.4rem}.memory-box{margin-top:14px;padding:12px 14px;border-left:5px solid #f59e0b;background:#fff7ed;border-radius:10px;line-height:1.75;font-weight:600}@media(max-width:820px){.slide-explain-body{grid-template-columns:1fr}.slide-explain-item>summary{padding:14px}.slide-explain-body{padding:14px}}
+</style>
+</head><body><section class="hero"><div class="hero-inner"><span class="badge">主題五｜投影片 16–21</span><h1>Binary Tree Traversals 二元樹走訪</h1><p>Tree traversal 是把樹中的每個節點剛好拜訪一次，並轉成一串線性順序。核心是 inorder、preorder、postorder 三種遞迴走訪。</p><div class="nav"><a class="btn" href="../index.html">回 L6 首頁</a><a class="btn" href="topic6.html">下一章：Binary Search Trees</a><a class="btn" href="binary_tree_traversal.c">下載本章 C 程式</a></div></div></section><main class="wrap"><section class="card slide-dropdown-section"><h2>投影片逐張下拉式詳細講解</h2><p class="note">每一張投影片都把圖片與自己的中文講解放在同一個下拉式區塊中，打開後可以直接對照圖與文字。</p><details class="slide-explain-item"><summary>投影片 16：Inorder Traversal 中序走訪</summary><div class="slide-explain-body"><div class="slide-explain-media"><img alt="投影片 16：Inorder traversal" class="slide-explain-img" src="assets/slide16.jpg"/><div class="figure-caption">投影片 16：Inorder traversal</div></div><div class="slide-explain-text"><h3>（一）這張投影片在說什麼？</h3><p>這張投影片介紹 inorder traversal，順序是 Left、Visit、Right，也就是先走左子樹，再拜訪目前節點，最後走右子樹。</p><h3>（二）核心觀念</h3><ul><li>走訪順序：LVR。</li><li>對 BST 做 inorder 會得到由小到大的順序。</li><li>演算法通常以遞迴實作。</li><li>遇到 NULL 時停止該分支。</li></ul><h3>（三）學習與考試重點</h3><p>Inorder 最常與 BST 排序性質一起考：左小、根中、右大，所以輸出會是排序後結果。</p><div class="memory-box">一句話記憶：Inorder：左、根、右。</div></div></div></details><details class="slide-explain-item"><summary>投影片 17：Preorder Traversal 前序走訪</summary><div class="slide-explain-body"><div class="slide-explain-media"><img alt="投影片 17：Preorder traversal" class="slide-explain-img" src="assets/slide17.jpg"/><div class="figure-caption">投影片 17：Preorder traversal</div></div><div class="slide-explain-text"><h3>（一）這張投影片在說什麼？</h3><p>這張投影片介紹 preorder traversal，順序是 Visit、Left、Right，也就是先拜訪目前節點，再走左子樹與右子樹。</p><h3>（二）核心觀念</h3><ul><li>走訪順序：VLR。</li><li>第一個輸出的通常是 root。</li><li>常用於複製樹、輸出 prefix expression。</li><li>仍然可以用遞迴寫得很簡潔。</li></ul><h3>（三）學習與考試重點</h3><p>判斷 preorder 時先看 root，因為 preorder 一開始一定先拜訪目前子樹的根節點。</p><div class="memory-box">一句話記憶：Preorder：根、左、右。</div></div></div></details><details class="slide-explain-item"><summary>投影片 18：Postorder Traversal 後序走訪</summary><div class="slide-explain-body"><div class="slide-explain-media"><img alt="投影片 18：Postorder traversal" class="slide-explain-img" src="assets/slide18.jpg"/><div class="figure-caption">投影片 18：Postorder traversal</div></div><div class="slide-explain-text"><h3>（一）這張投影片在說什麼？</h3><p>這張投影片介紹 postorder traversal，順序是 Left、Right、Visit，也就是先處理左右子樹，最後才拜訪目前節點。</p><h3>（二）核心觀念</h3><ul><li>走訪順序：LRV。</li><li>root 通常最後輸出。</li><li>常用於刪除整棵樹或計算 expression tree。</li><li>因為要先處理子節點，所以很適合自底向上計算。</li></ul><h3>（三）學習與考試重點</h3><p>Postorder 的特徵是 parent 在 children 之後才被處理，這點在釋放記憶體時非常重要。</p><div class="memory-box">一句話記憶：Postorder：左、右、根。</div></div></div></details><details class="slide-explain-item"><summary>投影片 19：Traversal 程式範例</summary><div class="slide-explain-body"><div class="slide-explain-media"><img alt="投影片 19：Traversal 程式範例" class="slide-explain-img" src="assets/slide19.jpg"/><div class="figure-caption">投影片 19：Traversal 程式範例</div></div><div class="slide-explain-text"><h3>（一）這張投影片在說什麼？</h3><p>這張投影片把 traversal 轉成程式。核心寫法是：如果節點不是 NULL，就依照走訪順序呼叫左子樹、拜訪節點、呼叫右子樹。</p><h3>（二）核心觀念</h3><ul><li>遞迴的終止條件通常是 current == NULL。</li><li>不同 traversal 的差別只在 Visit 放的位置。</li><li>Inorder 是左遞迴、Visit、右遞迴。</li><li>程式結構反映 tree 的 recursive definition。</li></ul><h3>（三）學習與考試重點</h3><p>不要把三種走訪寫成完全不同的邏輯；它們其實只差 Visit 的時機。</p><div class="memory-box">一句話記憶：Visit 放中間是 inorder，放前面是 preorder，放後面是 postorder。</div></div></div></details><details class="slide-explain-item"><summary>投影片 20：Preorder / Postorder 程式</summary><div class="slide-explain-body"><div class="slide-explain-media"><img alt="投影片 20：Preorder / Postorder 程式" class="slide-explain-img" src="assets/slide20.jpg"/><div class="figure-caption">投影片 20：Preorder / Postorder 程式</div></div><div class="slide-explain-text"><h3>（一）這張投影片在說什麼？</h3><p>這張投影片呈現 preorder 與 postorder 的程式版本。Preorder 先輸出目前節點，postorder 則在左右子樹都走完後才輸出目前節點。</p><h3>（二）核心觀念</h3><ul><li>Preorder：先 Visit，再走 left、right。</li><li>Postorder：先走 left、right，再 Visit。</li><li>三種 traversal 都需要 NULL 判斷。</li><li>程式可以用同樣的 node 結構實作。</li></ul><h3>（三）學習與考試重點</h3><p>練習時可以用同一棵小樹手算輸出，確認程式和圖形走訪順序一致。</p><div class="memory-box">一句話記憶：程式差異只看 cout 或 Visit 放在哪裡。</div></div></div></details><details class="slide-explain-item"><summary>投影片 21：Traversal 執行結果</summary><div class="slide-explain-body"><div class="slide-explain-media"><img alt="投影片 21：執行結果" class="slide-explain-img" src="assets/slide21.jpg"/><div class="figure-caption">投影片 21：執行結果</div></div><div class="slide-explain-text"><h3>（一）這張投影片在說什麼？</h3><p>這張投影片展示 traversal 程式執行後的輸出結果，讓你對照同一棵樹在 inorder、preorder、postorder 下會有不同線性序列。</p><h3>（二）核心觀念</h3><ul><li>同一棵樹可以產生不同走訪序列。</li><li>輸出結果反映拜訪節點的順序。</li><li>走訪會把非線性的樹轉成線性的節點序列。</li><li>手算時要嚴格依照 L、V、R 的位置。</li></ul><h3>（三）學習與考試重點</h3><p>考試若給你樹圖，要求輸出 traversal 結果，請不要憑直覺，要按規則一步一步走。</p><div class="memory-box">一句話記憶：Traversal 就是把樹「走成一串」。</div></div></div></details></section><details open=""><summary>一、什麼是 Binary Tree Traversal？</summary><div class="detail-body"><p><span class="pill">核心概念</span></p><p>二元樹不是一條直線，所以要列印所有節點時，必須決定先拜訪左邊、目前節點，還是右邊。Traversal 就是規定一套順序，讓每個節點都被拜訪一次。</p><div class="concept-map"><div class="concept">Tree 結構<span>上下層與左右子樹</span></div><div class="arrow">→</div><div class="concept">Traversal 規則<span>決定拜訪順序</span></div><div class="arrow">→</div><div class="concept">Linear order<span>輸出一串結果</span></div></div><p class="note">記憶方式：三種走訪都處理 Left、Visit、Right，只是 Visit root 的位置不同。</p></div></details><details open=""><summary>二、三種走訪規則：LVR、VLR、LRV</summary><div class="detail-body"><div class="compare"><div class="box"><h3>Inorder：L V R</h3><p>先走左子樹，再拜訪目前節點，最後走右子樹。若是 BST，inorder 會得到由小到大的排序結果。</p></div><div class="box"><h3>Preorder：V L R</h3><p>先拜訪目前節點，再走左子樹與右子樹。常用於複製樹或儲存樹的結構。</p></div><div class="box"><h3>Postorder：L R V</h3><p>先走左子樹，再走右子樹，最後拜訪目前節點。常用於刪除樹，因為要先處理孩子再處理父節點。</p></div><div class="box"><h3>觀念重點</h3><p>不是只看單一節點，而是對每一棵子樹都套用同一個規則，因此 traversal 很適合用遞迴寫。</p></div></div></div></details><details open=""><summary>三、互動動畫：看同一棵樹的三種走訪順序</summary><div class="detail-body"><div class="tree-demo"><svg class="tree-svg" viewbox="0 0 620 300"><line x1="310" x2="190" y1="50" y2="125"></line><line x1="310" x2="430" y1="50" y2="125"></line><line x1="190" x2="110" y1="125" y2="210"></line><line x1="190" x2="270" y1="125" y2="210"></line><line x1="430" x2="510" y1="125" y2="210"></line><circle cx="310" cy="50" id="svgA" r="28"></circle><text text-anchor="middle" x="310" y="57">A</text><circle cx="190" cy="125" id="svgB" r="28"></circle><text text-anchor="middle" x="190" y="132">B</text><circle cx="430" cy="125" id="svgC" r="28"></circle><text text-anchor="middle" x="430" y="132">C</text><circle cx="110" cy="210" id="svgD" r="28"></circle><text text-anchor="middle" x="110" y="217">D</text><circle cx="270" cy="210" id="svgE" r="28"></circle><text text-anchor="middle" x="270" y="217">E</text><circle cx="510" cy="210" id="svgF" r="28"></circle><text text-anchor="middle" x="510" y="217">F</text></svg><div class="traversal-controls"><button class="btn mini primary" onclick="runTraversal('inorder')">播放 Inorder</button><button class="btn mini primary" onclick="runTraversal('preorder')">播放 Preorder</button><button class="btn mini primary" onclick="runTraversal('postorder')">播放 Postorder</button><button class="btn mini" onclick="clearTraversal()">清除</button></div><div class="output" id="travOutput"></div></div></div></details><details open=""><summary>四、流程圖：遞迴走訪怎麼運作？</summary><div class="detail-body"><div class="flowbox" data-flow="trav"><div class="flow-steps"><div class="flow-step" data-caption="先判斷 current node 是否為 NULL。若是 NULL，代表這條路走完了，直接 return。">檢查 NULL</div><div class="flow-step" data-caption="依照走訪種類決定 Visit 放在哪裡：Inorder 放中間、Preorder 放前面、Postorder 放最後。">決定 Visit 位置</div><div class="flow-step" data-caption="對 left child 呼叫同一個 traversal 函式，這就是遞迴。">遞迴左子樹</div><div class="flow-step" data-caption="拜訪目前節點，通常就是印出 data。">Visit 節點</div><div class="flow-step" data-caption="對 right child 呼叫同一個 traversal 函式。">遞迴右子樹</div></div><div class="flow-caption"></div><div class="flow-controls"><button class="btn mini" onclick="prevFlow('trav')">上一步</button><button class="btn mini primary" onclick="nextFlow('trav')">下一步</button><button class="btn mini" onclick="autoFlow('trav')">自動播放</button><button class="btn mini" onclick="resetFlow('trav')">重新開始</button></div></div></div></details><details open=""><summary>五、C 程式碼：建立二元樹並印出三種走訪</summary><div class="detail-body"><div class="download-card"><div><h3>binary_tree_traversal.c</h3><p>包含 Node 結構、createNode、inorder、preorder、postorder 與 main 測試。</p></div><a class="btn primary" href="binary_tree_traversal.c">下載 C 程式</a></div><div class="codebox"><div class="bar"><span>binary_tree_traversal.c</span><div class="code-actions"><button class="btn mini" onclick="copyCode('codeTraversal')">複製程式碼</button></div></div><pre><code id="codeTraversal">/*
+  中文註解版程式：binary_tree_traversal.c
+  說明：主題 5：Binary Tree Traversal 示範。比較 inorder、preorder、postorder 三種走訪順序。
+  閱讀方式：先看資料結構定義，再看操作函式，最後看 main() 如何測試。
+*/
+
+// 匯入標準輸入輸出函式庫，提供 printf / scanf 等功能。
+#include &lt;stdio.h&gt;
+// 匯入標準函式庫，提供 malloc / free / exit 等記憶體與程式控制功能。
+#include &lt;stdlib.h&gt;
+
+// 定義節點結構：資料欄位存節點內容，指標欄位負責連到其他節點。
+typedef struct Node {
+    char data;
+    struct Node *left;
+    struct Node *right;
+} Node;
+
+// 建立新節點：配置記憶體、填入資料，並把左右指標初始化為 NULL。
+Node* createNode(char data) {
+    Node* n = (Node*)malloc(sizeof(Node));
+    n-&gt;data = data;
+    n-&gt;left = NULL;
+    n-&gt;right = NULL;
+    return n;
+}
+
+// Inorder 走訪：Left → Visit → Right；套用在 BST 會得到由小到大的排序。
+void inorder(Node* root) {
+    if (root == NULL) return;  // 遞迴終止條件：空節點不需要處理
+    inorder(root-&gt;left);           // L
+    printf("%c ", root-&gt;data);     // V
+    inorder(root-&gt;right);          // R
+}
+
+// Preorder 走訪：Visit → Left → Right，常用來觀察樹建立的形狀。
+void preorder(Node* root) {
+    if (root == NULL) return;  // 遞迴終止條件：空節點不需要處理
+    printf("%c ", root-&gt;data);     // V
+    preorder(root-&gt;left);          // L
+    preorder(root-&gt;right);         // R
+}
+
+// Postorder 走訪：Left → Right → Visit，常用於釋放整棵樹。
+void postorder(Node* root) {
+    if (root == NULL) return;  // 遞迴終止條件：空節點不需要處理
+    postorder(root-&gt;left);         // L
+    postorder(root-&gt;right);        // R
+    printf("%c ", root-&gt;data);     // V
+}
+
+// 主程式：建立測試資料，呼叫上方函式，觀察輸出結果。
+int main(void) {
+    Node* root = createNode('A');
+    root-&gt;left = createNode('B');
+    root-&gt;right = createNode('C');
+    root-&gt;left-&gt;left = createNode('D');
+    root-&gt;left-&gt;right = createNode('E');
+    root-&gt;right-&gt;right = createNode('F');
+
+    printf("Inorder   : "); inorder(root);   printf("\n");
+    printf("Preorder  : "); preorder(root);  printf("\n");
+    printf("Postorder : "); postorder(root); printf("\n");
+    return 0;
+}
+</code></pre></div></div></details><details open=""><summary>六、考試重點</summary><div class="detail-body"><p class="warning">Preorder 的 root 一定最先出現；Postorder 的 root 一定最後出現；Inorder 對 BST 會輸出排序結果。</p></div></details>
+<details class="lab7-code-section" open=""><summary>可編輯 C 程式範例：含中文註解與線上編輯器</summary><div class="content detail-body"><p>這一段提供可直接修改的 C 程式碼。可以按「複製程式」貼到線上編輯器執行，也可以下載 .c 檔案。</p><div class="codewrap"><div class="codebar"><span>binary_tree_traversal.c</span><div class="btns"><button class="btn green" onclick="copyCode('code5')">複製程式</button><button class="btn orange" onclick="downloadCode('code5','binary_tree_traversal.c')">下載 .c</button><a class="btn secondary" href="https://www.onlinegdb.com/online_c_compiler" target="_blank">OnlineGDB</a><a class="btn secondary" href="https://www.programiz.com/c-programming/online-compiler/" target="_blank">Programiz</a><a class="btn secondary" href="https://onecompiler.com/c" target="_blank">OneCompiler</a></div></div><textarea class="codearea" id="code5" spellcheck="false">/*
+  中文註解版程式：binary_tree_traversal.c
+  說明：主題 5：Binary Tree Traversal 示範。比較 inorder、preorder、postorder 三種走訪順序。
+  閱讀方式：先看資料結構定義，再看操作函式，最後看 main() 如何測試。
+*/
+
+// 匯入標準輸入輸出函式庫，提供 printf / scanf 等功能。
+#include &lt;stdio.h&gt;
+// 匯入標準函式庫，提供 malloc / free / exit 等記憶體與程式控制功能。
+#include &lt;stdlib.h&gt;
+
+// 定義節點結構：資料欄位存節點內容，指標欄位負責連到其他節點。
+typedef struct Node {
+    char data;
+    struct Node *left;
+    struct Node *right;
+} Node;
+
+// 建立新節點：配置記憶體、填入資料，並把左右指標初始化為 NULL。
+Node* createNode(char data) {
+    Node* n = (Node*)malloc(sizeof(Node));
+    n-&gt;data = data;
+    n-&gt;left = NULL;
+    n-&gt;right = NULL;
+    return n;
+}
+
+// Inorder 走訪：Left → Visit → Right；套用在 BST 會得到由小到大的排序。
+void inorder(Node* root) {
+    if (root == NULL) return;  // 遞迴終止條件：空節點不需要處理
+    inorder(root-&gt;left);           // L
+    printf("%c ", root-&gt;data);     // V
+    inorder(root-&gt;right);          // R
+}
+
+// Preorder 走訪：Visit → Left → Right，常用來觀察樹建立的形狀。
+void preorder(Node* root) {
+    if (root == NULL) return;  // 遞迴終止條件：空節點不需要處理
+    printf("%c ", root-&gt;data);     // V
+    preorder(root-&gt;left);          // L
+    preorder(root-&gt;right);         // R
+}
+
+// Postorder 走訪：Left → Right → Visit，常用於釋放整棵樹。
+void postorder(Node* root) {
+    if (root == NULL) return;  // 遞迴終止條件：空節點不需要處理
+    postorder(root-&gt;left);         // L
+    postorder(root-&gt;right);        // R
+    printf("%c ", root-&gt;data);     // V
+}
+
+// 主程式：建立測試資料，呼叫上方函式，觀察輸出結果。
+int main(void) {
+    Node* root = createNode('A');
+    root-&gt;left = createNode('B');
+    root-&gt;right = createNode('C');
+    root-&gt;left-&gt;left = createNode('D');
+    root-&gt;left-&gt;right = createNode('E');
+    root-&gt;right-&gt;right = createNode('F');
+
+    printf("Inorder   : "); inorder(root);   printf("\n");
+    printf("Preorder  : "); preorder(root);  printf("\n");
+    printf("Postorder : "); postorder(root); printf("\n");
+    return 0;
+}
+</textarea></div></div></details>
+<details class="lab7-teaching-content" open=""><summary>程式題目教學內容：Binary Tree Traversal 三種走訪</summary><div class="content detail-body">
+<h3>一、程式題目講解</h3>
+<p>本題比較 inorder、preorder、postorder 三種二元樹走訪方法。學生需要理解 root、left subtree、right subtree 的拜訪順序不同，輸出結果就不同。</p>
+<h3>二、完整程式碼</h3>
+<p>完整可執行程式碼已保留在上方「可編輯 C 程式範例：含中文註解與線上編輯器」區塊中，檔名為 <code>binary_tree_traversal.c</code>。該程式碼已加入中文註解，學生可以直接複製到 OnlineGDB、Programiz 或 OneCompiler 執行。</p>
+<h3>三、程式執行結果</h3>
+<pre><code>Inorder   : D B E A C F 
+Preorder  : A B D E C F 
+Postorder : D E B F C A </code></pre>
+<p>Inorder 先左子樹再根再右子樹，所以得到 D B E A C F；Preorder 先根再左右子樹，所以 A 最先出現；Postorder 先左右子樹再根，所以 A 最後出現。</p>
+<h3>四、程式流程圖與流程圖說明</h3>
+<p>本頁下方已保留原本的程式流程圖。閱讀流程圖時，可以依序掌握「初始化資料或節點 → 執行主要函式或判斷 → 輸出結果」的過程。先建立固定二元樹，再分別呼叫 inorder、preorder、postorder。每個走訪函式都用遞迴處理左子樹與右子樹，只是 printf(root) 的位置不同。</p>
+<h3>五、重要函數與語法說明</h3>
+<p>inorder()：Left → Root → Right；preorder()：Root → Left → Right；postorder()：Left → Right → Root；遞迴 recursion：讓函式反覆處理子樹。</p>
+<h3>六、整體說明</h3>
+<p>本題重點是三種 traversal 的差異只在拜訪 root 的時機。考試時可先找 root 的位置判斷是哪一種走訪。</p>
+</div></details>
+
+<section class="card program-flow-card">
+<h2>程式流程圖：Binary Tree Traversal 走訪流程</h2>
+<p>下圖是本主題對應的程式執行流程，適合搭配本頁 C 程式碼一起看。</p>
+<div class="program-flow-figure"><img alt="主題 5 程式流程圖" class="program-flow-img" src="assets/program_flow_topic5.svg"/><div class="figure-caption">主題 5 程式流程圖：Binary Tree Traversal 走訪流程</div></div>
+<div class="flow-explain"><h3>流程講解</h3><ol><li>走訪程式通常是遞迴函式，停止條件是目前節點為 NULL。</li><li>Preorder 是 root、left、right；Inorder 是 left、root、right；Postorder 是 left、right、root。</li><li>每次進入節點都依照指定規則決定何時輸出 data。</li><li>最後會產生一串線性順序，代表整棵樹的走訪結果。</li></ol><p>這張流程圖把本頁程式的執行順序整理成一條清楚路徑。閱讀時先看輸入與資料如何建立，再看條件判斷、指標或陣列索引如何改變，最後用輸出結果確認程式邏輯是否正確。</p></div>
+</section>
+</main><div class="footer">Lesson 6 Trees｜主題五：Binary Tree Traversals</div></body></html>

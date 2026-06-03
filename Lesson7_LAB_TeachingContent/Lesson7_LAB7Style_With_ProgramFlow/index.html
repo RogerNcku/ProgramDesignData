@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Lesson 7 Expressions｜完整互動式教學首頁</title>
+<style>
+    :root{
+      --bg:#f6f8ff; --card:#ffffff; --text:#1b2440; --muted:#667085;
+      --primary:#5b6cff; --primary2:#8a5cf6; --accent:#00b8a9; --warn:#ffb020;
+      --line:#dce3f8; --shadow:0 18px 45px rgba(25,33,75,.12);
+      --radius:24px;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:"Noto Sans TC","Microsoft JhengHei",Arial,sans-serif;background:radial-gradient(circle at top left,#e9f2ff 0,#f7f8ff 36%,#fff 100%);color:var(--text);line-height:1.75}
+    a{color:inherit;text-decoration:none}
+    .hero{padding:54px 22px 32px;background:linear-gradient(135deg,#27326b 0%,#5b6cff 52%,#00b8a9 100%);color:white;position:relative;overflow:hidden}
+    .hero:before{content:"";position:absolute;inset:auto -80px -130px auto;width:420px;height:420px;background:rgba(255,255,255,.16);border-radius:50%}
+    .hero:after{content:"Expressions";position:absolute;right:34px;bottom:-22px;font-size:88px;font-weight:900;letter-spacing:-3px;color:rgba(255,255,255,.10)}
+    .hero-inner{max-width:1180px;margin:auto;position:relative;z-index:1}
+    .badge{display:inline-flex;gap:8px;align-items:center;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.32);padding:8px 14px;border-radius:999px;font-size:14px;backdrop-filter:blur(8px)}
+    h1{font-size:clamp(32px,5vw,58px);line-height:1.15;margin:18px 0 14px;letter-spacing:.5px}
+    .subtitle{font-size:clamp(16px,2.4vw,21px);max-width:880px;opacity:.94;margin:0 0 26px}
+    .hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:16px;padding:12px 18px;font-weight:800;cursor:pointer;transition:.22s transform,.22s box-shadow,.22s background;box-shadow:0 10px 24px rgba(0,0,0,.12)}
+    .btn:hover{transform:translateY(-2px);box-shadow:0 16px 28px rgba(0,0,0,.18)}
+    .btn-light{background:white;color:#283060}.btn-dark{background:#1d274f;color:white}.btn-green{background:#00b8a9;color:white}.btn-ghost{background:rgba(255,255,255,.18);color:white;border:1px solid rgba(255,255,255,.35)}
+    main{max-width:1180px;margin:0 auto;padding:30px 20px 58px}
+    .quick{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:-46px;position:relative;z-index:5}
+    .quick-card{background:rgba(255,255,255,.92);border:1px solid rgba(220,227,248,.9);border-radius:22px;padding:20px;box-shadow:var(--shadow);backdrop-filter:blur(8px)}
+    .quick-card b{display:block;font-size:25px;color:#3341b5}.quick-card span{color:var(--muted);font-size:14px}
+    section{margin-top:36px}.section-title{display:flex;align-items:end;justify-content:space-between;gap:18px;margin-bottom:16px}
+    h2{font-size:28px;margin:0}.hint{color:var(--muted);font-size:15px}
+    .path{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:24px;overflow:hidden}
+    .road{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-top:12px}
+    .road a{padding:14px 10px;border-radius:16px;text-align:center;background:linear-gradient(180deg,#f8faff,#eef2ff);border:1px solid #dde4ff;font-weight:800;color:#364170}
+    .road a small{display:block;color:#7b829a;font-weight:600;margin-top:4px}
+    .toolbar{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}.search{flex:1;min-width:230px;border:1px solid var(--line);border-radius:16px;padding:13px 16px;font-size:16px;outline:none;background:white}.chip{border:1px solid var(--line);background:white;border-radius:999px;padding:10px 14px;color:#4d587d;font-weight:700;cursor:pointer}.chip.active{background:#283060;color:white;border-color:#283060}
+    .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}.topic-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;display:flex;flex-direction:column;min-height:100%}.thumb{height:178px;background:#eef2ff;display:flex;align-items:center;justify-content:center;overflow:hidden}.thumb img{width:100%;height:100%;object-fit:cover;transition:.35s transform}.topic-card:hover .thumb img{transform:scale(1.035)}.card-body{padding:22px}.tag{display:inline-flex;border-radius:999px;padding:5px 10px;font-weight:800;font-size:12px;background:#eef2ff;color:#4451c7;margin-bottom:10px}.card-body h3{font-size:22px;line-height:1.35;margin:4px 0 10px}.card-body p{color:#566078;margin:0 0 14px}.meta{display:flex;gap:9px;flex-wrap:wrap;margin:12px 0 18px}.pill{background:#f5f7ff;border:1px solid #e4e9ff;color:#55607c;border-radius:999px;padding:6px 10px;font-size:13px;font-weight:700}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:auto}.mini-btn{flex:1;min-width:125px;text-align:center;border-radius:14px;padding:10px 12px;font-weight:800;background:#f4f6ff;border:1px solid #dce3ff;color:#2f3b78}.mini-btn.primary{background:linear-gradient(135deg,var(--primary),var(--primary2));color:white;border:0}.mini-btn.green{background:#e7fbf8;color:#007a70;border-color:#aeece5}
+    details{background:white;border:1px solid var(--line);border-radius:20px;padding:0;box-shadow:0 12px 30px rgba(25,33,75,.08);margin:14px 0;overflow:hidden}summary{list-style:none;cursor:pointer;padding:18px 22px;font-size:18px;font-weight:900;display:flex;justify-content:space-between;align-items:center}summary::-webkit-details-marker{display:none}summary:after{content:"＋";font-size:22px;color:var(--primary)}details[open] summary:after{content:"－"}.detail-content{padding:0 22px 20px;color:#536079}.detail-content ul{margin:8px 0 0 22px}.note{padding:18px 20px;background:#fff9ec;border:1px solid #ffe1a7;border-radius:18px;color:#6b4b00}.footer{margin-top:34px;text-align:center;color:#77809a;font-size:14px;padding:24px}
+    .all-links{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.all-links a{background:#fff;border:1px solid var(--line);border-radius:16px;padding:12px 14px;font-weight:800;color:#34406e;box-shadow:0 8px 20px rgba(25,33,75,.06)}
+    @media(max-width:900px){.quick,.grid,.road,.all-links{grid-template-columns:1fr 1fr}.hero:after{display:none}}
+    @media(max-width:620px){.quick,.grid,.road,.all-links{grid-template-columns:1fr}.hero{padding-top:36px}.thumb{height:150px}.section-title{display:block}}
+  </style>
+</head>
+<body>
+<header class="hero">
+<div class="hero-inner">
+<div class="badge">📘 Lesson 7 Interactive Course Homepage</div>
+<h1>Lesson 7 Expressions<br/>完整互動式教學首頁</h1>
+<p class="subtitle">本首頁整合所有下拉式 HTML 教學檔，依照學習順序連到各主題頁面。內容包含投影片圖片、動畫流程圖、動畫表格、中文講解、可編輯 C 程式範例與線上編輯器連結。</p>
+<div class="hero-actions">
+<a class="btn btn-light" href="#course-map">開始學習</a>
+<a class="btn btn-ghost" href="#topics">瀏覽所有主題</a>
+<a class="btn btn-green" href="https://www.onlinegdb.com/online_c_compiler" rel="noopener" target="_blank">開啟 OnlineGDB</a>
+</div>
+</div>
+</header>
+<main>
+<div class="quick">
+<div class="quick-card"><b>12</b><span>整合主題</span></div>
+<div class="quick-card"><b>24</b><span>Lesson 7 投影片範圍</span></div>
+<div class="quick-card"><b>動畫</b><span>流程圖與表格逐步說明</span></div>
+<div class="quick-card"><b>C 語言</b><span>每章附中文註解範例</span></div>
+</div>
+<section class="path" id="course-map">
+<div class="section-title">
+<h2>一、建議學習順序</h2>
+<div class="hint">從基本概念 → 表示法 → Stack → Expression Tree → 程式實作</div>
+</div>
+<div class="road">
+<a href="Lesson7_Topic1_2_HTML/lesson7_topics12_html/topic1.html">1–2<small>基本概念 / Infix</small></a>
+<a href="Lesson7_Topic3_4_HTML/lesson7_topics34_html/topic3.html">3–4<small>Prefix/Postfix / 轉換</small></a>
+<a href="Lesson7_Topic5_6_HTML/lesson7_topics56_html/topic5.html">5–6<small>Prefix / Stack</small></a>
+<a href="lesson7_topics78_html/topic7.html">7–8<small>Postfix 求值 / 樹</small></a>
+<a href="Lesson7_Topic9_10_HTML/lesson7_topics910_html/topic9.html">9–10<small>走訪 / 程式</small></a>
+<a href="Lesson7_Topic11_12_HTML/lesson7_topics1112_html/topic11.html">11–12<small>複習 / 整合練習</small></a>
+</div>
+</section>
+<section id="topics">
+<div class="section-title">
+<h2>二、所有主題入口</h2>
+<div class="hint">主頁已改為直接連到 topic1～topic12.html，不再透過各目錄的 index.html</div>
+</div>
+<div class="toolbar">
+<input class="search" id="searchBox" placeholder="搜尋主題，例如：Postfix、Stack、Expression Tree、程式實作..."/>
+<button class="chip active" data-filter="all">全部</button>
+<button class="chip" data-filter="concept">觀念</button>
+<button class="chip" data-filter="algorithm">演算法</button>
+<button class="chip" data-filter="stack">Stack</button>
+<button class="chip" data-filter="tree">Tree</button>
+<button class="chip" data-filter="code">程式</button>
+</div>
+<div class="grid" id="topicGrid">
+<article class="topic-card" data-cat="concept" data-key="expressions 表達式基本概念 / infix expressions 中序表示法 介紹 expression、operand、operator，並說明中序表示法需要優先順序與括號判斷。 1–2 投影片 1–3">
+<div class="thumb"><img alt="Expressions 表達式基本概念 / Infix Expressions 中序表示法" src="Lesson7_Topic1_2_HTML/lesson7_topics12_html/assets/slide2.png"/></div>
+<div class="card-body">
+<span class="tag">主題 1–2</span>
+<h3>Expressions 表達式基本概念 / Infix Expressions 中序表示法</h3>
+<p>介紹 expression、operand、operator，並說明中序表示法需要優先順序與括號判斷。</p>
+<div class="meta"><span class="pill">投影片 1–3</span><span class="pill">流程圖動畫</span><span class="pill">動畫表格</span><span class="pill">C 程式範例</span></div>
+<div class="actions"><a class="mini-btn primary" href="Lesson7_Topic1_2_HTML/lesson7_topics12_html/topic1.html">主題 1：Expressions</a>
+              <a class="mini-btn green" href="Lesson7_Topic1_2_HTML/lesson7_topics12_html/topic2.html">主題 2：Infix</a></div>
+</div>
+</article>
+<article class="topic-card" data-cat="algorithm" data-key="postfix and prefix / infix-to-postfix algorithm 比較後序與前序表示法，並用流程圖說明中序轉後序的基本方法。 3–4 投影片 4–6">
+<div class="thumb"><img alt="Postfix and Prefix / Infix-to-Postfix Algorithm" src="Lesson7_Topic3_4_HTML/lesson7_topics34_html/assets/slide4.jpg"/></div>
+<div class="card-body">
+<span class="tag">主題 3–4</span>
+<h3>Postfix and Prefix / Infix-to-Postfix Algorithm</h3>
+<p>比較後序與前序表示法，並用流程圖說明中序轉後序的基本方法。</p>
+<div class="meta"><span class="pill">投影片 4–6</span><span class="pill">流程圖動畫</span><span class="pill">動畫表格</span><span class="pill">C 程式範例</span></div>
+<div class="actions"><a class="mini-btn primary" href="Lesson7_Topic3_4_HTML/lesson7_topics34_html/topic3.html">主題 3：Postfix / Prefix</a>
+              <a class="mini-btn green" href="Lesson7_Topic3_4_HTML/lesson7_topics34_html/topic4.html">主題 4：Infix-to-Postfix</a></div>
+</div>
+</article>
+<article class="topic-card" data-cat="algorithm stack" data-key="infix-to-prefix / stack 轉換 infix-to-postfix 說明中序轉前序，並用動畫表格逐步展示 stack 與 output 的變化。 5–6 投影片 7–11">
+<div class="thumb"><img alt="Infix-to-Prefix / Stack 轉換 Infix-to-Postfix" src="Lesson7_Topic5_6_HTML/lesson7_topics56_html/assets/slide9.jpg"/></div>
+<div class="card-body">
+<span class="tag">主題 5–6</span>
+<h3>Infix-to-Prefix / Stack 轉換 Infix-to-Postfix</h3>
+<p>說明中序轉前序，並用動畫表格逐步展示 stack 與 output 的變化。</p>
+<div class="meta"><span class="pill">投影片 7–11</span><span class="pill">流程圖動畫</span><span class="pill">動畫表格</span><span class="pill">C 程式範例</span></div>
+<div class="actions"><a class="mini-btn primary" href="Lesson7_Topic5_6_HTML/lesson7_topics56_html/topic5.html">主題 5：Infix-to-Prefix</a>
+              <a class="mini-btn green" href="Lesson7_Topic5_6_HTML/lesson7_topics56_html/topic6.html">主題 6：Stack 轉換</a></div>
+</div>
+</article>
+<article class="topic-card" data-cat="stack tree" data-key="evaluation of postfix / expression trees 用 stack 計算後序表示式，並說明如何建立 expression tree。 7–8 投影片 12–18">
+<div class="thumb"><img alt="Evaluation of Postfix / Expression Trees" src="lesson7_topics78_html/assets/slide14.jpg"/></div>
+<div class="card-body">
+<span class="tag">主題 7–8</span>
+<h3>Evaluation of Postfix / Expression Trees</h3>
+<p>用 stack 計算後序表示式，並說明如何建立 expression tree。</p>
+<div class="meta"><span class="pill">投影片 12–18</span><span class="pill">流程圖動畫</span><span class="pill">動畫表格</span><span class="pill">C 程式範例</span></div>
+<div class="actions"><a class="mini-btn primary" href="lesson7_topics78_html/topic7.html">主題 7：Postfix 求值</a>
+              <a class="mini-btn green" href="lesson7_topics78_html/topic8.html">主題 8：Expression Tree</a></div>
+</div>
+</article>
+<article class="topic-card" data-cat="tree code" data-key="expression tree traversal / infix-to-postfix 程式實作 說明 preorder/postorder 與 prefix/postfix 的關係，並進入完整 c 程式實作。 9–10 投影片 19–24">
+<div class="thumb"><img alt="Expression Tree Traversal / Infix-to-Postfix 程式實作" src="Lesson7_Topic9_10_HTML/lesson7_topics910_html/assets/slide20.jpg"/></div>
+<div class="card-body">
+<span class="tag">主題 9–10</span>
+<h3>Expression Tree Traversal / Infix-to-Postfix 程式實作</h3>
+<p>說明 preorder/postorder 與 prefix/postfix 的關係，並進入完整 C 程式實作。</p>
+<div class="meta"><span class="pill">投影片 19–24</span><span class="pill">流程圖動畫</span><span class="pill">動畫表格</span><span class="pill">C 程式範例</span></div>
+<div class="actions"><a class="mini-btn primary" href="Lesson7_Topic9_10_HTML/lesson7_topics910_html/topic9.html">主題 9：Tree Traversal</a>
+              <a class="mini-btn green" href="Lesson7_Topic9_10_HTML/lesson7_topics910_html/topic10.html">主題 10：程式實作</a></div>
+</div>
+</article>
+<article class="topic-card" data-cat="concept code" data-key="expression 綜合複習 / 整合範例與練習 補充統整版：把表示法、stack、tree 與程式流程串成完整練習。 11–12 綜合複習">
+<div class="thumb"><img alt="Expression 綜合複習 / 整合範例與練習" src="Lesson7_Topic11_12_HTML/lesson7_topics1112_html/assets/slide24.jpg"/></div>
+<div class="card-body">
+<span class="tag">主題 11–12</span>
+<h3>Expression 綜合複習 / 整合範例與練習</h3>
+<p>補充統整版：把表示法、stack、tree 與程式流程串成完整練習。</p>
+<div class="meta"><span class="pill">綜合複習</span><span class="pill">流程圖動畫</span><span class="pill">動畫表格</span><span class="pill">C 程式範例</span></div>
+<div class="actions"><a class="mini-btn primary" href="Lesson7_Topic11_12_HTML/lesson7_topics1112_html/topic11.html">主題 11：綜合複習</a>
+              <a class="mini-btn green" href="Lesson7_Topic11_12_HTML/lesson7_topics1112_html/topic12.html">主題 12：整合練習</a></div>
+</div>
+</article>
+</div>
+</section>
+<section>
+<div class="section-title"><h2>三、首頁使用方式</h2><div class="hint">建議投影教學或學生自學時使用</div></div>
+<details open=""><summary>1、如何使用這個首頁？</summary><div class="detail-content">先從「建議學習順序」進入主題 1–2，再依序進入 3–4、5–6、7–8、9–10，最後使用 11–12 做總複習。每一組教學頁都有下拉式章節、流程圖動畫、投影片圖片與可編輯程式碼。</div></details>
+<details><summary>2、如何使用動畫流程圖與動畫表格？</summary><div class="detail-content">進入各主題頁後，可按「下一步」逐格顯示流程；也可按「自動播放」讓系統自動示範。Stack、Output、Expression Tree 等內容會用表格或節點逐步呈現，適合講解演算法的執行順序。</div></details>
+<details><summary>3、如何練習 C 程式範例？</summary><div class="detail-content">每章的程式碼區可以直接編輯。若要實際執行，按頁面中的 OnlineGDB、Programiz 或 OneCompiler 按鈕，把程式碼複製到線上編輯器即可測試。</div></details>
+<details><summary>4、這份教材適合怎麼教？</summary><div class="detail-content"><ul><li>第一階段：先理解 Infix、Postfix、Prefix 的差異。</li><li>第二階段：用流程圖理解轉換演算法。</li><li>第三階段：用動畫表格觀察 Stack 的 push/pop。</li><li>第四階段：用 Expression Tree 串接 preorder、inorder、postorder。</li><li>第五階段：閱讀完整 C 程式，把觀念轉成實作。</li></ul></div></details>
+</section>
+<section>
+<div class="section-title"><h2>四、附件內所有 HTML 網頁連結</h2><div class="hint">這裡列出所有可開啟的網頁</div></div>
+<div class="all-links"><a href="Lesson7_Topic1_2_HTML/lesson7_topics12_html/topic1.html">主題 1：Expressions 表達式基本概念</a>
+        <a href="Lesson7_Topic1_2_HTML/lesson7_topics12_html/topic2.html">主題 2：Infix Expressions 中序表示法</a>
+        <a href="Lesson7_Topic3_4_HTML/lesson7_topics34_html/topic3.html">主題 3：Postfix and Prefix</a>
+        <a href="Lesson7_Topic3_4_HTML/lesson7_topics34_html/topic4.html">主題 4：Infix-to-Postfix</a>
+        <a href="Lesson7_Topic5_6_HTML/lesson7_topics56_html/topic5.html">主題 5：Infix-to-Prefix</a>
+        <a href="Lesson7_Topic5_6_HTML/lesson7_topics56_html/topic6.html">主題 6：Stack 轉 Postfix</a>
+        <a href="lesson7_topics78_html/topic7.html">主題 7：Postfix 求值</a>
+        <a href="lesson7_topics78_html/topic8.html">主題 8：Expression Trees</a>
+        <a href="Lesson7_Topic9_10_HTML/lesson7_topics910_html/topic9.html">主題 9：Expression Tree Traversal</a>
+        <a href="Lesson7_Topic9_10_HTML/lesson7_topics910_html/topic10.html">主題 10：Infix-to-Postfix 程式實作</a>
+        <a href="Lesson7_Topic11_12_HTML/lesson7_topics1112_html/topic11.html">主題 11：綜合複習</a>
+        <a href="Lesson7_Topic11_12_HTML/lesson7_topics1112_html/topic12.html">主題 12：整合練習</a>
+        </div>
+</section>
+<section class="note">
+<b>使用提醒：</b>下載完整壓縮檔後，請先解壓縮，再用瀏覽器開啟最外層的 <b>index.html</b>。若直接在壓縮檔內開啟，部分圖片或連結可能無法正常顯示。
+    </section>
+<div class="footer">Lesson 7 Expressions｜Interactive HTML Teaching Homepage</div>
+</main>
+<script>
+    const searchBox = document.getElementById('searchBox');
+    const cards = [...document.querySelectorAll('.topic-card')];
+    const chips = [...document.querySelectorAll('.chip')];
+    let activeFilter = 'all';
+    function filterCards(){
+      const q = searchBox.value.trim().toLowerCase();
+      cards.forEach(card=>{
+        const okText = !q || card.dataset.key.includes(q);
+        const okCat = activeFilter === 'all' || card.dataset.cat.includes(activeFilter);
+        card.style.display = okText && okCat ? 'flex' : 'none';
+      });
+    }
+    searchBox.addEventListener('input',filterCards);
+    chips.forEach(chip=>chip.addEventListener('click',()=>{
+      chips.forEach(c=>c.classList.remove('active'));
+      chip.classList.add('active');
+      activeFilter = chip.dataset.filter;
+      filterCards();
+    }));
+  </script>
+</body>
+</html>

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh-Hant"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/><link href="assets/style.css" rel="stylesheet"/><script src="assets/script.js"></script><title>Lesson 5 主題 5：Singly Linked List 的程式實作</title></head><body>
+<header class="hero"><div class="inner"><span class="badge">Lesson 5｜主題 5｜投影片 9–13</span><h1>主題 5：Singly Linked List 的程式實作</h1><p>把節點、head、insert、delete、toString/print 的觀念轉成完整程式。</p><div class="toolbar"><a class="btn secondary" href="../index.html">回 L5 首頁</a><a class="btn secondary" href="topic6.html">下一個：主題 6</a></div></div></header>
+<div class="wrap"><div class="layout"><aside class="sidebar"><div class="side-title">Lesson 5 主題導覽</div><nav class="nav"><a href="../index.html">L5 首頁</a><a class="active" href="topic5.html">5. Singly Linked List 的程式實作</a>
+<a href="topic6.html">6. Polynomial Representation 多項式表示法</a></nav></aside><main>
+<section class="card"><span class="badge">投影片 9–13</span><h2>一、主題核心概念</h2><p>這個主題把 linked list 概念轉成程式。重點是用一個管理者保存 head，再讓每個 node 保存 data 與 next，透過 insert、delete、print 完成操作。</p></section>
+<section class="card"><h2>二、投影片逐張下拉式詳細講解</h2><p>每一張投影片都已把圖片與自己的文字講解合併在同一個下拉式區塊中。點開後可以直接對照圖片閱讀說明。</p><div class="slide-detail-list"><details class="slide-detail"><summary>投影片 9｜list 類別與巢狀節點概念</summary><div class="slide-detail-body"><div class="slide-detail-grid"><div><img alt="投影片 9：list 類別與巢狀節點概念" class="slide-detail-img" src="assets/slide9.jpg"/><div class="figure-caption">投影片 9</div></div><div class="slide-explain"><h3>list 類別與巢狀節點概念</h3><h4>詳細說明與講解</h4><p>1、這張投影片開始把前面的圖轉成程式。可以看到類別或結構中通常會有 head，代表串列開頭；也會有內部節點類別或 struct，用來表示每一個節點。</p><p>2、節點中通常包含 data 與 next。data 保存資料，next 指向下一個節點。對 Linked List 來說，真正重要的不是單一節點，而是每個節點之間透過 next 串起來的關係。</p><p>3、右側的 toString 或 print 類似走訪函式。它從 head 開始，用 current 一個節點一個節點往後走，把每個節點的資料串成輸出結果。</p><p>4、這張投影片的學習重點是把概念圖和程式變數對起來：head 是入口，current 是走訪用指標，current.next 或 current-&gt;next 是前進到下一個節點的動作。</p><div class="slide-memory">一句話記憶：程式中的 head、current、next 對應到圖上的起點、目前節點與箭頭。</div></div></div></div></details><details class="slide-detail"><summary>投影片 10｜Insert 程式邏輯：插入新節點</summary><div class="slide-detail-body"><div class="slide-detail-grid"><div><img alt="投影片 10：Insert 程式邏輯：插入新節點" class="slide-detail-img" src="assets/slide10.jpg"/><div class="figure-caption">投影片 10</div></div><div class="slide-explain"><h3>Insert 程式邏輯：插入新節點</h3><h4>詳細說明與講解</h4><p>1、這張投影片展示 insert 函式的核心流程。程式會先建立一個新節點 node，並把要插入的資料放進 node 的 data 欄位。</p><p>2、若串列是空的，head == null，代表目前沒有任何節點，因此新節點會直接成為 head。這是插入時最基本的特殊情況。</p><p>3、若不是空串列，程式會用 current 與 prev 或類似變數尋找插入位置。找到位置後，必須把新節點插到 prev 與 current 中間。</p><p>4、最容易錯的是 pointer 更新順序。通常要先讓新節點指向 current，再讓 prev 指向新節點。這樣才不會弄丟 current 後面的串列。</p><div class="slide-memory">一句話記憶：Insert 要先處理空串列，再處理中間插入的 pointer 順序。</div></div></div></div></details><details class="slide-detail"><summary>投影片 11｜Delete 程式邏輯：尋找並刪除資料</summary><div class="slide-detail-body"><div class="slide-detail-grid"><div><img alt="投影片 11：Delete 程式邏輯：尋找並刪除資料" class="slide-detail-img" src="assets/slide11.jpg"/><div class="figure-caption">投影片 11</div></div><div class="slide-explain"><h3>Delete 程式邏輯：尋找並刪除資料</h3><h4>詳細說明與講解</h4><p>1、這張投影片接續說明 delete 函式。刪除時通常從 head 開始找目標資料，並使用 current 代表目前檢查的節點，prev 代表 current 的前一個節點。</p><p>2、如果 head 是 null，表示串列是空的，程式不能繼續存取 head 的內容，應該直接輸出空串列或停止操作。</p><p>3、若找到目標資料，要分成刪除 head 與刪除非 head 兩種情況。刪除 head 時，head 要改成 head-&gt;next；刪除中間或尾端時，prev-&gt;next 要改成 current-&gt;next。</p><p>4、若走到 current == null 還沒找到資料，代表目標不在串列中，這時串列不應該被改變。</p><div class="slide-memory">一句話記憶：Delete 需要 current 找目標，也需要 prev 重新接回串列。</div></div></div></div></details><details class="slide-detail"><summary>投影片 12｜main 測試流程：插入、刪除與輸出</summary><div class="slide-detail-body"><div class="slide-detail-grid"><div><img alt="投影片 12：main 測試流程：插入、刪除與輸出" class="slide-detail-img" src="assets/slide12.jpg"/><div class="figure-caption">投影片 12</div></div><div class="slide-explain"><h3>main 測試流程：插入、刪除與輸出</h3><h4>詳細說明與講解</h4><p>1、這張投影片展示 main 函式如何測試 Linked List。通常會先建立一個空串列，再呼叫 insert 加入多筆資料，接著用 print 或 toString 檢查串列內容。</p><p>2、測試的目的不是只看程式能不能編譯，而是確認每次操作後串列狀態是否正確。例如連續 insert 後，輸出順序是否符合預期；delete 後，被刪資料是否真的消失。</p><p>3、如果投影片中出現多次 insert、delete、print，代表老師希望學生觀察串列內容如何一步一步改變。這是學 pointer 最有效的方法。</p><p>4、寫作業時，建議每完成一個操作就印出串列。這樣可以馬上發現是插入錯、刪除錯，還是走訪錯。</p><div class="slide-memory">一句話記憶：Linked List 程式一定要用 print 一步一步驗證。</div></div></div></div></details><details class="slide-detail"><summary>投影片 13｜執行結果與空串列情況</summary><div class="slide-detail-body"><div class="slide-detail-grid"><div><img alt="投影片 13：執行結果與空串列情況" class="slide-detail-img" src="assets/slide13.jpg"/><div class="figure-caption">投影片 13</div></div><div class="slide-explain"><h3>執行結果與空串列情況</h3><h4>詳細說明與講解</h4><p>1、這張投影片呈現程式執行結果。透過輸出內容，可以觀察插入與刪除後串列是否符合預期。</p><p>2、當資料依序插入後，輸出會顯示目前串列中的所有節點資料。若 insert 是排序插入，輸出順序應該會呈現排序後的結果；若是頭插或尾插，則會依照該策略呈現。</p><p>3、投影片中最後出現 The list is empty，表示刪除到最後或原本沒有資料時，程式能正確辨識空串列。這是非常重要的防錯設計。</p><p>4、這張可以用來提醒：程式正確不只看一般情況，也要看特殊情況，例如刪除不存在的資料、刪除第一個節點、刪除最後一個節點與刪到空串列。</p><div class="slide-memory">一句話記憶：好的 Linked List 程式要能處理空串列與各種邊界情況。</div></div></div></div></details></div></section>
+<section class="card"><h2>三、動畫流程圖：Singly Linked List 的程式實作</h2><div class="flow-area" id="flow5"><div class="flow"><div class="node">定義 Node</div><div class="node">宣告 head</div><div class="node">建立新節點</div><div class="node">插入排序位置</div><div class="node">刪除指定節點</div><div class="node">列印串列</div></div><div class="progress"><div class="bar"></div></div><div class="stepbox"></div><div class="btns" style="margin-top:12px"><button class="btn secondary" onclick="prevFlow('flow5')">上一步</button><button class="btn" onclick="nextFlow('flow5')">下一步</button><button class="btn orange" onclick="playFlow('flow5')">自動播放</button><button class="btn secondary" onclick="resetFlow('flow5')">重新開始</button></div></div><script>initFlow('flow5',['Node struct 保存 data 與 next。','head 指向第一個節點，初始為 NULL。','createNode 負責配置記憶體並初始化。','insert 依資料大小找位置，保持排序。','delete 搜尋目標資料並重接 pointer。','print 從 head 走到 NULL，輸出每個節點資料。']);</script></section>
+<section class="card"><h2>四、動畫表格：步驟與重點整理</h2><p>請按「下一步」或「自動播放」觀察本主題的操作流程與注意事項。</p><div class="flow-area" id="table5"><div class="anim-table-wrap"><table class="anim-table"><thead><tr><th>函式</th><th>目的</th><th>核心做法</th><th>重點</th></tr></thead><tbody><tr><td>createNode</td><td>配置節點</td><td>malloc + 初始化</td><td>next 設為 NULL</td></tr><tr><td>insert</td><td>加入資料</td><td>找 prev/curr</td><td>保持排序或插入指定位置</td></tr><tr><td>delete</td><td>刪除資料</td><td>分頭節點與中間節點</td><td>刪除後 free</td></tr><tr><td>print</td><td>輸出串列</td><td>current 往後走</td><td>遇 NULL 停止</td></tr><tr><td>main</td><td>測試功能</td><td>呼叫 insert/delete/print</td><td>觀察結果是否正確</td></tr></tbody></table></div><div class="progress"><div class="bar"></div></div><div class="table-note"></div><div class="btns" style="margin-top:12px"><button class="btn secondary" onclick="prevTable('table5')">上一步</button><button class="btn" onclick="nextTable('table5')">下一步</button><button class="btn orange" onclick="playTable('table5')">自動播放</button><button class="btn secondary" onclick="resetTable('table5')">重新開始</button></div></div><script>initTable('table5',['createNode → 配置節點 → malloc + 初始化 → next 設為 NULL','insert → 加入資料 → 找 prev/curr → 保持排序或插入指定位置','delete → 刪除資料 → 分頭節點與中間節點 → 刪除後 free','print → 輸出串列 → current 往後走 → 遇 NULL 停止','main → 測試功能 → 呼叫 insert/delete/print → 觀察結果是否正確']);</script></section>
+<details open=""><summary>五、完整中文講解</summary><div class="content"><h3>（一）本主題要學會什麼？</h3><p>這個主題把 linked list 概念轉成程式。重點是用一個管理者保存 head，再讓每個 node 保存 data 與 next，透過 insert、delete、print 完成操作。</p><h3>（二）實作時最重要的觀念</h3><div class="grid2"><div class="mini"><b>資料結構</b><br/>先看清楚資料是用 Array、Node、Singly List、Circular List 或 Doubly List 表示。</div><div class="mini"><b>指標方向</b><br/>Linked List 題目幾乎都在考指標怎麼接、怎麼斷、怎麼重新連起來。</div><div class="mini"><b>特殊情況</b><br/>空串列、頭節點、尾節點、找不到資料，都是程式容易錯的地方。</div><div class="mini"><b>測試方式</b><br/>每做完 insert/delete，都用 print 檢查目前串列是否符合預期。</div></div><div class="example">程式實作時要分清楚 head、current、prev、newNode 的角色。head 是入口，current 是目前檢查點，prev 是 current 的前一節點，newNode 是準備加入的節點。</div></div></details>
+<details open=""><summary>六、可編輯 C 程式範例：含中文註解與線上編輯器</summary><div class="content"><div class="codewrap"><div class="codebar"><span>sorted_list.c</span><div class="btns"><button class="btn green" onclick="copyCode('code5')">複製程式</button><button class="btn orange" onclick="downloadCode('code5','sorted_list.c')">下載 .c</button><a class="btn secondary" href="https://www.onlinegdb.com/online_c_compiler" target="_blank">OnlineGDB</a><a class="btn secondary" href="https://www.programiz.com/c-programming/online-compiler/" target="_blank">Programiz</a><a class="btn secondary" href="https://onecompiler.com/c" target="_blank">OneCompiler</a></div></div><textarea class="codearea" id="code5" spellcheck="false">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+/*
+    Sorted Singly Linked List
+    功能：插入資料時，自動保持由小到大的順序。
+*/
+
+typedef struct Node {
+    int data;
+    struct Node *next;
+} Node;
+
+Node* createNode(int data) {
+    Node *newNode = (Node*)malloc(sizeof(Node));
+    if (newNode == NULL) {
+        printf("malloc 失敗\n");
+        exit(1);
+    }
+    newNode-&gt;data = data;
+    newNode-&gt;next = NULL;
+    return newNode;
+}
+
+void insert(Node **head, int data) {
+    Node *newNode = createNode(data);
+    Node *curr = *head;
+    Node *prev = NULL;
+
+    // 找到第一個大於等於 data 的節點位置
+    while (curr != NULL &amp;&amp; curr-&gt;data &lt; data) {
+        prev = curr;
+        curr = curr-&gt;next;
+    }
+
+    // 插在最前面或空串列
+    if (prev == NULL) {
+        newNode-&gt;next = *head;
+        *head = newNode;
+    } else {
+        newNode-&gt;next = curr;
+        prev-&gt;next = newNode;
+    }
+}
+
+void printList(Node *head) {
+    Node *temp = head;
+    while (temp != NULL) {
+        printf("%d -&gt; ", temp-&gt;data);
+        temp = temp-&gt;next;
+    }
+    printf("NULL\n");
+}
+
+int main(void) {
+    Node *head = NULL;
+    insert(&amp;head, 30);
+    insert(&amp;head, 10);
+    insert(&amp;head, 20);
+    insert(&amp;head, 5);
+    printList(head); // 5 -&gt; 10 -&gt; 20 -&gt; 30 -&gt; NULL
+    return 0;
+}
+</textarea></div></div></details>
+
+<section class="card program-teaching-card">
+<h2>新增：程式題目教學內容（依指定格式）</h2>
+<div class="content">
+<h3>一、程式題目講解</h3>
+<p>本題實作排序單向鏈結串列。學生需要理解如何在插入資料時尋找正確位置，使串列永遠維持由小到大的順序。</p>
+<h3>二、完整程式碼</h3>
+<p>以下為本頁程式題目的完整可執行 C 程式碼，已在重要程式區塊加入中文註解，方便初學者理解程式功能與流程。</p>
+<pre class="codearea" style="height:auto;min-height:0;white-space:pre-wrap;overflow:auto;">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+/*
+    Sorted Singly Linked List
+    功能：插入資料時，自動保持由小到大的順序。
+*/
+
+typedef struct Node {
+    int data;
+    struct Node *next;
+} Node;
+
+Node* createNode(int data) {
+    Node *newNode = (Node*)malloc(sizeof(Node));
+    if (newNode == NULL) {
+        printf(&quot;malloc 失敗\n&quot;);
+        exit(1);
+    }
+    newNode-&gt;data = data;
+    newNode-&gt;next = NULL;
+    return newNode;
+}
+
+void insert(Node **head, int data) {
+    Node *newNode = createNode(data);
+    Node *curr = *head;
+    Node *prev = NULL;
+
+    // 找到第一個大於等於 data 的節點位置
+    while (curr != NULL &amp;&amp; curr-&gt;data &lt; data) {
+        prev = curr;
+        curr = curr-&gt;next;
+    }
+
+    // 插在最前面或空串列
+    if (prev == NULL) {
+        newNode-&gt;next = *head;
+        *head = newNode;
+    } else {
+        newNode-&gt;next = curr;
+        prev-&gt;next = newNode;
+    }
+}
+
+void printList(Node *head) {
+    Node *temp = head;
+    while (temp != NULL) {
+        printf(&quot;%d -&gt; &quot;, temp-&gt;data);
+        temp = temp-&gt;next;
+    }
+    printf(&quot;NULL\n&quot;);
+}
+
+int main(void) {
+    Node *head = NULL;
+    insert(&amp;head, 30);
+    insert(&amp;head, 10);
+    insert(&amp;head, 20);
+    insert(&amp;head, 5);
+    printList(head); // 5 -&gt; 10 -&gt; 20 -&gt; 30 -&gt; NULL
+    return 0;
+}
+</pre>
+<h3>三、程式執行結果</h3>
+<p>程式執行後會得到以下輸出：</p>
+<pre class="codearea" style="height:auto;min-height:0;white-space:pre-wrap;overflow:auto;">5 -&gt; 10 -&gt; 20 -&gt; 30 -&gt; NULL</pre>
+<p>main 依序插入 30、10、20、5。insert 會用 curr 與 prev 找到第一個大於等於新資料的位置，再把新節點插入該位置之前。因此雖然插入順序不是排序好的，最後輸出仍是 5 -&gt; 10 -&gt; 20 -&gt; 30 -&gt; NULL。</p>
+<h3>四、程式流程圖與流程圖說明</h3>
+<p>本題流程圖如下，呈現程式的主要執行順序、判斷條件與資料處理流程。</p>
+<div class="program-flow-figure"><img alt="主題 5 程式流程圖" class="program-flow-img" src="assets/program_flow_topic5.svg"/><div class="figure-caption">主題 5：Singly Linked List 的程式實作：程式流程圖</div></div>
+<p>流程先建立新節點，再從 head 開始比較。只要 curr 還沒走到 NULL 且 curr-&gt;data 小於新資料，就繼續往後移動。找到位置後，如果 prev 是 NULL，代表插在頭部；否則讓新節點接 curr，prev 接新節點。</p>
+<h3>五、重要函數與語法說明</h3>
+<ol><li>createNode(data)：建立並初始化新節點。</li><li>insert(Node **head, int data)：依照大小排序插入節點。</li><li>while (curr != NULL &amp;&amp; curr-&gt;data &lt; data)：尋找插入位置。</li><li>Node **head：讓函式可以修改 main 裡面的 head。</li><li>printList：檢查排序插入是否正確。</li></ol>
+<h3>六、整體說明</h3>
+<p>本題重點是排序插入。學生要分清楚 prev、curr、newNode 的角色：curr 找位置，prev 記住前一個節點，newNode 是準備插入的資料。</p>
+</div>
+</section>
+<section class="card program-flow-card">
+<h2>七、程式流程圖：Singly Linked List 函式化實作</h2>
+<p>下圖是本主題對應的程式執行流程，適合搭配下方 C 程式碼一起看。</p>
+<div class="program-flow-figure"><img alt="主題 5 程式流程圖" class="program-flow-img" src="assets/program_flow_topic5.svg"/><div class="figure-caption">主題 5 程式流程圖：Singly Linked List 函式化實作</div></div>
+<div class="flow-explain"><h3>流程講解</h3><ol><li>主程式 main 不直接處理所有細節，而是呼叫不同函式完成任務。</li><li>createNode 負責配置記憶體、填入資料、初始化 next。</li><li>insert 函式負責判斷插入位置，並修改指標連線。</li><li>printList 負責從 head 走訪到 NULL，確認串列內容。</li><li>程式結束前應釋放動態配置的節點，養成良好的記憶體管理習慣。</li></ol><p>這張流程圖把本頁程式的執行順序整理成一條清楚路徑。閱讀時先看資料如何被建立，再看條件判斷與指標如何改變，最後用輸出結果確認程式邏輯是否正確。</p></div>
+</section>
+</main></div></div><footer class="footer">Lesson 5｜主題 5：Singly Linked List 的程式實作</footer></body></html>

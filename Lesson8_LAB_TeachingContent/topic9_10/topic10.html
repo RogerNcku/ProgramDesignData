@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="zh-Hant"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/><title>Lesson 8 主題十｜排程器與 Context Switch</title><link href="assets/style.css" rel="stylesheet"/>
+<style>
+.program-flow-card{background:#ffffff;border:1px solid #dbeafe;border-radius:20px;padding:22px;margin:24px 0;box-shadow:0 12px 30px rgba(15,23,42,.08)}
+.program-flow-card h2{margin-top:0;color:#0f172a}
+.program-flow-img{width:100%;border-radius:18px;border:1px solid #e2e8f0;background:#f8fafc}
+.flow-explain{line-height:1.9;background:#f8fafc;border-left:6px solid #2563eb;border-radius:14px;padding:16px 18px;white-space:pre-line}
+.code-card{background:#0f172a;color:#e5e7eb;border-radius:20px;padding:0;margin:24px 0;overflow:hidden;box-shadow:0 12px 32px rgba(15,23,42,.20)}
+.code-card .code-head{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between;background:#111827;padding:14px 16px;border-bottom:1px solid #334155}
+.code-card .code-title{font-weight:700;color:#f8fafc}
+.code-card .code-actions{display:flex;gap:8px;flex-wrap:wrap}
+.code-card button,.code-card a{border:0;border-radius:999px;padding:8px 12px;font-weight:700;text-decoration:none;cursor:pointer;background:#2563eb;color:white;font-size:14px}
+.code-card a{background:#475569}
+.code-card button.download-btn{background:#f97316}
+.code-card textarea{width:100%;min-height:380px;box-sizing:border-box;background:#020617;color:#e5e7eb;border:0;padding:18px;font-family:Consolas,'Courier New',monospace;font-size:15px;line-height:1.55;resize:vertical}
+.editor-links{margin-top:12px;line-height:1.8}
+.editor-links a{display:inline-block;margin:4px 8px 4px 0;padding:8px 12px;border-radius:999px;background:#e0f2fe;color:#075985;text-decoration:none;font-weight:700}
+</style>
+<script>
+function copyCode(id){
+  const el=document.getElementById(id);
+  if(!el) return;
+  el.select();
+  document.execCommand('copy');
+  alert('程式碼已複製');
+}
+function downloadCode(id, filename){
+  const el=document.getElementById(id);
+  if(!el) return;
+  const blob=new Blob([el.value], {type:'text/plain;charset=utf-8'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download=filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(()=>URL.revokeObjectURL(a.href), 500);
+}
+</script>
+
+<style id="slide-dropdown-explanation-style">
+.slide-explain-wrapper{margin:20px 0}
+.slide-intro-note{line-height:1.9;background:#eff6ff;border-left:6px solid #2563eb;border-radius:14px;padding:14px 16px;color:#1e3a8a}
+.single-slide-detail{margin:18px 0;border:1px solid #dbeafe;border-radius:18px;background:#ffffff;box-shadow:0 10px 24px rgba(15,23,42,.07);overflow:hidden}
+.single-slide-detail>summary{cursor:pointer;padding:16px 18px;font-weight:800;color:#0f172a;background:linear-gradient(135deg,#eff6ff,#f8fafc);list-style:none}
+.single-slide-detail>summary::-webkit-details-marker{display:none}
+.single-slide-detail>summary::before{content:"＋";display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;margin-right:10px;border-radius:999px;background:#2563eb;color:white;font-weight:900}
+.single-slide-detail[open]>summary::before{content:"－";background:#f97316}
+.slide-explain-grid{display:grid;grid-template-columns:minmax(280px,46%) 1fr;gap:22px;padding:20px;align-items:start}
+.slide-explain-image{background:#f8fafc;border:1px solid #e2e8f0;border-radius:16px;padding:12px}
+.slide-explain-image .slide-img{width:100%;height:auto;border-radius:12px;border:1px solid #e5e7eb;background:white}
+.slide-caption{text-align:center;color:#475569;font-size:14px;margin-top:8px;line-height:1.6}
+.slide-explain-text{line-height:1.9;color:#1f2937}
+.slide-explain-text h3{margin:8px 0 6px;color:#0f172a;font-size:1.05rem}
+.slide-explain-text p{margin:0 0 12px}
+.slide-explain-text ul{margin:0 0 12px 1.2em;padding:0}
+.slide-explain-text li{margin:4px 0}
+.memory-line{background:#fff7ed;border-left:6px solid #f97316;border-radius:12px;padding:10px 12px;color:#7c2d12}
+@media (max-width: 860px){
+  .slide-explain-grid{grid-template-columns:1fr}
+}
+</style>
+
+<style id="teaching-content-style">
+.teaching-content-card{background:#ffffff;border:1px solid #c7d2fe;border-radius:20px;padding:22px;margin:24px 0;box-shadow:0 12px 30px rgba(15,23,42,.08)}
+.teaching-content-card h2{margin-top:0;color:#1e1b4b}
+.teaching-content-card h3{margin-top:18px;color:#0f172a}
+.teaching-content-card p,.teaching-content-card li{line-height:1.9;color:#1f2937}
+.teaching-code-block,.teaching-output-block{white-space:pre-wrap;background:#020617;color:#e5e7eb;border-radius:16px;padding:16px;overflow:auto;font-family:Consolas,'Courier New',monospace;line-height:1.55}
+.teaching-output-block{background:#f8fafc;color:#0f172a;border:1px solid #e2e8f0}
+.teaching-mini-note{background:#eff6ff;border-left:6px solid #2563eb;border-radius:14px;padding:12px 14px;line-height:1.9;color:#1e3a8a}
+</style>
+</head><body>
+<section class="hero"><div class="hero-inner"><span class="badge">主題十｜投影片 33–37</span><h1>排程器與 Context Switch</h1><p>本主題說明 OS 如何決定「誰可以進入系統」、「誰下一個使用 CPU」、「誰暫時被換出記憶體」，並理解 context switch 如何保存舊行程、載入新行程。</p><div class="nav"><a class="btn" href="../index.html">回首頁</a><a class="btn" href="topic9.html">上一主題</a></div></div></section>
+<main class="wrap">
+<details class="slide-explain-wrapper" open=""><summary>一、投影片逐張下拉式詳細講解</summary><div class="detail-body"><p class="slide-intro-note">每張投影片都已把「圖片」與「自己的文字講解」放在同一個下拉式區塊中，方便一邊看圖、一邊理解重點。</p><details class="single-slide-detail" open=""><summary>投影片 33｜Long-Term Scheduler</summary><div class="slide-explain-grid"><div class="slide-explain-image"><img alt="投影片33 Long-Term Scheduler" class="slide-img" src="assets/slide33.jpg"/><div class="slide-caption">投影片 33｜Long-Term Scheduler</div></div><div class="slide-explain-text"><h3>（一）這張投影片在說什麼？</h3><p>這張說明長程排程器，也稱 job scheduler。它決定哪些 jobs 可以被帶入 ready queue，控制系統中同時存在的行程數量，也影響 multiprogramming 的程度。</p><h3>（二）核心觀念</h3><ul><li>Long-term scheduler 控制 admission。</li><li>執行頻率通常比 short-term scheduler 低。</li></ul><h3>（三）學習與考試重點</h3><p>長程排程器決定『哪些工作進系統』。</p><h3>（四）一句話記憶</h3><p class="memory-line">一句話記憶：長程排程器決定『哪些工作進系統』。</p></div></div></details><details class="single-slide-detail"><summary>投影片 34｜Short-Term Scheduler</summary><div class="slide-explain-grid"><div class="slide-explain-image"><img alt="投影片34 Short-Term Scheduler" class="slide-img" src="assets/slide34.jpg"/><div class="slide-caption">投影片 34｜Short-Term Scheduler</div></div><div class="slide-explain-text"><h3>（一）這張投影片在說什麼？</h3><p>這張說明短程排程器，也就是 CPU scheduler。它從 ready queue 中選出下一個要使用 CPU 的行程，執行頻率很高，因此必須非常快速。</p><h3>（二）核心觀念</h3><ul><li>Short-term scheduler 決定下一個 running process。</li><li>與 ready queue 和 CPU allocation 直接相關。</li></ul><h3>（三）學習與考試重點</h3><p>短程排程器決定『下一個誰用 CPU』。</p><h3>（四）一句話記憶</h3><p class="memory-line">一句話記憶：短程排程器決定『下一個誰用 CPU』。</p></div></div></details><details class="single-slide-detail"><summary>投影片 35｜Medium-Term Scheduler</summary><div class="slide-explain-grid"><div class="slide-explain-image"><img alt="投影片35 Medium-Term Scheduler" class="slide-img" src="assets/slide35.jpg"/><div class="slide-caption">投影片 35｜Medium-Term Scheduler</div></div><div class="slide-explain-text"><h3>（一）這張投影片在說什麼？</h3><p>這張介紹中程排程器。它可將部分行程從記憶體移出，降低 multiprogramming 程度，等條件合適再換回來。這與 swapping 的概念密切相關。</p><h3>（二）核心觀念</h3><ul><li>Medium-term scheduler 管理 swap out / swap in。</li><li>目的是控制記憶體壓力與系統負載。</li></ul><h3>（三）學習與考試重點</h3><p>中程排程器決定『哪些行程暫時離開記憶體』。</p><h3>（四）一句話記憶</h3><p class="memory-line">一句話記憶：中程排程器決定『哪些行程暫時離開記憶體』。</p></div></div></details><details class="single-slide-detail"><summary>投影片 36｜Context Switch</summary><div class="slide-explain-grid"><div class="slide-explain-image"><img alt="投影片36 Context Switch" class="slide-img" src="assets/slide36.jpg"/><div class="slide-caption">投影片 36｜Context Switch</div></div><div class="slide-explain-text"><h3>（一）這張投影片在說什麼？</h3><p>這張說明 context switch。當 CPU 從一個 process 切換到另一個 process，OS 必須保存目前行程的狀態，並載入下一個行程的狀態。這段時間不做使用者程式的有效工作，所以是 overhead。</p><h3>（二）核心觀念</h3><ul><li>保存舊 process 的 context。</li><li>載入新 process 的 context。</li><li>切換成本會影響系統效能。</li></ul><h3>（三）學習與考試重點</h3><p>Context switch 是必要但有成本的管理動作。</p><h3>（四）一句話記憶</h3><p class="memory-line">一句話記憶：Context switch 是必要但有成本的管理動作。</p></div></div></details><details class="single-slide-detail"><summary>投影片 37｜Context Switch continued</summary><div class="slide-explain-grid"><div class="slide-explain-image"><img alt="投影片37 Context Switch continued" class="slide-img" src="assets/slide37.jpg"/><div class="slide-caption">投影片 37｜Context Switch continued</div></div><div class="slide-explain-text"><h3>（一）這張投影片在說什麼？</h3><p>這張說明 context switch。當 CPU 從一個 process 切換到另一個 process，OS 必須保存目前行程的狀態，並載入下一個行程的狀態。這段時間不做使用者程式的有效工作，所以是 overhead。</p><h3>（二）核心觀念</h3><ul><li>保存舊 process 的 context。</li><li>載入新 process 的 context。</li><li>切換成本會影響系統效能。</li></ul><h3>（三）學習與考試重點</h3><p>Context switch 是必要但有成本的管理動作。</p><h3>（四）一句話記憶</h3><p class="memory-line">一句話記憶：Context switch 是必要但有成本的管理動作。</p></div></div></details></div></details>
+<details open=""><summary>二、三種 Scheduler 的角色</summary><div class="detail-body"><p><span class="pill">核心觀念</span> Scheduler 是作業系統的排程決策者。Long-term 控制哪些工作進入系統；Short-term 決定下一個拿 CPU 的行程；Medium-term 用 swap 調整記憶體與多工負載。</p><div class="scheduler-lanes"><div class="scheduler-card"><h4>Long-Term Scheduler</h4><span class="speed">較少執行</span><p>又稱 job scheduler，選擇哪些 process 進入 ready queue，控制 multiprogramming 程度。</p></div><div class="scheduler-card"><h4>Short-Term Scheduler</h4><span class="speed">最常執行</span><p>又稱 CPU scheduler，從 ready queue 選擇下一個 process 使用 CPU，必須很快。</p></div><div class="scheduler-card"><h4>Medium-Term Scheduler</h4><span class="speed">必要時執行</span><p>把行程從記憶體 swap out，之後再 swap in，以降低或調整系統負載。</p></div></div><div class="flowbox" id="flow-scheduler"><h3>Scheduler 流程動畫</h3><div class="flow-steps"><div class="flow-step">Long-Term</div><div class="flow-step">Short-Term</div><div class="flow-step">Medium-Term</div></div><div class="flow-caption"></div><div class="flow-controls"><button class="btn mini prev">上一步</button><button class="btn mini next">下一步</button><button class="btn mini reset">重新播放</button></div></div></div></details>
+<details><summary>三、Ready Queue、CPU、I/O Waiting 的關係</summary><div class="detail-body"><p>在多工系統中，行程可能排隊等待 CPU，也可能正在等待 I/O。Short-term scheduler 會從 ready queue 挑選行程進入 CPU；若行程需要 I/O，會暫時離開 CPU 進入 waiting。</p><div class="queue-demo"><div class="queue-box"><h4>Ready Queue</h4><div class="queue-item">P1</div><div class="queue-item">P2</div><div class="queue-item">P3</div></div><div class="map-arrow queue-arrow">→</div><div class="queue-box"><h4>CPU</h4><div class="cpu-chip">Running<br/>Process</div></div><div class="map-arrow queue-arrow">↔</div><div class="queue-box"><h4>I/O Waiting</h4><div class="queue-item io">Disk I/O</div><div class="queue-item io">Network I/O</div></div></div><p class="note">Ready 是「可以跑，只是還沒拿到 CPU」；Waiting 是「現在不能跑，因為還在等事件或 I/O」。</p></div></details>
+<details><summary>四、Context Switch：CPU 從一個行程切到另一個行程</summary><div class="detail-body"><p>Context switch 發生時，OS 需要保存目前行程的狀態，然後載入下一個行程的狀態。這些狀態主要存在 PCB 中，因此 PCB 是切換行程的關鍵。</p><div class="context-demo"><div class="proc-box"><h4>Process 0</h4><p class="save-load">save state into PCB0</p><div class="queue-item cpu">執行中 → 暫停</div></div><div><div class="cpu-chip">CPU</div><div class="map-arrow">⇄</div></div><div class="proc-box"><h4>Process 1</h4><p class="save-load">reload state from PCB1</p><div class="queue-item">等待 → 執行</div></div></div><div class="flowbox" id="flow-context-switch"><h3>Context Switch 動畫</h3><div class="flow-steps"><div class="flow-step">Interrupt / Event</div><div class="flow-step">Save old PCB</div><div class="flow-step">Load new PCB</div></div><div class="flow-caption"></div><div class="flow-controls"><button class="btn mini prev">上一步</button><button class="btn mini next">下一步</button><button class="btn mini reset">重新播放</button></div></div><p class="note">Context switch 不是免費的。切換時 CPU 沒有真正執行使用者程式，所以 OS 會希望切換必要但不要太頻繁。</p></div></details>
+<details><summary>五、Context Switch 的成本</summary><div class="detail-body"><div class="two-col"><div class="mini-card"><h4>成本來源</h4><p>儲存與載入 PCB、切換暫存器、更新記憶體管理資訊，都需要時間。</p></div><div class="mini-card"><h4>硬體支援</h4><p>若硬體提供多組 registers 或更快的保存機制，context switch 成本可降低。</p></div></div><p>投影片強調：context-switch time 是 overhead，系統切換越複雜，花費在切換上的時間就越多。</p></div></details>
+<details class="program-flow-card" open=""><summary>程式流程圖與流程講解</summary>
+<div class="detail-body">
+<h2>程式流程圖：排程器與 Context Switch</h2>
+<img alt="主題 10 程式流程圖" class="program-flow-img" src="assets/program_flow_topic10.svg"/>
+<h3>流程講解</h3>
+<div class="flow-explain">這張流程圖對應本頁「排程器與 Context Switch」的 C 程式執行邏輯。
+1、排程器選擇下一個行程。
+2、儲存目前行程狀態。
+3、載入新行程狀態。
+4、切換 CPU 控制權。
+5、新行程繼續執行。
+學生可以先看流程圖理解整體順序，再對照下方程式中的中文註解，確認每一段程式碼負責哪一個步驟。</div>
+</div>
+</details>
+<details class="program-flow-card" open=""><summary>可編輯 C 程式範例與線上編輯器</summary>
+<div class="detail-body">
+<h2>可編輯 C 程式：排程器與 Context Switch</h2>
+<p>這段程式依照上方流程圖設計，包含中文註解，適合貼到線上編輯器直接執行與修改。</p>
+<div class="code-card">
+<div class="code-head">
+<span class="code-title">lesson8_topic10_demo.c</span>
+<div class="code-actions">
+<button onclick="copyCode('code_topic_10')">複製程式</button>
+<button class="download-btn" onclick="downloadCode('code_topic_10','lesson8_topic10_demo.c')">下載 .c</button>
+<a href="https://www.onlinegdb.com/online_c_compiler" target="_blank">OnlineGDB</a>
+<a href="https://www.programiz.com/c-programming/online-compiler/" target="_blank">Programiz</a>
+<a href="https://onecompiler.com/c" target="_blank">OneCompiler</a>
+</div>
+</div>
+<textarea id="code_topic_10" spellcheck="false">#include &lt;stdio.h&gt;
+
+/*
+  主題 10：排程器與 Context Switch
+  功能：模擬兩個行程之間的 context switch。
+*/
+
+typedef struct {
+    char name;
+    int pc;      // program counter
+    int reg;     // register
+} PCB;
+
+int main(void) {
+    PCB p1 = {'A', 100, 5};
+    PCB p2 = {'B', 200, 8};
+
+    printf("目前執行 P%c：PC=%d, REG=%d\n", p1.name, p1.pc, p1.reg);
+    printf("Context Switch：儲存 P%c 狀態。\n", p1.name);
+    p1.pc += 10;
+    p1.reg += 1;
+
+    printf("載入 P%c 狀態：PC=%d, REG=%d\n", p2.name, p2.pc, p2.reg);
+    printf("CPU 控制權交給 P%c。\n", p2.name);
+
+    return 0;
+}</textarea>
+</div>
+<div class="editor-links">
+      線上編輯器：
+      <a href="https://www.onlinegdb.com/online_c_compiler" target="_blank">OnlineGDB C Compiler</a>
+<a href="https://www.programiz.com/c-programming/online-compiler/" target="_blank">Programiz C Compiler</a>
+<a href="https://onecompiler.com/c" target="_blank">OneCompiler C</a>
+</div>
+</div>
+</details>
+
+<details class="teaching-content-card" open=""><summary>程式題目完整教學內容</summary>
+<div class="detail-body">
+<h2>程式題目完整教學：排程器與 Context Switch</h2>
+<h3>一、程式題目講解</h3>
+<p>用 PCB 結構模擬 context switch 時儲存與載入行程狀態。</p>
+<p>重點是 PCB 內包含行程名稱、PC 與暫存器值，切換時要保存舊行程並載入新行程。</p>
+<h3>二、完整程式碼</h3>
+<p>以下程式碼可直接複製到 C 語言線上編譯器執行。程式中已加入中文註解，說明主要變數、判斷流程與輸出目的。</p>
+<pre class="teaching-code-block"><code>#include &lt;stdio.h&gt;
+
+/*
+  主題 10：排程器與 Context Switch
+  功能：模擬兩個行程之間的 context switch。
+*/
+
+typedef struct {
+    char name;
+    int pc;      // program counter
+    int reg;     // register
+} PCB;
+
+int main(void) {
+    PCB p1 = {&#x27;A&#x27;, 100, 5};
+    PCB p2 = {&#x27;B&#x27;, 200, 8};
+
+    printf(&quot;目前執行 P%c：PC=%d, REG=%d\n&quot;, p1.name, p1.pc, p1.reg);
+    printf(&quot;Context Switch：儲存 P%c 狀態。\n&quot;, p1.name);
+    p1.pc += 10;
+    p1.reg += 1;
+
+    printf(&quot;載入 P%c 狀態：PC=%d, REG=%d\n&quot;, p2.name, p2.pc, p2.reg);
+    printf(&quot;CPU 控制權交給 P%c。\n&quot;, p2.name);
+
+    return 0;
+}</code></pre>
+<h3>三、程式執行結果</h3>
+<pre class="teaching-output-block"><code>目前執行 PA：PC=100, REG=5
+Context Switch：儲存 PA 狀態。
+載入 PB 狀態：PC=200, REG=8
+CPU 控制權交給 PB。</code></pre>
+<p class="teaching-mini-note">結果說明：重點是 PCB 內包含行程名稱、PC 與暫存器值，切換時要保存舊行程並載入新行程。 程式依照設定的資料與控制流程逐步輸出，因此可以從結果看到每個步驟的執行順序與狀態變化。</p>
+<h3>四、程式流程圖與流程圖說明</h3>
+<p>本頁上方已提供對應的程式流程圖，圖中以「開始、資料設定、條件判斷、重複處理、輸出結果、結束」呈現程式執行順序。</p>
+<p>程式先顯示目前執行的 P A，模擬儲存狀態後，載入 P B 的狀態並把 CPU 控制權交給 P B。</p>
+<h3>五、重要函數與語法說明</h3>
+<p>typedef struct 定義 PCB 資料結構；結構變數 p1、p2 儲存行程狀態；. 運算子讀取結構欄位。</p>
+<h3>六、整體說明</h3>
+<p>本題的學習重點是把作業系統概念轉成可觀察的 C 程式流程。學生應先理解題目概念，再對照程式碼、流程圖與執行結果，掌握變數設定、條件判斷、迴圈處理與輸出結果之間的關係。</p>
+</div>
+</details>
+
+</main><div class="footer">Lesson 8 Topic 10｜Schedulers and Context Switch</div><script src="assets/script.js"></script></body></html>

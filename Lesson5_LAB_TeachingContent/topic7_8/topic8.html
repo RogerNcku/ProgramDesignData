@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh-Hant"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/><link href="assets/style.css" rel="stylesheet"/><script src="assets/script.js"></script><title>Lesson 5 主題 8：Circularly Linked List 環狀鏈結串列</title></head><body>
+<header class="hero"><div class="inner"><span class="badge">Lesson 5｜主題 8｜投影片 18</span><h1>主題 8：Circularly Linked List 環狀鏈結串列</h1><p>最後一個節點不指向 NULL，而是指回 head，形成循環結構。</p><div class="toolbar"><a class="btn secondary" href="../index.html">回 L5 首頁</a><a class="btn secondary" href="topic7.html">上一個：主題 7</a></div></div></header>
+<div class="wrap"><div class="layout"><aside class="sidebar"><div class="side-title">Lesson 5 主題導覽</div><nav class="nav"><a href="../index.html">L5 首頁</a><a href="topic7.html">7. Adding Polynomials 多項式相加</a>
+<a class="active" href="topic8.html">8. Circularly Linked List 環狀鏈結串列</a></nav></aside><main>
+<section class="card"><span class="badge">投影片 18</span><h2>一、主題核心概念</h2><p>Circularly Linked List 和一般單向鏈結串列最大的差別是尾端不指向 NULL，而是指回 head。它適合循環處理，例如排程、輪流執行或遊戲角色輪替。</p></section>
+<section class="card"><h2>二、投影片逐張下拉式詳細講解</h2><p>每一張投影片都已把圖片與自己的文字講解合併在同一個下拉式區塊中。點開後可以直接對照圖片閱讀說明。</p><div class="slide-detail-list"><details class="slide-detail"><summary>投影片 18｜Circularly Linked List 環狀鏈結串列</summary><div class="slide-detail-body"><div class="slide-detail-grid"><div><img alt="投影片 18：Circularly Linked List 環狀鏈結串列" class="slide-detail-img" src="assets/slide18.jpg"/><div class="figure-caption">投影片 18</div></div><div class="slide-explain"><h3>Circularly Linked List 環狀鏈結串列</h3><h4>詳細說明與講解</h4><p>1、這張投影片介紹 Circularly Linked List。它和一般單向鏈結串列最大的不同是：最後一個節點不是指向 NULL，而是指回第一個節點。</p><p>2、因為最後節點會連回 head，所以整條串列形成一個環。這種結構適合需要循環處理的問題，例如輪流排程、循環播放、遊戲中的輪流回合等。</p><p>3、走訪環狀串列時不能用 current != NULL 作為停止條件，因為永遠不會遇到 NULL。通常要記住起點，走回起點時就停止。</p><p>4、插入與刪除時，也要特別注意最後節點的 link 必須維持指向 head，否則環狀結構會被破壞。</p><div class="slide-memory">一句話記憶：Circular List 的尾端不是 NULL，而是接回開頭。</div></div></div></div></details></div></section>
+<section class="card"><h2>三、動畫流程圖：Circularly Linked List 環狀鏈結串列</h2><div class="flow-area" id="flow8"><div class="flow"><div class="node">從 head 出發</div><div class="node">沿 next 前進</div><div class="node">到達尾節點</div><div class="node">尾端指回 head</div><div class="node">回到起點</div><div class="node">停止一圈</div></div><div class="progress"><div class="bar"></div></div><div class="stepbox"></div><div class="btns" style="margin-top:12px"><button class="btn secondary" onclick="prevFlow('flow8')">上一步</button><button class="btn" onclick="nextFlow('flow8')">下一步</button><button class="btn orange" onclick="playFlow('flow8')">自動播放</button><button class="btn secondary" onclick="resetFlow('flow8')">重新開始</button></div></div><script>initFlow('flow8',['走訪仍然從 head 開始。','每次 current = current->next。','走到最後一個節點時不會遇到 NULL。','最後一個節點的 next 會回到 head。','若 current 再次等於 head，代表完成一圈。','因此走訪必須用「回到 head」當停止條件。']);</script></section>
+<section class="card"><h2>四、動畫表格：步驟與重點整理</h2><p>請按「下一步」或「自動播放」觀察本主題的操作流程與注意事項。</p><div class="flow-area" id="table8"><div class="anim-table-wrap"><table class="anim-table"><thead><tr><th>類型/情況</th><th>結尾方式</th><th>效果</th><th>注意事項</th></tr></thead><tbody><tr><td>一般 Singly List</td><td>尾端 next=NULL</td><td>自然停止</td><td>while(curr!=NULL)</td></tr><tr><td>Circular List</td><td>尾端 next=head</td><td>形成循環</td><td>不可用 NULL 當唯一停止條件</td></tr><tr><td>空串列</td><td>head=NULL</td><td>沒有節點</td><td>插入第一個節點時 next 指向自己</td></tr><tr><td>單節點環</td><td>node-&gt;next=node</td><td>自己形成一圈</td><td>刪除時要特別處理</td></tr><tr><td>應用</td><td>循環排程</td><td>一直輪替</td><td>適合重複處理</td></tr></tbody></table></div><div class="progress"><div class="bar"></div></div><div class="table-note"></div><div class="btns" style="margin-top:12px"><button class="btn secondary" onclick="prevTable('table8')">上一步</button><button class="btn" onclick="nextTable('table8')">下一步</button><button class="btn orange" onclick="playTable('table8')">自動播放</button><button class="btn secondary" onclick="resetTable('table8')">重新開始</button></div></div><script>initTable('table8',['一般 Singly List → 尾端 next=NULL → 自然停止 → while(curr!=NULL)','Circular List → 尾端 next=head → 形成循環 → 不可用 NULL 當唯一停止條件','空串列 → head=NULL → 沒有節點 → 插入第一個節點時 next 指向自己','單節點環 → node->next=node → 自己形成一圈 → 刪除時要特別處理','應用 → 循環排程 → 一直輪替 → 適合重複處理']);</script></section>
+<details open=""><summary>五、完整中文講解</summary><div class="content"><h3>（一）本主題要學會什麼？</h3><p>Circularly Linked List 和一般單向鏈結串列最大的差別是尾端不指向 NULL，而是指回 head。它適合循環處理，例如排程、輪流執行或遊戲角色輪替。</p><h3>（二）實作時最重要的觀念</h3><div class="grid2"><div class="mini"><b>資料結構</b><br/>先看清楚資料是用 Array、Node、Singly List、Circular List 或 Doubly List 表示。</div><div class="mini"><b>指標方向</b><br/>Linked List 題目幾乎都在考指標怎麼接、怎麼斷、怎麼重新連起來。</div><div class="mini"><b>特殊情況</b><br/>空串列、頭節點、尾節點、找不到資料，都是程式容易錯的地方。</div><div class="mini"><b>測試方式</b><br/>每做完 insert/delete，都用 print 檢查目前串列是否符合預期。</div></div><div class="example">環狀串列沒有自然的 NULL 結尾，因此走訪時最怕無限迴圈。實作時通常用 do-while，並在再次回到 head 時停止。</div></div></details>
+<details open=""><summary>六、可編輯 C 程式範例：含中文註解與線上編輯器</summary><div class="content"><div class="codewrap"><div class="codebar"><span>circular_list.c</span><div class="btns"><button class="btn green" onclick="copyCode('code8')">複製程式</button><button class="btn orange" onclick="downloadCode('code8','circular_list.c')">下載 .c</button><a class="btn secondary" href="https://www.onlinegdb.com/online_c_compiler" target="_blank">OnlineGDB</a><a class="btn secondary" href="https://www.programiz.com/c-programming/online-compiler/" target="_blank">Programiz</a><a class="btn secondary" href="https://onecompiler.com/c" target="_blank">OneCompiler</a></div></div><textarea class="codearea" id="code8" spellcheck="false">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+/*
+    Circularly Linked List
+    重點：最後一個節點的 next 不是 NULL，而是指回 head。
+*/
+
+typedef struct Node {
+    int data;
+    struct Node *next;
+} Node;
+
+Node* createNode(int data) {
+    Node *n = (Node*)malloc(sizeof(Node));
+    if (!n) exit(1);
+    n-&gt;data = data;
+    n-&gt;next = NULL;
+    return n;
+}
+
+void insertEnd(Node **head, int data) {
+    Node *newNode = createNode(data);
+    if (*head == NULL) {
+        *head = newNode;
+        newNode-&gt;next = newNode; // 單一節點時，自己指回自己
+        return;
+    }
+    Node *tail = *head;
+    while (tail-&gt;next != *head) tail = tail-&gt;next;
+    tail-&gt;next = newNode;
+    newNode-&gt;next = *head; // 尾端指回 head
+}
+
+void printOneRound(Node *head) {
+    if (head == NULL) return;
+    Node *p = head;
+    do {
+        printf("%d -&gt; ", p-&gt;data);
+        p = p-&gt;next;
+    } while (p != head); // 回到 head 代表走完一圈
+    printf("回到 head\n");
+}
+
+int main(void) {
+    Node *head = NULL;
+    insertEnd(&amp;head, 10);
+    insertEnd(&amp;head, 20);
+    insertEnd(&amp;head, 30);
+    printOneRound(head);
+    return 0;
+}
+</textarea></div></div></details>
+
+<section class="card program-teaching-card">
+<h2>新增：程式題目教學內容（依指定格式）</h2>
+<div class="content">
+<h3>一、程式題目講解</h3>
+<p>本題示範環狀鏈結串列。學生需要理解環狀串列的最後一個節點不指向 NULL，而是指回 head，因此走訪時不能用 NULL 當停止條件。</p>
+<h3>二、完整程式碼</h3>
+<p>以下為本頁程式題目的完整可執行 C 程式碼，已在重要程式區塊加入中文註解，方便初學者理解程式功能與流程。</p>
+<pre class="codearea" style="height:auto;min-height:0;white-space:pre-wrap;overflow:auto;">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+/*
+    Circularly Linked List
+    重點：最後一個節點的 next 不是 NULL，而是指回 head。
+*/
+
+typedef struct Node {
+    int data;
+    struct Node *next;
+} Node;
+
+Node* createNode(int data) {
+    Node *n = (Node*)malloc(sizeof(Node));
+    if (!n) exit(1);
+    n-&gt;data = data;
+    n-&gt;next = NULL;
+    return n;
+}
+
+void insertEnd(Node **head, int data) {
+    Node *newNode = createNode(data);
+    if (*head == NULL) {
+        *head = newNode;
+        newNode-&gt;next = newNode; // 單一節點時，自己指回自己
+        return;
+    }
+    Node *tail = *head;
+    while (tail-&gt;next != *head) tail = tail-&gt;next;
+    tail-&gt;next = newNode;
+    newNode-&gt;next = *head; // 尾端指回 head
+}
+
+void printOneRound(Node *head) {
+    if (head == NULL) return;
+    Node *p = head;
+    do {
+        printf(&quot;%d -&gt; &quot;, p-&gt;data);
+        p = p-&gt;next;
+    } while (p != head); // 回到 head 代表走完一圈
+    printf(&quot;回到 head\n&quot;);
+}
+
+int main(void) {
+    Node *head = NULL;
+    insertEnd(&amp;head, 10);
+    insertEnd(&amp;head, 20);
+    insertEnd(&amp;head, 30);
+    printOneRound(head);
+    return 0;
+}
+</pre>
+<h3>三、程式執行結果</h3>
+<p>程式執行後會得到以下輸出：</p>
+<pre class="codearea" style="height:auto;min-height:0;white-space:pre-wrap;overflow:auto;">10 -&gt; 20 -&gt; 30 -&gt; 回到 head</pre>
+<p>程式依序在尾端插入 10、20、30。insertEnd 會讓最後一個節點的 next 指回 head，因此 printOneRound 從 head 出發，印完 30 後會回到 head，輸出最後用「回到 head」表示已走完一圈。</p>
+<h3>四、程式流程圖與流程圖說明</h3>
+<p>本題流程圖如下，呈現程式的主要執行順序、判斷條件與資料處理流程。</p>
+<div class="program-flow-figure"><img alt="主題 8 程式流程圖" class="program-flow-img" src="assets/program_flow_topic8.svg"/><div class="figure-caption">主題 8：Circularly Linked List 環狀鏈結串列：程式流程圖</div></div>
+<p>流程先建立空串列。第一個節點建立後讓 newNode-&gt;next 指向自己。後續插入時，先找到目前尾端，也就是 tail-&gt;next == head 的節點，再讓 tail 指向新節點，新節點指回 head。輸出使用 do-while，確保至少印出一次並在回到 head 時停止。</p>
+<h3>五、重要函數與語法說明</h3>
+<ol><li>insertEnd：將新節點加入環狀串列尾端。</li><li>tail-&gt;next != *head：尋找環狀串列尾端。</li><li>newNode-&gt;next = newNode：單一節點時自己形成一個環。</li><li>do-while：適合至少要執行一次的環狀走訪。</li><li>p != head：用是否回到起點判斷一圈結束。</li></ol>
+<h3>六、整體說明</h3>
+<p>本題重點是停止條件改變。一般單向串列走到 NULL 停止，但環狀串列沒有 NULL 尾端，因此要用「是否回到 head」判斷是否完成一圈。</p>
+</div>
+</section>
+<section class="card program-flow-card">
+<h2>七、程式流程圖：Circular Linked List 環狀串列</h2>
+<p>下圖是本主題對應的程式執行流程，適合搭配下方 C 程式碼一起看。</p>
+<div class="program-flow-figure"><img alt="主題 8 程式流程圖" class="program-flow-img" src="assets/program_flow_topic8.svg"/><div class="figure-caption">主題 8 程式流程圖：Circular Linked List 環狀串列</div></div>
+<div class="flow-explain"><h3>流程講解</h3><ol><li>環狀鏈結串列的最後一個節點不指向 NULL，而是指回第一個節點。</li><li>如果串列是空的，新節點的 next 要指向自己。</li><li>如果串列非空，新節點要插入既有環狀連線中。</li><li>常用 last 指標管理環狀串列，因為 last-&gt;next 就是 head。</li><li>走訪時不能用 current != NULL 當停止條件，而要判斷是否回到起點。</li></ol><p>這張流程圖把本頁程式的執行順序整理成一條清楚路徑。閱讀時先看資料如何被建立，再看條件判斷與指標如何改變，最後用輸出結果確認程式邏輯是否正確。</p></div>
+</section>
+</main></div></div><footer class="footer">Lesson 5｜主題 8：Circularly Linked List 環狀鏈結串列</footer></body></html>

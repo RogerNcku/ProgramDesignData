@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="zh-Hant"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/><title>Lesson 8 主題五｜行程與記憶體管理基礎</title><link href="assets/style.css" rel="stylesheet"/>
+<style>
+.program-flow-card{background:#ffffff;border:1px solid #dbeafe;border-radius:20px;padding:22px;margin:24px 0;box-shadow:0 12px 30px rgba(15,23,42,.08)}
+.program-flow-card h2{margin-top:0;color:#0f172a}
+.program-flow-img{width:100%;border-radius:18px;border:1px solid #e2e8f0;background:#f8fafc}
+.flow-explain{line-height:1.9;background:#f8fafc;border-left:6px solid #2563eb;border-radius:14px;padding:16px 18px;white-space:pre-line}
+.code-card{background:#0f172a;color:#e5e7eb;border-radius:20px;padding:0;margin:24px 0;overflow:hidden;box-shadow:0 12px 32px rgba(15,23,42,.20)}
+.code-card .code-head{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between;background:#111827;padding:14px 16px;border-bottom:1px solid #334155}
+.code-card .code-title{font-weight:700;color:#f8fafc}
+.code-card .code-actions{display:flex;gap:8px;flex-wrap:wrap}
+.code-card button,.code-card a{border:0;border-radius:999px;padding:8px 12px;font-weight:700;text-decoration:none;cursor:pointer;background:#2563eb;color:white;font-size:14px}
+.code-card a{background:#475569}
+.code-card button.download-btn{background:#f97316}
+.code-card textarea{width:100%;min-height:380px;box-sizing:border-box;background:#020617;color:#e5e7eb;border:0;padding:18px;font-family:Consolas,'Courier New',monospace;font-size:15px;line-height:1.55;resize:vertical}
+.editor-links{margin-top:12px;line-height:1.8}
+.editor-links a{display:inline-block;margin:4px 8px 4px 0;padding:8px 12px;border-radius:999px;background:#e0f2fe;color:#075985;text-decoration:none;font-weight:700}
+</style>
+<script>
+function copyCode(id){
+  const el=document.getElementById(id);
+  if(!el) return;
+  el.select();
+  document.execCommand('copy');
+  alert('程式碼已複製');
+}
+function downloadCode(id, filename){
+  const el=document.getElementById(id);
+  if(!el) return;
+  const blob=new Blob([el.value], {type:'text/plain;charset=utf-8'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download=filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(()=>URL.revokeObjectURL(a.href), 500);
+}
+</script>
+
+<style id="slide-dropdown-explanation-style">
+.slide-explain-wrapper{margin:20px 0}
+.slide-intro-note{line-height:1.9;background:#eff6ff;border-left:6px solid #2563eb;border-radius:14px;padding:14px 16px;color:#1e3a8a}
+.single-slide-detail{margin:18px 0;border:1px solid #dbeafe;border-radius:18px;background:#ffffff;box-shadow:0 10px 24px rgba(15,23,42,.07);overflow:hidden}
+.single-slide-detail>summary{cursor:pointer;padding:16px 18px;font-weight:800;color:#0f172a;background:linear-gradient(135deg,#eff6ff,#f8fafc);list-style:none}
+.single-slide-detail>summary::-webkit-details-marker{display:none}
+.single-slide-detail>summary::before{content:"＋";display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;margin-right:10px;border-radius:999px;background:#2563eb;color:white;font-weight:900}
+.single-slide-detail[open]>summary::before{content:"－";background:#f97316}
+.slide-explain-grid{display:grid;grid-template-columns:minmax(280px,46%) 1fr;gap:22px;padding:20px;align-items:start}
+.slide-explain-image{background:#f8fafc;border:1px solid #e2e8f0;border-radius:16px;padding:12px}
+.slide-explain-image .slide-img{width:100%;height:auto;border-radius:12px;border:1px solid #e5e7eb;background:white}
+.slide-caption{text-align:center;color:#475569;font-size:14px;margin-top:8px;line-height:1.6}
+.slide-explain-text{line-height:1.9;color:#1f2937}
+.slide-explain-text h3{margin:8px 0 6px;color:#0f172a;font-size:1.05rem}
+.slide-explain-text p{margin:0 0 12px}
+.slide-explain-text ul{margin:0 0 12px 1.2em;padding:0}
+.slide-explain-text li{margin:4px 0}
+.memory-line{background:#fff7ed;border-left:6px solid #f97316;border-radius:12px;padding:10px 12px;color:#7c2d12}
+@media (max-width: 860px){
+  .slide-explain-grid{grid-template-columns:1fr}
+}
+</style>
+
+<style id="teaching-content-style">
+.teaching-content-card{background:#ffffff;border:1px solid #c7d2fe;border-radius:20px;padding:22px;margin:24px 0;box-shadow:0 12px 30px rgba(15,23,42,.08)}
+.teaching-content-card h2{margin-top:0;color:#1e1b4b}
+.teaching-content-card h3{margin-top:18px;color:#0f172a}
+.teaching-content-card p,.teaching-content-card li{line-height:1.9;color:#1f2937}
+.teaching-code-block,.teaching-output-block{white-space:pre-wrap;background:#020617;color:#e5e7eb;border-radius:16px;padding:16px;overflow:auto;font-family:Consolas,'Courier New',monospace;line-height:1.55}
+.teaching-output-block{background:#f8fafc;color:#0f172a;border:1px solid #e2e8f0}
+.teaching-mini-note{background:#eff6ff;border-left:6px solid #2563eb;border-radius:14px;padding:12px 14px;line-height:1.9;color:#1e3a8a}
+</style>
+</head><body>
+<section class="hero"><div class="hero-inner"><span class="badge">主題五｜投影片 15–16</span><h1>行程與記憶體管理基礎</h1><p>本主題說明作業系統最重要的兩個管理任務：Process Management 與 Memory Management。Process 是正在執行中的程式，而 Memory Management 則負責決定哪些資料與指令要放在記憶體中。</p><div class="nav"><a class="btn" href="../index.html">回首頁</a><a class="btn" href="topic6.html">下一主題</a></div></div></section>
+<main class="wrap">
+<details class="slide-explain-wrapper" open=""><summary>一、投影片逐張下拉式詳細講解</summary><div class="detail-body"><p class="slide-intro-note">每張投影片都已把「圖片」與「自己的文字講解」放在同一個下拉式區塊中，方便一邊看圖、一邊理解重點。</p><details class="single-slide-detail" open=""><summary>投影片 15｜Process Management</summary><div class="slide-explain-grid"><div class="slide-explain-image"><img alt="投影片15 Process Management" class="slide-img" src="assets/slide15.jpg"/><div class="slide-caption">投影片 15｜Process Management</div></div><div class="slide-explain-text"><h3>（一）這張投影片在說什麼？</h3><p>這張介紹行程管理。Process 是正在執行中的 program，是 OS 管理 CPU 與資源的基本單位。程式本身只是放在磁碟上的被動檔案；當它被載入並開始執行，就成為 process。</p><h3>（二）核心觀念</h3><ul><li>Program 是 passive entity，process 是 active entity。</li><li>OS 要負責建立、排程、暫停、恢復與結束行程。</li></ul><h3>（三）學習與考試重點</h3><p>一定要分清楚 program 與 process。</p><h3>（四）一句話記憶</h3><p class="memory-line">一句話記憶：一定要分清楚 program 與 process。</p></div></div></details><details class="single-slide-detail"><summary>投影片 16｜Memory Management</summary><div class="slide-explain-grid"><div class="slide-explain-image"><img alt="投影片16 Memory Management" class="slide-img" src="assets/slide16.jpg"/><div class="slide-caption">投影片 16｜Memory Management</div></div><div class="slide-explain-text"><h3>（一）這張投影片在說什麼？</h3><p>這張說明記憶體管理。程式執行前，指令與資料必須被放入記憶體；OS 要追蹤哪些記憶體正在被使用、由誰使用，並決定何時配置與回收。</p><h3>（二）核心觀念</h3><ul><li>Memory 是程式執行的必要空間。</li><li>OS 要管理配置、保護、回收與位址轉換。</li></ul><h3>（三）學習與考試重點</h3><p>記憶體管理不是只放資料，也包含保護與效率。</p><h3>（四）一句話記憶</h3><p class="memory-line">一句話記憶：記憶體管理不是只放資料，也包含保護與效率。</p></div></div></details></div></details>
+<details open=""><summary>二、Process Management：什麼是 Process？</summary><div class="detail-body"><p><span class="pill">核心觀念</span> Process 是 program in execution，也就是「正在執行中的程式」。Program 本身是被動的檔案或程式碼；當它被載入並開始執行，就變成主動的 process。</p><div class="process-diagram"><div class="process-box"><h4>Program</h4><p>被動實體，被放在磁碟或記憶體中，尚未真正使用 CPU。</p></div><div class="arrow-big">→</div><div class="process-box"><h4>Process</h4><p>主動實體，正在執行，會需要 CPU、memory、I/O 與 files。</p></div></div><div class="flowbox" id="flow-process"><h3>Process 形成與結束動畫</h3><div class="flow-steps"><div class="flow-step">Program 被保存</div><div class="flow-step">開始執行成 Process</div><div class="flow-step">結束後回收資源</div></div><div class="flow-caption"></div><div class="flow-controls"><button class="btn mini prev">上一步</button><button class="btn mini next">下一步</button><button class="btn mini reset">重新播放</button></div></div></div></details>
+<details><summary>三、Process 需要哪些資源？</summary><div class="detail-body"><p>投影片 15 說明 Process 不是只需要程式碼，它還需要系統資源才能完成工作。這些資源通常由作業系統管理與分配。</p><div class="resource-box"><h4>Process 常用資源</h4><div class="resource-list"><span class="resource">CPU</span><span class="resource">Memory</span><span class="resource">I/O</span><span class="resource">Files</span><span class="resource">Initialization Data</span></div></div><div class="two-col"><div class="mini-card"><h4>Single-threaded Process</h4><p>單執行緒行程只有一個 program counter，用來記錄下一個要執行的指令位置。</p></div><div class="mini-card"><h4>Multi-threaded Process</h4><p>多執行緒行程中，每個 thread 通常都有自己的 program counter，因此可以在同一個 process 內處理多條執行路徑。</p></div></div><p class="note">簡單記法：Program 是「還沒跑的程式」；Process 是「正在跑的程式」。</p></div></details>
+<details><summary>四、Memory Management：記憶體管理在做什麼？</summary><div class="detail-body"><p>投影片 16 的重點是：資料與指令要被 CPU 處理或執行前，必須先進入 main memory。因此作業系統必須管理記憶體空間。</p><div class="memory-demo"><div class="cpu-chip">CPU<br/>執行指令</div><div class="mem-column"><div class="mem-block mem-os">Operating System</div><div class="mem-block mem-p1">Program / Data A</div><div class="mem-block mem-p2">Program / Data B</div><div class="mem-block mem-free">Free Memory</div></div></div><div class="flowbox" id="flow-memory"><h3>Memory Management 動畫</h3><div class="flow-steps"><div class="flow-step">資料先進記憶體</div><div class="flow-step">指令在記憶體中執行</div><div class="flow-step">決定移入或移出</div><div class="flow-step">配置與釋放空間</div></div><div class="flow-caption"></div><div class="flow-controls"><button class="btn mini prev">上一步</button><button class="btn mini next">下一步</button><button class="btn mini reset">重新播放</button></div></div></div></details>
+<details><summary>五、記憶體管理的四個主要工作</summary><div class="detail-body"><div class="two-col"><div class="mini-card"><h4>1、記錄哪些記憶體正在使用</h4><p>OS 需要知道目前哪些區塊被哪些行程使用，哪些區塊還是空的。</p></div><div class="mini-card"><h4>2、決定哪些 process / data 要移入或移出</h4><p>當記憶體不足或需要執行新程式時，OS 會判斷哪些內容要保留，哪些要移出。</p></div><div class="mini-card"><h4>3、根據需求分配記憶體</h4><p>當新行程開始執行，OS 會分配合適的記憶體空間。</p></div><div class="mini-card"><h4>4、釋放不再使用的空間</h4><p>當行程結束後，OS 會回收資源，讓其他行程可以使用。</p></div></div></div></details>
+<details class="program-flow-card" open=""><summary>程式流程圖與流程講解</summary>
+<div class="detail-body">
+<h2>程式流程圖：行程與記憶體管理基礎</h2>
+<img alt="主題 5 程式流程圖" class="program-flow-img" src="assets/program_flow_topic5.svg"/>
+<h3>流程講解</h3>
+<div class="flow-explain">這張流程圖對應本頁「行程與記憶體管理基礎」的 C 程式執行邏輯。
+1、建立行程需求。
+2、檢查記憶體空間。
+3、足夠則配置。
+4、不足則等待或拒絕。
+5、釋放記憶體。
+學生可以先看流程圖理解整體順序，再對照下方程式中的中文註解，確認每一段程式碼負責哪一個步驟。</div>
+</div>
+</details>
+<details class="program-flow-card" open=""><summary>可編輯 C 程式範例與線上編輯器</summary>
+<div class="detail-body">
+<h2>可編輯 C 程式：行程與記憶體管理基礎</h2>
+<p>這段程式依照上方流程圖設計，包含中文註解，適合貼到線上編輯器直接執行與修改。</p>
+<div class="code-card">
+<div class="code-head">
+<span class="code-title">lesson8_topic5_demo.c</span>
+<div class="code-actions">
+<button onclick="copyCode('code_topic_5')">複製程式</button>
+<button class="download-btn" onclick="downloadCode('code_topic_5','lesson8_topic5_demo.c')">下載 .c</button>
+<a href="https://www.onlinegdb.com/online_c_compiler" target="_blank">OnlineGDB</a>
+<a href="https://www.programiz.com/c-programming/online-compiler/" target="_blank">Programiz</a>
+<a href="https://onecompiler.com/c" target="_blank">OneCompiler</a>
+</div>
+</div>
+<textarea id="code_topic_5" spellcheck="false">#include &lt;stdio.h&gt;
+
+/*
+  主題 5：行程與記憶體管理基礎
+  功能：模擬行程向 OS 申請記憶體。
+*/
+
+int main(void) {
+    int totalMemory = 100;
+    int request[] = {30, 50, 40, 20};
+    int used = 0;
+    int i;
+
+    for (i = 0; i &lt; 4; i++) {
+        printf("P%d 申請 %d MB：", i + 1, request[i]);
+        if (used + request[i] &lt;= totalMemory) {
+            used += request[i];
+            printf("配置成功，目前使用 %d/%d MB\n", used, totalMemory);
+        } else {
+            printf("配置失敗，記憶體不足。\n");
+        }
+    }
+    return 0;
+}</textarea>
+</div>
+<div class="editor-links">
+      線上編輯器：
+      <a href="https://www.onlinegdb.com/online_c_compiler" target="_blank">OnlineGDB C Compiler</a>
+<a href="https://www.programiz.com/c-programming/online-compiler/" target="_blank">Programiz C Compiler</a>
+<a href="https://onecompiler.com/c" target="_blank">OneCompiler C</a>
+</div>
+</div>
+</details>
+
+<details class="teaching-content-card" open=""><summary>程式題目完整教學內容</summary>
+<div class="detail-body">
+<h2>程式題目完整教學：行程與記憶體管理基礎</h2>
+<h3>一、程式題目講解</h3>
+<p>模擬行程向作業系統申請記憶體，並判斷是否配置成功。</p>
+<p>核心觀念是記憶體總量、已使用量與配置限制：申請量加上已使用量不能超過總記憶體。</p>
+<h3>二、完整程式碼</h3>
+<p>以下程式碼可直接複製到 C 語言線上編譯器執行。程式中已加入中文註解，說明主要變數、判斷流程與輸出目的。</p>
+<pre class="teaching-code-block"><code>#include &lt;stdio.h&gt;
+
+/*
+  主題 5：行程與記憶體管理基礎
+  功能：模擬行程向 OS 申請記憶體。
+*/
+
+int main(void) {
+    int totalMemory = 100;
+    int request[] = {30, 50, 40, 20};
+    int used = 0;
+    int i;
+
+    for (i = 0; i &lt; 4; i++) {
+        printf(&quot;P%d 申請 %d MB：&quot;, i + 1, request[i]);
+        if (used + request[i] &lt;= totalMemory) {
+            used += request[i];
+            printf(&quot;配置成功，目前使用 %d/%d MB\n&quot;, used, totalMemory);
+        } else {
+            printf(&quot;配置失敗，記憶體不足。\n&quot;);
+        }
+    }
+    return 0;
+}</code></pre>
+<h3>三、程式執行結果</h3>
+<pre class="teaching-output-block"><code>P1 申請 30 MB：配置成功，目前使用 30/100 MB
+P2 申請 50 MB：配置成功，目前使用 80/100 MB
+P3 申請 40 MB：配置失敗，記憶體不足。
+P4 申請 20 MB：配置成功，目前使用 100/100 MB</code></pre>
+<p class="teaching-mini-note">結果說明：核心觀念是記憶體總量、已使用量與配置限制：申請量加上已使用量不能超過總記憶體。 程式依照設定的資料與控制流程逐步輸出，因此可以從結果看到每個步驟的執行順序與狀態變化。</p>
+<h3>四、程式流程圖與流程圖說明</h3>
+<p>本頁上方已提供對應的程式流程圖，圖中以「開始、資料設定、條件判斷、重複處理、輸出結果、結束」呈現程式執行順序。</p>
+<p>程式依序處理四個行程的記憶體請求，成功就累加 used，失敗就顯示記憶體不足。</p>
+<h3>五、重要函數與語法說明</h3>
+<p>if 條件判斷是否還有足夠空間；陣列 request[] 儲存各行程申請量；printf() 顯示配置結果。</p>
+<h3>六、整體說明</h3>
+<p>本題的學習重點是把作業系統概念轉成可觀察的 C 程式流程。學生應先理解題目概念，再對照程式碼、流程圖與執行結果，掌握變數設定、條件判斷、迴圈處理與輸出結果之間的關係。</p>
+</div>
+</details>
+
+</main><div class="footer">Lesson 8 Topic 5｜Process and Memory Management</div><script src="assets/script.js"></script></body></html>

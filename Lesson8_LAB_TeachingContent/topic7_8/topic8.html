@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="zh-Hant"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/><title>Lesson 8 主題八｜儲存管理與安全保護</title><link href="assets/style.css" rel="stylesheet"/>
+<style>
+.program-flow-card{background:#ffffff;border:1px solid #dbeafe;border-radius:20px;padding:22px;margin:24px 0;box-shadow:0 12px 30px rgba(15,23,42,.08)}
+.program-flow-card h2{margin-top:0;color:#0f172a}
+.program-flow-img{width:100%;border-radius:18px;border:1px solid #e2e8f0;background:#f8fafc}
+.flow-explain{line-height:1.9;background:#f8fafc;border-left:6px solid #2563eb;border-radius:14px;padding:16px 18px;white-space:pre-line}
+.code-card{background:#0f172a;color:#e5e7eb;border-radius:20px;padding:0;margin:24px 0;overflow:hidden;box-shadow:0 12px 32px rgba(15,23,42,.20)}
+.code-card .code-head{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between;background:#111827;padding:14px 16px;border-bottom:1px solid #334155}
+.code-card .code-title{font-weight:700;color:#f8fafc}
+.code-card .code-actions{display:flex;gap:8px;flex-wrap:wrap}
+.code-card button,.code-card a{border:0;border-radius:999px;padding:8px 12px;font-weight:700;text-decoration:none;cursor:pointer;background:#2563eb;color:white;font-size:14px}
+.code-card a{background:#475569}
+.code-card button.download-btn{background:#f97316}
+.code-card textarea{width:100%;min-height:380px;box-sizing:border-box;background:#020617;color:#e5e7eb;border:0;padding:18px;font-family:Consolas,'Courier New',monospace;font-size:15px;line-height:1.55;resize:vertical}
+.editor-links{margin-top:12px;line-height:1.8}
+.editor-links a{display:inline-block;margin:4px 8px 4px 0;padding:8px 12px;border-radius:999px;background:#e0f2fe;color:#075985;text-decoration:none;font-weight:700}
+</style>
+<script>
+function copyCode(id){
+  const el=document.getElementById(id);
+  if(!el) return;
+  el.select();
+  document.execCommand('copy');
+  alert('程式碼已複製');
+}
+function downloadCode(id, filename){
+  const el=document.getElementById(id);
+  if(!el) return;
+  const blob=new Blob([el.value], {type:'text/plain;charset=utf-8'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download=filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(()=>URL.revokeObjectURL(a.href), 500);
+}
+</script>
+
+<style id="slide-dropdown-explanation-style">
+.slide-explain-wrapper{margin:20px 0}
+.slide-intro-note{line-height:1.9;background:#eff6ff;border-left:6px solid #2563eb;border-radius:14px;padding:14px 16px;color:#1e3a8a}
+.single-slide-detail{margin:18px 0;border:1px solid #dbeafe;border-radius:18px;background:#ffffff;box-shadow:0 10px 24px rgba(15,23,42,.07);overflow:hidden}
+.single-slide-detail>summary{cursor:pointer;padding:16px 18px;font-weight:800;color:#0f172a;background:linear-gradient(135deg,#eff6ff,#f8fafc);list-style:none}
+.single-slide-detail>summary::-webkit-details-marker{display:none}
+.single-slide-detail>summary::before{content:"＋";display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;margin-right:10px;border-radius:999px;background:#2563eb;color:white;font-weight:900}
+.single-slide-detail[open]>summary::before{content:"－";background:#f97316}
+.slide-explain-grid{display:grid;grid-template-columns:minmax(280px,46%) 1fr;gap:22px;padding:20px;align-items:start}
+.slide-explain-image{background:#f8fafc;border:1px solid #e2e8f0;border-radius:16px;padding:12px}
+.slide-explain-image .slide-img{width:100%;height:auto;border-radius:12px;border:1px solid #e5e7eb;background:white}
+.slide-caption{text-align:center;color:#475569;font-size:14px;margin-top:8px;line-height:1.6}
+.slide-explain-text{line-height:1.9;color:#1f2937}
+.slide-explain-text h3{margin:8px 0 6px;color:#0f172a;font-size:1.05rem}
+.slide-explain-text p{margin:0 0 12px}
+.slide-explain-text ul{margin:0 0 12px 1.2em;padding:0}
+.slide-explain-text li{margin:4px 0}
+.memory-line{background:#fff7ed;border-left:6px solid #f97316;border-radius:12px;padding:10px 12px;color:#7c2d12}
+@media (max-width: 860px){
+  .slide-explain-grid{grid-template-columns:1fr}
+}
+</style>
+
+<style id="teaching-content-style">
+.teaching-content-card{background:#ffffff;border:1px solid #c7d2fe;border-radius:20px;padding:22px;margin:24px 0;box-shadow:0 12px 30px rgba(15,23,42,.08)}
+.teaching-content-card h2{margin-top:0;color:#1e1b4b}
+.teaching-content-card h3{margin-top:18px;color:#0f172a}
+.teaching-content-card p,.teaching-content-card li{line-height:1.9;color:#1f2937}
+.teaching-code-block,.teaching-output-block{white-space:pre-wrap;background:#020617;color:#e5e7eb;border-radius:16px;padding:16px;overflow:auto;font-family:Consolas,'Courier New',monospace;line-height:1.55}
+.teaching-output-block{background:#f8fafc;color:#0f172a;border:1px solid #e2e8f0}
+.teaching-mini-note{background:#eff6ff;border-left:6px solid #2563eb;border-radius:14px;padding:12px 14px;line-height:1.9;color:#1e3a8a}
+</style>
+</head><body>
+<section class="hero"><div class="hero-inner"><span class="badge">主題八｜投影片 25–26</span><h1>儲存管理與安全保護</h1><p>本主題說明作業系統如何提供統一的儲存管理介面，讓使用者以 file 與 directory 的方式操作資料；同時也說明 protection 與 security 如何限制不當存取，避免系統與資料受到破壞。</p><div class="nav"><a class="btn" href="../index.html">回首頁</a><a class="btn" href="topic7.html">上一主題</a></div></div></section>
+<main class="wrap">
+<details class="slide-explain-wrapper" open=""><summary>一、投影片逐張下拉式詳細講解</summary><div class="detail-body"><p class="slide-intro-note">每張投影片都已把「圖片」與「自己的文字講解」放在同一個下拉式區塊中，方便一邊看圖、一邊理解重點。</p><details class="single-slide-detail" open=""><summary>投影片 25｜Storage Management</summary><div class="slide-explain-grid"><div class="slide-explain-image"><img alt="投影片25 Storage Management" class="slide-img" src="assets/slide25.jpg"/><div class="slide-caption">投影片 25｜Storage Management</div></div><div class="slide-explain-text"><h3>（一）這張投影片在說什麼？</h3><p>這張介紹儲存管理。OS 將不同實體儲存裝置抽象成一致的檔案概念，讓使用者不用直接處理磁碟軌道、區塊或裝置細節。</p><h3>（二）核心觀念</h3><ul><li>File 是 OS 提供的邏輯儲存單位。</li><li>OS 負責檔案建立、刪除、讀寫、權限與空間管理。</li></ul><h3>（三）學習與考試重點</h3><p>儲存管理的關鍵是把實體裝置抽象成 logical storage unit。</p><h3>（四）一句話記憶</h3><p class="memory-line">一句話記憶：儲存管理的關鍵是把實體裝置抽象成 logical storage unit。</p></div></div></details><details class="single-slide-detail"><summary>投影片 26｜Protection and Security</summary><div class="slide-explain-grid"><div class="slide-explain-image"><img alt="投影片26 Protection and Security" class="slide-img" src="assets/slide26.jpg"/><div class="slide-caption">投影片 26｜Protection and Security</div></div><div class="slide-explain-text"><h3>（一）這張投影片在說什麼？</h3><p>這張說明保護與安全。Protection 強調控制 process 或 user 對資源的存取權限；Security 則更廣，包含防止未授權存取、攻擊與資料外洩。</p><h3>（二）核心觀念</h3><ul><li>Protection：系統內部資源存取控制。</li><li>Security：面對外部與內部威脅的整體安全。</li></ul><h3>（三）學習與考試重點</h3><p>要能區分 protection 與 security。</p><h3>（四）一句話記憶</h3><p class="memory-line">一句話記憶：要能區分 protection 與 security。</p></div></div></details></div></details>
+<details open=""><summary>二、Storage Management：OS 如何管理儲存裝置？</summary><div class="detail-body"><p><span class="pill">核心觀念</span> OS 提供一致、邏輯化的儲存資訊觀點。使用者看到的是檔案與目錄，而不是磁碟內部的磁區、區塊與實體位置。</p><div class="storage-demo"><div class="file-card"><h4>使用者看到的邏輯層</h4><div class="folder">/home/student</div><div class="file">report.docx</div><div class="file">main.c</div><div class="file">data.txt</div></div><div class="map-arrow">→</div><div class="disk-card"><h4>OS 管理的實體層</h4><p>對應到磁碟區塊、SSD 區塊、目錄結構與備份空間。</p><div class="legend"><span>建立</span><span>刪除</span><span>讀寫</span><span>備份</span></div></div></div><div class="flowbox" id="flow-storage"><h3>Storage Management 動畫</h3><div class="flow-steps"><div class="flow-step">抽象成 File / Directory</div><div class="flow-step">管理建立、刪除、讀寫</div><div class="flow-step">對應到儲存裝置並備份</div></div><div class="flow-caption"></div><div class="flow-controls"><button class="btn mini prev">上一步</button><button class="btn mini next">下一步</button><button class="btn mini reset">重新播放</button></div></div></div></details>
+<details><summary>三、File-System Management：檔案系統做什麼？</summary><div class="detail-body"><p>投影片 25 提到 file system management 包含檔案與目錄的建立、刪除，以及把檔案對應到次級儲存裝置。</p><div class="two-col"><div class="mini-card"><h4>Files 通常組成 Directories</h4><p>目錄讓檔案可以被分類、搜尋與管理。</p></div><div class="mini-card"><h4>Access Control</h4><p>檔案系統會決定誰可以讀、寫、執行或修改檔案。</p></div><div class="mini-card"><h4>Mapping</h4><p>OS 會把檔案名稱與目錄結構，對應到實際的儲存區塊。</p></div><div class="mini-card"><h4>Backup</h4><p>重要資料可備份到穩定的非揮發性儲存裝置中。</p></div></div></div></details>
+<details><summary>四、Protection：限制誰可以用哪些資源</summary><div class="detail-body"><p>Protection 是控制行程或使用者能否存取特定資源的機制。它不是只保護檔案，也包含記憶體、CPU、I/O 裝置與系統服務。</p><div class="access-demo"><div class="user-card"><h4>User / Process</h4><p>提出要求</p></div><div class="os-guard"><div class="lock">🔒</div><h4>OS Protection</h4><p>檢查身分與權限</p></div><div class="resource-card"><h4>Resource</h4><p>File、Memory、I/O、System Call</p></div></div><div class="flowbox" id="flow-protection"><h3>Protection 判斷流程動畫</h3><div class="flow-steps"><div class="flow-step">提出存取要求</div><div class="flow-step">OS 檢查權限</div><div class="flow-step">允許或拒絕</div></div><div class="flow-caption"></div><div class="flow-controls"><button class="btn mini prev">上一步</button><button class="btn mini next">下一步</button><button class="btn mini reset">重新播放</button></div></div></div></details>
+<details><summary>五、Security：防止內外部攻擊</summary><div class="detail-body"><p>Security 的範圍比 protection 更廣，重點是保護系統不被內部或外部攻擊，例如 denial-of-service、worms、viruses、identity theft 與 theft of service。</p><div class="security-ring"><div class="ring-center">Operating System<br/>Security</div><div class="ring-label r1">User ID</div><div class="ring-label r2">Privilege</div><div class="ring-label r3">Access Control</div><div class="ring-label r4">Threat Defense</div><div class="ring-label r5">Group ID</div></div><div class="two-col"><div class="mini-card"><h4>User ID / Group ID</h4><p>OS 透過身分辨識使用者與群組，判斷可使用的資源。</p></div><div class="mini-card"><h4>Privilege Escalation</h4><p>系統也可能允許特定使用者暫時提高權限，以完成管理工作。</p></div></div><p class="note">簡單記法：Protection 偏向「資源存取控制」；Security 偏向「整體系統安全與攻擊防護」。</p></div></details>
+<details class="program-flow-card" open=""><summary>程式流程圖與流程講解</summary>
+<div class="detail-body">
+<h2>程式流程圖：儲存管理與安全保護</h2>
+<img alt="主題 8 程式流程圖" class="program-flow-img" src="assets/program_flow_topic8.svg"/>
+<h3>流程講解</h3>
+<div class="flow-explain">這張流程圖對應本頁「儲存管理與安全保護」的 C 程式執行邏輯。
+1、使用者要求存取檔案。
+2、檢查權限。
+3、允許則讀寫。
+4、拒絕則回報錯誤。
+5、更新存取紀錄。
+學生可以先看流程圖理解整體順序，再對照下方程式中的中文註解，確認每一段程式碼負責哪一個步驟。</div>
+</div>
+</details>
+<details class="program-flow-card" open=""><summary>可編輯 C 程式範例與線上編輯器</summary>
+<div class="detail-body">
+<h2>可編輯 C 程式：儲存管理與安全保護</h2>
+<p>這段程式依照上方流程圖設計，包含中文註解，適合貼到線上編輯器直接執行與修改。</p>
+<div class="code-card">
+<div class="code-head">
+<span class="code-title">lesson8_topic8_demo.c</span>
+<div class="code-actions">
+<button onclick="copyCode('code_topic_8')">複製程式</button>
+<button class="download-btn" onclick="downloadCode('code_topic_8','lesson8_topic8_demo.c')">下載 .c</button>
+<a href="https://www.onlinegdb.com/online_c_compiler" target="_blank">OnlineGDB</a>
+<a href="https://www.programiz.com/c-programming/online-compiler/" target="_blank">Programiz</a>
+<a href="https://onecompiler.com/c" target="_blank">OneCompiler</a>
+</div>
+</div>
+<textarea id="code_topic_8" spellcheck="false">#include &lt;stdio.h&gt;
+
+/*
+  主題 8：儲存管理與安全保護
+  功能：用 rwx 權限概念模擬檔案存取檢查。
+*/
+
+int main(void) {
+    int canRead = 1, canWrite = 0, canExecute = 1;
+    char request = 'w';
+
+    printf("使用者要求：%c\n", request);
+
+    if (request == 'r' &amp;&amp; canRead)
+        printf("允許讀取檔案。\n");
+    else if (request == 'w' &amp;&amp; canWrite)
+        printf("允許寫入檔案。\n");
+    else if (request == 'x' &amp;&amp; canExecute)
+        printf("允許執行檔案。\n");
+    else
+        printf("拒絕存取：權限不足。\n");
+
+    return 0;
+}</textarea>
+</div>
+<div class="editor-links">
+      線上編輯器：
+      <a href="https://www.onlinegdb.com/online_c_compiler" target="_blank">OnlineGDB C Compiler</a>
+<a href="https://www.programiz.com/c-programming/online-compiler/" target="_blank">Programiz C Compiler</a>
+<a href="https://onecompiler.com/c" target="_blank">OneCompiler C</a>
+</div>
+</div>
+</details>
+
+<details class="teaching-content-card" open=""><summary>程式題目完整教學內容</summary>
+<div class="detail-body">
+<h2>程式題目完整教學：儲存管理與安全保護</h2>
+<h3>一、程式題目講解</h3>
+<p>用 rwx 權限概念模擬檔案存取控制。</p>
+<p>重點是讀、寫、執行權限與請求類型比對：只有請求符合權限時才允許操作。</p>
+<h3>二、完整程式碼</h3>
+<p>以下程式碼可直接複製到 C 語言線上編譯器執行。程式中已加入中文註解，說明主要變數、判斷流程與輸出目的。</p>
+<pre class="teaching-code-block"><code>#include &lt;stdio.h&gt;
+
+/*
+  主題 8：儲存管理與安全保護
+  功能：用 rwx 權限概念模擬檔案存取檢查。
+*/
+
+int main(void) {
+    int canRead = 1, canWrite = 0, canExecute = 1;
+    char request = &#x27;w&#x27;;
+
+    printf(&quot;使用者要求：%c\n&quot;, request);
+
+    if (request == &#x27;r&#x27; &amp;&amp; canRead)
+        printf(&quot;允許讀取檔案。\n&quot;);
+    else if (request == &#x27;w&#x27; &amp;&amp; canWrite)
+        printf(&quot;允許寫入檔案。\n&quot;);
+    else if (request == &#x27;x&#x27; &amp;&amp; canExecute)
+        printf(&quot;允許執行檔案。\n&quot;);
+    else
+        printf(&quot;拒絕存取：權限不足。\n&quot;);
+
+    return 0;
+}</code></pre>
+<h3>三、程式執行結果</h3>
+<pre class="teaching-output-block"><code>使用者要求：w
+拒絕存取：權限不足。</code></pre>
+<p class="teaching-mini-note">結果說明：重點是讀、寫、執行權限與請求類型比對：只有請求符合權限時才允許操作。 程式依照設定的資料與控制流程逐步輸出，因此可以從結果看到每個步驟的執行順序與狀態變化。</p>
+<h3>四、程式流程圖與流程圖說明</h3>
+<p>本頁上方已提供對應的程式流程圖，圖中以「開始、資料設定、條件判斷、重複處理、輸出結果、結束」呈現程式執行順序。</p>
+<p>程式先設定使用者權限與要求，再用 if / else if 判斷 read、write、execute，若不符合則拒絕存取。</p>
+<h3>五、重要函數與語法說明</h3>
+<p>char request 儲存使用者請求；&amp;&amp; 表示兩個條件都要成立；if/else if/else 建立權限判斷流程。</p>
+<h3>六、整體說明</h3>
+<p>本題的學習重點是把作業系統概念轉成可觀察的 C 程式流程。學生應先理解題目概念，再對照程式碼、流程圖與執行結果，掌握變數設定、條件判斷、迴圈處理與輸出結果之間的關係。</p>
+</div>
+</details>
+
+</main><div class="footer">Lesson 8 Topic 8｜Storage Management, Protection and Security</div><script src="assets/script.js"></script></body></html>

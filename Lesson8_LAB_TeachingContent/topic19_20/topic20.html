@@ -1,0 +1,166 @@
+<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Lesson 8 主題二十｜作業系統總複習</title><link rel="stylesheet" href="assets/style.css">
+<style>
+.program-flow-card{background:#ffffff;border:1px solid #dbeafe;border-radius:20px;padding:22px;margin:24px 0;box-shadow:0 12px 30px rgba(15,23,42,.08)}
+.program-flow-card h2{margin-top:0;color:#0f172a}
+.program-flow-img{width:100%;border-radius:18px;border:1px solid #e2e8f0;background:#f8fafc}
+.flow-explain{line-height:1.9;background:#f8fafc;border-left:6px solid #2563eb;border-radius:14px;padding:16px 18px;white-space:pre-line}
+.code-card{background:#0f172a;color:#e5e7eb;border-radius:20px;padding:0;margin:24px 0;overflow:hidden;box-shadow:0 12px 32px rgba(15,23,42,.20)}
+.code-card .code-head{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between;background:#111827;padding:14px 16px;border-bottom:1px solid #334155}
+.code-card .code-title{font-weight:700;color:#f8fafc}
+.code-card .code-actions{display:flex;gap:8px;flex-wrap:wrap}
+.code-card button,.code-card a{border:0;border-radius:999px;padding:8px 12px;font-weight:700;text-decoration:none;cursor:pointer;background:#2563eb;color:white;font-size:14px}
+.code-card a{background:#475569}
+.code-card button.download-btn{background:#f97316}
+.code-card textarea{width:100%;min-height:380px;box-sizing:border-box;background:#020617;color:#e5e7eb;border:0;padding:18px;font-family:Consolas,'Courier New',monospace;font-size:15px;line-height:1.55;resize:vertical}
+.editor-links{margin-top:12px;line-height:1.8}
+.editor-links a{display:inline-block;margin:4px 8px 4px 0;padding:8px 12px;border-radius:999px;background:#e0f2fe;color:#075985;text-decoration:none;font-weight:700}
+</style>
+<script>
+function copyCode(id){
+  const el=document.getElementById(id);
+  if(!el) return;
+  el.select();
+  document.execCommand('copy');
+  alert('程式碼已複製');
+}
+function downloadCode(id, filename){
+  const el=document.getElementById(id);
+  if(!el) return;
+  const blob=new Blob([el.value], {type:'text/plain;charset=utf-8'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download=filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(()=>URL.revokeObjectURL(a.href), 500);
+}
+</script>
+
+
+<style id="teaching-content-style">
+.teaching-content-card{background:#ffffff;border:1px solid #c7d2fe;border-radius:20px;padding:22px;margin:24px 0;box-shadow:0 12px 30px rgba(15,23,42,.08)}
+.teaching-content-card h2{margin-top:0;color:#1e1b4b}
+.teaching-content-card h3{margin-top:18px;color:#0f172a}
+.teaching-content-card p,.teaching-content-card li{line-height:1.9;color:#1f2937}
+.teaching-code-block,.teaching-output-block{white-space:pre-wrap;background:#020617;color:#e5e7eb;border-radius:16px;padding:16px;overflow:auto;font-family:Consolas,'Courier New',monospace;line-height:1.55}
+.teaching-output-block{background:#f8fafc;color:#0f172a;border:1px solid #e2e8f0}
+.teaching-mini-note{background:#eff6ff;border-left:6px solid #2563eb;border-radius:14px;padding:12px 14px;line-height:1.9;color:#1e3a8a}
+</style>
+</head><body>
+<section class="hero"><div class="hero-inner"><span class="badge">總複習｜投影片 1–72</span><h1>Lesson 8 作業系統總複習</h1><p>這一頁是 Lesson 8 的整體複習頁，不是原投影片新增的第 20 個主題。重點是把 OS、記憶體、行程、排程、多執行緒與死結串成一條完整學習路線。</p><div class="nav"><a class="btn" href="../index.html">回首頁</a><a class="btn" href="topic19.html">上一主題</a></div></div></section>
+<main class="wrap">
+<details open><summary>一、整章學習路線</summary><div class="detail-body"><div class="flowbox" id="flow-overview"><h3>Lesson 8 從哪裡開始、到哪裡結束？</h3><div class="flow-steps"><div class="flow-step active">OS 是中介者</div><div class="flow-step">管理記憶體與儲存</div><div class="flow-step">管理 Process / Thread</div><div class="flow-step">CPU Scheduling</div><div class="flow-step">Deadlock</div></div><div class="flow-caption">作業系統介於使用者、應用程式與硬體之間，負責讓整個電腦系統有效率且安全地運作。</div></div></div></details>
+<details open><summary>二、五大核心區塊</summary><div class="detail-body"><div class="three-col"><div class="mini-card"><h4>1. OS 基本概念</h4><p>作業系統負責執行程式、分配資源、控制硬體與提供使用者方便的操作環境。</p></div><div class="mini-card"><h4>2. 記憶體與儲存</h4><p>從 main memory、secondary storage 到 paging、segmentation、virtual memory。</p></div><div class="mini-card"><h4>3. Process 管理</h4><p>Process 是正在執行的程式，有 state、PCB、memory layout，也需要 scheduler 管理。</p></div><div class="mini-card"><h4>4. Scheduling</h4><p>CPU scheduler 決定 ready queue 中哪個 process 先執行，常見方法有 FCFS、SJF、Priority、RR。</p></div><div class="mini-card"><h4>5. Threads 與 IPC</h4><p>多執行緒提升回應速度與資源共享；IPC 讓不同 process 能透過 shared memory 或 message passing 溝通。</p></div><div class="mini-card"><h4>6. Deadlock</h4><p>當 process 互相等待資源，可能形成 deadlock；可用 Resource-Allocation Graph 與四個必要條件理解。</p></div></div></div></details>
+<details><summary>三、考試快速記憶</summary><div class="detail-body"><div class="two-col"><div class="mini-card warning-card"><h4>容易混淆</h4><p>Concurrency 不一定是真正同時執行；Parallelism 才是多核心上真正同時執行。Starvation 是長期拿不到資源；Deadlock 是互相等待而全部卡住。</p></div><div class="mini-card solution-card"><h4>最常考</h4><p>Process state、Context Switch、CPU scheduling 演算法、Round-Robin time quantum、Deadlock 四條件、Resource-Allocation Graph。</p></div></div></div></details>
+<details><summary>四、Lesson 8 最後總結</summary><div class="detail-body"><p>Lesson 8 的核心可以用一句話理解：作業系統是一個資源管理者，它要讓 CPU、記憶體、I/O、檔案與多個使用者程式能公平、有效率且安全地一起運作。</p><p>從前面的 OS 定義開始，到最後 deadlock 必要條件，整章其實都在回答同一個問題：當很多程式同時想使用有限的電腦資源時，作業系統要如何安排、切換、保護與避免衝突。</p></div></details>
+
+<details open class="program-flow-card"><summary>程式流程圖與流程講解</summary>
+  <div class="detail-body">
+    <h2>程式流程圖：Lesson 8 作業系統總複習</h2>
+    <img class="program-flow-img" src="assets/program_flow_topic20.svg" alt="主題 20 程式流程圖">
+    <h3>流程講解</h3>
+    <div class="flow-explain">這張流程圖對應本頁「Lesson 8 作業系統總複習」的 C 程式執行邏輯。
+1、讀取章節重點。
+2、整理 OS 功能。
+3、整理行程與排程。
+4、整理記憶體與死結。
+5、輸出複習清單。
+學生可以先看流程圖理解整體順序，再對照下方程式中的中文註解，確認每一段程式碼負責哪一個步驟。</div>
+  </div>
+</details>
+
+<details open class="program-flow-card"><summary>可編輯 C 程式範例與線上編輯器</summary>
+  <div class="detail-body">
+    <h2>可編輯 C 程式：Lesson 8 作業系統總複習</h2>
+    <p>這段程式依照上方流程圖設計，包含中文註解，適合貼到線上編輯器直接執行與修改。</p>
+    <div class="code-card">
+      <div class="code-head">
+        <span class="code-title">lesson8_topic20_demo.c</span>
+        <div class="code-actions">
+          <button onclick="copyCode('code_topic_20')">複製程式</button>
+          <button class="download-btn" onclick="downloadCode('code_topic_20','lesson8_topic20_demo.c')">下載 .c</button>
+          <a target="_blank" href="https://www.onlinegdb.com/online_c_compiler">OnlineGDB</a>
+          <a target="_blank" href="https://www.programiz.com/c-programming/online-compiler/">Programiz</a>
+          <a target="_blank" href="https://onecompiler.com/c">OneCompiler</a>
+        </div>
+      </div>
+      <textarea id="code_topic_20" spellcheck="false">#include &lt;stdio.h&gt;
+
+/*
+  主題 20：作業系統總複習
+  功能：輸出 Lesson 8 的核心概念複習清單。
+*/
+
+int main(void) {
+    const char *review[] = {
+        &quot;1. OS 是使用者、應用程式與硬體之間的中介者&quot;,
+        &quot;2. OS 管理 CPU、記憶體、I/O 與檔案系統&quot;,
+        &quot;3. Process 有 New、Ready、Running、Waiting、Terminated&quot;,
+        &quot;4. CPU Scheduling 影響等待時間與系統效率&quot;,
+        &quot;5. Deadlock 需要注意四個必要條件&quot;
+    };
+    int i;
+    for (i = 0; i &lt; 5; i++) {
+        printf(&quot;%s\n&quot;, review[i]);
+    }
+    return 0;
+}</textarea>
+    </div>
+    <div class="editor-links">
+      線上編輯器：
+      <a target="_blank" href="https://www.onlinegdb.com/online_c_compiler">OnlineGDB C Compiler</a>
+      <a target="_blank" href="https://www.programiz.com/c-programming/online-compiler/">Programiz C Compiler</a>
+      <a target="_blank" href="https://onecompiler.com/c">OneCompiler C</a>
+    </div>
+  </div>
+</details>
+
+
+<details class="teaching-content-card" open=""><summary>程式題目完整教學內容</summary>
+<div class="detail-body">
+<h2>程式題目完整教學：作業系統總複習</h2>
+<h3>一、程式題目講解</h3>
+<p>用清單方式輸出 Lesson 8 的核心觀念，協助學生總整理。</p>
+<p>重點是把 OS 中介角色、資源管理、行程狀態、CPU 排程與 Deadlock 條件整理成複習清單。</p>
+<h3>二、完整程式碼</h3>
+<p>以下程式碼可直接複製到 C 語言線上編譯器執行。程式中已加入中文註解，說明主要變數、判斷流程與輸出目的。</p>
+<pre class="teaching-code-block"><code>#include &lt;stdio.h&gt;
+
+/*
+  主題 20：作業系統總複習
+  功能：輸出 Lesson 8 的核心概念複習清單。
+*/
+
+int main(void) {
+    const char *review[] = {
+        &quot;1. OS 是使用者、應用程式與硬體之間的中介者&quot;,
+        &quot;2. OS 管理 CPU、記憶體、I/O 與檔案系統&quot;,
+        &quot;3. Process 有 New、Ready、Running、Waiting、Terminated&quot;,
+        &quot;4. CPU Scheduling 影響等待時間與系統效率&quot;,
+        &quot;5. Deadlock 需要注意四個必要條件&quot;
+    };
+    int i;
+    for (i = 0; i &lt; 5; i++) {
+        printf(&quot;%s\n&quot;, review[i]);
+    }
+    return 0;
+}</code></pre>
+<h3>三、程式執行結果</h3>
+<pre class="teaching-output-block"><code>1. OS 是使用者、應用程式與硬體之間的中介者
+2. OS 管理 CPU、記憶體、I/O 與檔案系統
+3. Process 有 New、Ready、Running、Waiting、Terminated
+4. CPU Scheduling 影響等待時間與系統效率
+5. Deadlock 需要注意四個必要條件</code></pre>
+<p class="teaching-mini-note">結果說明：重點是把 OS 中介角色、資源管理、行程狀態、CPU 排程與 Deadlock 條件整理成複習清單。 程式依照設定的資料與控制流程逐步輸出，因此可以從結果看到每個步驟的執行順序與狀態變化。</p>
+<h3>四、程式流程圖與流程圖說明</h3>
+<p>本頁上方已提供對應的程式流程圖，圖中以「開始、資料設定、條件判斷、重複處理、輸出結果、結束」呈現程式執行順序。</p>
+<p>程式先建立 review 字串陣列，再用 for 迴圈逐行輸出五個複習重點。</p>
+<h3>五、重要函數與語法說明</h3>
+<p>const char *review[] 儲存多行複習文字；for 迴圈逐筆輸出；printf() 顯示每個核心概念。</p>
+<h3>六、整體說明</h3>
+<p>本題的學習重點是把作業系統概念轉成可觀察的 C 程式流程。學生應先理解題目概念，再對照程式碼、流程圖與執行結果，掌握變數設定、條件判斷、迴圈處理與輸出結果之間的關係。</p>
+</div>
+</details>
+
+</main><div class="footer">Lesson 8 Summary｜Operating Systems</div><script src="assets/script.js"></script></body></html>

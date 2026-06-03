@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="zh-Hant"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/><link href="assets/style.css" rel="stylesheet"/><script src="assets/script.js"></script><title>Lesson 5 主題 4：Singly Linked List 的刪除與插入操作</title></head><body>
+<header class="hero"><div class="inner"><span class="badge">Lesson 5｜主題 4｜投影片 6–8</span><h1>主題 4：Singly Linked List 的刪除與插入操作</h1><p>說明單向鏈結串列插入與刪除時，真正改變的是 pointer 的連接方向。</p><div class="toolbar"><a class="btn secondary" href="../index.html">回 L5 首頁</a><a class="btn secondary" href="topic3.html">上一個：主題 3</a></div></div></header>
+<div class="wrap"><div class="layout"><aside class="sidebar"><div class="side-title">Lesson 5 主題導覽</div><nav class="nav"><a href="../index.html">L5 首頁</a><a href="topic3.html">3. Singly Linked List 單向鏈結串列基本結構</a>
+<a class="active" href="topic4.html">4. Singly Linked List 的刪除與插入操作</a></nav></aside><main>
+<section class="card"><span class="badge">投影片 6–8</span><h2>一、主題核心概念</h2><p>單向鏈結串列插入與刪除的核心不是搬動資料，而是重新接 pointer。插入時把新節點接進兩個節點之間；刪除時讓前一個節點跳過目標節點。</p></section>
+<section class="card"><h2>二、投影片逐張下拉式詳細講解</h2><p>每一張投影片都已把圖片與自己的文字講解合併在同一個下拉式區塊中。點開後可以直接對照圖片閱讀說明。</p><div class="slide-detail-list"><details class="slide-detail"><summary>投影片 6｜從單向鏈結串列刪除節點</summary><div class="slide-detail-body"><div class="slide-detail-grid"><div><img alt="投影片 6：從單向鏈結串列刪除節點" class="slide-detail-img" src="assets/slide6.jpg"/><div class="figure-caption">投影片 6</div></div><div class="slide-explain"><h3>從單向鏈結串列刪除節點</h3><h4>詳細說明與講解</h4><p>1、這張投影片用圖示說明如何從 Singly Linked List 中刪除一個節點。刪除的重點不是把節點內容擦掉，而是讓前一個節點的 pointer 改指向被刪節點的下一個節點。</p><p>2、圖中 old pointer 指向被刪除節點前面的節點，deleted entry 是要被刪除的節點。刪除後，old pointer 的 next 會改成指向 deleted entry 的 next，這樣串列就會跳過被刪除的節點。</p><p>3、這裡必須注意順序：在釋放或丟掉被刪節點之前，要先保存它後面的節點位置。否則一旦失去指標，就可能找不到後面的串列，造成資料遺失。</p><p>4、若刪除的是 head 節點，情況會不同，因為沒有前一個節點可以幫忙跳過它。這時要直接把 head 改成 head-&gt;next。</p><div class="slide-memory">一句話記憶：刪除節點就是讓前一個節點跳過它。</div></div></div></div></details><details class="slide-detail"><summary>投影片 7｜在單向鏈結串列中插入節點</summary><div class="slide-detail-body"><div class="slide-detail-grid"><div><img alt="投影片 7：在單向鏈結串列中插入節點" class="slide-detail-img" src="assets/slide7.jpg"/><div class="figure-caption">投影片 7</div></div><div class="slide-explain"><h3>在單向鏈結串列中插入節點</h3><h4>詳細說明與講解</h4><p>1、這張投影片說明如何把新節點插入 Singly Linked List 的中間。插入時通常需要知道插入位置前面的節點，因為要把新節點接在它後面。</p><p>2、操作順序非常重要。第一步應該讓新節點的 next 指向原本的下一個節點；第二步才讓前一個節點的 next 指向新節點。若順序反過來，原本後面的節點可能會失去連結。</p><p>3、圖中可以看到 new entry 被插入到 old pointer 後面，原本 old pointer 指向的下一個節點被保留下來，並改由 new entry 連過去。</p><p>4、這張是 Linked List 程式設計中最重要的圖之一，因為很多錯誤都來自 pointer 更新順序不正確。</p><div class="slide-memory">一句話記憶：插入節點先接新節點的 next，再改前一個節點的 next。</div></div></div></div></details><details class="slide-detail"><summary>投影片 8｜插入與刪除的綜合範例</summary><div class="slide-detail-body"><div class="slide-detail-grid"><div><img alt="投影片 8：插入與刪除的綜合範例" class="slide-detail-img" src="assets/slide8.jpg"/><div class="figure-caption">投影片 8</div></div><div class="slide-explain"><h3>插入與刪除的綜合範例</h3><h4>詳細說明與講解</h4><p>1、這張投影片用更多例子把插入與刪除放在一起比較。上方顯示原本的串列，下面分別示範 insertion 與 deletion 的變化。</p><p>2、插入例子中，新節點 T 被插入到指定位置。重點是原本串列沒有搬動資料，只是新增一個節點，再重新安排箭頭，使新節點成為串列的一部分。</p><p>3、刪除例子中，被刪除的節點會被跳過。前一個節點直接接到被刪節點的下一個節點，因此從 head 走訪時就再也不會經過被刪節點。</p><p>4、這張圖可以用來檢查自己是否真的理解 pointer 操作：插入後節點數加一，刪除後節點數減一，但其他節點的資料位置不用搬移。</p><div class="slide-memory">一句話記憶：Linked List 的插入刪除靠重新接箭頭完成。</div></div></div></div></details></div></section>
+<section class="card"><h2>三、動畫流程圖：Singly Linked List 的刪除與插入操作</h2><div class="flow-area" id="flow4"><div class="flow"><div class="node">找到位置</div><div class="node">建立新節點</div><div class="node">新節點接後方</div><div class="node">前節點接新節點</div><div class="node">刪除找 prev</div><div class="node">prev 跳過目標</div></div><div class="progress"><div class="bar"></div></div><div class="stepbox"></div><div class="btns" style="margin-top:12px"><button class="btn secondary" onclick="prevFlow('flow4')">上一步</button><button class="btn" onclick="nextFlow('flow4')">下一步</button><button class="btn orange" onclick="playFlow('flow4')">自動播放</button><button class="btn secondary" onclick="resetFlow('flow4')">重新開始</button></div></div><script>initFlow('flow4',['先從 head 往後找插入或刪除的位置。','插入時先 malloc 或建立新節點。','先讓 newNode->next 指向原本後面的節點。','再讓 prev->next 指向 newNode，完成插入。','刪除時要同時追蹤 curr 與 prev。','讓 prev->next = curr->next，就可以把 curr 從串列中略過。']);</script></section>
+<section class="card"><h2>四、動畫表格：步驟與重點整理</h2><p>請按「下一步」或「自動播放」觀察本主題的操作流程與注意事項。</p><div class="flow-area" id="table4"><div class="anim-table-wrap"><table class="anim-table"><thead><tr><th>情況</th><th>第一步</th><th>第二步</th><th>注意事項</th></tr></thead><tbody><tr><td>插入頭端</td><td>newNode-&gt;next=head</td><td>head=newNode</td><td>要更新 head</td></tr><tr><td>插入中間</td><td>newNode-&gt;next=curr</td><td>prev-&gt;next=newNode</td><td>順序不可反</td></tr><tr><td>插入尾端</td><td>newNode-&gt;next=NULL</td><td>tail 或 prev 接 newNode</td><td>尾端後面沒有節點</td></tr><tr><td>刪除頭節點</td><td>head=head-&gt;next</td><td>釋放舊 head</td><td>prev 為 NULL</td></tr><tr><td>刪除中間</td><td>prev-&gt;next=curr-&gt;next</td><td>釋放 curr</td><td>要先保存 curr</td></tr></tbody></table></div><div class="progress"><div class="bar"></div></div><div class="table-note"></div><div class="btns" style="margin-top:12px"><button class="btn secondary" onclick="prevTable('table4')">上一步</button><button class="btn" onclick="nextTable('table4')">下一步</button><button class="btn orange" onclick="playTable('table4')">自動播放</button><button class="btn secondary" onclick="resetTable('table4')">重新開始</button></div></div><script>initTable('table4',['插入頭端 → newNode->next=head → head=newNode → 要更新 head','插入中間 → newNode->next=curr → prev->next=newNode → 順序不可反','插入尾端 → newNode->next=NULL → tail 或 prev 接 newNode → 尾端後面沒有節點','刪除頭節點 → head=head->next → 釋放舊 head → prev 為 NULL','刪除中間 → prev->next=curr->next → 釋放 curr → 要先保存 curr']);</script></section>
+<details open=""><summary>五、完整中文講解</summary><div class="content"><h3>（一）本主題要學會什麼？</h3><p>單向鏈結串列插入與刪除的核心不是搬動資料，而是重新接 pointer。插入時把新節點接進兩個節點之間；刪除時讓前一個節點跳過目標節點。</p><h3>（二）實作時最重要的觀念</h3><div class="grid2"><div class="mini"><b>資料結構</b><br/>先看清楚資料是用 Array、Node、Singly List、Circular List 或 Doubly List 表示。</div><div class="mini"><b>指標方向</b><br/>Linked List 題目幾乎都在考指標怎麼接、怎麼斷、怎麼重新連起來。</div><div class="mini"><b>特殊情況</b><br/>空串列、頭節點、尾節點、找不到資料，都是程式容易錯的地方。</div><div class="mini"><b>測試方式</b><br/>每做完 insert/delete，都用 print 檢查目前串列是否符合預期。</div></div><div class="example">插入時最重要的是順序：先讓新節點接住後方，再讓前方節點接新節點。刪除時則是讓前方節點直接接到目標後方。</div></div></details>
+<details open=""><summary>六、可編輯 C 程式範例：含中文註解與線上編輯器</summary><div class="content"><div class="codewrap"><div class="codebar"><span>singly_insert_delete.c</span><div class="btns"><button class="btn green" onclick="copyCode('code4')">複製程式</button><button class="btn orange" onclick="downloadCode('code4','singly_insert_delete.c')">下載 .c</button><a class="btn secondary" href="https://www.onlinegdb.com/online_c_compiler" target="_blank">OnlineGDB</a><a class="btn secondary" href="https://www.programiz.com/c-programming/online-compiler/" target="_blank">Programiz</a><a class="btn secondary" href="https://onecompiler.com/c" target="_blank">OneCompiler</a></div></div><textarea class="codearea" id="code4" spellcheck="false">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+/*
+    Singly Linked List：插入與刪除
+    重點：Linked List 操作主要不是搬動資料，而是修改 next pointer。
+*/
+
+typedef struct Node {
+    int data;
+    struct Node *next;
+} Node;
+
+Node* createNode(int value) {
+    Node *node = (Node*)malloc(sizeof(Node));
+    if (!node) exit(1);
+    node-&gt;data = value;
+    node-&gt;next = NULL;
+    return node;
+}
+
+void insertFront(Node **head, int value) {
+    Node *newNode = createNode(value);
+    newNode-&gt;next = *head; // 新節點先接住原本的第一個節點
+    *head = newNode;       // head 改指向新節點
+}
+
+void deleteValue(Node **head, int value) {
+    Node *curr = *head;
+    Node *prev = NULL;
+
+    while (curr != NULL &amp;&amp; curr-&gt;data != value) {
+        prev = curr;
+        curr = curr-&gt;next;
+    }
+
+    if (curr == NULL) {
+        printf("找不到 %d\n", value);
+        return;
+    }
+
+    if (prev == NULL) {
+        *head = curr-&gt;next;        // 刪除頭節點
+    } else {
+        prev-&gt;next = curr-&gt;next;   // 刪除中間或尾端節點
+    }
+    free(curr);                    // 釋放被刪除節點
+}
+
+void printList(Node *head) {
+    for (Node *p = head; p != NULL; p = p-&gt;next) {
+        printf("%d -&gt; ", p-&gt;data);
+    }
+    printf("NULL\n");
+}
+
+int main(void) {
+    Node *head = NULL;
+    insertFront(&amp;head, 30);
+    insertFront(&amp;head, 20);
+    insertFront(&amp;head, 10);
+    printList(head);
+
+    deleteValue(&amp;head, 20);
+    printList(head);
+    return 0;
+}
+</textarea></div></div></details>
+
+<section class="card program-teaching-card">
+<h2>新增：程式題目教學內容（依指定格式）</h2>
+<div class="content">
+<h3>一、程式題目講解</h3>
+<p>本題示範單向鏈結串列的前端插入與刪除指定節點。學生需要理解 Linked List 操作不是搬動整批資料，而是改變節點之間的 next 指標。</p>
+<h3>二、完整程式碼</h3>
+<p>以下為本頁程式題目的完整可執行 C 程式碼，已在重要程式區塊加入中文註解，方便初學者理解程式功能與流程。</p>
+<pre class="codearea" style="height:auto;min-height:0;white-space:pre-wrap;overflow:auto;">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+/*
+    Singly Linked List：插入與刪除
+    重點：Linked List 操作主要不是搬動資料，而是修改 next pointer。
+*/
+
+typedef struct Node {
+    int data;
+    struct Node *next;
+} Node;
+
+Node* createNode(int value) {
+    Node *node = (Node*)malloc(sizeof(Node));
+    if (!node) exit(1);
+    node-&gt;data = value;
+    node-&gt;next = NULL;
+    return node;
+}
+
+void insertFront(Node **head, int value) {
+    Node *newNode = createNode(value);
+    newNode-&gt;next = *head; // 新節點先接住原本的第一個節點
+    *head = newNode;       // head 改指向新節點
+}
+
+void deleteValue(Node **head, int value) {
+    Node *curr = *head;
+    Node *prev = NULL;
+
+    while (curr != NULL &amp;&amp; curr-&gt;data != value) {
+        prev = curr;
+        curr = curr-&gt;next;
+    }
+
+    if (curr == NULL) {
+        printf(&quot;找不到 %d\n&quot;, value);
+        return;
+    }
+
+    if (prev == NULL) {
+        *head = curr-&gt;next;        // 刪除頭節點
+    } else {
+        prev-&gt;next = curr-&gt;next;   // 刪除中間或尾端節點
+    }
+    free(curr);                    // 釋放被刪除節點
+}
+
+void printList(Node *head) {
+    for (Node *p = head; p != NULL; p = p-&gt;next) {
+        printf(&quot;%d -&gt; &quot;, p-&gt;data);
+    }
+    printf(&quot;NULL\n&quot;);
+}
+
+int main(void) {
+    Node *head = NULL;
+    insertFront(&amp;head, 30);
+    insertFront(&amp;head, 20);
+    insertFront(&amp;head, 10);
+    printList(head);
+
+    deleteValue(&amp;head, 20);
+    printList(head);
+    return 0;
+}
+</pre>
+<h3>三、程式執行結果</h3>
+<p>程式執行後會得到以下輸出：</p>
+<pre class="codearea" style="height:auto;min-height:0;white-space:pre-wrap;overflow:auto;">10 -&gt; 20 -&gt; 30 -&gt; NULL
+10 -&gt; 30 -&gt; NULL</pre>
+<p>程式依序使用 insertFront 插入 30、20、10。因為每次都插在最前面，所以串列變成 10 -&gt; 20 -&gt; 30。接著 deleteValue 刪除資料 20，前一個節點 10 的 next 會改接到 30，因此第二次輸出為 10 -&gt; 30 -&gt; NULL。</p>
+<h3>四、程式流程圖與流程圖說明</h3>
+<p>本題流程圖如下，呈現程式的主要執行順序、判斷條件與資料處理流程。</p>
+<div class="program-flow-figure"><img alt="主題 4 程式流程圖" class="program-flow-img" src="assets/program_flow_topic4.svg"/><div class="figure-caption">主題 4：Singly Linked List 的刪除與插入操作：程式流程圖</div></div>
+<p>流程先建立空串列，再多次呼叫 insertFront。每次插入時，新節點先指向原本 head，再把 head 改成新節點。刪除時用 curr 尋找目標節點，prev 保存前一個節點；找到後重新連接 prev-&gt;next，最後 free 被刪除節點。</p>
+<h3>五、重要函數與語法說明</h3>
+<ol><li>insertFront(Node **head, int value)：把新節點插到串列最前面。</li><li>deleteValue(Node **head, int value)：尋找指定資料並刪除該節點。</li><li>prev 與 curr：prev 保存前一個節點，curr 保存目前檢查節點。</li><li>free(curr)：釋放不再使用的節點記憶體。</li><li>for 迴圈走訪：用 p = p-&gt;next 依序印出節點。</li></ol>
+<h3>六、整體說明</h3>
+<p>本題讓學生練習插入與刪除的基本指標變化。插入要先接住原本 head，刪除要先找到目標，再讓前後節點重新連接，這是 Linked List 最常考的邏輯。</p>
+</div>
+</section>
+<section class="card program-flow-card">
+<h2>七、程式流程圖：Singly Linked List 插入與刪除</h2>
+<p>下圖是本主題對應的程式執行流程，適合搭配下方 C 程式碼一起看。</p>
+<div class="program-flow-figure"><img alt="主題 4 程式流程圖" class="program-flow-img" src="assets/program_flow_topic4.svg"/><div class="figure-caption">主題 4 程式流程圖：Singly Linked List 插入與刪除</div></div>
+<div class="flow-explain"><h3>流程講解</h3><ol><li>程式會先從 head 開始尋找欲插入或刪除的位置。</li><li>插入時先建立 newNode，再讓 newNode-&gt;next 指向原本的下一個節點。</li><li>接著把前一個節點的 next 改成 newNode，完成插入。</li><li>刪除時先保存 delNode，讓前一個節點跳過 delNode 接到下一個節點。</li><li>最後用 free(delNode) 釋放記憶體，避免 memory leak。</li></ol><p>這張流程圖把本頁程式的執行順序整理成一條清楚路徑。閱讀時先看資料如何被建立，再看條件判斷與指標如何改變，最後用輸出結果確認程式邏輯是否正確。</p></div>
+</section>
+</main></div></div><footer class="footer">Lesson 5｜主題 4：Singly Linked List 的刪除與插入操作</footer></body></html>

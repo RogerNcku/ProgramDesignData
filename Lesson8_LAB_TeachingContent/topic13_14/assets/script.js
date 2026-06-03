@@ -1,0 +1,93 @@
+function setupFlow(id,captions){
+  const box=document.getElementById(id); if(!box)return;
+  const steps=[...box.querySelectorAll('.flow-step')]; const cap=box.querySelector('.flow-caption');
+  let idx=0;
+  function render(){steps.forEach((s,i)=>{s.classList.toggle('active',i===idx);s.classList.toggle('done',i<idx)}); if(cap)cap.textContent=captions[idx]||'';}
+  box.querySelector('.next')?.addEventListener('click',()=>{idx=Math.min(idx+1,steps.length-1);render();});
+  box.querySelector('.prev')?.addEventListener('click',()=>{idx=Math.max(idx-1,0);render();});
+  box.querySelector('.reset')?.addEventListener('click',()=>{idx=0;render();});
+  render();
+}
+setupFlow('flow-paging',[
+  '程式的 logical memory 先被切成固定大小的 page，例如 Page 1、Page 2。',
+  '實體記憶體 physical memory 也被切成同樣大小的 frame。',
+  'Page table 負責記錄每個 page 被放到哪一個 frame，因此 page 不必連續放置。'
+]);
+setupFlow('flow-demand',[
+  '程式一開始不需要全部載入，只要先載入目前會用到的部分。',
+  '當 CPU 執行到尚未在記憶體中的 page 或 segment，就會向磁碟要求載入。',
+  'OS 將需要的部分放進 physical memory，再讓程式繼續執行。'
+]);
+setupFlow('flow-storage',[
+  'OS 把檔案與目錄抽象化，使用者看到的是 file 與 folder，不需要直接面對磁碟細節。',
+  'File-system management 會建立、刪除、讀寫檔案與目錄，並把檔案對應到儲存空間。',
+  'OS 也會進行備份與非揮發性儲存管理，確保關機後資料仍能保存。'
+]);
+setupFlow('flow-protection',[
+  '使用者或行程提出存取要求，例如讀取檔案、使用 I/O 或存取記憶體。',
+  'OS 根據 user ID、權限、process 身分與存取控制規則判斷是否允許。',
+  '合法的要求被允許；不合法或危險的要求會被拒絕，以保護系統與資料。'
+]);
+document.querySelectorAll('.page-row,.frame-row,.seg-item,.file,.folder,.user-card,.resource-card').forEach(x=>x.addEventListener('click',()=>x.classList.toggle('active')));
+
+setupFlow('flow-process-state',[
+  'New：行程剛被建立，作業系統準備把它放入可執行的管理流程。',
+  'Ready：行程已經在記憶體中，等待 CPU scheduler 分配 CPU。',
+  'Running：行程取得 CPU，正在執行指令。',
+  'Waiting：行程等待 I/O 或某個事件完成，暫時不能使用 CPU。',
+  'Terminated：行程執行完畢，作業系統回收相關資源。'
+]);
+setupFlow('flow-pcb',[
+  '當行程存在時，OS 需要用 PCB 記錄它的狀態。',
+  'PCB 會保存 program counter 與 CPU registers，讓行程被切走後還能恢復。',
+  'PCB 也保存 scheduling、memory、accounting、I/O 等管理資訊。'
+]);
+setupFlow('flow-scheduler',[
+  'Long-term scheduler 決定哪些 job 可以進入記憶體與 ready queue，控制 multiprogramming 程度。',
+  'Short-term scheduler 又稱 CPU scheduler，快速且頻繁地從 ready queue 挑選下一個行程執行。',
+  'Medium-term scheduler 會把部分行程 swap out / swap in，以調整記憶體與 CPU 負載。'
+]);
+setupFlow('flow-context-switch',[
+  'CPU 從 Process 0 執行中收到 interrupt 或系統事件。',
+  'OS 將 Process 0 的狀態存入它的 PCB，例如 PC、registers、狀態等。',
+  'OS 從 Process 1 的 PCB 載入狀態，CPU 接著執行 Process 1。'
+]);
+document.querySelectorAll('.state-node,.mem-block,.pcb-row,.scheduler-card,.proc-box,.queue-item').forEach(x=>x.addEventListener('click',()=>x.classList.toggle('active')));
+
+setupFlow('flow-chrome',[
+  '早期或簡化的瀏覽器可能把許多網頁放在同一個 process 裡；如果某個網站出問題，整個瀏覽器可能一起當掉。',
+  'Chrome 採用 multiprocess 架構，把 browser、renderer、plug-in 等工作分到不同 process。',
+  '多行程架構可以提高穩定性與隔離性；某個分頁或外掛出問題時，不一定拖垮整個瀏覽器。'
+]);
+setupFlow('flow-ipc',[
+  'Cooperating processes 需要交換資料或協同工作，因此需要 IPC。',
+  'Message passing 透過 kernel 的 message queue 傳送訊息，process 之間不直接共用同一塊記憶體。',
+  'Shared memory 讓多個 process 存取同一塊共享區域，速度快，但需要同步控制避免資料衝突。'
+]);
+setupFlow('flow-thread',[
+  'Process 是較重量級的執行單位，建立與切換成本較高。',
+  'Thread 在同一個 process 內執行，可以共享 code、data、files 等資源。',
+  '多執行緒可把同一應用程式中的顯示更新、資料讀取、拼字檢查、網路回應等工作分開處理。'
+]);
+setupFlow('flow-parallel',[
+  'Concurrency 表示多個工作都有進展；在單核心上常靠快速切換達成，看起來像同時進行。',
+  'Parallelism 表示多個工作真正同時執行，通常需要多核心或多處理器。',
+  '多核心程式設計要注意資料切分、工作平衡、資料相依、測試與除錯。'
+]);
+document.querySelectorAll('.ipc-box,.process-card,.thread-line,.benefit-card,.core-card,.task,.tab').forEach(x=>x.addEventListener('click',()=>x.classList.toggle('active')));
+setupFlow('flow-amdahl',[
+  '程式先分成兩部分：serial portion 只能依序做，parallel portion 可以分給多個核心一起做。',
+  '增加核心數 N 時，parallel 部分會加速，但 serial 部分不會因為核心變多而消失。',
+  '當 N 越來越大，整體加速上限會接近 1/S，所以序列部分會限制多核心效能。'
+]);
+setupFlow('flow-burst',[
+  'Process 執行時先使用 CPU，進行 load、store、read 等計算工作，稱為 CPU burst。',
+  '接著 process 可能等待輸入輸出，例如讀檔、寫檔或等待裝置，稱為 I/O burst。',
+  'CPU burst 與 I/O burst 會反覆交替；排程器要利用這個特性提高 CPU 使用率。'
+]);
+setupFlow('flow-cpu-scheduler',[
+  'Ready queue 中有多個已準備好的 process，它們都在等待 CPU。',
+  'Short-term scheduler 依照某種排程演算法選出下一個要執行的 process。',
+  '被選中的 process 取得 CPU；評估排程時會看 CPU utilization、waiting time、response time 等指標。'
+]);
+document.querySelectorAll('.burst-item,.bar,.metric-card,.rq-process,.limit-card').forEach(x=>x.addEventListener('click',()=>x.classList.toggle('active')));

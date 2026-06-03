@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="zh-Hant"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/><link href="assets/style.css" rel="stylesheet"/><script src="assets/script.js"></script><title>Lesson 5 主題 3：Singly Linked List 單向鏈結串列基本結構</title></head><body>
+<header class="hero"><div class="inner"><span class="badge">Lesson 5｜主題 3｜投影片 5</span><h1>主題 3：Singly Linked List 單向鏈結串列基本結構</h1><p>用 Head pointer、data 欄位與 next pointer 說明單向鏈結串列。</p><div class="toolbar"><a class="btn secondary" href="../index.html">回 L5 首頁</a><a class="btn secondary" href="topic4.html">下一個：主題 4</a></div></div></header>
+<div class="wrap"><div class="layout"><aside class="sidebar"><div class="side-title">Lesson 5 主題導覽</div><nav class="nav"><a href="../index.html">L5 首頁</a><a class="active" href="topic3.html">3. Singly Linked List 單向鏈結串列基本結構</a>
+<a href="topic4.html">4. Singly Linked List 的刪除與插入操作</a></nav></aside><main>
+<section class="card"><span class="badge">投影片 5</span><h2>一、主題核心概念</h2><p>Singly Linked List 是只能順著一個方向走的串列。每個節點通常包含 data 與 next，next 指向下一個節點，最後一個節點指向 NULL。</p></section>
+<section class="card"><h2>二、投影片逐張下拉式詳細講解</h2><p>每一張投影片都已把圖片與自己的文字講解合併在同一個下拉式區塊中。點開後可以直接對照圖片閱讀說明。</p><div class="slide-detail-list"><details class="slide-detail"><summary>投影片 5｜Singly Linked List 單向鏈結串列</summary><div class="slide-detail-body"><div class="slide-detail-grid"><div><img alt="投影片 5：Singly Linked List 單向鏈結串列" class="slide-detail-img" src="assets/slide5.jpg"/><div class="figure-caption">投影片 5</div></div><div class="slide-explain"><h3>Singly Linked List 單向鏈結串列</h3><h4>詳細說明與講解</h4><p>1、這張投影片開始進入 Singly Linked List。單向鏈結串列中的每個節點通常有兩個欄位：一個保存資料，例如 Name；另一個保存 pointer，指向下一個節點。</p><p>2、Head pointer 是整條串列的入口。程式只能從 head 開始，沿著每個節點的 pointer 往下一個節點前進。因為是單向，所以不能直接從後面的節點回到前面的節點。</p><p>3、圖中最後一個節點指向 NIL，代表串列結束。這個結束標記在程式中通常是 NULL。走訪時只要 current != NULL 就繼續，current == NULL 就停止。</p><p>4、單向鏈結串列的限制是刪除某個節點時，如果只知道該節點本身，通常還需要知道它的前一個節點，因為前一個節點的 next 必須改成指向目標節點的下一個。</p><div class="slide-memory">一句話記憶：Singly Linked List 只能從 head 往後走，不能往前退。</div></div></div></div></details></div></section>
+<section class="card"><h2>三、動畫流程圖：Singly Linked List 單向鏈結串列基本結構</h2><div class="flow-area" id="flow3"><div class="flow"><div class="node">建立 head</div><div class="node">建立第一個節點</div><div class="node">節點連到下一個</div><div class="node">重複串接</div><div class="node">遇到 NULL</div><div class="node">完成走訪</div></div><div class="progress"><div class="bar"></div></div><div class="stepbox"></div><div class="btns" style="margin-top:12px"><button class="btn secondary" onclick="prevFlow('flow3')">上一步</button><button class="btn" onclick="nextFlow('flow3')">下一步</button><button class="btn orange" onclick="playFlow('flow3')">自動播放</button><button class="btn secondary" onclick="resetFlow('flow3')">重新開始</button></div></div><script>initFlow('flow3',['head 是整條串列的入口。','第一個節點保存資料與 next。','next 指向下一個節點。','每個節點都用同樣方式串接。','當 next 為 NULL 時代表已到尾端。','走訪時從 head 開始，不斷 current = current->next。']);</script></section>
+<section class="card"><h2>四、動畫表格：步驟與重點整理</h2><p>請按「下一步」或「自動播放」觀察本主題的操作流程與注意事項。</p><div class="flow-area" id="table3"><div class="anim-table-wrap"><table class="anim-table"><thead><tr><th>元件</th><th>功能</th><th>程式意義</th><th>注意事項</th></tr></thead><tbody><tr><td>head</td><td>指向第一個節點</td><td>串列入口</td><td>若 head == NULL 表示空串列</td></tr><tr><td>data</td><td>保存資料</td><td>可以是 int、char 或 struct</td><td>依題目需求設定型態</td></tr><tr><td>next</td><td>指向下一節點</td><td>形成單向連接</td><td>只能往後走</td></tr><tr><td>current</td><td>走訪用指標</td><td>暫時指向目前節點</td><td>移動時 current=current-&gt;next</td></tr><tr><td>NULL</td><td>結尾</td><td>避免無限走訪</td><td>存取前要檢查</td></tr></tbody></table></div><div class="progress"><div class="bar"></div></div><div class="table-note"></div><div class="btns" style="margin-top:12px"><button class="btn secondary" onclick="prevTable('table3')">上一步</button><button class="btn" onclick="nextTable('table3')">下一步</button><button class="btn orange" onclick="playTable('table3')">自動播放</button><button class="btn secondary" onclick="resetTable('table3')">重新開始</button></div></div><script>initTable('table3',['head → 指向第一個節點 → 串列入口 → 若 head == NULL 表示空串列','data → 保存資料 → 可以是 int、char 或 struct → 依題目需求設定型態','next → 指向下一節點 → 形成單向連接 → 只能往後走','current → 走訪用指標 → 暫時指向目前節點 → 移動時 current=current->next','NULL → 結尾 → 避免無限走訪 → 存取前要檢查']);</script></section>
+<details open=""><summary>五、完整中文講解</summary><div class="content"><h3>（一）本主題要學會什麼？</h3><p>Singly Linked List 是只能順著一個方向走的串列。每個節點通常包含 data 與 next，next 指向下一個節點，最後一個節點指向 NULL。</p><h3>（二）實作時最重要的觀念</h3><div class="grid2"><div class="mini"><b>資料結構</b><br/>先看清楚資料是用 Array、Node、Singly List、Circular List 或 Doubly List 表示。</div><div class="mini"><b>指標方向</b><br/>Linked List 題目幾乎都在考指標怎麼接、怎麼斷、怎麼重新連起來。</div><div class="mini"><b>特殊情況</b><br/>空串列、頭節點、尾節點、找不到資料，都是程式容易錯的地方。</div><div class="mini"><b>測試方式</b><br/>每做完 insert/delete，都用 print 檢查目前串列是否符合預期。</div></div><div class="example">單向鏈結串列只能往 next 的方向走，所以刪除節點時通常需要 prev 來保存前一個節點。這也是許多程式錯誤的來源。</div></div></details>
+<details open=""><summary>六、可編輯 C 程式範例：含中文註解與線上編輯器</summary><div class="content"><div class="codewrap"><div class="codebar"><span>singly_list_basic.c</span><div class="btns"><button class="btn green" onclick="copyCode('code3')">複製程式</button><button class="btn orange" onclick="downloadCode('code3','singly_list_basic.c')">下載 .c</button><a class="btn secondary" href="https://www.onlinegdb.com/online_c_compiler" target="_blank">OnlineGDB</a><a class="btn secondary" href="https://www.programiz.com/c-programming/online-compiler/" target="_blank">Programiz</a><a class="btn secondary" href="https://onecompiler.com/c" target="_blank">OneCompiler</a></div></div><textarea class="codearea" id="code3" spellcheck="false">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+/*
+    Lesson 5：Linked List 基本節點示範
+    功能：建立三個節點，並用 next pointer 串成一條 linked list。
+*/
+
+typedef struct Node {
+    int data;              // data：節點中保存的資料
+    struct Node *next;     // next：指向下一個節點的指標
+} Node;
+
+Node* createNode(int value) {
+    Node *newNode = (Node*)malloc(sizeof(Node));
+    if (newNode == NULL) {
+        printf("記憶體配置失敗\n");
+        exit(1);
+    }
+    newNode-&gt;data = value; // 設定資料
+    newNode-&gt;next = NULL;  // 一開始還沒有接到下一個節點
+    return newNode;
+}
+
+void printList(Node *head) {
+    Node *current = head;  // 從 head 開始走訪
+    while (current != NULL) {
+        printf("%d -&gt; ", current-&gt;data);
+        current = current-&gt;next;
+    }
+    printf("NULL\n");
+}
+
+int main(void) {
+    Node *head = createNode(10);
+    head-&gt;next = createNode(20);
+    head-&gt;next-&gt;next = createNode(30);
+
+    printf("Linked List 內容：");
+    printList(head);
+    return 0;
+}
+</textarea></div></div></details>
+
+<section class="card program-teaching-card">
+<h2>新增：程式題目教學內容（依指定格式）</h2>
+<div class="content">
+<h3>一、程式題目講解</h3>
+<p>本題說明單向鏈結串列的基本結構。學生需要理解每個節點只有一個 next 指標，因此只能由前往後走訪，不能直接反向移動。</p>
+<h3>二、完整程式碼</h3>
+<p>以下為本頁程式題目的完整可執行 C 程式碼，已在重要程式區塊加入中文註解，方便初學者理解程式功能與流程。</p>
+<pre class="codearea" style="height:auto;min-height:0;white-space:pre-wrap;overflow:auto;">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+/*
+    Lesson 5：Linked List 基本節點示範
+    功能：建立三個節點，並用 next pointer 串成一條 linked list。
+*/
+
+typedef struct Node {
+    int data;              // data：節點中保存的資料
+    struct Node *next;     // next：指向下一個節點的指標
+} Node;
+
+Node* createNode(int value) {
+    Node *newNode = (Node*)malloc(sizeof(Node));
+    if (newNode == NULL) {
+        printf(&quot;記憶體配置失敗\n&quot;);
+        exit(1);
+    }
+    newNode-&gt;data = value; // 設定資料
+    newNode-&gt;next = NULL;  // 一開始還沒有接到下一個節點
+    return newNode;
+}
+
+void printList(Node *head) {
+    Node *current = head;  // 從 head 開始走訪
+    while (current != NULL) {
+        printf(&quot;%d -&gt; &quot;, current-&gt;data);
+        current = current-&gt;next;
+    }
+    printf(&quot;NULL\n&quot;);
+}
+
+int main(void) {
+    Node *head = createNode(10);
+    head-&gt;next = createNode(20);
+    head-&gt;next-&gt;next = createNode(30);
+
+    printf(&quot;Linked List 內容：&quot;);
+    printList(head);
+    return 0;
+}
+</pre>
+<h3>三、程式執行結果</h3>
+<p>程式執行後會得到以下輸出：</p>
+<pre class="codearea" style="height:auto;min-height:0;white-space:pre-wrap;overflow:auto;">Linked List 內容：10 -&gt; 20 -&gt; 30 -&gt; NULL</pre>
+<p>main 建立 10、20、30 三個節點，並依序用 next 連接。printList 從 head 開始印出每個節點的 data，最後遇到 NULL 代表串列結束，所以輸出為 10 -&gt; 20 -&gt; 30 -&gt; NULL。</p>
+<h3>四、程式流程圖與流程圖說明</h3>
+<p>本題流程圖如下，呈現程式的主要執行順序、判斷條件與資料處理流程。</p>
+<div class="program-flow-figure"><img alt="主題 3 程式流程圖" class="program-flow-img" src="assets/program_flow_topic3.svg"/><div class="figure-caption">主題 3：Singly Linked List 單向鏈結串列基本結構：程式流程圖</div></div>
+<p>流程先建立節點，再把 head 指向第一個節點。每個節點的 next 指向下一個節點，最後一個節點的 next 保持 NULL。走訪時 current 一直往 next 移動，因此形成單向流程。</p>
+<h3>五、重要函數與語法說明</h3>
+<ol><li>Node：單向串列的基本節點。</li><li>next 指標：只指向下一個節點，形成單向連結。</li><li>createNode：負責配置與初始化節點。</li><li>printList：示範由 head 到 NULL 的單向走訪。</li><li>NULL：表示串列尾端或沒有下一個節點。</li></ol>
+<h3>六、整體說明</h3>
+<p>本題核心是「單向」概念。單向鏈結串列只能順著 next 往後走，因此插入或刪除時常需要保存前一個節點的位置，這會在後面的題目中用到。</p>
+</div>
+</section>
+<section class="card program-flow-card">
+<h2>七、程式流程圖：Singly Linked List 建立與走訪</h2>
+<p>下圖是本主題對應的程式執行流程，適合搭配下方 C 程式碼一起看。</p>
+<div class="program-flow-figure"><img alt="主題 3 程式流程圖" class="program-flow-img" src="assets/program_flow_topic3.svg"/><div class="figure-caption">主題 3 程式流程圖：Singly Linked List 建立與走訪</div></div>
+<div class="flow-explain"><h3>流程講解</h3><ol><li>單向鏈結串列的每個節點只需要 data 與 next。</li><li>head 保存第一個節點的位置，是進入串列的入口。</li><li>走訪時不能直接跳到任意位置，而是從 head 一個一個往後走。</li><li>每次印出 current-&gt;data 後，執行 current = current-&gt;next。</li><li>當 current 變成 NULL，代表已經走到串列尾端。</li></ol><p>這張流程圖把本頁程式的執行順序整理成一條清楚路徑。閱讀時先看資料如何被建立，再看條件判斷與指標如何改變，最後用輸出結果確認程式邏輯是否正確。</p></div>
+</section>
+</main></div></div><footer class="footer">Lesson 5｜主題 3：Singly Linked List 單向鏈結串列基本結構</footer></body></html>

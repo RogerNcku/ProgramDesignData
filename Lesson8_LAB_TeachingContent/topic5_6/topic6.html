@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="zh-Hant"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/><title>Lesson 8 主題六｜單一程式與多程式記憶體管理</title><link href="assets/style.css" rel="stylesheet"/>
+<style>
+.program-flow-card{background:#ffffff;border:1px solid #dbeafe;border-radius:20px;padding:22px;margin:24px 0;box-shadow:0 12px 30px rgba(15,23,42,.08)}
+.program-flow-card h2{margin-top:0;color:#0f172a}
+.program-flow-img{width:100%;border-radius:18px;border:1px solid #e2e8f0;background:#f8fafc}
+.flow-explain{line-height:1.9;background:#f8fafc;border-left:6px solid #2563eb;border-radius:14px;padding:16px 18px;white-space:pre-line}
+.code-card{background:#0f172a;color:#e5e7eb;border-radius:20px;padding:0;margin:24px 0;overflow:hidden;box-shadow:0 12px 32px rgba(15,23,42,.20)}
+.code-card .code-head{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between;background:#111827;padding:14px 16px;border-bottom:1px solid #334155}
+.code-card .code-title{font-weight:700;color:#f8fafc}
+.code-card .code-actions{display:flex;gap:8px;flex-wrap:wrap}
+.code-card button,.code-card a{border:0;border-radius:999px;padding:8px 12px;font-weight:700;text-decoration:none;cursor:pointer;background:#2563eb;color:white;font-size:14px}
+.code-card a{background:#475569}
+.code-card button.download-btn{background:#f97316}
+.code-card textarea{width:100%;min-height:380px;box-sizing:border-box;background:#020617;color:#e5e7eb;border:0;padding:18px;font-family:Consolas,'Courier New',monospace;font-size:15px;line-height:1.55;resize:vertical}
+.editor-links{margin-top:12px;line-height:1.8}
+.editor-links a{display:inline-block;margin:4px 8px 4px 0;padding:8px 12px;border-radius:999px;background:#e0f2fe;color:#075985;text-decoration:none;font-weight:700}
+</style>
+<script>
+function copyCode(id){
+  const el=document.getElementById(id);
+  if(!el) return;
+  el.select();
+  document.execCommand('copy');
+  alert('程式碼已複製');
+}
+function downloadCode(id, filename){
+  const el=document.getElementById(id);
+  if(!el) return;
+  const blob=new Blob([el.value], {type:'text/plain;charset=utf-8'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download=filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(()=>URL.revokeObjectURL(a.href), 500);
+}
+</script>
+
+<style id="slide-dropdown-explanation-style">
+.slide-explain-wrapper{margin:20px 0}
+.slide-intro-note{line-height:1.9;background:#eff6ff;border-left:6px solid #2563eb;border-radius:14px;padding:14px 16px;color:#1e3a8a}
+.single-slide-detail{margin:18px 0;border:1px solid #dbeafe;border-radius:18px;background:#ffffff;box-shadow:0 10px 24px rgba(15,23,42,.07);overflow:hidden}
+.single-slide-detail>summary{cursor:pointer;padding:16px 18px;font-weight:800;color:#0f172a;background:linear-gradient(135deg,#eff6ff,#f8fafc);list-style:none}
+.single-slide-detail>summary::-webkit-details-marker{display:none}
+.single-slide-detail>summary::before{content:"＋";display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;margin-right:10px;border-radius:999px;background:#2563eb;color:white;font-weight:900}
+.single-slide-detail[open]>summary::before{content:"－";background:#f97316}
+.slide-explain-grid{display:grid;grid-template-columns:minmax(280px,46%) 1fr;gap:22px;padding:20px;align-items:start}
+.slide-explain-image{background:#f8fafc;border:1px solid #e2e8f0;border-radius:16px;padding:12px}
+.slide-explain-image .slide-img{width:100%;height:auto;border-radius:12px;border:1px solid #e5e7eb;background:white}
+.slide-caption{text-align:center;color:#475569;font-size:14px;margin-top:8px;line-height:1.6}
+.slide-explain-text{line-height:1.9;color:#1f2937}
+.slide-explain-text h3{margin:8px 0 6px;color:#0f172a;font-size:1.05rem}
+.slide-explain-text p{margin:0 0 12px}
+.slide-explain-text ul{margin:0 0 12px 1.2em;padding:0}
+.slide-explain-text li{margin:4px 0}
+.memory-line{background:#fff7ed;border-left:6px solid #f97316;border-radius:12px;padding:10px 12px;color:#7c2d12}
+@media (max-width: 860px){
+  .slide-explain-grid{grid-template-columns:1fr}
+}
+</style>
+
+<style id="teaching-content-style">
+.teaching-content-card{background:#ffffff;border:1px solid #c7d2fe;border-radius:20px;padding:22px;margin:24px 0;box-shadow:0 12px 30px rgba(15,23,42,.08)}
+.teaching-content-card h2{margin-top:0;color:#1e1b4b}
+.teaching-content-card h3{margin-top:18px;color:#0f172a}
+.teaching-content-card p,.teaching-content-card li{line-height:1.9;color:#1f2937}
+.teaching-code-block,.teaching-output-block{white-space:pre-wrap;background:#020617;color:#e5e7eb;border-radius:16px;padding:16px;overflow:auto;font-family:Consolas,'Courier New',monospace;line-height:1.55}
+.teaching-output-block{background:#f8fafc;color:#0f172a;border:1px solid #e2e8f0}
+.teaching-mini-note{background:#eff6ff;border-left:6px solid #2563eb;border-radius:14px;padding:12px 14px;line-height:1.9;color:#1e3a8a}
+</style>
+</head><body>
+<section class="hero"><div class="hero-inner"><span class="badge">主題六｜投影片 17–20</span><h1>單一程式與多程式記憶體管理</h1><p>本主題比較 Monoprogramming 與 Multiprogramming 的記憶體配置方式，並整理多程式環境下常見的記憶體管理分類：Partitioning、Paging、Segmentation 與 Swapping。</p><div class="nav"><a class="btn" href="../index.html">回首頁</a><a class="btn" href="topic5.html">上一主題</a></div></div></section>
+<main class="wrap">
+<details class="slide-explain-wrapper" open=""><summary>一、投影片逐張下拉式詳細講解</summary><div class="detail-body"><p class="slide-intro-note">每張投影片都已把「圖片」與「自己的文字講解」放在同一個下拉式區塊中，方便一邊看圖、一邊理解重點。</p><details class="single-slide-detail" open=""><summary>投影片 17｜Monoprogramming</summary><div class="slide-explain-grid"><div class="slide-explain-image"><img alt="投影片17 Monoprogramming" class="slide-img" src="assets/slide17.jpg"/><div class="slide-caption">投影片 17｜Monoprogramming</div></div><div class="slide-explain-text"><h3>（一）這張投影片在說什麼？</h3><p>這張介紹單一程式記憶體管理。系統一次主要執行一個使用者程式，大部分記憶體給該程式使用，少部分保留給 OS。這種方式簡單，但 CPU 與記憶體利用率較低。</p><h3>（二）核心觀念</h3><ul><li>一次只讓一個主要程式在記憶體中。</li><li>實作簡單，但當程式等待 I/O 時 CPU 可能閒置。</li></ul><h3>（三）學習與考試重點</h3><p>Monoprogramming 的優點是簡單，缺點是效率差。</p><h3>（四）一句話記憶</h3><p class="memory-line">一句話記憶：Monoprogramming 的優點是簡單，缺點是效率差。</p></div></div></details><details class="single-slide-detail"><summary>投影片 18｜Multiprogramming</summary><div class="slide-explain-grid"><div class="slide-explain-image"><img alt="投影片18 Multiprogramming" class="slide-img" src="assets/slide18.jpg"/><div class="slide-caption">投影片 18｜Multiprogramming</div></div><div class="slide-explain-text"><h3>（一）這張投影片在說什麼？</h3><p>這張介紹多程式記憶體管理。多個程式同時放在記憶體中，OS 在它們之間切換執行。當一個程式等待 I/O，CPU 可以執行另一個程式，提升整體效率。</p><h3>（二）核心觀念</h3><ul><li>多個 program/process 同時存在記憶體。</li><li>需要保護機制，避免程式互相破壞資料。</li></ul><h3>（三）學習與考試重點</h3><p>Multiprogramming 的核心是提高 CPU utilization。</p><h3>（四）一句話記憶</h3><p class="memory-line">一句話記憶：Multiprogramming 的核心是提高 CPU utilization。</p></div></div></details><details class="single-slide-detail"><summary>投影片 19｜Categories of Multiprogramming</summary><div class="slide-explain-grid"><div class="slide-explain-image"><img alt="投影片19 Categories of Multiprogramming" class="slide-img" src="assets/slide19.jpg"/><div class="slide-caption">投影片 19｜Categories of Multiprogramming</div></div><div class="slide-explain-text"><h3>（一）這張投影片在說什麼？</h3><p>這張把 multiprogramming 分成不同管理方式，例如是否 swapping。Swapping 代表 OS 可以把暫時不用的 process 移出記憶體，之後再換回來。</p><h3>（二）核心觀念</h3><ul><li>Nonswapping：行程留在記憶體中。</li><li>Swapping：行程可在記憶體與磁碟之間換入換出。</li></ul><h3>（三）學習與考試重點</h3><p>理解 swapping 是為了增加可同時管理的行程數量。</p><h3>（四）一句話記憶</h3><p class="memory-line">一句話記憶：理解 swapping 是為了增加可同時管理的行程數量。</p></div></div></details><details class="single-slide-detail"><summary>投影片 20｜Partitioning</summary><div class="slide-explain-grid"><div class="slide-explain-image"><img alt="投影片20 Partitioning" class="slide-img" src="assets/slide20.jpg"/><div class="slide-caption">投影片 20｜Partitioning</div></div><div class="slide-explain-text"><h3>（一）這張投影片在說什麼？</h3><p>這張介紹連續配置中的 partitioning。記憶體被切成數個區塊，每個區塊可放入一個行程。這種方式直覺，但容易產生內部或外部碎片。</p><h3>（二）核心觀念</h3><ul><li>Contiguous allocation 要求行程佔用連續記憶體。</li><li>Partition 大小與配置策略會影響記憶體浪費。</li></ul><h3>（三）學習與考試重點</h3><p>常考 fragmentation：internal fragmentation 與 external fragmentation。</p><h3>（四）一句話記憶</h3><p class="memory-line">一句話記憶：常考 fragmentation：internal fragmentation 與 external fragmentation。</p></div></div></details></div></details>
+<details open=""><summary>二、Monoprogramming：單一程式記憶體管理</summary><div class="detail-body"><p><span class="pill">核心觀念</span> 在 Monoprogramming 中，記憶體大部分只保留給作業系統與一個正在執行的 program。當這個程式執行時，其他程式不能同時留在記憶體中一起執行。</p><div class="memory-demo"><div class="cpu-chip">CPU<br/>執行唯一程式</div><div class="mem-column"><div class="mem-block mem-os">Operating System</div><div class="mem-block mem-p1">Program</div></div></div><div class="two-col"><div class="mini-card"><h4>優點</h4><p>概念簡單，管理容易，適合早期或非常簡化的系統。</p></div><div class="mini-card"><h4>缺點</h4><p>CPU 利用率可能很低。如果程式等待 I/O，CPU 可能會空等，無法有效利用系統資源。</p></div></div></div></details>
+<details><summary>三、Multiprogramming：多程式記憶體管理</summary><div class="detail-body"><p>Multiprogramming 中，記憶體同時放入多個 program。只要其中一個程式因為 I/O 等原因暫停，CPU 就可以切換到另一個程式，提升 CPU 使用率。</p><div class="memory-demo"><div class="cpu-chip">CPU<br/>輪流執行</div><div class="mem-column"><div class="mem-block mem-os">Operating System</div><div class="mem-block mem-p1">Program 1</div><div class="mem-block mem-p2">Program 2</div><div class="mem-block mem-p3">Program 3</div></div></div><div class="flowbox" id="flow-multi"><h3>Monoprogramming 到 Multiprogramming 動畫</h3><div class="flow-steps"><div class="flow-step">只放一個 Program</div><div class="flow-step">同時放多個 Program</div><div class="flow-step">CPU 在程式間切換</div></div><div class="flow-caption"></div><div class="flow-controls"><button class="btn mini prev">上一步</button><button class="btn mini next">下一步</button><button class="btn mini reset">重新播放</button></div></div></div></details>
+<details><summary>四、Categories of Multiprogramming：多程式記憶體管理分類</summary><div class="detail-body"><p>投影片 19 把 Multiprogramming 分成兩大方向：Nonswapping 與 Swapping。Nonswapping 又包含 Partitioning 與 Paging；Swapping 則包含 Demand Paging 與 Demand Segmentation。</p><div class="category-tree"><div class="tree-wrap"><div class="tree-root">Multiprogramming</div><div class="tree-children"><div class="tree-child"><div class="tree-node">Nonswapping</div><div class="tree-leaves"><div class="tree-leaf">Partitioning</div><div class="tree-leaf">Paging</div></div></div><div class="tree-child"><div class="tree-node">Swapping</div><div class="tree-leaves"><div class="tree-leaf">Demand Paging</div><div class="tree-leaf">Demand Segmentation</div></div></div></div></div></div><div class="vs"><div class="mini-card"><h4>Nonswapping</h4><p>程式通常放在記憶體中，不強調把整個行程換出到磁碟。Partitioning 與 Paging 是常見方式。</p></div><div class="mini-card"><h4>Swapping</h4><p>當記憶體不足或需要切換時，部分內容可以在記憶體與磁碟之間移動。Demand paging / segmentation 會在需要時才載入。</p></div></div></div></details>
+<details><summary>五、Partitioning：連續配置的概念</summary><div class="detail-body"><p>Partitioning，也就是 contiguous allocation，是把記憶體切成連續區塊，讓每個 program 佔用一段連續空間。投影片 20 顯示 Program 1 與 Program 2 都放在記憶體中，CPU 可以先執行 Program 1，再執行 Program 2。</p><div class="partition-wrap"><div class="mem-stage"><div class="stage-title">a. CPU starts executing Program 1</div><div class="partition"><div class="part os">Operating System</div><div class="part p1">Program 1</div><div class="part p2">Program 2</div></div><span class="exec-badge">目前執行 Program 1</span></div><div class="mem-stage"><div class="stage-title">b. CPU starts executing Program 2</div><div class="partition"><div class="part os">Operating System</div><div class="part p1">Program 1</div><div class="part p2">Program 2</div></div><span class="exec-badge">目前執行 Program 2</span></div></div><div class="flowbox" id="flow-partition"><h3>Partitioning 執行切換動畫</h3><div class="flow-steps"><div class="flow-step">Program 1 佔一段連續空間</div><div class="flow-step">Program 2 佔另一段連續空間</div></div><div class="flow-caption"></div><div class="flow-controls"><button class="btn mini prev">上一步</button><button class="btn mini next">下一步</button><button class="btn mini reset">重新播放</button></div></div><p class="note">簡單記法：Partitioning 的重點是「一個程式一段連續記憶體」；Multiprogramming 的重點是「多個程式同時待在記憶體中，CPU 可以輪流執行」。</p></div></details>
+<details class="program-flow-card" open=""><summary>程式流程圖與流程講解</summary>
+<div class="detail-body">
+<h2>程式流程圖：單一程式與多程式記憶體管理</h2>
+<img alt="主題 6 程式流程圖" class="program-flow-img" src="assets/program_flow_topic6.svg"/>
+<h3>流程講解</h3>
+<div class="flow-explain">這張流程圖對應本頁「單一程式與多程式記憶體管理」的 C 程式執行邏輯。
+1、輸入多個程式大小。
+2、依序檢查可用記憶體。
+3、可放入則載入。
+4、不可放入則等待。
+5、顯示記憶體使用情形。
+學生可以先看流程圖理解整體順序，再對照下方程式中的中文註解，確認每一段程式碼負責哪一個步驟。</div>
+</div>
+</details>
+<details class="program-flow-card" open=""><summary>可編輯 C 程式範例與線上編輯器</summary>
+<div class="detail-body">
+<h2>可編輯 C 程式：單一程式與多程式記憶體管理</h2>
+<p>這段程式依照上方流程圖設計，包含中文註解，適合貼到線上編輯器直接執行與修改。</p>
+<div class="code-card">
+<div class="code-head">
+<span class="code-title">lesson8_topic6_demo.c</span>
+<div class="code-actions">
+<button onclick="copyCode('code_topic_6')">複製程式</button>
+<button class="download-btn" onclick="downloadCode('code_topic_6','lesson8_topic6_demo.c')">下載 .c</button>
+<a href="https://www.onlinegdb.com/online_c_compiler" target="_blank">OnlineGDB</a>
+<a href="https://www.programiz.com/c-programming/online-compiler/" target="_blank">Programiz</a>
+<a href="https://onecompiler.com/c" target="_blank">OneCompiler</a>
+</div>
+</div>
+<textarea id="code_topic_6" spellcheck="false">#include &lt;stdio.h&gt;
+
+/*
+  主題 6：單一程式與多程式記憶體管理
+  功能：示範多程式如何共享主記憶體。
+*/
+
+int main(void) {
+    int memory = 120;
+    int programSize[] = {40, 35, 60, 20};
+    int remain = memory;
+    int i;
+
+    for (i = 0; i &lt; 4; i++) {
+        printf("Program %d 需要 %d MB：", i + 1, programSize[i]);
+        if (programSize[i] &lt;= remain) {
+            remain -= programSize[i];
+            printf("載入成功，剩餘 %d MB\n", remain);
+        } else {
+            printf("空間不足，暫時等待。\n");
+        }
+    }
+    return 0;
+}</textarea>
+</div>
+<div class="editor-links">
+      線上編輯器：
+      <a href="https://www.onlinegdb.com/online_c_compiler" target="_blank">OnlineGDB C Compiler</a>
+<a href="https://www.programiz.com/c-programming/online-compiler/" target="_blank">Programiz C Compiler</a>
+<a href="https://onecompiler.com/c" target="_blank">OneCompiler C</a>
+</div>
+</div>
+</details>
+
+<details class="teaching-content-card" open=""><summary>程式題目完整教學內容</summary>
+<div class="detail-body">
+<h2>程式題目完整教學：單一程式與多程式記憶體管理</h2>
+<h3>一、程式題目講解</h3>
+<p>示範多個程式共享主記憶體時，OS 如何根據剩餘容量決定是否載入。</p>
+<p>重點是 remain 剩餘記憶體與多程式配置：程式可載入時扣除容量，否則等待。</p>
+<h3>二、完整程式碼</h3>
+<p>以下程式碼可直接複製到 C 語言線上編譯器執行。程式中已加入中文註解，說明主要變數、判斷流程與輸出目的。</p>
+<pre class="teaching-code-block"><code>#include &lt;stdio.h&gt;
+
+/*
+  主題 6：單一程式與多程式記憶體管理
+  功能：示範多程式如何共享主記憶體。
+*/
+
+int main(void) {
+    int memory = 120;
+    int programSize[] = {40, 35, 60, 20};
+    int remain = memory;
+    int i;
+
+    for (i = 0; i &lt; 4; i++) {
+        printf(&quot;Program %d 需要 %d MB：&quot;, i + 1, programSize[i]);
+        if (programSize[i] &lt;= remain) {
+            remain -= programSize[i];
+            printf(&quot;載入成功，剩餘 %d MB\n&quot;, remain);
+        } else {
+            printf(&quot;空間不足，暫時等待。\n&quot;);
+        }
+    }
+    return 0;
+}</code></pre>
+<h3>三、程式執行結果</h3>
+<pre class="teaching-output-block"><code>Program 1 需要 40 MB：載入成功，剩餘 80 MB
+Program 2 需要 35 MB：載入成功，剩餘 45 MB
+Program 3 需要 60 MB：空間不足，暫時等待。
+Program 4 需要 20 MB：載入成功，剩餘 25 MB</code></pre>
+<p class="teaching-mini-note">結果說明：重點是 remain 剩餘記憶體與多程式配置：程式可載入時扣除容量，否則等待。 程式依照設定的資料與控制流程逐步輸出，因此可以從結果看到每個步驟的執行順序與狀態變化。</p>
+<h3>四、程式流程圖與流程圖說明</h3>
+<p>本頁上方已提供對應的程式流程圖，圖中以「開始、資料設定、條件判斷、重複處理、輸出結果、結束」呈現程式執行順序。</p>
+<p>程式從第一個程式開始檢查所需空間，若小於等於剩餘記憶體就載入，否則顯示空間不足。</p>
+<h3>五、重要函數與語法說明</h3>
+<p>programSize[] 儲存每個程式需要的記憶體；remain 記錄剩餘容量；for 與 if 搭配完成逐一檢查。</p>
+<h3>六、整體說明</h3>
+<p>本題的學習重點是把作業系統概念轉成可觀察的 C 程式流程。學生應先理解題目概念，再對照程式碼、流程圖與執行結果，掌握變數設定、條件判斷、迴圈處理與輸出結果之間的關係。</p>
+</div>
+</details>
+
+</main><div class="footer">Lesson 8 Topic 6｜Memory Management for Mono/Multi-programming</div><script src="assets/script.js"></script></body></html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+
+<html lang="zh-Hant"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/><title>主題二 Representation of Trees 樹的表示法</title><link href="assets/style.css" rel="stylesheet"/><script src="assets/script.js"></script>
+<style>
+.slide-dropdown-section{margin-top:22px}.slide-dropdown-section>.note{margin-bottom:14px}.slide-explain-item{border:1px solid rgba(100,116,139,.28);border-radius:16px;margin:14px 0;background:rgba(255,255,255,.86);overflow:hidden}.slide-explain-item>summary{cursor:pointer;font-weight:700;padding:16px 18px;line-height:1.5;background:linear-gradient(90deg,rgba(241,245,249,.95),rgba(255,255,255,.88));list-style:none}.slide-explain-item>summary::-webkit-details-marker{display:none}.slide-explain-item>summary:before{content:'▸';display:inline-block;margin-right:8px;transition:transform .2s}.slide-explain-item[open]>summary:before{transform:rotate(90deg)}.slide-explain-body{display:grid;grid-template-columns:minmax(280px,46%) 1fr;gap:22px;padding:18px}.slide-explain-media{align-self:start}.slide-explain-img{width:100%;height:auto;border-radius:14px;box-shadow:0 10px 28px rgba(15,23,42,.18);background:white}.slide-explain-text h3{font-size:1.04rem;margin:0.9rem 0 .35rem}.slide-explain-text h3:first-child{margin-top:0}.slide-explain-text p,.slide-explain-text li{line-height:1.85}.slide-explain-text ul{margin-top:.2rem;padding-left:1.4rem}.memory-box{margin-top:14px;padding:12px 14px;border-left:5px solid #f59e0b;background:#fff7ed;border-radius:10px;line-height:1.75;font-weight:600}@media(max-width:820px){.slide-explain-body{grid-template-columns:1fr}.slide-explain-item>summary{padding:14px}.slide-explain-body{padding:14px}}
+</style>
+</head><body>
+<section class="hero"><div class="hero-inner"><span class="badge">主題二｜投影片 8–9</span><h1>Representation of Trees 樹的表示法</h1><p>樹在概念上是階層式圖形，但在程式中必須轉成資料欄位與指標。這一章說明如何用 Left Child、Right Sibling、Right Child 來表示一般樹。</p><div class="nav"><a class="btn" href="../index.html">回 L6 首頁</a><a class="btn" href="topic1.html">上一章：樹的基本概念</a></div></div></section>
+<main class="wrap">
+<section class="card slide-dropdown-section"><h2>投影片逐張下拉式詳細講解</h2><p class="note">每一張投影片都把圖片與自己的中文講解放在同一個下拉式區塊中，打開後可以直接對照圖與文字。</p><details class="slide-explain-item"><summary>投影片 8：Tree Representations：Left Child-Right Sibling</summary><div class="slide-explain-body"><div class="slide-explain-media"><img alt="投影片 8" class="slide-explain-img" src="assets/slide8.png"/><div class="figure-caption">投影片 8</div></div><div class="slide-explain-text"><h3>（一）這張投影片在說什麼？</h3><p>這張投影片說明一般樹如何用固定欄位表示。因為一般樹的每個節點可能有不同數量的孩子，如果每個節點都預留很多 child 指標會浪費空間。Left Child-Right Sibling 只保留兩個連結：第一個孩子與下一個兄弟。</p><h3>（二）核心觀念</h3><ul><li>left child 指向第一個孩子。</li><li>right sibling 指向右邊最近的兄弟節點。</li><li>其他孩子可透過 sibling chain 找到。</li><li>用兩個指標就能表示任意多分支的一般樹。</li></ul><h3>（三）學習與考試重點</h3><p>這種表示法的關鍵是：parent 只直接連第一個 child，其餘 child 由兄弟鏈接起來。</p><div class="memory-box">一句話記憶：父節點牽第一個孩子，孩子們再彼此牽成一排。</div></div></div></details><details class="slide-explain-item"><summary>投影片 9：Degree-Two / Binary Form：一般樹轉二元形式</summary><div class="slide-explain-body"><div class="slide-explain-media"><img alt="投影片 9" class="slide-explain-img" src="assets/slide9.png"/><div class="figure-caption">投影片 9</div></div><div class="slide-explain-text"><h3>（一）這張投影片在說什麼？</h3><p>這張投影片進一步把 right sibling 視覺上旋轉成 right child，使一般樹可以轉成二元樹形式。轉換後每個節點都只需要 left child 與 right child。</p><h3>（二）核心觀念</h3><ul><li>left child 保留原本的第一個孩子。</li><li>right child 代表原本的下一個兄弟。</li><li>一般樹可以轉成規律的 binary-tree-like 結構。</li><li>這樣方便用二元樹的程式框架處理一般樹。</li></ul><h3>（三）學習與考試重點</h3><p>不要把轉換後的 right child 誤認為原本樹的孩子；它其實代表原本的 right sibling。</p><div class="memory-box">一句話記憶：轉換後：左邊往下找孩子，右邊橫向找兄弟。</div></div></div></details></section>
+<details open=""><summary>一、為什麼樹需要表示法？</summary><div class="detail-body"><p><span class="pill">核心問題</span></p><p>在投影片中，我們看見的 tree 是圖形：A 在上面，B、C 在下面，D、E、K、F、M 等節點再往下展開。可是電腦記憶體不是用圖形儲存資料，而是用一格一格的資料欄位與位址。因此我們需要一種 representation，把圖形上的「上下層關係」轉成可以儲存與走訪的結構。</p><p>最重要的想法是：每個節點除了儲存自己的 <span class="k">data</span>，還要記錄它和其他節點的連結。連結可以指向 child，也可以指向 sibling。</p></div></details>
+<details open=""><summary>二、Left Child-Right Sibling 表示法</summary><div class="detail-body"><p><b>Left Child-Right Sibling</b> 可以翻成「左孩子－右兄弟表示法」。每個節點保留兩個指標：</p><ul><li><span class="k">left child</span>：指向這個節點最左邊、第一個孩子。</li><li><span class="k">right sibling</span>：指向這個節點右邊最接近的兄弟節點。</li></ul><div class="concept-map"><div class="concept">Data<span>節點資料</span></div><div class="arrow">＋</div><div class="concept">Left Child<span>第一個孩子</span></div><div class="arrow">＋</div><div class="concept">Right Sibling<span>下一個兄弟</span></div></div><p>這種方法很適合一般樹，因為一般樹每個節點的孩子數量不固定。如果每個節點都預留很多 child 指標，會浪費空間；改成只保留 left child 和 right sibling，就能用固定欄位表示不同分支數量的樹。</p></div></details>
+<details open=""><summary>三、動畫流程圖：一般樹如何轉成 Left Child-Right Sibling？</summary><div class="detail-body"><div class="flowbox" data-flow="t2"><div class="flow-steps"><div class="flow-step" data-caption="先保留每個節點自己的 data，例如 A、B、C、D。">保留 Data</div><div class="flow-step" data-caption="每個節點只直接指向它的第一個孩子，也就是 left child。">接 Left Child</div><div class="flow-step" data-caption="同一層的兄弟節點，用 right sibling 一個接一個串起來。">接 Right Sibling</div><div class="flow-step" data-caption="其他孩子不直接由 parent 指向，而是透過 sibling 鏈找到。">形成 Sibling Chain</div><div class="flow-step" data-caption="最後，一般樹就能用固定兩個連結欄位表示。">完成表示</div></div><div class="flow-caption"></div><div class="flow-controls"><button class="btn mini" onclick="prevFlow('t2')">上一步</button><button class="btn mini primary" onclick="nextFlow('t2')">下一步</button><button class="btn mini" onclick="autoFlow('t2')">自動播放</button><button class="btn mini" onclick="resetFlow('t2')">重新開始</button></div></div></div></details>
+<details open=""><summary>四、Left Child-Right Child 表示法</summary><div class="detail-body"><p>投影片 9 進一步示範另一種表示方式：<b>Left Child-Right Child</b>。這個形式看起來更接近 binary tree 的節點結構，每個節點有：</p><ul><li><span class="k">data</span>：節點資料。</li><li><span class="k">left child</span>：左孩子。</li><li><span class="k">right child</span>：右孩子。</li></ul><p>當一般樹透過 left child-right sibling 轉換後，可以再把「right sibling」想成二元樹中的「right child」。也就是說，一般樹可以被轉成一種二元樹形式，方便後續使用 binary tree 的方法來處理。</p><div class="compare"><div class="box"><h3>原本的一般樹</h3><p>一個 parent 可以有很多 children，因此每個節點的分支數量不固定。</p></div><div class="box"><h3>轉換後的二元形式</h3><p>每個節點只保留 left child 與 right child，資料結構變得規律，也比較容易實作。</p></div></div></div></details>
+<details open=""><summary>五、簡單例子</summary><div class="detail-body"><p>假設 A 有三個孩子 B、C、D。在一般圖形上，A 會直接連到 B、C、D。</p><p>使用 Left Child-Right Sibling 時，A 的 <span class="k">left child</span> 指向 B；B 的 <span class="k">right sibling</span> 指向 C；C 的 <span class="k">right sibling</span> 指向 D。這樣 A 不需要同時存三個 child 指標，只要從 B 開始沿著 sibling 找，就能找到 A 的所有孩子。</p><p class="note">記憶方式：Parent 只牽第一個孩子；同一層兄弟自己手牽手排成一列。</p></div></details>
+<details class="lab7-code-section" open=""><summary>可編輯 C 程式範例：含中文註解與線上編輯器</summary><div class="content detail-body"><p>這一段提供可直接修改的 C 程式碼。可以按「複製程式」貼到線上編輯器執行，也可以下載 .c 檔案。</p><div class="codewrap"><div class="codebar"><span>lesson6_topic2_demo.c</span><div class="btns"><button class="btn green" onclick="copyCode('code2')">複製程式</button><button class="btn orange" onclick="downloadCode('code2','lesson6_topic2_demo.c')">下載 .c</button><a class="btn secondary" href="https://www.onlinegdb.com/online_c_compiler" target="_blank">OnlineGDB</a><a class="btn secondary" href="https://www.programiz.com/c-programming/online-compiler/" target="_blank">Programiz</a><a class="btn secondary" href="https://onecompiler.com/c" target="_blank">OneCompiler</a></div></div><textarea class="codearea" id="code2" spellcheck="false">/*
+  中文註解版程式：lesson6_topic2_demo.c
+  說明：主題 2：樹的表示法示範。用 left-child / right-sibling 將一般樹轉成規則的二元指標形式。
+  閱讀方式：先看資料結構定義，再看操作函式，最後看 main() 如何測試。
+*/
+
+// 匯入標準輸入輸出函式庫，提供 printf / scanf 等功能。
+#include &lt;stdio.h&gt;
+// 匯入標準函式庫，提供 malloc / free / exit 等記憶體與程式控制功能。
+#include &lt;stdlib.h&gt;
+
+// 定義節點結構：資料欄位存節點內容，指標欄位負責連到其他節點。
+typedef struct Node {
+    char data;
+    struct Node *leftChild;
+    struct Node *rightSibling;
+} Node;
+
+// 建立新節點：配置記憶體、填入資料，並把左右指標初始化為 NULL。
+Node* createNode(char data) {
+    Node* n = (Node*)malloc(sizeof(Node));
+    n-&gt;data = data;
+    n-&gt;leftChild = NULL;
+    n-&gt;rightSibling = NULL;
+    return n;
+}
+
+// 主程式：建立測試資料，呼叫上方函式，觀察輸出結果。
+int main(void) {
+    Node *A = createNode('A');
+    Node *B = createNode('B');
+    Node *C = createNode('C');
+    A-&gt;leftChild = B;
+    B-&gt;rightSibling = C;
+    printf("A 的 left child 是 %c\n", A-&gt;leftChild-&gt;data);
+    printf("B 的 right sibling 是 %c\n", B-&gt;rightSibling-&gt;data);
+    return 0;
+}
+</textarea></div></div></details>
+<details class="lab7-teaching-content" open=""><summary>程式題目教學內容：Tree Representation：Left-Child Right-Sibling</summary><div class="content detail-body">
+<h3>一、程式題目講解</h3>
+<p>本題說明一般樹如何用 left child 與 right sibling 兩個指標表示。學生需要理解：第一個孩子用 leftChild 連接，其餘兄弟節點用 rightSibling 串接。</p>
+<h3>二、完整程式碼</h3>
+<p>完整可執行程式碼已保留在上方「可編輯 C 程式範例：含中文註解與線上編輯器」區塊中，檔名為 <code>lesson6_topic2_demo.c</code>。該程式碼已加入中文註解，學生可以直接複製到 OnlineGDB、Programiz 或 OneCompiler 執行。</p>
+<h3>三、程式執行結果</h3>
+<pre><code>A 的 left child 是 B
+B 的 right sibling 是 C</code></pre>
+<p>輸出顯示 A 的 left child 是 B，B 的 right sibling 是 C，代表 A 的第一個孩子為 B，而 C 是 B 的同層兄弟，因此 A 實際上有 B、C 兩個孩子。</p>
+<h3>四、程式流程圖與流程圖說明</h3>
+<p>本頁下方已保留原本的程式流程圖。閱讀流程圖時，可以依序掌握「初始化資料或節點 → 執行主要函式或判斷 → 輸出結果」的過程。先建立 A、B、C 節點，再設定 A-&gt;leftChild = B，接著設定 B-&gt;rightSibling = C，最後印出這兩個連結關係。</p>
+<h3>五、重要函數與語法說明</h3>
+<p>createNode()：建立並初始化節點；malloc()：配置節點記憶體；-&gt;：透過指標存取結構成員；printf()：輸出節點關係。</p>
+<h3>六、整體說明</h3>
+<p>本題讓學生理解一般樹轉成二元形式的基礎：向下看第一個孩子，向右看下一個兄弟。</p>
+</div></details>
+
+<section class="card program-flow-card">
+<h2>程式流程圖：Tree 表示法轉換流程</h2>
+<p>下圖是本主題對應的程式執行流程，適合搭配本頁 C 程式碼一起看。</p>
+<div class="program-flow-figure"><img alt="主題 2 程式流程圖" class="program-flow-img" src="assets/program_flow_topic2.svg"/><div class="figure-caption">主題 2 程式流程圖：Tree 表示法轉換流程</div></div>
+<div class="flow-explain"><h3>流程講解</h3><ol><li>程式先讀入一般樹的父子關係，再決定要用 k-ary node 或 left-child right-sibling 表示。</li><li>若使用 LCRS，第一個孩子放在 left child，其他兄弟用 right sibling 串起來。</li><li>這種表示法可以把一般樹轉成類似 binary tree 的結構。</li><li>最後輸出每個節點的 left child 與 right sibling，確認轉換是否正確。</li></ol><p>這張流程圖把本頁程式的執行順序整理成一條清楚路徑。閱讀時先看輸入與資料如何建立，再看條件判斷、指標或陣列索引如何改變，最後用輸出結果確認程式邏輯是否正確。</p></div>
+</section>
+</main><div class="footer">Lesson 6 Trees｜主題二：樹的表示法</div></body></html>

@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+
+<html lang="zh-Hant"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/><title>主題八 Insertion and Deletion in BST</title><link href="assets/style.css" rel="stylesheet"/><script src="assets/script.js"></script>
+<style>
+.slide-dropdown-section{margin-top:22px}.slide-dropdown-section>.note{margin-bottom:14px}.slide-explain-item{border:1px solid rgba(100,116,139,.28);border-radius:16px;margin:14px 0;background:rgba(255,255,255,.86);overflow:hidden}.slide-explain-item>summary{cursor:pointer;font-weight:700;padding:16px 18px;line-height:1.5;background:linear-gradient(90deg,rgba(241,245,249,.95),rgba(255,255,255,.88));list-style:none}.slide-explain-item>summary::-webkit-details-marker{display:none}.slide-explain-item>summary:before{content:'▸';display:inline-block;margin-right:8px;transition:transform .2s}.slide-explain-item[open]>summary:before{transform:rotate(90deg)}.slide-explain-body{display:grid;grid-template-columns:minmax(280px,46%) 1fr;gap:22px;padding:18px}.slide-explain-media{align-self:start}.slide-explain-img{width:100%;height:auto;border-radius:14px;box-shadow:0 10px 28px rgba(15,23,42,.18);background:white}.slide-explain-text h3{font-size:1.04rem;margin:0.9rem 0 .35rem}.slide-explain-text h3:first-child{margin-top:0}.slide-explain-text p,.slide-explain-text li{line-height:1.85}.slide-explain-text ul{margin-top:.2rem;padding-left:1.4rem}.memory-box{margin-top:14px;padding:12px 14px;border-left:5px solid #f59e0b;background:#fff7ed;border-radius:10px;line-height:1.75;font-weight:600}@media(max-width:820px){.slide-explain-body{grid-template-columns:1fr}.slide-explain-item>summary{padding:14px}.slide-explain-body{padding:14px}}
+</style>
+</head><body><section class="hero"><div class="hero-inner"><span class="badge">主題八｜投影片 26–27</span><h1>Insertion and Deletion in Binary Search Tree</h1><p>BST 的插入很像搜尋：一路比較到空位置再放入。刪除比較重要，必須分成三種情況處理，才不會破壞 BST 左小右大的規則。</p><div class="nav"><a class="btn" href="../index.html">回 L6 首頁</a><a class="btn" href="topic7.html">上一章：Building a BST</a><a class="btn" href="bst_insert_delete.c">下載本章 C 程式</a></div></div></section><main class="wrap"><section class="card slide-dropdown-section"><h2>投影片逐張下拉式詳細講解</h2><p class="note">每一張投影片都把圖片與自己的中文講解放在同一個下拉式區塊中，打開後可以直接對照圖與文字。</p><details class="slide-explain-item"><summary>投影片 26：BST 插入與刪除概念</summary><div class="slide-explain-body"><div class="slide-explain-media"><img alt="投影片 26：BST 插入與刪除概念" class="slide-explain-img" src="assets/slide26.jpg"/><div class="figure-caption">投影片 26：BST 插入與刪除概念</div></div><div class="slide-explain-text"><h3>（一）這張投影片在說什麼？</h3><p>這張投影片整理 BST 的 insertion 與 deletion。插入相對簡單，只要找到空位置；刪除則要依照節點有 0、1、2 個孩子分情況處理。</p><h3>（二）核心觀念</h3><ul><li>Insertion：搜尋到空位置後接上新節點。</li><li>Deletion case 1：leaf 可直接刪。</li><li>Deletion case 2：一個 child，用 child 取代。</li><li>Deletion case 3：兩個 children，要找 successor 或 predecessor。</li></ul><h3>（三）學習與考試重點</h3><p>刪除 BST 節點時最重要的是刪完仍要維持左小右大的性質。</p><div class="memory-box">一句話記憶：插入找空位；刪除看孩子數。</div></div></div></details><details class="slide-explain-item"><summary>投影片 27：刪除節點的情況分類</summary><div class="slide-explain-body"><div class="slide-explain-media"><img alt="投影片 27：刪除節點的情況分類" class="slide-explain-img" src="assets/slide27.jpg"/><div class="figure-caption">投影片 27：刪除節點的情況分類</div></div><div class="slide-explain-text"><h3>（一）這張投影片在說什麼？</h3><p>這張投影片詳細分出 BST 刪除的三種情況。刪 leaf 最簡單；刪只有一個 child 的節點要讓 parent 直接接到該 child；刪兩個 child 的節點通常用 successor 取代。</p><h3>（二）核心觀念</h3><ul><li>Case 1：沒有孩子，直接移除。</li><li>Case 2：一個孩子，讓父節點跳過被刪節點。</li><li>Case 3：兩個孩子，用右子樹最小值或左子樹最大值替代。</li><li>替代後仍要刪除原本 successor/predecessor 的位置。</li></ul><h3>（三）學習與考試重點</h3><p>兩個孩子的情況最容易錯，因為不是直接把某個子樹整個搬上來，而是找能維持排序性的替代節點。</p><div class="memory-box">一句話記憶：兩個孩子找 successor：右子樹最左邊。</div></div></div></details></section><details open=""><summary>一、BST 插入 Insert</summary><div class="detail-body"><p>插入新節點時，先把它當成「搜尋目標」。從 root 開始，比較目前節點的 key：</p><div class="flowbox" data-flow="insertflow"><div class="flow-steps"><div class="flow-step" data-caption="先從 root 開始，不可以直接亂放。">從 root 開始</div><div class="flow-step" data-caption="新值比目前節點小，往 left child。">小於目前節點 → 左</div><div class="flow-step" data-caption="新值比目前節點大，往 right child。">大於目前節點 → 右</div><div class="flow-step" data-caption="走到 NULL 時，就在這裡建立新節點。">NULL 位置插入</div><div class="flow-step" data-caption="插入後仍然要保持 BST：左子樹小，右子樹大。">維持 BST 性質</div></div><div class="flow-caption"></div><div class="flow-controls"><button class="btn mini" onclick="prevFlow('insertflow')">上一步</button><button class="btn mini primary" onclick="nextFlow('insertflow')">下一步</button><button class="btn mini" onclick="autoFlow('insertflow')">自動播放</button><button class="btn mini" onclick="resetFlow('insertflow')">重新開始</button></div></div><p class="note">插入本身不會移動原本節點，只是在找到的空位置掛上一個新節點。</p></div></details><details open=""><summary>二、BST 刪除 Delete：三種情況</summary><div class="detail-body"><div class="traversal-controls"><button class="btn mini delete-tab" id="delbtn1" onclick="showDeleteCase(1)">Case 1：Leaf</button><button class="btn mini delete-tab" id="delbtn2" onclick="showDeleteCase(2)">Case 2：One child</button><button class="btn mini delete-tab" id="delbtn3" onclick="showDeleteCase(3)">Case 3：Two children</button></div><div class="delete-case" id="delcase1"><div class="mini-tree"><h3>刪除前</h3><div class="node">5</div><p>下面有一個 leaf</p><div class="node small delete">3</div></div><div class="case-arrow">→</div><div class="mini-tree"><h3>刪除後</h3><div class="node">5</div><p>3 是葉節點，直接移除。</p></div></div><div class="delete-case" id="delcase2"><div class="mini-tree"><h3>刪除前</h3><div class="node delete">12</div><p>只有一個 child</p><div class="node small">10</div></div><div class="case-arrow">→</div><div class="mini-tree"><h3>刪除後</h3><div class="node replace">10</div><p>用唯一的 child 接上 parent。</p></div></div><div class="delete-case" id="delcase3"><div class="mini-tree"><h3>刪除前</h3><div class="node delete">5</div><p>左、右 child 都存在</p><div class="tree-row"><div class="node small">3</div><div class="node small replace">6</div></div></div><div class="case-arrow">→</div><div class="mini-tree"><h3>刪除後</h3><div class="node replace">6</div><p>可用 successor 取代：右子樹中最小的節點。</p></div></div><p class="good">最常考的是 Case 3。刪除有兩個 children 的節點時，通常用 successor（右子樹最小值）或 predecessor（左子樹最大值）替代，這樣才能維持 BST 性質。</p></div></details><details open=""><summary>三、刪除演算法的文字流程</summary><div class="detail-body"><div class="flowbox" data-flow="deleteflow"><div class="flow-steps"><div class="flow-step" data-caption="先用 BST 搜尋規則找到要刪除的 key。">找到目標節點</div><div class="flow-step" data-caption="如果沒有 child，直接刪除，parent 指向 NULL。">沒有 child：直接刪</div><div class="flow-step" data-caption="如果只有一個 child，就讓 parent 直接連到那個 child。">一個 child：child 補上</div><div class="flow-step" data-caption="如果有兩個 children，找 successor 或 predecessor。">兩個 children：找替代者</div><div class="flow-step" data-caption="把替代者的 key 複製到目標節點，再刪掉原本的替代者節點。">替代並刪除原節點</div></div><div class="flow-caption"></div><div class="flow-controls"><button class="btn mini" onclick="prevFlow('deleteflow')">上一步</button><button class="btn mini primary" onclick="nextFlow('deleteflow')">下一步</button><button class="btn mini" onclick="autoFlow('deleteflow')">自動播放</button><button class="btn mini" onclick="resetFlow('deleteflow')">重新開始</button></div></div></div></details><details open=""><summary>四、常見錯誤提醒</summary><div class="detail-body"><p class="warning">刪除兩個 children 的節點時，不可以隨便拿一個子節點補上。必須選 successor 或 predecessor，否則可能讓左邊出現比 root 大的值，或右邊出現比 root 小的值，BST 規則就會壞掉。</p></div></details><details open=""><summary>五、C 程式碼：BST 插入與刪除</summary><div class="detail-body"><div class="download-card"><div><h3>bst_insert_delete.c</h3><p>包含 insert、findMin、deleteNode、inorder 與 main 測試。deleteNode 已處理三種刪除情況。</p></div><a class="btn primary" href="bst_insert_delete.c">下載 C 程式</a></div><div class="codebox"><div class="bar"><span>bst_insert_delete.c</span><div class="code-actions"><button class="btn mini" onclick="copyCode('codeDeleteBST')">複製程式碼</button></div></div><pre><code id="codeDeleteBST">/*
+  中文註解版程式：bst_insert_delete.c
+  說明：主題 8：BST 插入與刪除。刪除分成 leaf、one child、two children 三種情況。
+  閱讀方式：先看資料結構定義，再看操作函式，最後看 main() 如何測試。
+*/
+
+// 匯入標準輸入輸出函式庫，提供 printf / scanf 等功能。
+#include &lt;stdio.h&gt;
+// 匯入標準函式庫，提供 malloc / free / exit 等記憶體與程式控制功能。
+#include &lt;stdlib.h&gt;
+
+// 定義節點結構：資料欄位存節點內容，指標欄位負責連到其他節點。
+typedef struct Node {
+    int key;
+    struct Node *left;
+    struct Node *right;
+} Node;
+
+// 建立新節點：配置記憶體、填入資料，並把左右指標初始化為 NULL。
+Node* createNode(int key) {
+    Node* n = (Node*)malloc(sizeof(Node));
+    if (n == NULL) exit(1);
+    n-&gt;key = key;
+    n-&gt;left = NULL;
+    n-&gt;right = NULL;
+    return n;
+}
+
+// BST 插入：比目前節點小往左，大往右；空位置就是新節點位置。
+Node* insert(Node* root, int key) {
+    if (root == NULL) return createNode(key);  // 空位置就是插入點
+    if (key &lt; root-&gt;key) root-&gt;left = insert(root-&gt;left, key);
+    else if (key &gt; root-&gt;key) root-&gt;right = insert(root-&gt;right, key);
+    return root;
+}
+
+// 找右子樹中最小節點，常作為刪除兩個孩子節點時的 successor。
+Node* findMin(Node* root) {
+    while (root != NULL &amp;&amp; root-&gt;left != NULL) {
+        root = root-&gt;left;
+    }
+    return root;
+}
+
+// BST 刪除：依照節點有 0、1、2 個孩子分別處理。
+Node* deleteNode(Node* root, int key) {
+    if (root == NULL) return NULL;
+
+    if (key &lt; root-&gt;key) {
+        root-&gt;left = deleteNode(root-&gt;left, key);
+    } else if (key &gt; root-&gt;key) {
+        root-&gt;right = deleteNode(root-&gt;right, key);
+    } else {
+        /* Case 1: no child */
+        if (root-&gt;left == NULL &amp;&amp; root-&gt;right == NULL) {
+            free(root);
+            return NULL;
+        }
+
+        /* Case 2: one child */
+        if (root-&gt;left == NULL) {
+            Node* temp = root-&gt;right;
+            free(root);
+            return temp;
+        }
+        if (root-&gt;right == NULL) {
+            Node* temp = root-&gt;left;
+            free(root);
+            return temp;
+        }
+
+        /* Case 3: two children
+           Replace by successor: the smallest node in right subtree. */
+        Node* successor = findMin(root-&gt;right);
+        root-&gt;key = successor-&gt;key;
+        root-&gt;right = deleteNode(root-&gt;right, successor-&gt;key);
+    }
+    return root;
+}
+
+// Inorder 走訪：Left → Visit → Right；套用在 BST 會得到由小到大的排序。
+void inorder(Node* root) {
+    if (root == NULL) return;  // 遞迴終止條件：空節點不需要處理
+    inorder(root-&gt;left);   // 先走左子樹
+    printf("%d ", root-&gt;key);  // 再拜訪目前節點
+    inorder(root-&gt;right);  // 最後走右子樹
+}
+
+// 釋放整棵樹：先釋放左右子樹，再釋放目前節點，避免記憶體洩漏。
+void freeTree(Node* root) {
+    if (root == NULL) return;  // 遞迴終止條件：空節點不需要處理
+    freeTree(root-&gt;left);
+    freeTree(root-&gt;right);
+    free(root);
+}
+
+// 主程式：建立測試資料，呼叫上方函式，觀察輸出結果。
+int main(void) {
+    int data[] = {5, 3, 15, 12, 10, 7, 6};
+    int n = sizeof(data) / sizeof(data[0]);
+    Node* root = NULL;
+
+    for (int i = 0; i &lt; n; i++) root = insert(root, data[i]);
+
+    printf("Before delete: ");
+    inorder(root);
+    printf("\n");
+
+    root = deleteNode(root, 12);
+
+    printf("After delete 12: ");
+    inorder(root);
+    printf("\n");
+
+    freeTree(root);
+    return 0;
+}
+</code></pre></div></div></details>
+<details class="lab7-code-section" open=""><summary>可編輯 C 程式範例：含中文註解與線上編輯器</summary><div class="content detail-body"><p>這一段提供可直接修改的 C 程式碼。可以按「複製程式」貼到線上編輯器執行，也可以下載 .c 檔案。</p><div class="codewrap"><div class="codebar"><span>bst_insert_delete.c</span><div class="btns"><button class="btn green" onclick="copyCode('code8')">複製程式</button><button class="btn orange" onclick="downloadCode('code8','bst_insert_delete.c')">下載 .c</button><a class="btn secondary" href="https://www.onlinegdb.com/online_c_compiler" target="_blank">OnlineGDB</a><a class="btn secondary" href="https://www.programiz.com/c-programming/online-compiler/" target="_blank">Programiz</a><a class="btn secondary" href="https://onecompiler.com/c" target="_blank">OneCompiler</a></div></div><textarea class="codearea" id="code8" spellcheck="false">/*
+  中文註解版程式：bst_insert_delete.c
+  說明：主題 8：BST 插入與刪除。刪除分成 leaf、one child、two children 三種情況。
+  閱讀方式：先看資料結構定義，再看操作函式，最後看 main() 如何測試。
+*/
+
+// 匯入標準輸入輸出函式庫，提供 printf / scanf 等功能。
+#include &lt;stdio.h&gt;
+// 匯入標準函式庫，提供 malloc / free / exit 等記憶體與程式控制功能。
+#include &lt;stdlib.h&gt;
+
+// 定義節點結構：資料欄位存節點內容，指標欄位負責連到其他節點。
+typedef struct Node {
+    int key;
+    struct Node *left;
+    struct Node *right;
+} Node;
+
+// 建立新節點：配置記憶體、填入資料，並把左右指標初始化為 NULL。
+Node* createNode(int key) {
+    Node* n = (Node*)malloc(sizeof(Node));
+    if (n == NULL) exit(1);
+    n-&gt;key = key;
+    n-&gt;left = NULL;
+    n-&gt;right = NULL;
+    return n;
+}
+
+// BST 插入：比目前節點小往左，大往右；空位置就是新節點位置。
+Node* insert(Node* root, int key) {
+    if (root == NULL) return createNode(key);  // 空位置就是插入點
+    if (key &lt; root-&gt;key) root-&gt;left = insert(root-&gt;left, key);
+    else if (key &gt; root-&gt;key) root-&gt;right = insert(root-&gt;right, key);
+    return root;
+}
+
+// 找右子樹中最小節點，常作為刪除兩個孩子節點時的 successor。
+Node* findMin(Node* root) {
+    while (root != NULL &amp;&amp; root-&gt;left != NULL) {
+        root = root-&gt;left;
+    }
+    return root;
+}
+
+// BST 刪除：依照節點有 0、1、2 個孩子分別處理。
+Node* deleteNode(Node* root, int key) {
+    if (root == NULL) return NULL;
+
+    if (key &lt; root-&gt;key) {
+        root-&gt;left = deleteNode(root-&gt;left, key);
+    } else if (key &gt; root-&gt;key) {
+        root-&gt;right = deleteNode(root-&gt;right, key);
+    } else {
+        /* Case 1: no child */
+        if (root-&gt;left == NULL &amp;&amp; root-&gt;right == NULL) {
+            free(root);
+            return NULL;
+        }
+
+        /* Case 2: one child */
+        if (root-&gt;left == NULL) {
+            Node* temp = root-&gt;right;
+            free(root);
+            return temp;
+        }
+        if (root-&gt;right == NULL) {
+            Node* temp = root-&gt;left;
+            free(root);
+            return temp;
+        }
+
+        /* Case 3: two children
+           Replace by successor: the smallest node in right subtree. */
+        Node* successor = findMin(root-&gt;right);
+        root-&gt;key = successor-&gt;key;
+        root-&gt;right = deleteNode(root-&gt;right, successor-&gt;key);
+    }
+    return root;
+}
+
+// Inorder 走訪：Left → Visit → Right；套用在 BST 會得到由小到大的排序。
+void inorder(Node* root) {
+    if (root == NULL) return;  // 遞迴終止條件：空節點不需要處理
+    inorder(root-&gt;left);   // 先走左子樹
+    printf("%d ", root-&gt;key);  // 再拜訪目前節點
+    inorder(root-&gt;right);  // 最後走右子樹
+}
+
+// 釋放整棵樹：先釋放左右子樹，再釋放目前節點，避免記憶體洩漏。
+void freeTree(Node* root) {
+    if (root == NULL) return;  // 遞迴終止條件：空節點不需要處理
+    freeTree(root-&gt;left);
+    freeTree(root-&gt;right);
+    free(root);
+}
+
+// 主程式：建立測試資料，呼叫上方函式，觀察輸出結果。
+int main(void) {
+    int data[] = {5, 3, 15, 12, 10, 7, 6};
+    int n = sizeof(data) / sizeof(data[0]);
+    Node* root = NULL;
+
+    for (int i = 0; i &lt; n; i++) root = insert(root, data[i]);
+
+    printf("Before delete: ");
+    inorder(root);
+    printf("\n");
+
+    root = deleteNode(root, 12);
+
+    printf("After delete 12: ");
+    inorder(root);
+    printf("\n");
+
+    freeTree(root);
+    return 0;
+}
+</textarea></div></div></details>
+<details class="lab7-teaching-content" open=""><summary>程式題目教學內容：BST 插入與刪除</summary><div class="content detail-body">
+<h3>一、程式題目講解</h3>
+<p>本題示範 BST 的刪除操作，特別是刪除 leaf、one child、two children 的判斷概念。學生需要理解刪除後仍要維持 BST 性質。</p>
+<h3>二、完整程式碼</h3>
+<p>完整可執行程式碼已保留在上方「可編輯 C 程式範例：含中文註解與線上編輯器」區塊中，檔名為 <code>bst_insert_delete.c</code>。該程式碼已加入中文註解，學生可以直接複製到 OnlineGDB、Programiz 或 OneCompiler 執行。</p>
+<h3>三、程式執行結果</h3>
+<pre><code>Before delete: 3 5 6 7 10 12 15 
+After delete 12: 3 5 6 7 10 15 </code></pre>
+<p>刪除前 inorder 為 3 5 6 7 10 12 15；刪除 12 後輸出變成 3 5 6 7 10 15，代表 12 被移除，而且剩下資料仍維持由小到大的 BST 中序結果。</p>
+<h3>四、程式流程圖與流程圖說明</h3>
+<p>本頁下方已保留原本的程式流程圖。閱讀流程圖時，可以依序掌握「初始化資料或節點 → 執行主要函式或判斷 → 輸出結果」的過程。先建立 BST 並輸出刪除前結果，再呼叫 deleteNode(root, 12)。函式先搜尋要刪除的節點，再依照該節點的孩子數量進行替換或移除，最後重新輸出 inorder。</p>
+<h3>五、重要函數與語法說明</h3>
+<p>deleteNode()：刪除 BST 節點；findMin()：在右子樹找 inorder successor；free()：釋放被刪除節點記憶體；inorder()：檢查刪除後排序是否正確。</p>
+<h3>六、整體說明</h3>
+<p>本題重點是 BST 刪除不能只把節點拿掉，還要處理子樹連接，確保左小右大的規則不被破壞。</p>
+</div></details>
+
+<section class="card program-flow-card">
+<h2>程式流程圖：BST 插入與刪除流程</h2>
+<p>下圖是本主題對應的程式執行流程，適合搭配本頁 C 程式碼一起看。</p>
+<div class="program-flow-figure"><img alt="主題 8 程式流程圖" class="program-flow-img" src="assets/program_flow_topic8.svg"/><div class="figure-caption">主題 8 程式流程圖：BST 插入與刪除流程</div></div>
+<div class="flow-explain"><h3>流程講解</h3><ol><li>插入與搜尋流程很像，差別是找到 NULL 後要接上新節點。</li><li>刪除 leaf 最簡單，直接把 parent 的指標改成 NULL。</li><li>刪除只有一個 child 的節點時，用 child 取代該節點。</li><li>刪除有兩個 children 的節點時，通常用 successor 或 predecessor 取代。</li></ol><p>這張流程圖把本頁程式的執行順序整理成一條清楚路徑。閱讀時先看輸入與資料如何建立，再看條件判斷、指標或陣列索引如何改變，最後用輸出結果確認程式邏輯是否正確。</p></div>
+</section>
+</main><div class="footer">Lesson 6 Trees｜主題八：Insertion and Deletion in BST</div></body></html>

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="zh-Hant"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/><link href="assets/style.css" rel="stylesheet"/><script src="assets/script.js"></script><title>Lesson 5 主題 12：Delete、Print 與 main 測試流程</title></head><body>
+<header class="hero"><div class="inner"><span class="badge">Lesson 5｜主題 12｜投影片 25–26</span><h1>主題 12：Delete、Print 與 main 測試流程</h1><p>刪除節點、列印串列與 main 測試流程，完成 list.c 的基本操作。</p><div class="toolbar"><a class="btn secondary" href="../index.html">回 L5 首頁</a><a class="btn secondary" href="topic11.html">上一個：主題 11</a></div></div></header>
+<div class="wrap"><div class="layout"><aside class="sidebar"><div class="side-title">Lesson 5 主題導覽</div><nav class="nav"><a href="../index.html">L5 首頁</a><a href="topic11.html">11. list.c：Node 建立與 Insert 函式</a>
+<a class="active" href="topic12.html">12. Delete、Print 與 main 測試流程</a></nav></aside><main>
+<section class="card"><span class="badge">投影片 25–26</span><h2>一、主題核心概念</h2><p>刪除節點時要追蹤 curr 與 prev。若刪除的是頭節點，就更新 head；若刪除的是中間或尾端節點，就讓 prev-&gt;next 跳過 curr。print 則從 head 走到 NULL。</p></section>
+<section class="card"><h2>二、投影片逐張下拉式詳細講解</h2><p>每一張投影片都已把圖片與自己的文字講解合併在同一個下拉式區塊中。點開後可以直接對照圖片閱讀說明。</p><div class="slide-detail-list"><details class="slide-detail"><summary>投影片 25｜delete 函式：刪除指定資料</summary><div class="slide-detail-body"><div class="slide-detail-grid"><div><img alt="投影片 25：delete 函式：刪除指定資料" class="slide-detail-img" src="assets/slide25.jpg"/><div class="figure-caption">投影片 25</div></div><div class="slide-explain"><h3>delete 函式：刪除指定資料</h3><h4>詳細說明與講解</h4><p>1、這張投影片展示 delete 函式。它會從 head 開始尋找 delData，找到後把該節點從串列中移除。</p><p>2、程式通常先處理空串列，若 head == NULL 就代表沒有資料可刪。接著使用 curr 指向目前節點，prev 指向前一個節點，一邊走訪一邊比較 data。</p><p>3、如果 curr-&gt;data 等於 delData，就依照 prev 是否為 NULL 判斷是否刪除 head。若 prev == NULL，表示目標在第一個節點，head 要改成 curr-&gt;next；否則 prev-&gt;next 改成 curr-&gt;next。</p><p>4、刪除後應該釋放 curr 的記憶體，避免 memory leak。若走到 curr == NULL 還沒找到，表示資料不存在，串列保持不變。</p><div class="slide-memory">一句話記憶：delete 用 curr 找目標，用 prev 重新接指標。</div></div></div></div></details><details class="slide-detail"><summary>投影片 26｜print 與 main：完整測試串列操作</summary><div class="slide-detail-body"><div class="slide-detail-grid"><div><img alt="投影片 26：print 與 main：完整測試串列操作" class="slide-detail-img" src="assets/slide26.jpg"/><div class="figure-caption">投影片 26</div></div><div class="slide-explain"><h3>print 與 main：完整測試串列操作</h3><h4>詳細說明與講解</h4><p>1、這張投影片展示 print 與 main 函式。print 通常從 head 開始，使用 temp 或 curr 逐一輸出每個節點的 data，直到遇到 NULL 停止。</p><p>2、main 函式會建立 head，呼叫 insert 加入多筆資料，再呼叫 print 檢查目前串列內容。接著可能呼叫 delete 刪除指定資料，再用 print 檢查結果是否正確。</p><p>3、這張投影片的重點是完整測試流程。Linked List 的程式不只要函式個別看起來合理，還要在連續操作下仍然正確，例如插入多筆、刪除頭節點、刪除中間節點、刪除不存在的資料。</p><p>4、投影片下方的執行結果可以用來對照每一步後串列的內容。若輸出和預期不同，就要回頭檢查 pointer 是否接錯或是否忘記更新 head。</p><div class="slide-memory">一句話記憶：print 是檢查 Linked List 是否正確的最佳工具。</div></div></div></div></details></div></section>
+<section class="card"><h2>三、動畫流程圖：Delete、Print 與 main 測試流程</h2><div class="flow-area" id="flow12"><div class="flow"><div class="node">檢查空串列</div><div class="node">curr 搜尋目標</div><div class="node">prev 跟著移動</div><div class="node">找到 delData</div><div class="node">重接 pointer</div><div class="node">print 測試結果</div></div><div class="progress"><div class="bar"></div></div><div class="stepbox"></div><div class="btns" style="margin-top:12px"><button class="btn secondary" onclick="prevFlow('flow12')">上一步</button><button class="btn" onclick="nextFlow('flow12')">下一步</button><button class="btn orange" onclick="playFlow('flow12')">自動播放</button><button class="btn secondary" onclick="resetFlow('flow12')">重新開始</button></div></div><script>initFlow('flow12',['若 head 為 NULL，表示沒有資料可刪。','curr 從 head 開始逐一比較 data。','prev 記錄 curr 的前一個節點。','找到 delData 後分情況處理。','若刪頭節點更新 head，否則 prev->next=curr->next，最後 free。','main 呼叫 insert、delete、print，檢查串列內容是否正確。']);</script></section>
+<section class="card"><h2>四、動畫表格：步驟與重點整理</h2><p>請按「下一步」或「自動播放」觀察本主題的操作流程與注意事項。</p><div class="flow-area" id="table12"><div class="anim-table-wrap"><table class="anim-table"><thead><tr><th>情況</th><th>判斷</th><th>動作</th><th>注意事項</th></tr></thead><tbody><tr><td>空串列</td><td>head==NULL</td><td>印出 Empty</td><td>不可存取 head-&gt;data</td></tr><tr><td>刪除頭節點</td><td>prev==NULL</td><td>head=curr-&gt;next</td><td>要保存 curr</td></tr><tr><td>刪除中間</td><td>prev!=NULL</td><td>prev-&gt;next=curr-&gt;next</td><td>跳過 curr</td></tr><tr><td>找不到資料</td><td>curr==NULL</td><td>輸出 not found</td><td>串列不改變</td></tr><tr><td>列印串列</td><td>while(temp!=NULL)</td><td>輸出 data</td><td>temp=temp-&gt;next</td></tr></tbody></table></div><div class="progress"><div class="bar"></div></div><div class="table-note"></div><div class="btns" style="margin-top:12px"><button class="btn secondary" onclick="prevTable('table12')">上一步</button><button class="btn" onclick="nextTable('table12')">下一步</button><button class="btn orange" onclick="playTable('table12')">自動播放</button><button class="btn secondary" onclick="resetTable('table12')">重新開始</button></div></div><script>initTable('table12',['空串列 → head==NULL → 印出 Empty → 不可存取 head->data','刪除頭節點 → prev==NULL → head=curr->next → 要保存 curr','刪除中間 → prev!=NULL → prev->next=curr->next → 跳過 curr','找不到資料 → curr==NULL → 輸出 not found → 串列不改變','列印串列 → while(temp!=NULL) → 輸出 data → temp=temp->next']);</script></section>
+<details open=""><summary>五、完整中文講解</summary><div class="content"><h3>（一）本主題要學會什麼？</h3><p>刪除節點時要追蹤 curr 與 prev。若刪除的是頭節點，就更新 head；若刪除的是中間或尾端節點，就讓 prev-&gt;next 跳過 curr。print 則從 head 走到 NULL。</p><h3>（二）實作時最重要的觀念</h3><div class="grid2"><div class="mini"><b>資料結構</b><br/>先看清楚資料是用 Array、Node、Singly List、Circular List 或 Doubly List 表示。</div><div class="mini"><b>指標方向</b><br/>Linked List 題目幾乎都在考指標怎麼接、怎麼斷、怎麼重新連起來。</div><div class="mini"><b>特殊情況</b><br/>空串列、頭節點、尾節點、找不到資料，都是程式容易錯的地方。</div><div class="mini"><b>測試方式</b><br/>每做完 insert/delete，都用 print 檢查目前串列是否符合預期。</div></div><div class="example">刪除節點後若沒有 free，程式仍可能看起來正常，但會造成 memory leak。作業或考試若要求完整 C 實作，建議補上 free。</div></div></details>
+<details open=""><summary>六、可編輯 C 程式範例：含中文註解與線上編輯器</summary><div class="content"><div class="codewrap"><div class="codebar"><span>list_delete_print.c</span><div class="btns"><button class="btn green" onclick="copyCode('code12')">複製程式</button><button class="btn orange" onclick="downloadCode('code12','list_delete_print.c')">下載 .c</button><a class="btn secondary" href="https://www.onlinegdb.com/online_c_compiler" target="_blank">OnlineGDB</a><a class="btn secondary" href="https://www.programiz.com/c-programming/online-compiler/" target="_blank">Programiz</a><a class="btn secondary" href="https://onecompiler.com/c" target="_blank">OneCompiler</a></div></div><textarea class="codearea" id="code12" spellcheck="false">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+/*
+    Delete、Print 與 main 測試流程
+    功能：排序插入、刪除指定資料、列印串列。
+*/
+
+typedef struct Node {
+    int data;
+    struct Node *next;
+} Node;
+
+Node* createNode(int data) {
+    Node *n = (Node*)malloc(sizeof(Node));
+    if (!n) exit(1);
+    n-&gt;data = data;
+    n-&gt;next = NULL;
+    return n;
+}
+
+void insert(Node **head, int data) {
+    Node *newNode = createNode(data);
+    Node *curr = *head, *prev = NULL;
+    while (curr != NULL &amp;&amp; curr-&gt;data &lt; data) {
+        prev = curr;
+        curr = curr-&gt;next;
+    }
+    if (prev == NULL) {
+        newNode-&gt;next = *head;
+        *head = newNode;
+    } else {
+        newNode-&gt;next = curr;
+        prev-&gt;next = newNode;
+    }
+}
+
+void deleteData(Node **head, int delData) {
+    Node *curr = *head, *prev = NULL;
+    while (curr != NULL &amp;&amp; curr-&gt;data != delData) {
+        prev = curr;
+        curr = curr-&gt;next;
+    }
+    if (curr == NULL) {
+        printf("%d 不在串列中\n", delData);
+        return;
+    }
+    if (prev == NULL) *head = curr-&gt;next;
+    else prev-&gt;next = curr-&gt;next;
+    free(curr);
+}
+
+void printList(Node *head) {
+    if (head == NULL) { printf("Empty\n"); return; }
+    while (head != NULL) {
+        printf("%d ", head-&gt;data);
+        head = head-&gt;next;
+    }
+    printf("\n");
+}
+
+int main(void) {
+    Node *head = NULL;
+    insert(&amp;head, 30);
+    insert(&amp;head, 10);
+    insert(&amp;head, 20);
+    printf("插入後："); printList(head);
+    deleteData(&amp;head, 20);
+    printf("刪除 20 後："); printList(head);
+    deleteData(&amp;head, 99);
+    return 0;
+}
+</textarea></div></div></details>
+
+<section class="card program-teaching-card">
+<h2>新增：程式題目教學內容（依指定格式）</h2>
+<div class="content">
+<h3>一、程式題目講解</h3>
+<p>本題完成 list.c 的刪除、列印與 main 測試流程。學生需要理解如何搜尋目標節點、處理找不到資料、刪除頭節點或中間節點，並用輸出檢查結果。</p>
+<h3>二、完整程式碼</h3>
+<p>以下為本頁程式題目的完整可執行 C 程式碼，已在重要程式區塊加入中文註解，方便初學者理解程式功能與流程。</p>
+<pre class="codearea" style="height:auto;min-height:0;white-space:pre-wrap;overflow:auto;">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+/*
+    Delete、Print 與 main 測試流程
+    功能：排序插入、刪除指定資料、列印串列。
+*/
+
+typedef struct Node {
+    int data;
+    struct Node *next;
+} Node;
+
+Node* createNode(int data) {
+    Node *n = (Node*)malloc(sizeof(Node));
+    if (!n) exit(1);
+    n-&gt;data = data;
+    n-&gt;next = NULL;
+    return n;
+}
+
+void insert(Node **head, int data) {
+    Node *newNode = createNode(data);
+    Node *curr = *head, *prev = NULL;
+    while (curr != NULL &amp;&amp; curr-&gt;data &lt; data) {
+        prev = curr;
+        curr = curr-&gt;next;
+    }
+    if (prev == NULL) {
+        newNode-&gt;next = *head;
+        *head = newNode;
+    } else {
+        newNode-&gt;next = curr;
+        prev-&gt;next = newNode;
+    }
+}
+
+void deleteData(Node **head, int delData) {
+    Node *curr = *head, *prev = NULL;
+    while (curr != NULL &amp;&amp; curr-&gt;data != delData) {
+        prev = curr;
+        curr = curr-&gt;next;
+    }
+    if (curr == NULL) {
+        printf(&quot;%d 不在串列中\n&quot;, delData);
+        return;
+    }
+    if (prev == NULL) *head = curr-&gt;next;
+    else prev-&gt;next = curr-&gt;next;
+    free(curr);
+}
+
+void printList(Node *head) {
+    if (head == NULL) { printf(&quot;Empty\n&quot;); return; }
+    while (head != NULL) {
+        printf(&quot;%d &quot;, head-&gt;data);
+        head = head-&gt;next;
+    }
+    printf(&quot;\n&quot;);
+}
+
+int main(void) {
+    Node *head = NULL;
+    insert(&amp;head, 30);
+    insert(&amp;head, 10);
+    insert(&amp;head, 20);
+    printf(&quot;插入後：&quot;); printList(head);
+    deleteData(&amp;head, 20);
+    printf(&quot;刪除 20 後：&quot;); printList(head);
+    deleteData(&amp;head, 99);
+    return 0;
+}
+</pre>
+<h3>三、程式執行結果</h3>
+<p>程式執行後會得到以下輸出：</p>
+<pre class="codearea" style="height:auto;min-height:0;white-space:pre-wrap;overflow:auto;">插入後：10 20 30 
+刪除 20 後：10 30 
+99 不在串列中</pre>
+<p>程式先插入 30、10、20，排序後輸出 10 20 30。接著 deleteData 刪除 20，串列變成 10 30。最後嘗試刪除 99，但 99 不存在於串列中，因此程式輸出「99 不在串列中」。</p>
+<h3>四、程式流程圖與流程圖說明</h3>
+<p>本題流程圖如下，呈現程式的主要執行順序、判斷條件與資料處理流程。</p>
+<div class="program-flow-figure"><img alt="主題 12 程式流程圖" class="program-flow-img" src="assets/program_flow_topic12.svg"/><div class="figure-caption">主題 12：Delete、Print 與 main 測試流程：程式流程圖</div></div>
+<p>流程先用 insert 建立排序串列，再用 printList 顯示目前內容。deleteData 會用 curr 搜尋 delData，prev 保存前一個節點；若 curr 為 NULL 表示找不到，直接輸出提示並 return。若找到，就依照是否為頭節點決定更新 head 或 prev-&gt;next，最後釋放節點。</p>
+<h3>五、重要函數與語法說明</h3>
+<ol><li>deleteData：刪除指定資料節點。</li><li>curr == NULL：判斷資料不存在。</li><li>prev == NULL：判斷刪除的是頭節點。</li><li>free(curr)：釋放已刪除節點記憶體。</li><li>printList：檢查每次操作後串列內容是否正確。</li></ol>
+<h3>六、整體說明</h3>
+<p>本題把插入、刪除與輸出串成完整測試。學習重點是每次修改串列後都要檢查 head、prev、curr 的連接是否正確，並特別注意空串列、頭節點與找不到資料等特殊情況。</p>
+</div>
+</section>
+<section class="card program-flow-card">
+<h2>七、程式流程圖：Delete、Print 與 main 測試流程</h2>
+<p>下圖是本主題對應的程式執行流程，適合搭配下方 C 程式碼一起看。</p>
+<div class="program-flow-figure"><img alt="主題 12 程式流程圖" class="program-flow-img" src="assets/program_flow_topic12.svg"/><div class="figure-caption">主題 12 程式流程圖：Delete、Print 與 main 測試流程</div></div>
+<div class="flow-explain"><h3>流程講解</h3><ol><li>main 先建立測試資料，方便觀察 delete 前後的變化。</li><li>print 函式負責逐一印出串列內容，是除錯最重要的輔助工具。</li><li>delete 函式先尋找目標節點，同時記錄前一個節點。</li><li>找到後讓前一個節點的 next 跳過目標節點。</li><li>最後釋放目標節點，並再次 print 驗證刪除是否成功。</li></ol><p>這張流程圖把本頁程式的執行順序整理成一條清楚路徑。閱讀時先看資料如何被建立，再看條件判斷與指標如何改變，最後用輸出結果確認程式邏輯是否正確。</p></div>
+</section>
+</main></div></div><footer class="footer">Lesson 5｜主題 12：Delete、Print 與 main 測試流程</footer></body></html>

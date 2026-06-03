@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="zh-Hant"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/><title>Lesson 8 主題十二｜多執行緒與多核心程式設計</title><link href="assets/style.css" rel="stylesheet"/>
+<style>
+.program-flow-card{background:#ffffff;border:1px solid #dbeafe;border-radius:20px;padding:22px;margin:24px 0;box-shadow:0 12px 30px rgba(15,23,42,.08)}
+.program-flow-card h2{margin-top:0;color:#0f172a}
+.program-flow-img{width:100%;border-radius:18px;border:1px solid #e2e8f0;background:#f8fafc}
+.flow-explain{line-height:1.9;background:#f8fafc;border-left:6px solid #2563eb;border-radius:14px;padding:16px 18px;white-space:pre-line}
+.code-card{background:#0f172a;color:#e5e7eb;border-radius:20px;padding:0;margin:24px 0;overflow:hidden;box-shadow:0 12px 32px rgba(15,23,42,.20)}
+.code-card .code-head{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between;background:#111827;padding:14px 16px;border-bottom:1px solid #334155}
+.code-card .code-title{font-weight:700;color:#f8fafc}
+.code-card .code-actions{display:flex;gap:8px;flex-wrap:wrap}
+.code-card button,.code-card a{border:0;border-radius:999px;padding:8px 12px;font-weight:700;text-decoration:none;cursor:pointer;background:#2563eb;color:white;font-size:14px}
+.code-card a{background:#475569}
+.code-card button.download-btn{background:#f97316}
+.code-card textarea{width:100%;min-height:380px;box-sizing:border-box;background:#020617;color:#e5e7eb;border:0;padding:18px;font-family:Consolas,'Courier New',monospace;font-size:15px;line-height:1.55;resize:vertical}
+.editor-links{margin-top:12px;line-height:1.8}
+.editor-links a{display:inline-block;margin:4px 8px 4px 0;padding:8px 12px;border-radius:999px;background:#e0f2fe;color:#075985;text-decoration:none;font-weight:700}
+</style>
+<script>
+function copyCode(id){
+  const el=document.getElementById(id);
+  if(!el) return;
+  el.select();
+  document.execCommand('copy');
+  alert('程式碼已複製');
+}
+function downloadCode(id, filename){
+  const el=document.getElementById(id);
+  if(!el) return;
+  const blob=new Blob([el.value], {type:'text/plain;charset=utf-8'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download=filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(()=>URL.revokeObjectURL(a.href), 500);
+}
+</script>
+
+<style id="slide-dropdown-explanation-style">
+.slide-explain-wrapper{margin:20px 0}
+.slide-intro-note{line-height:1.9;background:#eff6ff;border-left:6px solid #2563eb;border-radius:14px;padding:14px 16px;color:#1e3a8a}
+.single-slide-detail{margin:18px 0;border:1px solid #dbeafe;border-radius:18px;background:#ffffff;box-shadow:0 10px 24px rgba(15,23,42,.07);overflow:hidden}
+.single-slide-detail>summary{cursor:pointer;padding:16px 18px;font-weight:800;color:#0f172a;background:linear-gradient(135deg,#eff6ff,#f8fafc);list-style:none}
+.single-slide-detail>summary::-webkit-details-marker{display:none}
+.single-slide-detail>summary::before{content:"＋";display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;margin-right:10px;border-radius:999px;background:#2563eb;color:white;font-weight:900}
+.single-slide-detail[open]>summary::before{content:"－";background:#f97316}
+.slide-explain-grid{display:grid;grid-template-columns:minmax(280px,46%) 1fr;gap:22px;padding:20px;align-items:start}
+.slide-explain-image{background:#f8fafc;border:1px solid #e2e8f0;border-radius:16px;padding:12px}
+.slide-explain-image .slide-img{width:100%;height:auto;border-radius:12px;border:1px solid #e5e7eb;background:white}
+.slide-caption{text-align:center;color:#475569;font-size:14px;margin-top:8px;line-height:1.6}
+.slide-explain-text{line-height:1.9;color:#1f2937}
+.slide-explain-text h3{margin:8px 0 6px;color:#0f172a;font-size:1.05rem}
+.slide-explain-text p{margin:0 0 12px}
+.slide-explain-text ul{margin:0 0 12px 1.2em;padding:0}
+.slide-explain-text li{margin:4px 0}
+.memory-line{background:#fff7ed;border-left:6px solid #f97316;border-radius:12px;padding:10px 12px;color:#7c2d12}
+@media (max-width: 860px){
+  .slide-explain-grid{grid-template-columns:1fr}
+}
+</style>
+
+<style id="teaching-content-style">
+.teaching-content-card{background:#ffffff;border:1px solid #c7d2fe;border-radius:20px;padding:22px;margin:24px 0;box-shadow:0 12px 30px rgba(15,23,42,.08)}
+.teaching-content-card h2{margin-top:0;color:#1e1b4b}
+.teaching-content-card h3{margin-top:18px;color:#0f172a}
+.teaching-content-card p,.teaching-content-card li{line-height:1.9;color:#1f2937}
+.teaching-code-block,.teaching-output-block{white-space:pre-wrap;background:#020617;color:#e5e7eb;border-radius:16px;padding:16px;overflow:auto;font-family:Consolas,'Courier New',monospace;line-height:1.55}
+.teaching-output-block{background:#f8fafc;color:#0f172a;border:1px solid #e2e8f0}
+.teaching-mini-note{background:#eff6ff;border-left:6px solid #2563eb;border-radius:14px;padding:12px 14px;line-height:1.9;color:#1e3a8a}
+</style>
+</head><body>
+<section class="hero"><div class="hero-inner"><span class="badge">主題十二｜投影片 41–45</span><h1>多執行緒與多核心程式設計</h1><p>本主題說明 thread 為何能讓應用程式更有回應性，並比較 single-threaded process 與 multithreaded process，也說明 multicore programming、parallelism 與 concurrency。</p><div class="nav"><a class="btn" href="../index.html">回首頁</a><a class="btn" href="topic11.html">上一主題</a></div></div></section>
+<main class="wrap">
+<details class="slide-explain-wrapper" open=""><summary>一、投影片逐張下拉式詳細講解</summary><div class="detail-body"><p class="slide-intro-note">每張投影片都已把「圖片」與「自己的文字講解」放在同一個下拉式區塊中，方便一邊看圖、一邊理解重點。</p><details class="single-slide-detail" open=""><summary>投影片 41｜Multithreaded Programming Motivation</summary><div class="slide-explain-grid"><div class="slide-explain-image"><img alt="投影片41 Multithreaded Programming Motivation" class="slide-img" src="assets/slide41.jpg"/><div class="slide-caption">投影片 41｜Multithreaded Programming Motivation</div></div><div class="slide-explain-text"><h3>（一）這張投影片在說什麼？</h3><p>這張說明多執行緒的動機。現代應用常需要同時處理使用者介面、網路、檔案與背景計算，若只用單一執行緒，某部分阻塞時整個程式可能卡住。</p><h3>（二）核心觀念</h3><ul><li>Threads 在同一 process 內執行。</li><li>多執行緒可提升反應速度與資源共享。</li></ul><h3>（三）學習與考試重點</h3><p>Thread 的動機是 responsiveness 與 parallelism。</p><h3>（四）一句話記憶</h3><p class="memory-line">一句話記憶：Thread 的動機是 responsiveness 與 parallelism。</p></div></div></details><details class="single-slide-detail"><summary>投影片 42｜Single and Multithreaded Processes</summary><div class="slide-explain-grid"><div class="slide-explain-image"><img alt="投影片42 Single and Multithreaded Processes" class="slide-img" src="assets/slide42.jpg"/><div class="slide-caption">投影片 42｜Single and Multithreaded Processes</div></div><div class="slide-explain-text"><h3>（一）這張投影片在說什麼？</h3><p>這張比較單執行緒與多執行緒 process。單執行緒只有一條執行路徑；多執行緒則在同一 process 中有多條執行路徑，共享 code、data、files，但各自有 registers 與 stack。</p><h3>（二）核心觀念</h3><ul><li>同一 process 的 threads 共享資源。</li><li>每個 thread 有自己的執行狀態。</li></ul><h3>（三）學習與考試重點</h3><p>要分清楚 process 資源共享與 thread 個別狀態。</p><h3>（四）一句話記憶</h3><p class="memory-line">一句話記憶：要分清楚 process 資源共享與 thread 個別狀態。</p></div></div></details><details class="single-slide-detail"><summary>投影片 43｜Benefits</summary><div class="slide-explain-grid"><div class="slide-explain-image"><img alt="投影片43 Benefits" class="slide-img" src="assets/slide43.jpg"/><div class="slide-caption">投影片 43｜Benefits</div></div><div class="slide-explain-text"><h3>（一）這張投影片在說什麼？</h3><p>這張整理多執行緒的好處，包括 responsiveness、resource sharing、economy 與 scalability。尤其在多核心系統中，多執行緒可以讓不同核心同時執行不同工作。</p><h3>（二）核心觀念</h3><ul><li>Responsiveness：某 thread 阻塞時程式仍可回應。</li><li>Economy：建立 thread 通常比 process 便宜。</li><li>Scalability：可利用多核心。</li></ul><h3>（三）學習與考試重點</h3><p>多執行緒優點常考四項：反應、共享、經濟、擴展。</p><h3>（四）一句話記憶</h3><p class="memory-line">一句話記憶：多執行緒優點常考四項：反應、共享、經濟、擴展。</p></div></div></details><details class="single-slide-detail"><summary>投影片 44｜Multicore Programming</summary><div class="slide-explain-grid"><div class="slide-explain-image"><img alt="投影片44 Multicore Programming" class="slide-img" src="assets/slide44.jpg"/><div class="slide-caption">投影片 44｜Multicore Programming</div></div><div class="slide-explain-text"><h3>（一）這張投影片在說什麼？</h3><p>這張說明多核心程式設計的挑戰。硬體有多核心不代表程式自動變快，程式需要把工作拆分、平衡負載、切分資料並處理同步問題。</p><h3>（二）核心觀念</h3><ul><li>要能把工作分成可平行部分。</li><li>同步與資料相依性會限制效能。</li></ul><h3>（三）學習與考試重點</h3><p>多核心效能取決於程式是否能平行化。</p><h3>（四）一句話記憶</h3><p class="memory-line">一句話記憶：多核心效能取決於程式是否能平行化。</p></div></div></details><details class="single-slide-detail"><summary>投影片 45｜Parallelism vs Concurrency</summary><div class="slide-explain-grid"><div class="slide-explain-image"><img alt="投影片45 Parallelism vs Concurrency" class="slide-img" src="assets/slide45.jpg"/><div class="slide-caption">投影片 45｜Parallelism vs Concurrency</div></div><div class="slide-explain-text"><h3>（一）這張投影片在說什麼？</h3><p>這張比較 parallelism 與 concurrency。Parallelism 是同一時間真的有多個工作同時執行；concurrency 是系統能處理多個工作進行中，但不一定同時在不同核心上執行。</p><h3>（二）核心觀念</h3><ul><li>Concurrency：多工作交錯推進。</li><li>Parallelism：多工作同時執行。</li></ul><h3>（三）學習與考試重點</h3><p>單核心可有 concurrency；多核心才容易有真正 parallelism。</p><h3>（四）一句話記憶</h3><p class="memory-line">一句話記憶：單核心可有 concurrency；多核心才容易有真正 parallelism。</p></div></div></details></div></details>
+<details open=""><summary>二、為什麼需要 Multithreaded Programming？</summary><div class="detail-body"><p><span class="pill">核心觀念</span> Thread 是 process 內部較輕量的執行單位。當一個應用程式需要同時處理顯示更新、資料讀取、拼字檢查、網路回應等任務時，多執行緒可以讓程式更有回應性。</p><div class="flowbox" id="flow-thread"><h3>Thread 觀念動畫</h3><div class="flow-steps"><div class="flow-step">Process</div><div class="flow-step">Shared Resources</div><div class="flow-step">Multiple Threads</div></div><div class="flow-caption"></div><div class="flow-controls"><button class="btn mini prev">上一步</button><button class="btn mini next">下一步</button><button class="btn mini reset">重新播放</button></div></div><div class="three-col"><div class="mini-card"><h4>Update Display</h4><p>畫面更新可以獨立處理，避免介面卡住。</p></div><div class="mini-card"><h4>Fetch Data</h4><p>資料讀取可在背景進行，不阻塞主畫面。</p></div><div class="mini-card"><h4>Network Request</h4><p>等待網路回應時，其他 thread 仍可繼續工作。</p></div></div></div></details>
+<details><summary>三、Single-threaded 與 Multithreaded Process</summary><div class="detail-body"><div class="thread-demo"><div class="thread-process"><div class="demo-title">Single-threaded Process</div><div class="thread-shared"><span>code</span><span>data</span><span>files</span></div><div class="thread-area"><div class="thread-line">T1</div></div></div><div class="thread-process"><div class="demo-title">Multithreaded Process</div><div class="thread-shared"><span>code</span><span>data</span><span>files</span></div><div class="thread-area"><div class="thread-line">T1</div><div class="thread-line">T2</div><div class="thread-line">T3</div></div></div></div><p class="note">多個 thread 可以共享同一個 process 的 code、data、files，但每個 thread 仍會有自己的 registers 與 stack，因此可以獨立執行不同工作。</p></div></details>
+<details><summary>四、多執行緒的四個優點</summary><div class="detail-body"><div class="benefit-grid"><div class="benefit-card"><div class="benefit-icon">⚡</div><h4>Responsiveness</h4><p>部分工作阻塞時，程式仍可回應使用者。</p></div><div class="benefit-card"><div class="benefit-icon">🔗</div><h4>Resource Sharing</h4><p>同一 process 內的 threads 可共享資源。</p></div><div class="benefit-card"><div class="benefit-icon">💰</div><h4>Economy</h4><p>建立與切換 thread 通常比 process 便宜。</p></div><div class="benefit-card"><div class="benefit-icon">📈</div><h4>Scalability</h4><p>可利用多核心或多處理器架構提升效能。</p></div></div></div></details>
+<details><summary>五、多核心程式設計：Data Parallelism 與 Task Parallelism</summary><div class="detail-body"><p>多核心系統讓程式可以把工作分散到不同核心，但也帶來資料切分、工作平衡、資料相依、測試與除錯等挑戰。</p><div class="core-demo"><div class="core-card"><h4>Data Parallelism</h4><div class="core-row"><span class="core-label">Core 1</span><span class="task">Data A</span><span class="task">Same Op</span></div><div class="core-row"><span class="core-label">Core 2</span><span class="task">Data B</span><span class="task">Same Op</span></div><p>把同一份資料切成多份，不同核心做相同操作。</p></div><div class="core-card"><h4>Task Parallelism</h4><div class="core-row"><span class="core-label">Core 1</span><span class="task alt">Render</span></div><div class="core-row"><span class="core-label">Core 2</span><span class="task alt">Network</span></div><p>把不同任務分到不同核心，每個 thread 做不同操作。</p></div></div></div></details>
+<details><summary>六、Parallelism vs. Concurrency</summary><div class="detail-body"><div class="compare-demo"><div class="compare-card"><h4>Concurrency 並行</h4><p>多個工作都有進展，但不一定真的同時執行。單核心也可以透過快速切換讓多個工作輪流前進。</p><div class="core-row"><span class="core-label">Single core</span><span class="task">T1</span><span class="task alt">T2</span><span class="task">T3</span></div><div class="timeline"></div></div><div class="compare-card"><h4>Parallelism 平行</h4><p>多個工作真的同時執行，通常需要多核心或多處理器支援。</p><div class="core-row"><span class="core-label">Core 1</span><span class="task">T1</span><span class="task">T3</span></div><div class="core-row"><span class="core-label">Core 2</span><span class="task alt">T2</span><span class="task alt">T4</span></div></div></div><div class="flowbox" id="flow-parallel"><h3>Concurrency / Parallelism 動畫</h3><div class="flow-steps"><div class="flow-step">Concurrency</div><div class="flow-step">Parallelism</div><div class="flow-step">Multicore Challenges</div></div><div class="flow-caption"></div><div class="flow-controls"><button class="btn mini prev">上一步</button><button class="btn mini next">下一步</button><button class="btn mini reset">重新播放</button></div></div></div></details>
+<details class="program-flow-card" open=""><summary>程式流程圖與流程講解</summary>
+<div class="detail-body">
+<h2>程式流程圖：多執行緒與多核心程式設計</h2>
+<img alt="主題 12 程式流程圖" class="program-flow-img" src="assets/program_flow_topic12.svg"/>
+<h3>流程講解</h3>
+<div class="flow-explain">這張流程圖對應本頁「多執行緒與多核心程式設計」的 C 程式執行邏輯。
+1、建立多個 thread 工作。
+2、分配子任務。
+3、各 thread 計算部分結果。
+4、合併 partial sum。
+5、輸出總和。
+學生可以先看流程圖理解整體順序，再對照下方程式中的中文註解，確認每一段程式碼負責哪一個步驟。</div>
+</div>
+</details>
+<details class="program-flow-card" open=""><summary>可編輯 C 程式範例與線上編輯器</summary>
+<div class="detail-body">
+<h2>可編輯 C 程式：多執行緒與多核心程式設計</h2>
+<p>這段程式依照上方流程圖設計，包含中文註解，適合貼到線上編輯器直接執行與修改。</p>
+<div class="code-card">
+<div class="code-head">
+<span class="code-title">lesson8_topic12_demo.c</span>
+<div class="code-actions">
+<button onclick="copyCode('code_topic_12')">複製程式</button>
+<button class="download-btn" onclick="downloadCode('code_topic_12','lesson8_topic12_demo.c')">下載 .c</button>
+<a href="https://www.onlinegdb.com/online_c_compiler" target="_blank">OnlineGDB</a>
+<a href="https://www.programiz.com/c-programming/online-compiler/" target="_blank">Programiz</a>
+<a href="https://onecompiler.com/c" target="_blank">OneCompiler</a>
+</div>
+</div>
+<textarea id="code_topic_12" spellcheck="false">#include &lt;stdio.h&gt;
+
+/*
+  主題 12：多執行緒概念
+  功能：用分段加總模擬多執行緒的工作分割與合併。
+*/
+
+int main(void) {
+    int data[] = {1,2,3,4,5,6,7,8};
+    int sum1 = 0, sum2 = 0;
+    int i;
+
+    for (i = 0; i &lt; 4; i++) sum1 += data[i];      // Thread 1 的工作
+    for (i = 4; i &lt; 8; i++) sum2 += data[i];      // Thread 2 的工作
+
+    printf("Thread 1 partial sum = %d\n", sum1);
+    printf("Thread 2 partial sum = %d\n", sum2);
+    printf("Total sum = %d\n", sum1 + sum2);
+
+    return 0;
+}</textarea>
+</div>
+<div class="editor-links">
+      線上編輯器：
+      <a href="https://www.onlinegdb.com/online_c_compiler" target="_blank">OnlineGDB C Compiler</a>
+<a href="https://www.programiz.com/c-programming/online-compiler/" target="_blank">Programiz C Compiler</a>
+<a href="https://onecompiler.com/c" target="_blank">OneCompiler C</a>
+</div>
+</div>
+</details>
+
+<details class="teaching-content-card" open=""><summary>程式題目完整教學內容</summary>
+<div class="detail-body">
+<h2>程式題目完整教學：多執行緒與多核心程式設計</h2>
+<h3>一、程式題目講解</h3>
+<p>用分段加總模擬多執行緒把工作切開，再把結果合併。</p>
+<p>重點是工作分割與結果合併：Thread 1 負責前半段資料，Thread 2 負責後半段資料，最後相加。</p>
+<h3>二、完整程式碼</h3>
+<p>以下程式碼可直接複製到 C 語言線上編譯器執行。程式中已加入中文註解，說明主要變數、判斷流程與輸出目的。</p>
+<pre class="teaching-code-block"><code>#include &lt;stdio.h&gt;
+
+/*
+  主題 12：多執行緒概念
+  功能：用分段加總模擬多執行緒的工作分割與合併。
+*/
+
+int main(void) {
+    int data[] = {1,2,3,4,5,6,7,8};
+    int sum1 = 0, sum2 = 0;
+    int i;
+
+    for (i = 0; i &lt; 4; i++) sum1 += data[i];      // Thread 1 的工作
+    for (i = 4; i &lt; 8; i++) sum2 += data[i];      // Thread 2 的工作
+
+    printf(&quot;Thread 1 partial sum = %d\n&quot;, sum1);
+    printf(&quot;Thread 2 partial sum = %d\n&quot;, sum2);
+    printf(&quot;Total sum = %d\n&quot;, sum1 + sum2);
+
+    return 0;
+}</code></pre>
+<h3>三、程式執行結果</h3>
+<pre class="teaching-output-block"><code>Thread 1 partial sum = 10
+Thread 2 partial sum = 26
+Total sum = 36</code></pre>
+<p class="teaching-mini-note">結果說明：重點是工作分割與結果合併：Thread 1 負責前半段資料，Thread 2 負責後半段資料，最後相加。 程式依照設定的資料與控制流程逐步輸出，因此可以從結果看到每個步驟的執行順序與狀態變化。</p>
+<h3>四、程式流程圖與流程圖說明</h3>
+<p>本頁上方已提供對應的程式流程圖，圖中以「開始、資料設定、條件判斷、重複處理、輸出結果、結束」呈現程式執行順序。</p>
+<p>程式先建立 data 陣列，再用兩個 for 迴圈分別計算 sum1 與 sum2，最後輸出總和。</p>
+<h3>五、重要函數與語法說明</h3>
+<p>陣列 data[] 儲存資料；for 迴圈分段處理資料；sum1 + sum2 模擬多執行緒結果合併。</p>
+<h3>六、整體說明</h3>
+<p>本題的學習重點是把作業系統概念轉成可觀察的 C 程式流程。學生應先理解題目概念，再對照程式碼、流程圖與執行結果，掌握變數設定、條件判斷、迴圈處理與輸出結果之間的關係。</p>
+</div>
+</details>
+
+</main><div class="footer">Lesson 8 Topic 12｜Multithreading and Multicore Programming</div><script src="assets/script.js"></script></body></html>

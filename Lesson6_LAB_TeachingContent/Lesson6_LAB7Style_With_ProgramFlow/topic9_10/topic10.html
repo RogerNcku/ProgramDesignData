@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+
+<html lang="zh-Hant"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/><title>主題十 Heaps</title><link href="assets/style.css" rel="stylesheet"/><script src="assets/script.js"></script>
+<style>
+.slide-dropdown-section{margin-top:22px}.slide-dropdown-section>.note{margin-bottom:14px}.slide-explain-item{border:1px solid rgba(100,116,139,.28);border-radius:16px;margin:14px 0;background:rgba(255,255,255,.86);overflow:hidden}.slide-explain-item>summary{cursor:pointer;font-weight:700;padding:16px 18px;line-height:1.5;background:linear-gradient(90deg,rgba(241,245,249,.95),rgba(255,255,255,.88));list-style:none}.slide-explain-item>summary::-webkit-details-marker{display:none}.slide-explain-item>summary:before{content:'▸';display:inline-block;margin-right:8px;transition:transform .2s}.slide-explain-item[open]>summary:before{transform:rotate(90deg)}.slide-explain-body{display:grid;grid-template-columns:minmax(280px,46%) 1fr;gap:22px;padding:18px}.slide-explain-media{align-self:start}.slide-explain-img{width:100%;height:auto;border-radius:14px;box-shadow:0 10px 28px rgba(15,23,42,.18);background:white}.slide-explain-text h3{font-size:1.04rem;margin:0.9rem 0 .35rem}.slide-explain-text h3:first-child{margin-top:0}.slide-explain-text p,.slide-explain-text li{line-height:1.85}.slide-explain-text ul{margin-top:.2rem;padding-left:1.4rem}.memory-box{margin-top:14px;padding:12px 14px;border-left:5px solid #f59e0b;background:#fff7ed;border-radius:10px;line-height:1.75;font-weight:600}@media(max-width:820px){.slide-explain-body{grid-template-columns:1fr}.slide-explain-item>summary{padding:14px}.slide-explain-body{padding:14px}}
+</style>
+</head><body>
+<section class="hero"><div class="hero-inner"><span class="badge">主題十｜投影片 38–40</span><h1>Heaps 堆積樹</h1><p>Heap 是一種可以用陣列有效表示的 complete binary tree。Max heap 的 root 一定是最大值；Min heap 的 root 一定是最小值。這個性質常用在 priority queue 與 heap sort。</p><div class="nav"><a class="btn" href="../index.html">回 L6 首頁</a><a class="btn" href="topic9.html">上一章：BST 排序與搜尋</a><a class="btn" href="max_heap_demo.c">下載本章 C 程式</a></div></div></section>
+<main class="wrap">
+<section class="card slide-dropdown-section"><h2>投影片逐張下拉式詳細講解</h2><p class="note">每一張投影片都把圖片與自己的中文講解放在同一個下拉式區塊中，打開後可以直接對照圖與文字。</p><details class="slide-explain-item"><summary>投影片 38：Heap 與陣列表示法</summary><div class="slide-explain-body"><div class="slide-explain-media"><img alt="投影片 38：Heap 與陣列表示法" class="slide-explain-img" src="assets/slide38.jpg"/><div class="figure-caption">投影片 38：Heap 與陣列表示法</div></div><div class="slide-explain-text"><h3>（一）這張投影片在說什麼？</h3><p>這張投影片介紹 heap 的儲存方式。Heap 是 complete binary tree，因此很適合用 array 表示，root 放在 index 1，parent/child 可用公式定位。</p><h3>（二）核心觀念</h3><ul><li>Heap 必須是 complete binary tree。</li><li>通常用 array 實作。</li><li>index 1 是 root。</li><li>parent/child 公式與 complete binary tree 相同。</li></ul><h3>（三）學習與考試重點</h3><p>Heap 和 BST 都是二元樹應用，但 heap 重點是父子優先權，不是左小右大。</p><div class="memory-box">一句話記憶：Heap 用陣列，因為它是完整二元樹。</div></div></div></details><details class="slide-explain-item"><summary>投影片 39：Max Heap 與 Min Heap</summary><div class="slide-explain-body"><div class="slide-explain-media"><img alt="投影片 39：Max Heap 與 Min Heap" class="slide-explain-img" src="assets/slide39.jpg"/><div class="figure-caption">投影片 39：Max Heap 與 Min Heap</div></div><div class="slide-explain-text"><h3>（一）這張投影片在說什麼？</h3><p>這張投影片比較 max heap 和 min heap。Max heap 要求 parent key 大於或等於 children，所以最大值在 root；min heap 則相反，最小值在 root。</p><h3>（二）核心觀念</h3><ul><li>Max heap：parent &gt;= children。</li><li>Min heap：parent &lt;= children。</li><li>heap 的 root 代表最高或最低優先權。</li><li>同一層左右節點之間沒有 BST 那種大小規定。</li></ul><h3>（三）學習與考試重點</h3><p>常見錯誤是把 heap 誤認成 BST。Heap 只保證 parent-child 的關係，不保證左子樹都小於右子樹。</p><div class="memory-box">一句話記憶：Max heap 最大在根；Min heap 最小在根。</div></div></div></details><details class="slide-explain-item"><summary>投影片 40：維持 Max Heap Property</summary><div class="slide-explain-body"><div class="slide-explain-media"><img alt="投影片 40：維持 Max Heap Property" class="slide-explain-img" src="assets/slide40.jpg"/><div class="figure-caption">投影片 40：維持 Max Heap Property</div></div><div class="slide-explain-text"><h3>（一）這張投影片在說什麼？</h3><p>這張投影片說明 heap 操作後必須維持 max heap property。插入時可能需要 bubble up，刪除 root 後可能需要 trickle down。</p><h3>（二）核心觀念</h3><ul><li>插入新值先放在最後位置。</li><li>若新值比 parent 大，就往上交換或搬移。</li><li>刪除 root 後用最後一個元素補 root。</li><li>若補上的元素太小，就往下調整。</li></ul><h3>（三）學習與考試重點</h3><p>Heap 操作的重點不是完整重新排序，而是沿著一條路徑修正 heap property。</p><div class="memory-box">一句話記憶：插入往上修，刪除往下修。</div></div></div></details></section>
+<details open=""><summary>一、Heap 的基本定義</summary><div class="detail-body"><p>Heap 是一種特殊的二元樹。它通常需要同時符合兩個條件：第一，它是一棵 complete binary tree；第二，它符合 heap property。</p><div class="concept-map"><div class="concept">Complete Binary Tree<span>除了最後一層外都填滿</span></div><div class="arrow">＋</div><div class="concept">Heap Property<span>父子節點符合大小規則</span></div><div class="arrow">→</div><div class="concept">Heap<span>適合優先權佇列</span></div></div><p class="note">因為 heap 是 complete binary tree，所以很適合用 array 儲存。不需要每個節點都放 left pointer 和 right pointer。</p></div></details>
+<details open=""><summary>二、Heap 的陣列表示法</summary><div class="detail-body"><p>投影片 38 說明 heap 可以看成 complete binary tree，也可以直接存在陣列中。通常 index 從 1 開始比較方便，因為 parent 與 child 的位置可以用簡單公式計算。</p><div class="compare"><div class="box"><h3>Parent</h3><p>節點 i 的 parent 在 i / 2。</p></div><div class="box"><h3>Children</h3><p>節點 i 的 left child 在 2i，right child 在 2i + 1。</p></div></div><p class="good">例如節點 3 的 left child 是 6，right child 是 7；節點 6 的 parent 是 3。</p></div></details>
+<details open=""><summary>三、Max Heap 與 Min Heap</summary><div class="detail-body"><p>投影片 39 比較 max tree、max heap、min tree 與 min heap。考試最常問的是 Max Heap 和 Min Heap 的父子大小關係。</p><div class="compare"><div class="box"><h3>Max Heap</h3><p>每個 parent 的 key 都大於或等於 children，所以最大值一定在 root。</p></div><div class="box"><h3>Min Heap</h3><p>每個 parent 的 key 都小於或等於 children，所以最小值一定在 root。</p></div></div><p class="warning">只有父子之間需要符合規則，不代表整個陣列是完全排序好的。</p></div></details>
+<details open=""><summary>四、動畫：維持 Max Heap Property</summary><div class="detail-body"><p>投影片 40 的重點是：當插入或刪除造成 heap property 被破壞時，要透過交換讓它恢復。</p><div class="flowbox" data-flow="heapflow"><div class="flow-steps"><div class="flow-step" data-caption="插入時，新資料先放到陣列最後，保持 complete binary tree。">新資料放最後</div><div class="flow-step" data-caption="若新資料比 parent 大，就和 parent 交換。">Bubble up</div><div class="flow-step" data-caption="一直往上交換，直到 parent 比它大，或它成為 root。">恢復 Max Heap</div><div class="flow-step" data-caption="刪除最大值時，先刪 root，將最後一個節點搬到 root。">刪 root 補最後</div><div class="flow-step" data-caption="若 root 比 child 小，就和較大的 child 交換。">Trickle down</div></div><div class="flow-caption"></div><div class="flow-controls"><button class="btn mini" onclick="prevFlow('heapflow')">上一步</button><button class="btn mini primary" onclick="nextFlow('heapflow')">下一步</button><button class="btn mini" onclick="autoFlow('heapflow')">自動播放</button><button class="btn mini" onclick="resetFlow('heapflow')">重新開始</button></div></div></div></details>
+<details open=""><summary>五、互動示範：Heap 陣列變化</summary><div class="detail-body"><div class="tree-demo"><p>下方用 index:value 顯示 heap 陣列。index 1 是 root。</p><div class="insert-list" id="heapArray"></div><div class="search-log" id="heapText"></div><div class="traversal-controls"><button class="btn mini" onclick="prevHeap()">上一步</button><button class="btn mini primary" onclick="nextHeap()">下一步</button></div></div><p class="note">插入會用 bubble up；刪除最大值會用 trickle down。兩者目的都是讓 parent 仍然比 children 大。</p></div></details>
+<details open=""><summary>六、C 程式碼：Max Heap Push / Pop</summary><div class="detail-body"><div class="download-card"><div><h3>max_heap_demo.c</h3><p>包含 MaxHeap 初始化、push、pop 與陣列輸出。可觀察插入與刪除最大值後的 heap 變化。</p></div><a class="btn primary" href="max_heap_demo.c">下載 C 程式</a></div><div class="codebox"><div class="bar"><span>max_heap_demo.c</span><div class="code-actions"><button class="btn mini" onclick="copyCode('codeHeap')">複製程式碼</button></div></div><pre><code id="codeHeap">/*
+  中文註解版程式：max_heap_demo.c
+  說明：主題 10：Max Heap Push / Pop。示範插入 bubble up 與刪除 trickle down。
+  閱讀方式：先看資料結構定義，再看操作函式，最後看 main() 如何測試。
+*/
+
+// 匯入標準輸入輸出函式庫，提供 printf / scanf 等功能。
+#include &lt;stdio.h&gt;
+
+// 設定陣列容量上限，避免範例程式超出固定大小。
+#define MAX_SIZE 100
+
+// 定義節點結構：資料欄位存節點內容，指標欄位負責連到其他節點。
+typedef struct {
+    int data[MAX_SIZE];  // use index 1 as root, data[0] is unused
+    int size;
+} MaxHeap;
+
+// 初始化 Heap：size 設為 0，表示目前沒有任何元素。
+void initHeap(MaxHeap* h) {
+    h-&gt;size = 0;
+}
+
+// Max Heap 插入：先放到最後，再和 parent 比較並往上移動。
+void push(MaxHeap* h, int value) {
+    int i = ++h-&gt;size;
+
+    // bubble up: move parent down until value can be placed
+    while (i != 1 &amp;&amp; value &gt; h-&gt;data[i / 2]) {
+        h-&gt;data[i] = h-&gt;data[i / 2];
+        i = i / 2;
+    }
+    h-&gt;data[i] = value;
+}
+
+// Max Heap 刪除：移除 root 最大值，再用最後元素向下調整。
+int pop(MaxHeap* h) {
+    if (h-&gt;size == 0) {
+        printf("Heap is empty.\n");
+        return -1;
+    }
+
+    int maxValue = h-&gt;data[1];
+    int last = h-&gt;data[h-&gt;size--];
+    int parent = 1;
+    int child = 2;
+
+    // trickle down: compare with the larger child
+    while (child &lt;= h-&gt;size) {
+        if (child &lt; h-&gt;size &amp;&amp; h-&gt;data[child] &lt; h-&gt;data[child + 1]) {
+            child++;
+        }
+        if (last &gt;= h-&gt;data[child]) break;
+        h-&gt;data[parent] = h-&gt;data[child];
+        parent = child;
+        child = child * 2;
+    }
+    h-&gt;data[parent] = last;
+    return maxValue;
+}
+
+// 印出 Heap 陣列內容；本範例使用 index 1 作為 root。
+void printHeap(MaxHeap* h) {
+    for (int i = 1; i &lt;= h-&gt;size; i++) {
+        printf("%d ", h-&gt;data[i]);
+    }
+    printf("\n");
+}
+
+// 主程式：建立測試資料，呼叫上方函式，觀察輸出結果。
+int main(void) {
+    MaxHeap heap;
+    initHeap(&amp;heap);
+
+    int data[] = {4, 1, 3, 2, 16, 9, 10, 14, 8, 7};
+    int n = sizeof(data) / sizeof(data[0]);
+
+    for (int i = 0; i &lt; n; i++) {
+        push(&amp;heap, data[i]);
+    }
+
+    printf("Max heap array: ");
+    printHeap(&amp;heap);
+
+    printf("Delete max: %d\n", pop(&amp;heap));
+    printf("After deletion: ");
+    printHeap(&amp;heap);
+
+    push(&amp;heap, 20);
+    printf("After inserting 20: ");
+    printHeap(&amp;heap);
+
+    return 0;
+}
+</code></pre></div></div></details>
+<details class="lab7-code-section" open=""><summary>可編輯 C 程式範例：含中文註解與線上編輯器</summary><div class="content detail-body"><p>這一段提供可直接修改的 C 程式碼。可以按「複製程式」貼到線上編輯器執行，也可以下載 .c 檔案。</p><div class="codewrap"><div class="codebar"><span>max_heap_demo.c</span><div class="btns"><button class="btn green" onclick="copyCode('code10')">複製程式</button><button class="btn orange" onclick="downloadCode('code10','max_heap_demo.c')">下載 .c</button><a class="btn secondary" href="https://www.onlinegdb.com/online_c_compiler" target="_blank">OnlineGDB</a><a class="btn secondary" href="https://www.programiz.com/c-programming/online-compiler/" target="_blank">Programiz</a><a class="btn secondary" href="https://onecompiler.com/c" target="_blank">OneCompiler</a></div></div><textarea class="codearea" id="code10" spellcheck="false">/*
+  中文註解版程式：max_heap_demo.c
+  說明：主題 10：Max Heap Push / Pop。示範插入 bubble up 與刪除 trickle down。
+  閱讀方式：先看資料結構定義，再看操作函式，最後看 main() 如何測試。
+*/
+
+// 匯入標準輸入輸出函式庫，提供 printf / scanf 等功能。
+#include &lt;stdio.h&gt;
+
+// 設定陣列容量上限，避免範例程式超出固定大小。
+#define MAX_SIZE 100
+
+// 定義節點結構：資料欄位存節點內容，指標欄位負責連到其他節點。
+typedef struct {
+    int data[MAX_SIZE];  // use index 1 as root, data[0] is unused
+    int size;
+} MaxHeap;
+
+// 初始化 Heap：size 設為 0，表示目前沒有任何元素。
+void initHeap(MaxHeap* h) {
+    h-&gt;size = 0;
+}
+
+// Max Heap 插入：先放到最後，再和 parent 比較並往上移動。
+void push(MaxHeap* h, int value) {
+    int i = ++h-&gt;size;
+
+    // bubble up: move parent down until value can be placed
+    while (i != 1 &amp;&amp; value &gt; h-&gt;data[i / 2]) {
+        h-&gt;data[i] = h-&gt;data[i / 2];
+        i = i / 2;
+    }
+    h-&gt;data[i] = value;
+}
+
+// Max Heap 刪除：移除 root 最大值，再用最後元素向下調整。
+int pop(MaxHeap* h) {
+    if (h-&gt;size == 0) {
+        printf("Heap is empty.\n");
+        return -1;
+    }
+
+    int maxValue = h-&gt;data[1];
+    int last = h-&gt;data[h-&gt;size--];
+    int parent = 1;
+    int child = 2;
+
+    // trickle down: compare with the larger child
+    while (child &lt;= h-&gt;size) {
+        if (child &lt; h-&gt;size &amp;&amp; h-&gt;data[child] &lt; h-&gt;data[child + 1]) {
+            child++;
+        }
+        if (last &gt;= h-&gt;data[child]) break;
+        h-&gt;data[parent] = h-&gt;data[child];
+        parent = child;
+        child = child * 2;
+    }
+    h-&gt;data[parent] = last;
+    return maxValue;
+}
+
+// 印出 Heap 陣列內容；本範例使用 index 1 作為 root。
+void printHeap(MaxHeap* h) {
+    for (int i = 1; i &lt;= h-&gt;size; i++) {
+        printf("%d ", h-&gt;data[i]);
+    }
+    printf("\n");
+}
+
+// 主程式：建立測試資料，呼叫上方函式，觀察輸出結果。
+int main(void) {
+    MaxHeap heap;
+    initHeap(&amp;heap);
+
+    int data[] = {4, 1, 3, 2, 16, 9, 10, 14, 8, 7};
+    int n = sizeof(data) / sizeof(data[0]);
+
+    for (int i = 0; i &lt; n; i++) {
+        push(&amp;heap, data[i]);
+    }
+
+    printf("Max heap array: ");
+    printHeap(&amp;heap);
+
+    printf("Delete max: %d\n", pop(&amp;heap));
+    printf("After deletion: ");
+    printHeap(&amp;heap);
+
+    push(&amp;heap, 20);
+    printf("After inserting 20: ");
+    printHeap(&amp;heap);
+
+    return 0;
+}
+</textarea></div></div></details>
+<details class="lab7-teaching-content" open=""><summary>程式題目教學內容：Max Heap Push / Pop</summary><div class="content detail-body">
+<h3>一、程式題目講解</h3>
+<p>本題示範最大堆積樹的插入與刪除最大值。學生需要理解 Max Heap 的 root 一定是目前最大值，且用陣列也能表示 heap。</p>
+<h3>二、完整程式碼</h3>
+<p>完整可執行程式碼已保留在上方「可編輯 C 程式範例：含中文註解與線上編輯器」區塊中，檔名為 <code>max_heap_demo.c</code>。該程式碼已加入中文註解，學生可以直接複製到 OnlineGDB、Programiz 或 OneCompiler 執行。</p>
+<h3>三、程式執行結果</h3>
+<pre><code>Max heap array: 16 14 10 8 7 3 9 1 4 2 
+Delete max: 16
+After deletion: 14 8 10 4 7 3 9 1 2 
+After inserting 20: 20 14 10 4 8 3 9 1 2 7 </code></pre>
+<p>一開始 heap root 為 16，因此刪除最大值時輸出 16；刪除後透過 trickle down 維持 heap；插入 20 後，20 經過 bubble up 成為新的 root。</p>
+<h3>四、程式流程圖與流程圖說明</h3>
+<p>本頁下方已保留原本的程式流程圖。閱讀流程圖時，可以依序掌握「初始化資料或節點 → 執行主要函式或判斷 → 輸出結果」的過程。先建立 Max Heap 陣列，再執行 deleteMax，把 root 取出並用最後元素補到 root，接著向下調整；最後插入 20，從尾端加入並向上交換到正確位置。</p>
+<h3>五、重要函數與語法說明</h3>
+<p>insertHeap()：插入資料並 bubble up；deleteMax()：刪除 root 最大值；heapifyDown()：向下調整維持 Max Heap；swap()：交換兩個元素。</p>
+<h3>六、整體說明</h3>
+<p>本題重點是 Max Heap 的操作都在維持 parent 大於 children 的性質；插入向上調整，刪除向下調整。</p>
+</div></details>
+
+<section class="card program-flow-card">
+<h2>程式流程圖：Heap 建立與 Priority Queue 流程</h2>
+<p>下圖是本主題對應的程式執行流程，適合搭配本頁 C 程式碼一起看。</p>
+<div class="program-flow-figure"><img alt="主題 10 程式流程圖" class="program-flow-img" src="assets/program_flow_topic10.svg"/><div class="figure-caption">主題 10 程式流程圖：Heap 建立與 Priority Queue 流程</div></div>
+<div class="flow-explain"><h3>流程講解</h3><ol><li>Heap 通常用 array 表示 complete binary tree，heap[1] 是 root。</li><li>插入時先放到最後，再 bubble up 到正確位置。</li><li>刪除最大值時移除 root，將最後元素搬到 root。</li><li>再透過 trickle down 恢復 max heap 的 parent &gt;= children 規則。</li></ol><p>這張流程圖把本頁程式的執行順序整理成一條清楚路徑。閱讀時先看輸入與資料如何建立，再看條件判斷、指標或陣列索引如何改變，最後用輸出結果確認程式邏輯是否正確。</p></div>
+</section>
+</main><div class="footer">Lesson 6 Trees｜主題十：Heaps</div></body></html>

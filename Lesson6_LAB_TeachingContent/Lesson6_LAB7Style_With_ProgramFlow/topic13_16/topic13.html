@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+
+<html lang="zh-Hant"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/><title>Lesson 6 Topic 13</title><link href="assets/style.css" rel="stylesheet"/><script src="assets/script.js"></script>
+<style>
+.slide-dropdown-section{margin-top:22px}.slide-dropdown-section>.note{margin-bottom:14px}.slide-explain-item{border:1px solid rgba(100,116,139,.28);border-radius:16px;margin:14px 0;background:rgba(255,255,255,.86);overflow:hidden}.slide-explain-item>summary{cursor:pointer;font-weight:700;padding:16px 18px;line-height:1.5;background:linear-gradient(90deg,rgba(241,245,249,.95),rgba(255,255,255,.88));list-style:none}.slide-explain-item>summary::-webkit-details-marker{display:none}.slide-explain-item>summary:before{content:'▸';display:inline-block;margin-right:8px;transition:transform .2s}.slide-explain-item[open]>summary:before{transform:rotate(90deg)}.slide-explain-body{display:grid;grid-template-columns:minmax(280px,46%) 1fr;gap:22px;padding:18px}.slide-explain-media{align-self:start}.slide-explain-img{width:100%;height:auto;border-radius:14px;box-shadow:0 10px 28px rgba(15,23,42,.18);background:white}.slide-explain-text h3{font-size:1.04rem;margin:0.9rem 0 .35rem}.slide-explain-text h3:first-child{margin-top:0}.slide-explain-text p,.slide-explain-text li{line-height:1.85}.slide-explain-text ul{margin-top:.2rem;padding-left:1.4rem}.memory-box{margin-top:14px;padding:12px 14px;border-left:5px solid #f59e0b;background:#fff7ed;border-radius:10px;line-height:1.75;font-weight:600}@media(max-width:820px){.slide-explain-body{grid-template-columns:1fr}.slide-explain-item>summary{padding:14px}.slide-explain-body{padding:14px}}
+</style>
+</head><body><section class="hero"><h1>主題 13：Distinct Binary Trees 不同二元樹數量</h1><p>頁碼：48。這一頁重點是：同樣有 n 個節點，只要左右子樹的形狀或位置不同，就會形成不同的 binary tree。</p><div class="nav"><a class="btn" href="../index.html">回 L6 首頁</a><a class="btn" href="topic14.html">下一主題：Forests</a></div></section><main class="wrap">
+<section class="card slide-dropdown-section"><h2>投影片逐張下拉式詳細講解</h2><p class="note">每一張投影片都把圖片與自己的中文講解放在同一個下拉式區塊中，打開後可以直接對照圖與文字。</p><details class="slide-explain-item"><summary>投影片 48：Distinct Binary Trees 不同二元樹數量</summary><div class="slide-explain-body"><div class="slide-explain-media"><img alt="Slide 48：Distinct Binary Trees" class="slide-explain-img" src="assets/slide48.jpg"/><div class="figure-caption">Slide 48：Distinct Binary Trees</div></div><div class="slide-explain-text"><h3>（一）這張投影片在說什麼？</h3><p>這張投影片說明同樣 n 個節點可以形成多種不同 binary tree。因為二元樹區分左、右子樹，所以只要左右位置或子樹形狀不同，就算不同的樹。</p><h3>（二）核心觀念</h3><ul><li>二元樹的左右位置有意義。</li><li>n 個節點的不同形狀數量可用 Catalan number 計算。</li><li>遞迴想法：root + left subtree + right subtree。</li><li>總數來自所有左右節點分配的加總。</li></ul><h3>（三）學習與考試重點</h3><p>這張重點是理解「形狀不同」的判定，不只是節點數量相同就算同一棵樹。</p><div class="memory-box">一句話記憶：二元樹左右不同，樹形就不同。</div></div></div></details></section>
+<section class="card"><h2>核心觀念動畫</h2><div class="flow"><div class="node">給定 n 個節點</div><div class="arrow">→</div><div class="node">分配左子樹節點數</div><div class="arrow">→</div><div class="node">分配右子樹節點數</div><div class="arrow">→</div><div class="node">累加所有可能</div></div><div class="formula">C(n) = C(0)C(n-1) + C(1)C(n-2) + ... + C(n-1)C(0)</div><p class="note">投影片上的公式可寫成 Catalan number：有 n 個節點時，不同 binary tree 數量為 C(2n,n)/(n+1)。</p></section>
+<section class="accordion"><details open=""><summary>一、什麼叫做「不同」二元樹？</summary><div><p>二元樹會區分 left child 與 right child，所以即使節點數相同，只要某個節點是放在左邊或右邊不同，就算不同的樹。例如只有 2 個節點時，第二個節點可以是 root 的左子樹，也可以是 root 的右子樹，因此有 2 種。</p></div></details><details><summary>二、為什麼會用 Catalan number？</summary><div><p>因為每一棵 binary tree 都可以看成「root + left subtree + right subtree」。假設左子樹有 i 個節點，右子樹就有 n-1-i 個節點。左邊的可能數乘上右邊的可能數，再把所有 i 的情況加起來，就是總數。</p></div></details><details><summary>三、節點數 1、2、3 的例子</summary><div><div class="array"><span class="cell idx">n</span><span class="cell idx">不同二元樹數量</span><span class="cell">1</span><span class="cell">1</span><span class="cell">2</span><span class="cell">2</span><span class="cell">3</span><span class="cell">5</span></div><p>當 n 增加時，可能的樹形會快速增加，所以這個公式常用來計算「形狀可能性」。</p></div></details></section>
+<section class="card"><h2>C 程式碼：計算不同 Binary Trees 數量</h2><p><a class="btn primary" download="" href="distinct_binary_trees.c">下載 .c 檔</a> <button class="btn" onclick="copyCode('code13')">複製程式碼</button></p><pre class="codebox"><code id="code13">/*
+  中文註解版程式：distinct_binary_trees.c
+  說明：主題 13：不同 Binary Trees 數量。使用 Catalan number 的 DP 公式計算 n 個節點可形成幾種二元樹。
+  閱讀方式：先看資料結構定義，再看操作函式，最後看 main() 如何測試。
+*/
+
+// 匯入標準輸入輸出函式庫，提供 printf / scanf 等功能。
+#include &lt;stdio.h&gt;
+
+// 動態規劃計算 Catalan number：代表 n 個節點的不同二元樹數量。
+long long catalan(int n) {
+    long long dp[50] = {0};
+    dp[0] = 1;
+    for (int nodes = 1; nodes &lt;= n; nodes++) {
+        for (int left = 0; left &lt; nodes; left++) {
+            int right = nodes - 1 - left;
+            dp[nodes] += dp[left] * dp[right];
+        }
+    }
+    return dp[n];
+}
+
+// 主程式：建立測試資料，呼叫上方函式，觀察輸出結果。
+int main() {
+    int n;
+    printf("Enter number of nodes: ");
+    scanf("%d", &amp;n);
+
+    printf("Number of distinct binary trees with %d nodes = %lld\n", n, catalan(n));
+    return 0;
+}
+</code></pre></section>
+<details class="lab7-code-section" open=""><summary>可編輯 C 程式範例：含中文註解與線上編輯器</summary><div class="content detail-body"><p>這一段提供可直接修改的 C 程式碼。可以按「複製程式」貼到線上編輯器執行，也可以下載 .c 檔案。</p><div class="codewrap"><div class="codebar"><span>distinct_binary_trees.c</span><div class="btns"><button class="btn green" onclick="copyCode('code13')">複製程式</button><button class="btn orange" onclick="downloadCode('code13','distinct_binary_trees.c')">下載 .c</button><a class="btn secondary" href="https://www.onlinegdb.com/online_c_compiler" target="_blank">OnlineGDB</a><a class="btn secondary" href="https://www.programiz.com/c-programming/online-compiler/" target="_blank">Programiz</a><a class="btn secondary" href="https://onecompiler.com/c" target="_blank">OneCompiler</a></div></div><textarea class="codearea" id="code13" spellcheck="false">/*
+  中文註解版程式：distinct_binary_trees.c
+  說明：主題 13：不同 Binary Trees 數量。使用 Catalan number 的 DP 公式計算 n 個節點可形成幾種二元樹。
+  閱讀方式：先看資料結構定義，再看操作函式，最後看 main() 如何測試。
+*/
+
+// 匯入標準輸入輸出函式庫，提供 printf / scanf 等功能。
+#include &lt;stdio.h&gt;
+
+// 動態規劃計算 Catalan number：代表 n 個節點的不同二元樹數量。
+long long catalan(int n) {
+    long long dp[50] = {0};
+    dp[0] = 1;
+    for (int nodes = 1; nodes &lt;= n; nodes++) {
+        for (int left = 0; left &lt; nodes; left++) {
+            int right = nodes - 1 - left;
+            dp[nodes] += dp[left] * dp[right];
+        }
+    }
+    return dp[n];
+}
+
+// 主程式：建立測試資料，呼叫上方函式，觀察輸出結果。
+int main() {
+    int n;
+    printf("Enter number of nodes: ");
+    scanf("%d", &amp;n);
+
+    printf("Number of distinct binary trees with %d nodes = %lld\n", n, catalan(n));
+    return 0;
+}
+</textarea></div></div></details>
+<details class="lab7-teaching-content" open=""><summary>程式題目教學內容：Distinct Binary Trees 數量計算</summary><div class="content detail-body">
+<h3>一、程式題目講解</h3>
+<p>本題用 Catalan number 計算 n 個節點可以形成多少種不同二元樹。學生需要理解：每一個節點都可以被選為 root，左子樹與右子樹的組合數會相乘。</p>
+<h3>二、完整程式碼</h3>
+<p>完整可執行程式碼已保留在上方「可編輯 C 程式範例：含中文註解與線上編輯器」區塊中，檔名為 <code>distinct_binary_trees.c</code>。該程式碼已加入中文註解，學生可以直接複製到 OnlineGDB、Programiz 或 OneCompiler 執行。</p>
+<h3>三、程式執行結果</h3>
+<pre><code>範例輸入：3
+Enter number of nodes: Number of distinct binary trees with 3 nodes = 5</code></pre>
+<p>範例輸入 3 時輸出 5，代表 3 個節點可形成 5 種不同二元樹。這是 Catalan number C3 的結果。</p>
+<h3>四、程式流程圖與流程圖說明</h3>
+<p>本頁下方已保留原本的程式流程圖。閱讀流程圖時，可以依序掌握「初始化資料或節點 → 執行主要函式或判斷 → 輸出結果」的過程。先輸入節點數 n，再建立 dp 陣列。dp[0] 設為 1，接著從 1 到 n 逐步計算；每個 nodes 數量都枚舉 left 節點數，right 則是 nodes - 1 - left，最後加總左右子樹組合。</p>
+<h3>五、重要函數與語法說明</h3>
+<p>catalan(int n)：計算不同二元樹數量；dp[]：儲存已計算過的 Catalan 數；scanf()：讀入節點數；long long：避免較大結果超出 int 範圍。</p>
+<h3>六、整體說明</h3>
+<p>本題重點是不同二元樹的數量可以用動態規劃累加，核心公式是左子樹數量乘上右子樹數量再加總。</p>
+</div></details>
+
+<section class="card program-flow-card">
+<h2>程式流程圖：Distinct Binary Trees 計算流程</h2>
+<p>下圖是本主題對應的程式執行流程，適合搭配本頁 C 程式碼一起看。</p>
+<div class="program-flow-figure"><img alt="主題 13 程式流程圖" class="program-flow-img" src="assets/program_flow_topic13.svg"/><div class="figure-caption">主題 13 程式流程圖：Distinct Binary Trees 計算流程</div></div>
+<div class="flow-explain"><h3>流程講解</h3><ol><li>不同二元樹數量可用遞迴分解。</li><li>對每一種左子樹節點數 i，右子樹節點數就是 n-1-i。</li><li>左右子樹的可能數量相乘，就是該分配方式的組合數。</li><li>把所有分配方式加總，即得到 n 個節點可形成的不同 binary trees 數量。</li></ol><p>這張流程圖把本頁程式的執行順序整理成一條清楚路徑。閱讀時先看輸入與資料如何建立，再看條件判斷、指標或陣列索引如何改變，最後用輸出結果確認程式邏輯是否正確。</p></div>
+</section>
+</main></body></html>

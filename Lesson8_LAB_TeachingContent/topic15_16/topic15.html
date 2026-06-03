@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="zh-Hant"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/><title>Lesson 8 主題十五｜基本 CPU 排程演算法</title><link href="assets/style.css" rel="stylesheet"/>
+<style>
+.program-flow-card{background:#ffffff;border:1px solid #dbeafe;border-radius:20px;padding:22px;margin:24px 0;box-shadow:0 12px 30px rgba(15,23,42,.08)}
+.program-flow-card h2{margin-top:0;color:#0f172a}
+.program-flow-img{width:100%;border-radius:18px;border:1px solid #e2e8f0;background:#f8fafc}
+.flow-explain{line-height:1.9;background:#f8fafc;border-left:6px solid #2563eb;border-radius:14px;padding:16px 18px;white-space:pre-line}
+.code-card{background:#0f172a;color:#e5e7eb;border-radius:20px;padding:0;margin:24px 0;overflow:hidden;box-shadow:0 12px 32px rgba(15,23,42,.20)}
+.code-card .code-head{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between;background:#111827;padding:14px 16px;border-bottom:1px solid #334155}
+.code-card .code-title{font-weight:700;color:#f8fafc}
+.code-card .code-actions{display:flex;gap:8px;flex-wrap:wrap}
+.code-card button,.code-card a{border:0;border-radius:999px;padding:8px 12px;font-weight:700;text-decoration:none;cursor:pointer;background:#2563eb;color:white;font-size:14px}
+.code-card a{background:#475569}
+.code-card button.download-btn{background:#f97316}
+.code-card textarea{width:100%;min-height:380px;box-sizing:border-box;background:#020617;color:#e5e7eb;border:0;padding:18px;font-family:Consolas,'Courier New',monospace;font-size:15px;line-height:1.55;resize:vertical}
+.editor-links{margin-top:12px;line-height:1.8}
+.editor-links a{display:inline-block;margin:4px 8px 4px 0;padding:8px 12px;border-radius:999px;background:#e0f2fe;color:#075985;text-decoration:none;font-weight:700}
+</style>
+<script>
+function copyCode(id){
+  const el=document.getElementById(id);
+  if(!el) return;
+  el.select();
+  document.execCommand('copy');
+  alert('程式碼已複製');
+}
+function downloadCode(id, filename){
+  const el=document.getElementById(id);
+  if(!el) return;
+  const blob=new Blob([el.value], {type:'text/plain;charset=utf-8'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download=filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(()=>URL.revokeObjectURL(a.href), 500);
+}
+</script>
+
+<style id="slide-dropdown-explanation-style">
+.slide-explain-wrapper{margin:20px 0}
+.slide-intro-note{line-height:1.9;background:#eff6ff;border-left:6px solid #2563eb;border-radius:14px;padding:14px 16px;color:#1e3a8a}
+.single-slide-detail{margin:18px 0;border:1px solid #dbeafe;border-radius:18px;background:#ffffff;box-shadow:0 10px 24px rgba(15,23,42,.07);overflow:hidden}
+.single-slide-detail>summary{cursor:pointer;padding:16px 18px;font-weight:800;color:#0f172a;background:linear-gradient(135deg,#eff6ff,#f8fafc);list-style:none}
+.single-slide-detail>summary::-webkit-details-marker{display:none}
+.single-slide-detail>summary::before{content:"＋";display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;margin-right:10px;border-radius:999px;background:#2563eb;color:white;font-weight:900}
+.single-slide-detail[open]>summary::before{content:"－";background:#f97316}
+.slide-explain-grid{display:grid;grid-template-columns:minmax(280px,46%) 1fr;gap:22px;padding:20px;align-items:start}
+.slide-explain-image{background:#f8fafc;border:1px solid #e2e8f0;border-radius:16px;padding:12px}
+.slide-explain-image .slide-img{width:100%;height:auto;border-radius:12px;border:1px solid #e5e7eb;background:white}
+.slide-caption{text-align:center;color:#475569;font-size:14px;margin-top:8px;line-height:1.6}
+.slide-explain-text{line-height:1.9;color:#1f2937}
+.slide-explain-text h3{margin:8px 0 6px;color:#0f172a;font-size:1.05rem}
+.slide-explain-text p{margin:0 0 12px}
+.slide-explain-text ul{margin:0 0 12px 1.2em;padding:0}
+.slide-explain-text li{margin:4px 0}
+.memory-line{background:#fff7ed;border-left:6px solid #f97316;border-radius:12px;padding:10px 12px;color:#7c2d12}
+@media (max-width: 860px){
+  .slide-explain-grid{grid-template-columns:1fr}
+}
+</style>
+
+<style id="teaching-content-style">
+.teaching-content-card{background:#ffffff;border:1px solid #c7d2fe;border-radius:20px;padding:22px;margin:24px 0;box-shadow:0 12px 30px rgba(15,23,42,.08)}
+.teaching-content-card h2{margin-top:0;color:#1e1b4b}
+.teaching-content-card h3{margin-top:18px;color:#0f172a}
+.teaching-content-card p,.teaching-content-card li{line-height:1.9;color:#1f2937}
+.teaching-code-block,.teaching-output-block{white-space:pre-wrap;background:#020617;color:#e5e7eb;border-radius:16px;padding:16px;overflow:auto;font-family:Consolas,'Courier New',monospace;line-height:1.55}
+.teaching-output-block{background:#f8fafc;color:#0f172a;border:1px solid #e2e8f0}
+.teaching-mini-note{background:#eff6ff;border-left:6px solid #2563eb;border-radius:14px;padding:12px 14px;line-height:1.9;color:#1e3a8a}
+</style>
+</head><body>
+<section class="hero"><div class="hero-inner"><span class="badge">主題十五｜投影片 50–59</span><h1>基本 CPU 排程演算法</h1><p>本主題介紹常見的 CPU scheduling algorithms：FCFS、SJF、Priority Scheduling、Round-Robin，並說明 time quantum 與 context switch 的關係。</p><div class="nav"><a class="btn" href="../index.html">回首頁</a><a class="btn" href="topic16.html">下一主題</a></div></div></section>
+<main class="wrap">
+<details class="slide-explain-wrapper" open=""><summary>一、投影片逐張下拉式詳細講解</summary><div class="detail-body"><p class="slide-intro-note">每張投影片都已把「圖片」與「自己的文字講解」放在同一個下拉式區塊中，方便一邊看圖、一邊理解重點。</p><details class="single-slide-detail" open=""><summary>投影片 50｜CPU Scheduler and Scheduling Criteria</summary><div class="slide-explain-grid"><div class="slide-explain-image"><img alt="投影片50" class="slide-img" src="assets/slide50.jpg"/><div class="slide-caption">投影片 50｜CPU Scheduler and Scheduling Criteria</div></div><div class="slide-explain-text"><h3>（一）這張投影片在說什麼？</h3><p>這張整理 CPU 排程器與排程評估標準。CPU scheduler 從 ready queue 選擇行程，並把 CPU 分配給它。常見指標包含 CPU utilization、throughput、turnaround time、waiting time、response time。</p><h3>（二）核心觀念</h3><ul><li>CPU utilization 與 throughput 越高越好。</li><li>Turnaround、waiting、response time 越低越好。</li></ul><h3>（三）學習與考試重點</h3><p>要能定義每個 scheduling criterion。</p><h3>（四）一句話記憶</h3><p class="memory-line">一句話記憶：要能定義每個 scheduling criterion。</p></div></div></details><details class="single-slide-detail"><summary>投影片 51｜First-Come, First-Served Scheduling</summary><div class="slide-explain-grid"><div class="slide-explain-image"><img alt="投影片51" class="slide-img" src="assets/slide51.jpg"/><div class="slide-caption">投影片 51｜First-Come, First-Served Scheduling</div></div><div class="slide-explain-text"><h3>（一）這張投影片在說什麼？</h3><p>這張介紹 FCFS 排程。誰先進入 ready queue，誰就先使用 CPU。實作上可用 FIFO queue，很簡單，但若前面有長工作，後面短工作會等待很久，形成 convoy effect。</p><h3>（二）核心觀念</h3><ul><li>Nonpreemptive：一旦取得 CPU 通常執行到 burst 結束。</li><li>優點簡單，缺點平均等待時間可能很長。</li></ul><h3>（三）學習與考試重點</h3><p>FCFS 常考 Gantt chart 與 average waiting time。</p><h3>（四）一句話記憶</h3><p class="memory-line">一句話記憶：FCFS 常考 Gantt chart 與 average waiting time。</p></div></div></details><details class="single-slide-detail"><summary>投影片 52｜FCFS Scheduling Example</summary><div class="slide-explain-grid"><div class="slide-explain-image"><img alt="投影片52" class="slide-img" src="assets/slide52.jpg"/><div class="slide-caption">投影片 52｜FCFS Scheduling Example</div></div><div class="slide-explain-text"><h3>（一）這張投影片在說什麼？</h3><p>這張介紹 FCFS 排程。誰先進入 ready queue，誰就先使用 CPU。實作上可用 FIFO queue，很簡單，但若前面有長工作，後面短工作會等待很久，形成 convoy effect。</p><h3>（二）核心觀念</h3><ul><li>Nonpreemptive：一旦取得 CPU 通常執行到 burst 結束。</li><li>優點簡單，缺點平均等待時間可能很長。</li></ul><h3>（三）學習與考試重點</h3><p>FCFS 常考 Gantt chart 與 average waiting time。</p><h3>（四）一句話記憶</h3><p class="memory-line">一句話記憶：FCFS 常考 Gantt chart 與 average waiting time。</p></div></div></details><details class="single-slide-detail"><summary>投影片 53｜Shortest-Job-First Scheduling</summary><div class="slide-explain-grid"><div class="slide-explain-image"><img alt="投影片53" class="slide-img" src="assets/slide53.jpg"/><div class="slide-caption">投影片 53｜Shortest-Job-First Scheduling</div></div><div class="slide-explain-text"><h3>（一）這張投影片在說什麼？</h3><p>這張介紹 SJF 排程。CPU 分配給下一個 CPU burst 最短的 process。理想情況下 SJF 可得到很低的平均等待時間，但困難在於必須預測下一次 CPU burst 長度。</p><h3>（二）核心觀念</h3><ul><li>選擇最短 next CPU burst。</li><li>可分為 preemptive 與 nonpreemptive。</li></ul><h3>（三）學習與考試重點</h3><p>SJF 重點是平均等待時間佳，但需要預測 burst。</p><h3>（四）一句話記憶</h3><p class="memory-line">一句話記憶：SJF 重點是平均等待時間佳，但需要預測 burst。</p></div></div></details><details class="single-slide-detail"><summary>投影片 54｜Preemptive and Nonpreemptive SJF</summary><div class="slide-explain-grid"><div class="slide-explain-image"><img alt="投影片54" class="slide-img" src="assets/slide54.jpg"/><div class="slide-caption">投影片 54｜Preemptive and Nonpreemptive SJF</div></div><div class="slide-explain-text"><h3>（一）這張投影片在說什麼？</h3><p>這張介紹 SJF 排程。CPU 分配給下一個 CPU burst 最短的 process。理想情況下 SJF 可得到很低的平均等待時間，但困難在於必須預測下一次 CPU burst 長度。</p><h3>（二）核心觀念</h3><ul><li>選擇最短 next CPU burst。</li><li>可分為 preemptive 與 nonpreemptive。</li></ul><h3>（三）學習與考試重點</h3><p>SJF 重點是平均等待時間佳，但需要預測 burst。</p><h3>（四）一句話記憶</h3><p class="memory-line">一句話記憶：SJF 重點是平均等待時間佳，但需要預測 burst。</p></div></div></details><details class="single-slide-detail"><summary>投影片 55｜Priority Scheduling</summary><div class="slide-explain-grid"><div class="slide-explain-image"><img alt="投影片55" class="slide-img" src="assets/slide55.jpg"/><div class="slide-caption">投影片 55｜Priority Scheduling</div></div><div class="slide-explain-text"><h3>（一）這張投影片在說什麼？</h3><p>這張介紹優先權排程。每個 process 有 priority number，CPU 分配給優先權最高者。可做成 preemptive 或 nonpreemptive，但低優先權行程可能長期等不到 CPU，產生 starvation。</p><h3>（二）核心觀念</h3><ul><li>Priority number 代表優先程度。</li><li>SJF 可視為一種 priority scheduling。</li><li>可用 aging 解決 starvation。</li></ul><h3>（三）學習與考試重點</h3><p>考試常問 priority scheduling 的 starvation 問題。</p><h3>（四）一句話記憶</h3><p class="memory-line">一句話記憶：考試常問 priority scheduling 的 starvation 問題。</p></div></div></details><details class="single-slide-detail"><summary>投影片 56｜Priority Scheduling Example</summary><div class="slide-explain-grid"><div class="slide-explain-image"><img alt="投影片56" class="slide-img" src="assets/slide56.jpg"/><div class="slide-caption">投影片 56｜Priority Scheduling Example</div></div><div class="slide-explain-text"><h3>（一）這張投影片在說什麼？</h3><p>這張介紹優先權排程。每個 process 有 priority number，CPU 分配給優先權最高者。可做成 preemptive 或 nonpreemptive，但低優先權行程可能長期等不到 CPU，產生 starvation。</p><h3>（二）核心觀念</h3><ul><li>Priority number 代表優先程度。</li><li>SJF 可視為一種 priority scheduling。</li><li>可用 aging 解決 starvation。</li></ul><h3>（三）學習與考試重點</h3><p>考試常問 priority scheduling 的 starvation 問題。</p><h3>（四）一句話記憶</h3><p class="memory-line">一句話記憶：考試常問 priority scheduling 的 starvation 問題。</p></div></div></details><details class="single-slide-detail"><summary>投影片 57｜Round-Robin Scheduling</summary><div class="slide-explain-grid"><div class="slide-explain-image"><img alt="投影片57" class="slide-img" src="assets/slide57.jpg"/><div class="slide-caption">投影片 57｜Round-Robin Scheduling</div></div><div class="slide-explain-text"><h3>（一）這張投影片在說什麼？</h3><p>這張介紹 Round-Robin 排程與 time quantum。每個 process 輪流取得一小段 CPU 時間，時間到就被搶佔並放回 ready queue 尾端。RR 適合 time-sharing 系統，反應時間通常較好。</p><h3>（二）核心觀念</h3><ul><li>Time quantum 太小會造成太多 context switch。</li><li>Time quantum 太大會退化接近 FCFS。</li></ul><h3>（三）學習與考試重點</h3><p>RR 的核心是輪流、公平、preemptive。</p><h3>（四）一句話記憶</h3><p class="memory-line">一句話記憶：RR 的核心是輪流、公平、preemptive。</p></div></div></details><details class="single-slide-detail"><summary>投影片 58｜Round-Robin Scheduling Example</summary><div class="slide-explain-grid"><div class="slide-explain-image"><img alt="投影片58" class="slide-img" src="assets/slide58.jpg"/><div class="slide-caption">投影片 58｜Round-Robin Scheduling Example</div></div><div class="slide-explain-text"><h3>（一）這張投影片在說什麼？</h3><p>這張介紹 Round-Robin 排程與 time quantum。每個 process 輪流取得一小段 CPU 時間，時間到就被搶佔並放回 ready queue 尾端。RR 適合 time-sharing 系統，反應時間通常較好。</p><h3>（二）核心觀念</h3><ul><li>Time quantum 太小會造成太多 context switch。</li><li>Time quantum 太大會退化接近 FCFS。</li></ul><h3>（三）學習與考試重點</h3><p>RR 的核心是輪流、公平、preemptive。</p><h3>（四）一句話記憶</h3><p class="memory-line">一句話記憶：RR 的核心是輪流、公平、preemptive。</p></div></div></details><details class="single-slide-detail"><summary>投影片 59｜Time Quantum and Context Switch Time</summary><div class="slide-explain-grid"><div class="slide-explain-image"><img alt="投影片59" class="slide-img" src="assets/slide59.jpg"/><div class="slide-caption">投影片 59｜Time Quantum and Context Switch Time</div></div><div class="slide-explain-text"><h3>（一）這張投影片在說什麼？</h3><p>這張說明 context switch。當 CPU 從一個 process 切換到另一個 process，OS 必須保存目前行程的狀態，並載入下一個行程的狀態。這段時間不做使用者程式的有效工作，所以是 overhead。</p><h3>（二）核心觀念</h3><ul><li>保存舊 process 的 context。</li><li>載入新 process 的 context。</li><li>切換成本會影響系統效能。</li></ul><h3>（三）學習與考試重點</h3><p>Context switch 是必要但有成本的管理動作。</p><h3>（四）一句話記憶</h3><p class="memory-line">一句話記憶：Context switch 是必要但有成本的管理動作。</p></div></div></details></div></details>
+<details open=""><summary>二、本主題總覽：四種基本排程演算法</summary><div class="detail-body"><p><span class="pill">核心觀念</span> CPU 排程演算法的目的，是從 ready queue 中選出下一個使用 CPU 的 process。不同演算法會影響 waiting time、turnaround time、response time 與公平性。</p><div class="algo-grid"><div class="algo-card"><h4>FCFS</h4><p>先到先服務，簡單但可能讓短工作等很久。</p></div><div class="algo-card"><h4>SJF</h4><p>最短 CPU burst 優先，可降低平均等待時間。</p></div><div class="algo-card"><h4>Priority</h4><p>依照優先權選擇 process，可能造成 starvation。</p></div><div class="algo-card"><h4>Round-Robin</h4><p>每個 process 輪流取得一小段 CPU 時間。</p></div></div></div></details>
+<details open=""><summary>三、FCFS：First-Come, First-Served</summary><div class="detail-body"><p>FCFS 的規則很直覺：誰先要求 CPU，誰就先被服務。它通常用 FIFO queue 管理 ready queue，而且屬於 nonpreemptive scheduling。</p><div class="gantt"><h3>FCFS 甘特圖概念</h3><div class="gantt-row"><div class="gantt-piece long">P1</div><div class="gantt-piece short">P2</div><div class="gantt-piece short">P3</div></div><div class="ticks"><span>0</span><span>24</span><span>27</span><span>30</span></div><p class="note">如果 P1 很長，P2、P3 即使很短，也要等 P1 完成，平均等待時間可能很大。</p></div><div class="flowbox" id="flow-fcfs"><h3>FCFS 動畫</h3><div class="flow-steps"><div class="flow-step">FIFO Ready Queue</div><div class="flow-step">Nonpreemptive Run</div><div class="flow-step">Possible Long Wait</div></div><div class="flow-caption"></div><div class="flow-controls"><button class="btn mini prev">上一步</button><button class="btn mini next">下一步</button><button class="btn mini reset">重新播放</button></div></div></div></details>
+<details open=""><summary>四、SJF：Shortest-Job-First</summary><div class="detail-body"><p>SJF 會選擇下一個 CPU burst 最短的 process 先執行。投影片中也提到，SJF 是 optimal，因為它能讓一組 process 的平均等待時間最小。</p><div class="gantt"><h3>SJF 甘特圖概念</h3><div class="gantt-row"><div class="gantt-piece short">P4</div><div class="gantt-piece mid">P1</div><div class="gantt-piece mid">P3</div><div class="gantt-piece long">P2</div></div><div class="ticks"><span>0</span><span>3</span><span>9</span><span>16</span><span>24</span></div><p class="note">SJF 的困難在於：實際系統通常不知道下一個 CPU burst 的長度，所以需要用預測或估計。</p></div><div class="flowbox" id="flow-sjf"><h3>SJF 動畫</h3><div class="flow-steps"><div class="flow-step">Compare Burst Time</div><div class="flow-step">Pick Shortest</div><div class="flow-step">Minimum Average Waiting</div></div><div class="flow-caption"></div><div class="flow-controls"><button class="btn mini prev">上一步</button><button class="btn mini next">下一步</button><button class="btn mini reset">重新播放</button></div></div></div></details>
+<details><summary>五、Priority Scheduling：優先權排程</summary><div class="detail-body"><p>Priority Scheduling 會為每個 process 指定 priority number，CPU 分配給 priority 最高的 process。投影片中說明：smallest integer 代表 highest priority。</p><div class="priority-demo"><div class="priority-node"><span class="num">1</span>P5<br/>最高</div><div class="priority-node"><span class="num">2</span>P3</div><div class="priority-node"><span class="num">3</span>P1</div><div class="priority-node"><span class="num">4</span>P4</div><div class="priority-node"><span class="num">5</span>P2<br/>最低</div></div><div class="comparison-box"><div class="mini-card warning-card"><h4>問題：Starvation</h4><p>低優先權 process 可能一直等不到 CPU。</p></div><div class="mini-card solution-card"><h4>解法：Aging</h4><p>等待越久，逐漸提高 process 的 priority。</p></div></div><div class="flowbox" id="flow-priority"><h3>Priority Scheduling 動畫</h3><div class="flow-steps"><div class="flow-step">Assign Priority</div><div class="flow-step">Run Highest Priority</div><div class="flow-step">Use Aging</div></div><div class="flow-caption"></div><div class="flow-controls"><button class="btn mini prev">上一步</button><button class="btn mini next">下一步</button><button class="btn mini reset">重新播放</button></div></div></div></details>
+<details open=""><summary>六、Round-Robin：輪流排程</summary><div class="detail-body"><p>Round-Robin 專門適合 time-sharing system。每個 process 會取得一小段 CPU time，稱為 time quantum。時間用完還沒完成，就被放回 ready queue 尾端。</p><div class="gantt"><h3>Round-Robin 甘特圖概念</h3><div class="gantt-row"><div class="gantt-piece short">P1</div><div class="gantt-piece short">P2</div><div class="gantt-piece short">P3</div><div class="gantt-piece short">P1</div><div class="gantt-piece short">P1</div><div class="gantt-piece short">P1</div></div><div class="ticks"><span>0</span><span>4</span><span>7</span><span>10</span><span>14</span><span>18</span><span>22</span></div></div><div class="flowbox" id="flow-rr"><h3>Round-Robin 動畫</h3><div class="flow-steps"><div class="flow-step">Set Time Quantum</div><div class="flow-step">Preempt if Timeout</div><div class="flow-step">Return to Queue</div></div><div class="flow-caption"></div><div class="flow-controls"><button class="btn mini prev">上一步</button><button class="btn mini next">下一步</button><button class="btn mini reset">重新播放</button></div></div></div></details>
+<details><summary>七、Time Quantum 與 Context Switch</summary><div class="detail-body"><p>Time quantum 的大小會直接影響系統效能。投影片 58–59 說明：quantum 越小，context switch 次數可能越多；quantum 太大，Round-Robin 會越像 FCFS。</p><div class="quantum-demo"><div class="quantum-box"><h4>Quantum 太小</h4><p>反應快，但 context switch 次數很多，overhead 高。</p></div><div class="quantum-box"><h4>Quantum 適中</h4><p>兼顧互動回應與切換成本，是較理想的設計。</p></div><div class="quantum-box"><h4>Quantum 太大</h4><p>切換少，但短工作可能等待較久，接近 FCFS。</p></div></div><div class="flowbox" id="flow-timequantum"><h3>Time Quantum 動畫</h3><div class="flow-steps"><div class="flow-step">Choose Quantum</div><div class="flow-step">Affect Context Switch</div><div class="flow-step">Affect Waiting Time</div></div><div class="flow-caption"></div><div class="flow-controls"><button class="btn mini prev">上一步</button><button class="btn mini next">下一步</button><button class="btn mini reset">重新播放</button></div></div></div></details>
+<details><summary>八、主題十五重點整理</summary><div class="detail-body"><p>FCFS 最簡單，但容易讓短工作等待；SJF 可降低平均等待時間，但需要知道或預測 CPU burst；Priority Scheduling 可依重要性安排，但要用 aging 避免 starvation；Round-Robin 適合互動系統，重點是選擇合適的 time quantum。</p></div></details>
+<details class="program-flow-card" open=""><summary>程式流程圖與流程講解</summary>
+<div class="detail-body">
+<h2>程式流程圖：基本 CPU 排程演算法</h2>
+<img alt="主題 15 程式流程圖" class="program-flow-img" src="assets/program_flow_topic15.svg"/>
+<h3>流程講解</h3>
+<div class="flow-explain">這張流程圖對應本頁「基本 CPU 排程演算法」的 C 程式執行邏輯。
+1、輸入行程資料。
+2、依 SJF 找最短工作。
+3、安排執行順序。
+4、計算等待時間。
+5、輸出排程結果。
+學生可以先看流程圖理解整體順序，再對照下方程式中的中文註解，確認每一段程式碼負責哪一個步驟。</div>
+</div>
+</details>
+<details class="program-flow-card" open=""><summary>可編輯 C 程式範例與線上編輯器</summary>
+<div class="detail-body">
+<h2>可編輯 C 程式：基本 CPU 排程演算法</h2>
+<p>這段程式依照上方流程圖設計，包含中文註解，適合貼到線上編輯器直接執行與修改。</p>
+<div class="code-card">
+<div class="code-head">
+<span class="code-title">lesson8_topic15_demo.c</span>
+<div class="code-actions">
+<button onclick="copyCode('code_topic_15')">複製程式</button>
+<button class="download-btn" onclick="downloadCode('code_topic_15','lesson8_topic15_demo.c')">下載 .c</button>
+<a href="https://www.onlinegdb.com/online_c_compiler" target="_blank">OnlineGDB</a>
+<a href="https://www.programiz.com/c-programming/online-compiler/" target="_blank">Programiz</a>
+<a href="https://onecompiler.com/c" target="_blank">OneCompiler</a>
+</div>
+</div>
+<textarea id="code_topic_15" spellcheck="false">#include &lt;stdio.h&gt;
+
+/*
+  主題 15：基本 CPU 排程演算法
+  功能：示範非搶先式 SJF，依 burst time 由小到大排序。
+*/
+
+int main(void) {
+    int pid[] = {1, 2, 3, 4};
+    int burst[] = {8, 4, 9, 5};
+    int i, j;
+
+    for (i = 0; i &lt; 4 - 1; i++) {
+        for (j = i + 1; j &lt; 4; j++) {
+            if (burst[j] &lt; burst[i]) {
+                int tb = burst[i]; burst[i] = burst[j]; burst[j] = tb;
+                int tp = pid[i]; pid[i] = pid[j]; pid[j] = tp;
+            }
+        }
+    }
+
+    printf("SJF 執行順序：");
+    for (i = 0; i &lt; 4; i++) printf("P%d ", pid[i]);
+    printf("\n");
+    return 0;
+}</textarea>
+</div>
+<div class="editor-links">
+      線上編輯器：
+      <a href="https://www.onlinegdb.com/online_c_compiler" target="_blank">OnlineGDB C Compiler</a>
+<a href="https://www.programiz.com/c-programming/online-compiler/" target="_blank">Programiz C Compiler</a>
+<a href="https://onecompiler.com/c" target="_blank">OneCompiler C</a>
+</div>
+</div>
+</details>
+
+<details class="teaching-content-card" open=""><summary>程式題目完整教學內容</summary>
+<div class="detail-body">
+<h2>程式題目完整教學：基本 CPU 排程演算法</h2>
+<h3>一、程式題目講解</h3>
+<p>用非搶先式 SJF 排程，依 burst time 從小到大決定執行順序。</p>
+<p>核心觀念是短工作優先：burst time 較小的行程先執行，可降低平均等待時間。</p>
+<h3>二、完整程式碼</h3>
+<p>以下程式碼可直接複製到 C 語言線上編譯器執行。程式中已加入中文註解，說明主要變數、判斷流程與輸出目的。</p>
+<pre class="teaching-code-block"><code>#include &lt;stdio.h&gt;
+
+/*
+  主題 15：基本 CPU 排程演算法
+  功能：示範非搶先式 SJF，依 burst time 由小到大排序。
+*/
+
+int main(void) {
+    int pid[] = {1, 2, 3, 4};
+    int burst[] = {8, 4, 9, 5};
+    int i, j;
+
+    for (i = 0; i &lt; 4 - 1; i++) {
+        for (j = i + 1; j &lt; 4; j++) {
+            if (burst[j] &lt; burst[i]) {
+                int tb = burst[i]; burst[i] = burst[j]; burst[j] = tb;
+                int tp = pid[i]; pid[i] = pid[j]; pid[j] = tp;
+            }
+        }
+    }
+
+    printf(&quot;SJF 執行順序：&quot;);
+    for (i = 0; i &lt; 4; i++) printf(&quot;P%d &quot;, pid[i]);
+    printf(&quot;\n&quot;);
+    return 0;
+}</code></pre>
+<h3>三、程式執行結果</h3>
+<pre class="teaching-output-block"><code>SJF 執行順序：P2 P4 P1 P3</code></pre>
+<p class="teaching-mini-note">結果說明：核心觀念是短工作優先：burst time 較小的行程先執行，可降低平均等待時間。 程式依照設定的資料與控制流程逐步輸出，因此可以從結果看到每個步驟的執行順序與狀態變化。</p>
+<h3>四、程式流程圖與流程圖說明</h3>
+<p>本頁上方已提供對應的程式流程圖，圖中以「開始、資料設定、條件判斷、重複處理、輸出結果、結束」呈現程式執行順序。</p>
+<p>程式用雙層 for 比較 burst time，若後面行程較短就交換 burst 與 pid，最後輸出排序後的行程順序。</p>
+<h3>五、重要函數與語法說明</h3>
+<p>雙層 for 用來排序；if 判斷是否需要交換；暫存變數 tb、tp 用來交換陣列內容。</p>
+<h3>六、整體說明</h3>
+<p>本題的學習重點是把作業系統概念轉成可觀察的 C 程式流程。學生應先理解題目概念，再對照程式碼、流程圖與執行結果，掌握變數設定、條件判斷、迴圈處理與輸出結果之間的關係。</p>
+</div>
+</details>
+
+</main><div class="footer">Lesson 8 Topic 15｜Basic CPU Scheduling Algorithms</div><script src="assets/script.js"></script></body></html>

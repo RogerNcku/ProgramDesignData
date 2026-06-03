@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="zh-Hant"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/><link href="assets/style.css" rel="stylesheet"/><script src="assets/script.js"></script><title>Lesson 7 主題 12｜整合範例與練習</title>
+<style>
+.slide-dropdown-card{margin-top:18px;}
+.slide-dropdown-card h2{margin-bottom:12px;}
+.slide-detail-block{border:1px solid rgba(120,120,120,.25);border-radius:16px;margin:14px 0;background:rgba(255,255,255,.04);overflow:hidden;}
+.slide-detail-block summary{cursor:pointer;font-weight:700;padding:14px 18px;line-height:1.5;background:rgba(0,0,0,.035);}
+.slide-detail-inner{display:grid;grid-template-columns:minmax(280px,46%) 1fr;gap:18px;align-items:start;padding:18px;}
+.slide-detail-image{width:100%;max-width:100%;border-radius:14px;box-shadow:0 8px 24px rgba(0,0,0,.16);background:#fff;}
+.slide-detail-caption{text-align:center;font-size:.92rem;opacity:.82;margin-top:8px;}
+.slide-detail-text h3{margin-top:0;margin-bottom:10px;}
+.slide-detail-text p{line-height:1.85;margin:.55rem 0;}
+.slide-memory{padding:10px 12px;border-left:4px solid #f59e0b;background:rgba(245,158,11,.10);border-radius:10px;margin-top:10px;}
+@media(max-width:820px){.slide-detail-inner{grid-template-columns:1fr}.slide-detail-block summary{padding:12px 14px}.slide-detail-inner{padding:14px}}
+</style>
+</head><body>
+<header class="hero"><div class="inner"><h1>Lesson 7 主題 12｜整合範例與練習</h1><p>本檔延續 Lesson 7 前面主題的相同版型，加入圖片、動畫流程圖、動畫表格、下拉式講解與可編輯 C 程式碼。主題 11–12 是依照 Lesson 7 Expressions 的內容做成「補充統整與練習」版本，方便把前面 Infix、Postfix、Prefix、Stack、Expression Tree 的概念整合起來。</p><div class="toolbar"><a class="btn secondary" href="topic11.html">主題 11</a><a class="btn secondary" href="topic12.html">主題 12</a><a class="btn orange" href="https://www.onlinegdb.com/online_c_compiler" target="_blank">OnlineGDB</a><a class="btn green" href="https://www.programiz.com/c-programming/online-compiler/" target="_blank">Programiz</a><a class="btn" href="https://onecompiler.com/c" target="_blank">OneCompiler</a></div></div></header>
+<div class="wrap"><div class="layout"><aside class="sidebar"><div class="side-title">Lesson 7 主題 11–12</div><nav class="nav"><a class="" href="../../index.html">主頁</a><a class="" href="topic11.html">11. 綜合複習與觀念整理</a><a class="active" href="topic12.html">12. 整合範例與練習</a></nav></aside><main>
+<section class="card"><span class="badge">Topic 12</span><h2>整合範例與練習：從 Infix 到 Postfix</h2><p>這個主題把 Lesson 7 的後半段概念整合起來：先看 Infix expression，再用 Stack 處理運算子，最後輸出 Postfix expression。這個流程也是投影片中 Infix-to-Postfix 程式實作與執行結果的核心。</p></section>
+<section class="card slide-dropdown-card"><h2>一、投影片逐張下拉式詳細講解</h2><p>每一張投影片都已和自己的圖片、詳細中文說明、核心觀念、學習重點與一句話記憶整合在同一個下拉式區塊中。</p><details class="slide-detail-block" open=""><summary>投影片 11：Infix-to-Postfix 的 Stack 表格。</summary><div class="slide-detail-inner"><figure><img alt="投影片 11：Infix-to-Postfix 的 Stack 表格。" class="slide-detail-image slide-img" src="assets/slide11.jpg"/><figcaption class="slide-detail-caption">投影片 11：Infix-to-Postfix 的 Stack 表格。</figcaption></figure><div class="slide-detail-text"><h3>Infix-to-Postfix 完整 Stack 表格範例</h3><p><b>（一）這張投影片在說什麼？</b> 這張投影片用表格完整展示 Infix-to-Postfix 的執行過程。每讀到一個符號，就更新目前輸出結果與 Stack 狀態。</p><p><b>（二）核心觀念</b> 表格的價值在於把抽象演算法具體化。你可以看到 operand 如何直接進 output，operator 如何根據優先權進入 Stack 或被 pop 出來。</p><p><b>（三）為什麼重要？</b> 這張是考試與作業最實用的一張，因為它訓練你把演算法一步一步追蹤，而不是只背最後答案。</p><p><b>（四）學習與考試重點</b> 練習時要固定欄位：讀入符號、動作、Stack 狀態、目前 Postfix。只要中間一步錯，最後答案通常就會錯。</p><div class="slide-memory">一句話記憶：Stack 表格是檢查中序轉後序是否正確的最好方法。</div></div></div></details><details class="slide-detail-block"><summary>投影片 13：Postfix evaluation 的 Stack 變化。</summary><div class="slide-detail-inner"><figure><img alt="投影片 13：Postfix evaluation 的 Stack 變化。" class="slide-detail-image slide-img" src="assets/slide13.jpg"/><figcaption class="slide-detail-caption">投影片 13：Postfix evaluation 的 Stack 變化。</figcaption></figure><div class="slide-detail-text"><h3>Postfix 求值 Stack 表格範例</h3><p><b>（一）這張投影片在說什麼？</b> 這張投影片用表格展示 Postfix Expression 的實際求值過程。每一步都列出讀到的符號，以及 Stack 內容如何改變。</p><p><b>（二）核心觀念</b> 當讀到數字或變數值時，Stack 會增加一個元素；當讀到 operator 時，Stack 會先減少兩個元素，再放回一個計算結果。</p><p><b>（三）為什麼重要？</b> 這張表格能幫助你理解 Stack 在運算中的變化，也能檢查自己是否有把 operand 的左右順序弄反。</p><p><b>（四）學習與考試重點</b> 若題目要求算 postfix 的值，請不要先轉回 infix；直接照 Stack 表格做，速度更快也比較不容易錯。</p><div class="slide-memory">一句話記憶：每遇到一個 operator，Stack 會把兩個值合成一個值。</div></div></div></details><details class="slide-detail-block"><summary>投影片 18：Expression Tree 建立過程。</summary><div class="slide-detail-inner"><figure><img alt="投影片 18：Expression Tree 建立過程。" class="slide-detail-image slide-img" src="assets/slide18.jpg"/><figcaption class="slide-detail-caption">投影片 18：Expression Tree 建立過程。</figcaption></figure><div class="slide-detail-text"><h3>完成 Expression Tree 示範</h3><p><b>（一）這張投影片在說什麼？</b> 這張投影片展示建好的表達式樹。此時可以清楚看出每個 operator 對應的左右 operand，以及整個式子的最終運算位於根節點。</p><p><b>（二）核心觀念</b> 完成的樹可以用不同 traversal 產生不同表示法：Preorder 得到 Prefix，Inorder 得到 Infix，Postorder 得到 Postfix。</p><p><b>（三）為什麼重要？</b> 這張投影片把前面學過的三種表示法連在一起：它們不是獨立知識，而是同一棵 Expression Tree 的三種走訪結果。</p><p><b>（四）學習與考試重點</b> 看到完整樹後，要能快速說出 root、left subtree、right subtree，並寫出三種 traversal 結果。</p><div class="slide-memory">一句話記憶：同一棵表達式樹，三種走訪得到三種表示法。</div></div></div></details><details class="slide-detail-block"><summary>投影片 24：程式執行畫面。</summary><div class="slide-detail-inner"><figure><img alt="投影片 24：程式執行畫面。" class="slide-detail-image slide-img" src="assets/slide24.jpg"/><figcaption class="slide-detail-caption">投影片 24：程式執行畫面。</figcaption></figure><div class="slide-detail-text"><h3>Infix-to-Postfix 程式執行結果</h3><p><b>（一）這張投影片在說什麼？</b> 這張投影片展示程式執行畫面，讓你確認輸入的 Infix 是否能得到正確的 Postfix output。</p><p><b>（二）核心觀念</b> 執行結果是驗證演算法與程式是否一致的方式。若輸出錯誤，通常要回頭檢查 priority、括號處理、push/pop 或字串索引。</p><p><b>（三）為什麼重要？</b> 程式實作不能只看程式碼，還要透過測試資料驗證。建議用簡單式子、含括號式子、乘除加減混合式子各測一次。</p><p><b>（四）學習與考試重點</b> 若題目要求寫執行結果，請依照程式邏輯追蹤，而不是只用直覺猜答案。</p><div class="slide-memory">一句話記憶：執行結果是檢查 Infix-to-Postfix 程式是否正確的最後證據。</div></div></div></details></section>
+<section class="card"><h2>動畫流程圖：Infix-to-Postfix 整合流程</h2><div class="flow-area" id="flow12"><div class="flow"><div class="node">讀取字元</div><div class="node">Operand 直接輸出</div><div class="node">Operator 進 Stack</div><div class="node">遇到括號特殊處理</div><div class="node">清空 Stack</div><div class="node">得到 Postfix</div></div><div class="progress"><div class="bar"></div></div><div class="stepbox"></div><div class="btns" style="margin-top:12px"><button class="btn secondary" onclick="prevFlow('flow12')">上一步</button><button class="btn" onclick="nextFlow('flow12')">下一步</button><button class="btn orange" onclick="playFlow('flow12')">自動播放</button><button class="btn secondary" onclick="resetFlow('flow12')">重新開始</button></div></div><script>initFlow('flow12',['從左到右讀取 Infix expression 的每一個字元。','如果讀到 operand，例如 A、B、C，就直接放到輸出結果。','如果讀到 operator，例如 + 或 *，先和 Stack 上方運算子比較優先順序。','如果遇到左括號就 push；遇到右括號就 pop 到左括號為止。','整個 expression 掃描完後，把 Stack 裡剩下的 operator 全部輸出。','最後得到 Postfix expression，方便後續用 Stack 求值。']);</script></section>
+<section class="card"><h2>動畫表格：A+B*C 轉成 Postfix</h2><div class="table-wrap"><table class="anim-table" id="table12"><thead><tr><th>步驟</th><th>讀到字元</th><th>Stack</th><th>Output</th><th>說明</th></tr></thead><tbody><tr><td>1</td><td>A</td><td>空</td><td>A</td><td>A 是 operand，直接輸出。</td></tr><tr><td>2</td><td>+</td><td>+</td><td>A</td><td>+ 是 operator，先 push。</td></tr><tr><td>3</td><td>B</td><td>+</td><td>AB</td><td>B 是 operand，直接輸出。</td></tr><tr><td>4</td><td>*</td><td>+ *</td><td>AB</td><td>* 優先順序高於 +，所以 push。</td></tr><tr><td>5</td><td>C</td><td>+ *</td><td>ABC</td><td>C 是 operand，直接輸出。</td></tr><tr><td>6</td><td>結束</td><td>空</td><td>ABC*+</td><td>把 Stack 中的 *、+ 依序 pop 出來。</td></tr></tbody></table></div><div class="btns" style="margin-top:12px"><button class="btn secondary" onclick="prevRow('table12')">上一步</button><button class="btn" onclick="nextRow('table12')">下一步</button><button class="btn secondary" onclick="resetTable('table12')">重新開始</button></div><script>initTable('table12')</script></section>
+<section class="card"><details class="details" open=""><summary>完整中文講解</summary><p>Infix-to-Postfix 的核心是：operand 直接輸出，operator 暫存在 Stack。為什麼 operator 不能全部直接輸出？因為 Infix 中有優先順序問題。例如 A+B*C 中，雖然 + 比 * 早出現，但真正要先算的是 B*C，所以 * 必須比 + 更早出現在 Postfix 的運算順序中。Stack 可以幫助程式暫時保存 operator，等到適當時機再輸出。</p></details><details class="details"><summary>練習題建議</summary><p>你可以用程式測試 A+B*C、(A+B)*C、A*(B+C)-D。每一題都觀察 Output 與 Stack 的變化。建議先手算一次，再把式子輸入程式，確認結果是否一致。</p></details></section>
+<section class="card"><h2>C 程式範例：Infix-to-Postfix 完整整合版</h2><p>這個程式可以將 Infix expression 轉成 Postfix expression，並且在程式內加入完整中文註解，方便對照流程圖理解。</p><div class="btns" style="margin-bottom:12px"><button class="btn" onclick="copyCode('code12')">複製程式碼</button><a class="btn orange" href="https://www.onlinegdb.com/online_c_compiler" target="_blank">到 OnlineGDB 編輯</a><a class="btn green" href="https://www.programiz.com/c-programming/online-compiler/" target="_blank">到 Programiz 編輯</a><a class="btn" href="https://onecompiler.com/c" target="_blank">到 OneCompiler 編輯</a></div><textarea class="codebox" id="code12">#include &lt;stdio.h&gt;
+#include &lt;ctype.h&gt;
+#include &lt;string.h&gt;
+
+/*
+   Lesson 7 主題 12：整合範例
+   功能：
+   1. 將 Infix expression 轉成 Postfix expression
+   2. 用 Stack 顯示轉換概念
+   3. 適合輸入單一字元運算元，例如：A+B*C、(A+B)*C、A*(B+C)-D
+
+   注意：
+   這份教學範例主要用來理解演算法，所以每個 operand 用單一字元表示。
+*/
+
+#define MAX 100
+
+char stack[MAX];
+int top = -1;
+
+// 判斷 stack 是否為空
+int isEmpty() {
+    return top == -1;
+}
+
+// push：把字元放入 stack
+void push(char ch) {
+    if (top &lt; MAX - 1) {
+        stack[++top] = ch;
+    }
+}
+
+// pop：從 stack 取出最上方字元
+char pop() {
+    if (!isEmpty()) {
+        return stack[top--];
+    }
+    return '\0';
+}
+
+// peek：只查看 stack 最上方字元，不移除
+char peek() {
+    if (!isEmpty()) {
+        return stack[top];
+    }
+    return '\0';
+}
+
+// 判斷是否為運算子
+int isOperator(char ch) {
+    return ch == '+' || ch == '-' || ch == '*' || ch == '/' || ch == '^';
+}
+
+// 運算子優先順序
+int priority(char op) {
+    if (op == '^') return 3;
+    if (op == '*' || op == '/') return 2;
+    if (op == '+' || op == '-') return 1;
+    return 0;
+}
+
+// 將 Infix 轉成 Postfix
+void infixToPostfix(char infix[], char postfix[]) {
+    int j = 0;
+
+    for (int i = 0; i &lt; strlen(infix); i++) {
+        char ch = infix[i];
+
+        // 1. 如果是 operand，直接輸出到 postfix
+        if (isalnum(ch)) {
+            postfix[j++] = ch;
+        }
+        // 2. 如果是左括號，直接 push 進 stack
+        else if (ch == '(') {
+            push(ch);
+        }
+        // 3. 如果是右括號，pop 到遇到左括號為止
+        else if (ch == ')') {
+            while (!isEmpty() &amp;&amp; peek() != '(') {
+                postfix[j++] = pop();
+            }
+            pop(); // 移除左括號 '('，但不輸出
+        }
+        // 4. 如果是運算子，處理優先順序
+        else if (isOperator(ch)) {
+            while (!isEmpty() &amp;&amp; priority(peek()) &gt;= priority(ch)) {
+                postfix[j++] = pop();
+            }
+            push(ch);
+        }
+    }
+
+    // 5. 掃描完 infix 後，把 stack 剩下的運算子全部輸出
+    while (!isEmpty()) {
+        postfix[j++] = pop();
+    }
+
+    postfix[j] = '\0';
+}
+
+int main() {
+    char infix[MAX], postfix[MAX];
+
+    printf("請輸入 Infix expression，例如 A+B*C 或 (A+B)*C：\n");
+    scanf("%99s", infix);
+
+    infixToPostfix(infix, postfix);
+
+    printf("\nInfix  : %s\n", infix);
+    printf("Postfix: %s\n", postfix);
+
+    printf("\n觀念說明：\n");
+    printf("1. Operand 直接輸出。\n");
+    printf("2. Operator 先放入 stack，但要比較優先順序。\n");
+    printf("3. 右括號出現時，要 pop 到左括號為止。\n");
+    printf("4. 最後把 stack 中剩下的運算子全部輸出。\n");
+
+    return 0;
+}
+</textarea></section>
+
+<section class="card program-teaching-card" id="program-teaching-content" style="margin-top:18px;">
+  <h2>程式題目教學內容</h2>
+
+  <details class="details" open>
+    <summary>一、程式題目講解</summary>
+    <p>這個程式整合 Infix-to-Postfix 的主要觀念，使用 Stack 將輸入的中序表示式轉成後序表示式，並在程式最後補上觀念說明。</p>
+  </details>
+
+  <details class="details">
+    <summary>二、完整程式碼</summary>
+    <p>以下保留本頁原本的完整 C 程式碼，並搭配中文註解說明主要功能與流程。</p>
+    <pre class="codebox" style="white-space:pre-wrap;overflow:auto;max-height:520px;"><code>#include &lt;stdio.h&gt;
+#include &lt;ctype.h&gt;
+#include &lt;string.h&gt;
+
+/*
+   Lesson 7 主題 12：整合範例
+   功能：
+   1. 將 Infix expression 轉成 Postfix expression
+   2. 用 Stack 顯示轉換概念
+   3. 適合輸入單一字元運算元，例如：A+B*C、(A+B)*C、A*(B+C)-D
+
+   注意：
+   這份教學範例主要用來理解演算法，所以每個 operand 用單一字元表示。
+*/
+
+#define MAX 100
+
+char stack[MAX];
+int top = -1;
+
+// 判斷 stack 是否為空
+int isEmpty() {
+    return top == -1;
+}
+
+// push：把字元放入 stack
+void push(char ch) {
+    if (top &lt; MAX - 1) {
+        stack[++top] = ch;
+    }
+}
+
+// pop：從 stack 取出最上方字元
+char pop() {
+    if (!isEmpty()) {
+        return stack[top--];
+    }
+    return &#x27;\0&#x27;;
+}
+
+// peek：只查看 stack 最上方字元，不移除
+char peek() {
+    if (!isEmpty()) {
+        return stack[top];
+    }
+    return &#x27;\0&#x27;;
+}
+
+// 判斷是否為運算子
+int isOperator(char ch) {
+    return ch == &#x27;+&#x27; || ch == &#x27;-&#x27; || ch == &#x27;*&#x27; || ch == &#x27;/&#x27; || ch == &#x27;^&#x27;;
+}
+
+// 運算子優先順序
+int priority(char op) {
+    if (op == &#x27;^&#x27;) return 3;
+    if (op == &#x27;*&#x27; || op == &#x27;/&#x27;) return 2;
+    if (op == &#x27;+&#x27; || op == &#x27;-&#x27;) return 1;
+    return 0;
+}
+
+// 將 Infix 轉成 Postfix
+void infixToPostfix(char infix[], char postfix[]) {
+    int j = 0;
+
+    for (int i = 0; i &lt; strlen(infix); i++) {
+        char ch = infix[i];
+
+        // 1. 如果是 operand，直接輸出到 postfix
+        if (isalnum(ch)) {
+            postfix[j++] = ch;
+        }
+        // 2. 如果是左括號，直接 push 進 stack
+        else if (ch == &#x27;(&#x27;) {
+            push(ch);
+        }
+        // 3. 如果是右括號，pop 到遇到左括號為止
+        else if (ch == &#x27;)&#x27;) {
+            while (!isEmpty() &amp;&amp; peek() != &#x27;(&#x27;) {
+                postfix[j++] = pop();
+            }
+            pop(); // 移除左括號 &#x27;(&#x27;，但不輸出
+        }
+        // 4. 如果是運算子，處理優先順序
+        else if (isOperator(ch)) {
+            while (!isEmpty() &amp;&amp; priority(peek()) &gt;= priority(ch)) {
+                postfix[j++] = pop();
+            }
+            push(ch);
+        }
+    }
+
+    // 5. 掃描完 infix 後，把 stack 剩下的運算子全部輸出
+    while (!isEmpty()) {
+        postfix[j++] = pop();
+    }
+
+    postfix[j] = &#x27;\0&#x27;;
+}
+
+int main() {
+    char infix[MAX], postfix[MAX];
+
+    printf(&quot;請輸入 Infix expression，例如 A+B*C 或 (A+B)*C：\n&quot;);
+    scanf(&quot;%99s&quot;, infix);
+
+    infixToPostfix(infix, postfix);
+
+    printf(&quot;\nInfix  : %s\n&quot;, infix);
+    printf(&quot;Postfix: %s\n&quot;, postfix);
+
+    printf(&quot;\n觀念說明：\n&quot;);
+    printf(&quot;1. Operand 直接輸出。\n&quot;);
+    printf(&quot;2. Operator 先放入 stack，但要比較優先順序。\n&quot;);
+    printf(&quot;3. 右括號出現時，要 pop 到左括號為止。\n&quot;);
+    printf(&quot;4. 最後把 stack 中剩下的運算子全部輸出。\n&quot;);
+
+    return 0;
+}
+</code></pre>
+  </details>
+
+  <details class="details" open>
+    <summary>三、程式執行結果</summary>
+    <p><strong>範例輸入：A+B*C</strong></p>
+    <pre class="codebox" style="white-space:pre-wrap;overflow:auto;max-height:420px;"><code>請輸入 Infix expression，例如 A+B*C 或 (A+B)*C：
+
+Infix  : A+B*C
+Postfix: ABC*+
+
+觀念說明：
+1. Operand 直接輸出。
+2. Operator 先放入 stack，但要比較優先順序。
+3. 右括號出現時，要 pop 到左括號為止。
+4. 最後把 stack 中剩下的運算子全部輸出。</code></pre>
+    <p>A、B、C 是運算元，所以會進入輸出結果；+ 和 * 是運算子，需要放入 Stack 並比較優先順序。因為 * 優先於 +，所以得到 ABC*+。</p>
+  </details>
+
+  <details class="details">
+    <summary>四、程式流程圖與流程圖說明</summary>
+    <svg class="teaching-flow-svg" viewBox="0 0 760 602" role="img" aria-label="Infix-to-Postfix 完整整合版 流程圖" style="width:100%;max-width:820px;height:auto;display:block;margin:12px auto;"><defs><linearGradient id="g" x1="0" x2="1"><stop offset="0%" stop-color="#eef6ff"/><stop offset="100%" stop-color="#ffffff"/></linearGradient></defs><rect x="70" y="50" width="620" height="46" rx="14" fill="url(#g)" stroke="#7aa7d9" stroke-width="2"></rect><text x="380" y="79" text-anchor="middle" font-size="16" fill="#1f2937">1. 輸入 Infix expression</text><line x1="380" y1="96" x2="380" y2="108" stroke="#7aa7d9" stroke-width="2"></line><polygon points="374,108 386,108 380,114" fill="#7aa7d9"></polygon><rect x="70" y="114" width="620" height="46" rx="14" fill="url(#g)" stroke="#7aa7d9" stroke-width="2"></rect><text x="380" y="143" text-anchor="middle" font-size="16" fill="#1f2937">2. 建立空 Stack 與 postfix 陣列</text><line x1="380" y1="160" x2="380" y2="172" stroke="#7aa7d9" stroke-width="2"></line><polygon points="374,172 386,172 380,178" fill="#7aa7d9"></polygon><rect x="70" y="178" width="620" height="46" rx="14" fill="url(#g)" stroke="#7aa7d9" stroke-width="2"></rect><text x="380" y="207" text-anchor="middle" font-size="16" fill="#1f2937">3. 運算元直接加入 postfix</text><line x1="380" y1="224" x2="380" y2="236" stroke="#7aa7d9" stroke-width="2"></line><polygon points="374,236 386,236 380,242" fill="#7aa7d9"></polygon><rect x="70" y="242" width="620" height="46" rx="14" fill="url(#g)" stroke="#7aa7d9" stroke-width="2"></rect><text x="380" y="271" text-anchor="middle" font-size="16" fill="#1f2937">4. 運算子依優先順序處理</text><line x1="380" y1="288" x2="380" y2="300" stroke="#7aa7d9" stroke-width="2"></line><polygon points="374,300 386,300 380,306" fill="#7aa7d9"></polygon><rect x="70" y="306" width="620" height="46" rx="14" fill="url(#g)" stroke="#7aa7d9" stroke-width="2"></rect><text x="380" y="335" text-anchor="middle" font-size="16" fill="#1f2937">5. 括號控制先算範圍</text><line x1="380" y1="352" x2="380" y2="364" stroke="#7aa7d9" stroke-width="2"></line><polygon points="374,364 386,364 380,370" fill="#7aa7d9"></polygon><rect x="70" y="370" width="620" height="46" rx="14" fill="url(#g)" stroke="#7aa7d9" stroke-width="2"></rect><text x="380" y="399" text-anchor="middle" font-size="16" fill="#1f2937">6. 掃描結束後清空 Stack</text><line x1="380" y1="416" x2="380" y2="428" stroke="#7aa7d9" stroke-width="2"></line><polygon points="374,428 386,428 380,434" fill="#7aa7d9"></polygon><rect x="70" y="434" width="620" height="46" rx="14" fill="url(#g)" stroke="#7aa7d9" stroke-width="2"></rect><text x="380" y="463" text-anchor="middle" font-size="16" fill="#1f2937">7. 輸出 Infix 與 Postfix</text><line x1="380" y1="480" x2="380" y2="492" stroke="#7aa7d9" stroke-width="2"></line><polygon points="374,492 386,492 380,498" fill="#7aa7d9"></polygon><rect x="70" y="498" width="620" height="46" rx="14" fill="url(#g)" stroke="#7aa7d9" stroke-width="2"></rect><text x="380" y="527" text-anchor="middle" font-size="16" fill="#1f2937">8. 列出轉換觀念說明</text></svg>
+    <p>流程圖說明：本程式的主要邏輯可以依照下列順序理解：</p>
+    <ol><li>輸入 Infix expression</li><li>建立空 Stack 與 postfix 陣列</li><li>運算元直接加入 postfix</li><li>運算子依優先順序處理</li><li>括號控制先算範圍</li><li>掃描結束後清空 Stack</li><li>輸出 Infix 與 Postfix</li><li>列出轉換觀念說明</li></ol>
+  </details>
+
+  <details class="details">
+    <summary>五、重要函數與語法說明</summary>
+    <ul><li>isEmpty()：判斷 Stack 是否為空。</li><li>push(ch)：將運算子或括號放入 Stack。</li><li>pop()：取出 Stack 頂端元素。</li><li>peek()：查看 Stack 頂端但不移除。</li><li>isOperator(ch)：判斷是否為運算子。</li><li>priority(op)：回傳運算子優先順序。</li></ul>
+  </details>
+
+  <details class="details" open>
+    <summary>六、整體說明</summary>
+    <p>本題重點是整合 Infix-to-Postfix 的完整流程。學生要掌握運算元直接輸出、運算子進 Stack、括號控制範圍，以及最後清空 Stack 的規則。</p>
+  </details>
+</section>
+</main></div></div><footer class="footer">Lesson 7 Expressions｜Topic 11–12 HTML 教學檔</footer></body></html>

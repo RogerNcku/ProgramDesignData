@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="zh-Hant"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/><title>Lesson 8 主題九｜行程概念與行程狀態</title><link href="assets/style.css" rel="stylesheet"/>
+<style>
+.program-flow-card{background:#ffffff;border:1px solid #dbeafe;border-radius:20px;padding:22px;margin:24px 0;box-shadow:0 12px 30px rgba(15,23,42,.08)}
+.program-flow-card h2{margin-top:0;color:#0f172a}
+.program-flow-img{width:100%;border-radius:18px;border:1px solid #e2e8f0;background:#f8fafc}
+.flow-explain{line-height:1.9;background:#f8fafc;border-left:6px solid #2563eb;border-radius:14px;padding:16px 18px;white-space:pre-line}
+.code-card{background:#0f172a;color:#e5e7eb;border-radius:20px;padding:0;margin:24px 0;overflow:hidden;box-shadow:0 12px 32px rgba(15,23,42,.20)}
+.code-card .code-head{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between;background:#111827;padding:14px 16px;border-bottom:1px solid #334155}
+.code-card .code-title{font-weight:700;color:#f8fafc}
+.code-card .code-actions{display:flex;gap:8px;flex-wrap:wrap}
+.code-card button,.code-card a{border:0;border-radius:999px;padding:8px 12px;font-weight:700;text-decoration:none;cursor:pointer;background:#2563eb;color:white;font-size:14px}
+.code-card a{background:#475569}
+.code-card button.download-btn{background:#f97316}
+.code-card textarea{width:100%;min-height:380px;box-sizing:border-box;background:#020617;color:#e5e7eb;border:0;padding:18px;font-family:Consolas,'Courier New',monospace;font-size:15px;line-height:1.55;resize:vertical}
+.editor-links{margin-top:12px;line-height:1.8}
+.editor-links a{display:inline-block;margin:4px 8px 4px 0;padding:8px 12px;border-radius:999px;background:#e0f2fe;color:#075985;text-decoration:none;font-weight:700}
+</style>
+<script>
+function copyCode(id){
+  const el=document.getElementById(id);
+  if(!el) return;
+  el.select();
+  document.execCommand('copy');
+  alert('程式碼已複製');
+}
+function downloadCode(id, filename){
+  const el=document.getElementById(id);
+  if(!el) return;
+  const blob=new Blob([el.value], {type:'text/plain;charset=utf-8'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download=filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(()=>URL.revokeObjectURL(a.href), 500);
+}
+</script>
+
+<style id="slide-dropdown-explanation-style">
+.slide-explain-wrapper{margin:20px 0}
+.slide-intro-note{line-height:1.9;background:#eff6ff;border-left:6px solid #2563eb;border-radius:14px;padding:14px 16px;color:#1e3a8a}
+.single-slide-detail{margin:18px 0;border:1px solid #dbeafe;border-radius:18px;background:#ffffff;box-shadow:0 10px 24px rgba(15,23,42,.07);overflow:hidden}
+.single-slide-detail>summary{cursor:pointer;padding:16px 18px;font-weight:800;color:#0f172a;background:linear-gradient(135deg,#eff6ff,#f8fafc);list-style:none}
+.single-slide-detail>summary::-webkit-details-marker{display:none}
+.single-slide-detail>summary::before{content:"＋";display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;margin-right:10px;border-radius:999px;background:#2563eb;color:white;font-weight:900}
+.single-slide-detail[open]>summary::before{content:"－";background:#f97316}
+.slide-explain-grid{display:grid;grid-template-columns:minmax(280px,46%) 1fr;gap:22px;padding:20px;align-items:start}
+.slide-explain-image{background:#f8fafc;border:1px solid #e2e8f0;border-radius:16px;padding:12px}
+.slide-explain-image .slide-img{width:100%;height:auto;border-radius:12px;border:1px solid #e5e7eb;background:white}
+.slide-caption{text-align:center;color:#475569;font-size:14px;margin-top:8px;line-height:1.6}
+.slide-explain-text{line-height:1.9;color:#1f2937}
+.slide-explain-text h3{margin:8px 0 6px;color:#0f172a;font-size:1.05rem}
+.slide-explain-text p{margin:0 0 12px}
+.slide-explain-text ul{margin:0 0 12px 1.2em;padding:0}
+.slide-explain-text li{margin:4px 0}
+.memory-line{background:#fff7ed;border-left:6px solid #f97316;border-radius:12px;padding:10px 12px;color:#7c2d12}
+@media (max-width: 860px){
+  .slide-explain-grid{grid-template-columns:1fr}
+}
+</style>
+
+<style id="teaching-content-style">
+.teaching-content-card{background:#ffffff;border:1px solid #c7d2fe;border-radius:20px;padding:22px;margin:24px 0;box-shadow:0 12px 30px rgba(15,23,42,.08)}
+.teaching-content-card h2{margin-top:0;color:#1e1b4b}
+.teaching-content-card h3{margin-top:18px;color:#0f172a}
+.teaching-content-card p,.teaching-content-card li{line-height:1.9;color:#1f2937}
+.teaching-code-block,.teaching-output-block{white-space:pre-wrap;background:#020617;color:#e5e7eb;border-radius:16px;padding:16px;overflow:auto;font-family:Consolas,'Courier New',monospace;line-height:1.55}
+.teaching-output-block{background:#f8fafc;color:#0f172a;border:1px solid #e2e8f0}
+.teaching-mini-note{background:#eff6ff;border-left:6px solid #2563eb;border-radius:14px;padding:12px 14px;line-height:1.9;color:#1e3a8a}
+</style>
+</head><body>
+<section class="hero"><div class="hero-inner"><span class="badge">主題九｜投影片 27–32</span><h1>行程概念與行程狀態</h1><p>本主題的核心是理解「程式不是行程」。Program 是放在磁碟中的被動檔案；Process 是正在執行中的主動個體。作業系統必須追蹤每個行程的記憶體內容、執行狀態與 PCB，才能進行切換與管理。</p><div class="nav"><a class="btn" href="../index.html">回首頁</a><a class="btn" href="topic10.html">下一主題</a></div></div></section>
+<main class="wrap">
+<details class="slide-explain-wrapper" open=""><summary>一、投影片逐張下拉式詳細講解</summary><div class="detail-body"><p class="slide-intro-note">每張投影片都已把「圖片」與「自己的文字講解」放在同一個下拉式區塊中，方便一邊看圖、一邊理解重點。</p><details class="single-slide-detail" open=""><summary>投影片 27｜Program, Job, and Process</summary><div class="slide-explain-grid"><div class="slide-explain-image"><img alt="投影片27 Program, Job, and Process" class="slide-img" src="assets/slide27.jpg"/><div class="slide-caption">投影片 27｜Program, Job, and Process</div></div><div class="slide-explain-text"><h3>（一）這張投影片在說什麼？</h3><p>這張比較 program、job 與 process。Program 是磁碟上的程式碼；job 是提交給系統等待處理的工作；process 則是已被載入並正在執行或等待執行的程式實體。</p><h3>（二）核心觀念</h3><ul><li>Program：靜態檔案。</li><li>Job：等待系統處理的工作。</li><li>Process：動態執行中的程式。</li></ul><h3>（三）學習與考試重點</h3><p>這三個名詞常混淆，考試要能分辨狀態差異。</p><h3>（四）一句話記憶</h3><p class="memory-line">一句話記憶：這三個名詞常混淆，考試要能分辨狀態差異。</p></div></div></details><details class="single-slide-detail"><summary>投影片 28｜Process Concept</summary><div class="slide-explain-grid"><div class="slide-explain-image"><img alt="投影片28 Process Concept" class="slide-img" src="assets/slide28.jpg"/><div class="slide-caption">投影片 28｜Process Concept</div></div><div class="slide-explain-text"><h3>（一）這張投影片在說什麼？</h3><p>這張定義 process concept。行程是執行中的程式，執行必須以某種順序推進。OS 會透過行程管理機制，追蹤每個 process 的狀態與所需資源。</p><h3>（二）核心觀念</h3><ul><li>Process 包含程式碼、資料、堆疊、暫存器狀態等。</li><li>Process 是 CPU 排程的主要對象。</li></ul><h3>（三）學習與考試重點</h3><p>Process 不只是程式碼，還包含執行狀態。</p><h3>（四）一句話記憶</h3><p class="memory-line">一句話記憶：Process 不只是程式碼，還包含執行狀態。</p></div></div></details><details class="single-slide-detail"><summary>投影片 29｜Process in Memory</summary><div class="slide-explain-grid"><div class="slide-explain-image"><img alt="投影片29 Process in Memory" class="slide-img" src="assets/slide29.jpg"/><div class="slide-caption">投影片 29｜Process in Memory</div></div><div class="slide-explain-text"><h3>（一）這張投影片在說什麼？</h3><p>這張展示 process 在記憶體中的結構，通常包含 text、data、heap、stack 等區域。Text 放程式碼，data 放全域資料，heap 用於動態配置，stack 用於函式呼叫與區域變數。</p><h3>（二）核心觀念</h3><ul><li>Text：program code。</li><li>Data：global/static data。</li><li>Heap：dynamic allocation。</li><li>Stack：function calls/local variables。</li></ul><h3>（三）學習與考試重點</h3><p>要能畫出或說明 process memory layout。</p><h3>（四）一句話記憶</h3><p class="memory-line">一句話記憶：要能畫出或說明 process memory layout。</p></div></div></details><details class="single-slide-detail"><summary>投影片 30｜Process State</summary><div class="slide-explain-grid"><div class="slide-explain-image"><img alt="投影片30 Process State" class="slide-img" src="assets/slide30.jpg"/><div class="slide-caption">投影片 30｜Process State</div></div><div class="slide-explain-text"><h3>（一）這張投影片在說什麼？</h3><p>這張介紹行程狀態。Process 執行過程中會在 new、ready、running、waiting、terminated 等狀態之間轉換。OS 必須根據事件與排程決定下一步。</p><h3>（二）核心觀念</h3><ul><li>Ready：準備好等 CPU。</li><li>Running：正在使用 CPU。</li><li>Waiting：等待 I/O 或事件。</li></ul><h3>（三）學習與考試重點</h3><p>最重要是區分 ready 與 waiting：ready 等 CPU，waiting 等事件。</p><h3>（四）一句話記憶</h3><p class="memory-line">一句話記憶：最重要是區分 ready 與 waiting：ready 等 CPU，waiting 等事件。</p></div></div></details><details class="single-slide-detail"><summary>投影片 31｜Diagram of Process State</summary><div class="slide-explain-grid"><div class="slide-explain-image"><img alt="投影片31 Diagram of Process State" class="slide-img" src="assets/slide31.jpg"/><div class="slide-caption">投影片 31｜Diagram of Process State</div></div><div class="slide-explain-text"><h3>（一）這張投影片在說什麼？</h3><p>這張用圖表示行程狀態轉換。新行程被 admitted 後進入 ready；被 scheduler dispatch 後進入 running；遇到 I/O 或事件會 waiting；完成後 exit。中斷時 running 也可能回到 ready。</p><h3>（二）核心觀念</h3><ul><li>Dispatch：ready → running。</li><li>Interrupt：running → ready。</li><li>I/O wait：running → waiting。</li><li>I/O completion：waiting → ready。</li></ul><h3>（三）學習與考試重點</h3><p>要能依箭頭說明每個轉換原因。</p><h3>（四）一句話記憶</h3><p class="memory-line">一句話記憶：要能依箭頭說明每個轉換原因。</p></div></div></details><details class="single-slide-detail"><summary>投影片 32｜Process Control Block</summary><div class="slide-explain-grid"><div class="slide-explain-image"><img alt="投影片32 Process Control Block" class="slide-img" src="assets/slide32.jpg"/><div class="slide-caption">投影片 32｜Process Control Block</div></div><div class="slide-explain-text"><h3>（一）這張投影片在說什麼？</h3><p>這張介紹 PCB。Process Control Block 是 OS 用來記錄行程資訊的資料結構，包含 process state、program counter、CPU registers、scheduling information、memory information 等。</p><h3>（二）核心觀念</h3><ul><li>PCB 是 OS 管理 process 的核心資料。</li><li>Context switch 時會保存與載入 PCB 資訊。</li></ul><h3>（三）學習與考試重點</h3><p>PCB 的用途是保存行程狀態，讓行程之後能繼續執行。</p><h3>（四）一句話記憶</h3><p class="memory-line">一句話記憶：PCB 的用途是保存行程狀態，讓行程之後能繼續執行。</p></div></div></details></div></details>
+<details open=""><summary>二、Program、Job、Process 的差異</summary><div class="detail-body"><p><span class="pill">核心觀念</span> Program 是寫好的程式檔；Job 是交給系統處理的一項工作；Process 則是程式被載入記憶體後正在執行的實體。</p><div class="queue-demo"><div class="queue-box"><h4>Program</h4><div class="queue-item">Disk 上的可執行檔</div><p>被動存在，尚未執行。</p></div><div class="map-arrow queue-arrow">→</div><div class="queue-box"><h4>Job</h4><div class="queue-item io">送入系統的工作</div><p>等待 OS 安排資源。</p></div><div class="map-arrow queue-arrow">→</div><div class="queue-box"><h4>Process</h4><div class="queue-item cpu">正在執行的程式</div><p>有狀態、記憶體與 PCB。</p></div></div><p class="note">考試常問：Program 是 passive entity；Process 是 active entity。</p></div></details>
+<details><summary>三、Process in Memory：行程在記憶體中的樣子</summary><div class="detail-body"><p>一個行程在記憶體中通常包含 text、data、heap、stack 等區域。Text 是程式碼，data 是全域變數，heap 是執行期間動態配置，stack 則保存函式呼叫與區域變數。</p><div class="process-memory"><div class="memory-stack"><div class="demo-title">Process Memory Layout</div><div class="mem-block mem-stack">Stack<br/><small>函式呼叫、區域變數、return address</small></div><div class="mem-block mem-heap">Heap<br/><small>動態配置的記憶體</small></div><div class="mem-block mem-data">Data<br/><small>全域變數、靜態資料</small></div><div class="mem-block mem-text">Text<br/><small>程式碼 instruction code</small></div></div><div class="mini-card"><h4>為什麼要分區？</h4><p>因為不同資料的生命週期與用途不同。程式碼通常固定；heap 會動態成長；stack 會隨著函式呼叫進出而改變。</p><p class="note">簡單記法：Text 放程式碼，Data 放全域資料，Heap 放 new/malloc，Stack 放函式呼叫。</p></div></div></div></details>
+<details><summary>四、Process State：行程狀態轉換</summary><div class="detail-body"><p>行程執行時會在不同狀態之間轉換。最重要的是 Ready、Running、Waiting 三個狀態：Ready 等 CPU，Running 正在用 CPU，Waiting 等 I/O 或事件。</p><div class="state-machine"><div class="state-node">New</div><div class="state-arrow">→ admitted →</div><div class="state-node">Ready</div><div class="state-arrow">→ scheduler dispatch →</div><div class="state-node">Running</div><div class="state-arrow">→ exit →</div><div class="state-node">Terminated</div><div class="state-arrow">↘ I/O wait</div><div class="state-node">Waiting</div><div class="state-arrow">→ I/O complete → Ready</div></div><div class="flowbox" id="flow-process-state"><h3>行程狀態動畫</h3><div class="flow-steps"><div class="flow-step">New</div><div class="flow-step">Ready</div><div class="flow-step">Running</div><div class="flow-step">Waiting</div><div class="flow-step">Terminated</div></div><div class="flow-caption"></div><div class="flow-controls"><button class="btn mini prev">上一步</button><button class="btn mini next">下一步</button><button class="btn mini reset">重新播放</button></div></div></div></details>
+<details><summary>五、PCB：Process Control Block</summary><div class="detail-body"><p>PCB 是作業系統用來記錄行程資訊的資料結構。只要 OS 想暫停、恢復或排程一個行程，就需要 PCB 保存目前狀態。</p><div class="pcb-demo"><div class="pcb-card"><div class="pcb-row"><span>Process Control Block</span><span>PCB</span></div><div class="pcb-row"><span class="pcb-label">Process State</span><span>ready / running / waiting</span></div><div class="pcb-row"><span class="pcb-label">Program Counter</span><span>下一個要執行的指令位置</span></div><div class="pcb-row"><span class="pcb-label">CPU Registers</span><span>暫存器內容</span></div><div class="pcb-row"><span class="pcb-label">CPU Scheduling Info</span><span>優先權、佇列資訊</span></div><div class="pcb-row"><span class="pcb-label">Memory Info</span><span>記憶體界限、page table</span></div><div class="pcb-row"><span class="pcb-label">I/O Status Info</span><span>開啟檔案、I/O 裝置</span></div></div><div class="flowbox" id="flow-pcb"><h3>PCB 的作用動畫</h3><div class="flow-steps"><div class="flow-step">記錄行程狀態</div><div class="flow-step">保存 CPU 現場</div><div class="flow-step">支援 OS 管理</div></div><div class="flow-caption"></div><div class="flow-controls"><button class="btn mini prev">上一步</button><button class="btn mini next">下一步</button><button class="btn mini reset">重新播放</button></div></div></div></div></details>
+<details class="program-flow-card" open=""><summary>程式流程圖與流程講解</summary>
+<div class="detail-body">
+<h2>程式流程圖：行程概念與行程狀態</h2>
+<img alt="主題 9 程式流程圖" class="program-flow-img" src="assets/program_flow_topic9.svg"/>
+<h3>流程講解</h3>
+<div class="flow-explain">這張流程圖對應本頁「行程概念與行程狀態」的 C 程式執行邏輯。
+1、New 建立行程。
+2、Ready 等待 CPU。
+3、Running 執行中。
+4、Waiting 等待 I/O。
+5、Terminated 結束。
+學生可以先看流程圖理解整體順序，再對照下方程式中的中文註解，確認每一段程式碼負責哪一個步驟。</div>
+</div>
+</details>
+<details class="program-flow-card" open=""><summary>可編輯 C 程式範例與線上編輯器</summary>
+<div class="detail-body">
+<h2>可編輯 C 程式：行程概念與行程狀態</h2>
+<p>這段程式依照上方流程圖設計，包含中文註解，適合貼到線上編輯器直接執行與修改。</p>
+<div class="code-card">
+<div class="code-head">
+<span class="code-title">lesson8_topic9_demo.c</span>
+<div class="code-actions">
+<button onclick="copyCode('code_topic_9')">複製程式</button>
+<button class="download-btn" onclick="downloadCode('code_topic_9','lesson8_topic9_demo.c')">下載 .c</button>
+<a href="https://www.onlinegdb.com/online_c_compiler" target="_blank">OnlineGDB</a>
+<a href="https://www.programiz.com/c-programming/online-compiler/" target="_blank">Programiz</a>
+<a href="https://onecompiler.com/c" target="_blank">OneCompiler</a>
+</div>
+</div>
+<textarea id="code_topic_9" spellcheck="false">#include &lt;stdio.h&gt;
+
+/*
+  主題 9：行程概念與行程狀態
+  功能：模擬 process state transition。
+*/
+
+int main(void) {
+    const char *state = "New";
+
+    printf("State: %s\n", state);
+    state = "Ready";
+    printf("建立完成，進入 %s\n", state);
+    state = "Running";
+    printf("取得 CPU，進入 %s\n", state);
+    state = "Waiting";
+    printf("等待 I/O，進入 %s\n", state);
+    state = "Ready";
+    printf("I/O 完成，回到 %s\n", state);
+    state = "Terminated";
+    printf("執行完成，進入 %s\n", state);
+
+    return 0;
+}</textarea>
+</div>
+<div class="editor-links">
+      線上編輯器：
+      <a href="https://www.onlinegdb.com/online_c_compiler" target="_blank">OnlineGDB C Compiler</a>
+<a href="https://www.programiz.com/c-programming/online-compiler/" target="_blank">Programiz C Compiler</a>
+<a href="https://onecompiler.com/c" target="_blank">OneCompiler C</a>
+</div>
+</div>
+</details>
+
+<details class="teaching-content-card" open=""><summary>程式題目完整教學內容</summary>
+<div class="detail-body">
+<h2>程式題目完整教學：行程概念與行程狀態</h2>
+<h3>一、程式題目講解</h3>
+<p>用字串狀態變化模擬 Process State Transition。</p>
+<p>核心觀念是 New、Ready、Running、Waiting、Terminated 的轉換順序，以及 I/O 等待後會回到 Ready。</p>
+<h3>二、完整程式碼</h3>
+<p>以下程式碼可直接複製到 C 語言線上編譯器執行。程式中已加入中文註解，說明主要變數、判斷流程與輸出目的。</p>
+<pre class="teaching-code-block"><code>#include &lt;stdio.h&gt;
+
+/*
+  主題 9：行程概念與行程狀態
+  功能：模擬 process state transition。
+*/
+
+int main(void) {
+    const char *state = &quot;New&quot;;
+
+    printf(&quot;State: %s\n&quot;, state);
+    state = &quot;Ready&quot;;
+    printf(&quot;建立完成，進入 %s\n&quot;, state);
+    state = &quot;Running&quot;;
+    printf(&quot;取得 CPU，進入 %s\n&quot;, state);
+    state = &quot;Waiting&quot;;
+    printf(&quot;等待 I/O，進入 %s\n&quot;, state);
+    state = &quot;Ready&quot;;
+    printf(&quot;I/O 完成，回到 %s\n&quot;, state);
+    state = &quot;Terminated&quot;;
+    printf(&quot;執行完成，進入 %s\n&quot;, state);
+
+    return 0;
+}</code></pre>
+<h3>三、程式執行結果</h3>
+<pre class="teaching-output-block"><code>State: New
+建立完成，進入 Ready
+取得 CPU，進入 Running
+等待 I/O，進入 Waiting
+I/O 完成，回到 Ready
+執行完成，進入 Terminated</code></pre>
+<p class="teaching-mini-note">結果說明：核心觀念是 New、Ready、Running、Waiting、Terminated 的轉換順序，以及 I/O 等待後會回到 Ready。 程式依照設定的資料與控制流程逐步輸出，因此可以從結果看到每個步驟的執行順序與狀態變化。</p>
+<h3>四、程式流程圖與流程圖說明</h3>
+<p>本頁上方已提供對應的程式流程圖，圖中以「開始、資料設定、條件判斷、重複處理、輸出結果、結束」呈現程式執行順序。</p>
+<p>程式從 New 開始，依序改變 state 指標並輸出每次狀態轉換，最後進入 Terminated。</p>
+<h3>五、重要函數與語法說明</h3>
+<p>const char *state 用來指向狀態文字；多次指定 state 模擬狀態轉換；printf() 顯示每個狀態。</p>
+<h3>六、整體說明</h3>
+<p>本題的學習重點是把作業系統概念轉成可觀察的 C 程式流程。學生應先理解題目概念，再對照程式碼、流程圖與執行結果，掌握變數設定、條件判斷、迴圈處理與輸出結果之間的關係。</p>
+</div>
+</details>
+
+</main><div class="footer">Lesson 8 Topic 9｜Process Concept and Process State</div><script src="assets/script.js"></script></body></html>

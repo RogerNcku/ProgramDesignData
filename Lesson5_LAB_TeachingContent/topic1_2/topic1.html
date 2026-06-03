@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="zh-Hant"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/><link href="assets/style.css" rel="stylesheet"/><script src="assets/script.js"></script><title>Lesson 5 主題 1：Linked Lists 鏈結串列導論</title></head><body>
+<header class="hero"><div class="inner"><span class="badge">Lesson 5｜主題 1｜投影片 1</span><h1>主題 1：Linked Lists 鏈結串列導論</h1><p>從 Array 的限制開始，建立 Linked List、Node、Pointer 與動態資料結構的基本觀念。</p><div class="toolbar"><a class="btn secondary" href="../index.html">回 L5 首頁</a><a class="btn secondary" href="topic2.html">下一個：主題 2</a></div></div></header>
+<div class="wrap"><div class="layout"><aside class="sidebar"><div class="side-title">Lesson 5 主題導覽</div><nav class="nav"><a href="../index.html">L5 首頁</a><a class="active" href="topic1.html">1. Linked Lists 鏈結串列導論</a>
+<a href="topic2.html">2. Array 限制與 List 基本概念</a></nav></aside><main>
+<section class="card"><span class="badge">投影片 1</span><h2>一、主題核心概念</h2><p>Linked List 是用節點 node 與指標 pointer 把資料串起來的資料結構。和 Array 不同，Linked List 的資料不需要放在連續記憶體位置，因此更適合資料量會變動、插入與刪除頻繁的情境。</p></section>
+<section class="card"><h2>二、投影片逐張下拉式詳細講解</h2><p>每一張投影片都已把圖片與自己的文字講解合併在同一個下拉式區塊中。點開後可以直接對照圖片閱讀說明。</p><div class="slide-detail-list"><details class="slide-detail"><summary>投影片 1｜Lesson 5：Linked Lists 鏈結串列導論</summary><div class="slide-detail-body"><div class="slide-detail-grid"><div><img alt="投影片 1：Lesson 5：Linked Lists 鏈結串列導論" class="slide-detail-img" src="assets/slide1.jpg"/><div class="figure-caption">投影片 1</div></div><div class="slide-explain"><h3>Lesson 5：Linked Lists 鏈結串列導論</h3><h4>詳細說明與講解</h4><p>1、這張投影片是本單元的封面，表示 Lesson 5 的主題是 Linked Lists，也就是鏈結串列。它提醒我們這一章會從 Array 的限制開始，逐步進入單向鏈結串列、環狀鏈結串列、雙向鏈結串列，以及用 C 程式實作節點操作。</p><p>2、Linked List 的核心觀念是：資料不一定要連續放在記憶體中，而是每一筆資料用一個節點保存，再利用 pointer 把節點一個一個串起來。這和 Array 最大的差異，就是 Array 依靠連續位置與 index，而 Linked List 依靠節點之間的連結。</p><p>3、學這章時不要只背名詞，要特別注意圖上的箭頭方向。每一個箭頭都代表一個 pointer 欄位，例如 next、link、prev 或 right link。只要箭頭接錯，串列就會斷掉，或造成節點遺失。</p><p>4、考試或作業常見重點是：能不能畫出插入、刪除前後的節點變化；能不能分辨 head、current、previous 的角色；能不能寫出基本的 insert、delete、print 程式。</p><div class="slide-memory">一句話記憶：Linked List 是用 pointer 把一個個節點串起來的動態資料結構。</div></div></div></div></details></div></section>
+<section class="card"><h2>三、動畫流程圖：Linked Lists 鏈結串列導論</h2><div class="flow-area" id="flow1"><div class="flow"><div class="node">觀察 Array 限制</div><div class="node">引入節點 Node</div><div class="node">用 Pointer 連接</div><div class="node">形成 Linked List</div><div class="node">比較插入刪除</div><div class="node">進入後續主題</div></div><div class="progress"><div class="bar"></div></div><div class="stepbox"></div><div class="btns" style="margin-top:12px"><button class="btn secondary" onclick="prevFlow('flow1')">上一步</button><button class="btn" onclick="nextFlow('flow1')">下一步</button><button class="btn orange" onclick="playFlow('flow1')">自動播放</button><button class="btn secondary" onclick="resetFlow('flow1')">重新開始</button></div></div><script>initFlow('flow1',['先理解 Array 雖然查詢快，但大小固定且中間插入刪除成本高。','每筆資料改用一個節點保存，節點裡面有 data 與 link。','每個節點用 pointer 記住下一個節點的位置。','head 指向第一個節點，節點一路串到 NULL。','插入或刪除時主要修改 pointer，不一定要搬動整批資料。','接著可以學 singly、circularly、doubly linked list 與多項式應用。']);</script></section>
+<section class="card"><h2>四、動畫表格：步驟與重點整理</h2><p>請按「下一步」或「自動播放」觀察本主題的操作流程與注意事項。</p><div class="flow-area" id="table1"><div class="anim-table-wrap"><table class="anim-table"><thead><tr><th>概念</th><th>特徵</th><th>用途</th><th>注意事項</th></tr></thead><tbody><tr><td>Array</td><td>連續記憶體</td><td>可用 index 直接存取</td><td>中間插入刪除常要搬移元素</td></tr><tr><td>Linked List</td><td>不必連續</td><td>透過 pointer 串接</td><td>插入刪除重點是改連線</td></tr><tr><td>Node</td><td>資料單位</td><td>包含 data 與 link</td><td>是 Linked List 的基本構件</td></tr><tr><td>Head</td><td>入口指標</td><td>指向第一個節點</td><td>沒有 head 就找不到整條串列</td></tr><tr><td>NULL</td><td>結尾記號</td><td>表示後面沒有節點</td><td>走訪串列時的重要停止條件</td></tr></tbody></table></div><div class="progress"><div class="bar"></div></div><div class="table-note"></div><div class="btns" style="margin-top:12px"><button class="btn secondary" onclick="prevTable('table1')">上一步</button><button class="btn" onclick="nextTable('table1')">下一步</button><button class="btn orange" onclick="playTable('table1')">自動播放</button><button class="btn secondary" onclick="resetTable('table1')">重新開始</button></div></div><script>initTable('table1',['Array → 連續記憶體 → 可用 index 直接存取 → 中間插入刪除常要搬移元素','Linked List → 不必連續 → 透過 pointer 串接 → 插入刪除重點是改連線','Node → 資料單位 → 包含 data 與 link → 是 Linked List 的基本構件','Head → 入口指標 → 指向第一個節點 → 沒有 head 就找不到整條串列','NULL → 結尾記號 → 表示後面沒有節點 → 走訪串列時的重要停止條件']);</script></section>
+<details open=""><summary>五、完整中文講解</summary><div class="content"><h3>（一）本主題要學會什麼？</h3><p>Linked List 是用節點 node 與指標 pointer 把資料串起來的資料結構。和 Array 不同，Linked List 的資料不需要放在連續記憶體位置，因此更適合資料量會變動、插入與刪除頻繁的情境。</p><h3>（二）實作時最重要的觀念</h3><div class="grid2"><div class="mini"><b>資料結構</b><br/>先看清楚資料是用 Array、Node、Singly List、Circular List 或 Doubly List 表示。</div><div class="mini"><b>指標方向</b><br/>Linked List 題目幾乎都在考指標怎麼接、怎麼斷、怎麼重新連起來。</div><div class="mini"><b>特殊情況</b><br/>空串列、頭節點、尾節點、找不到資料，都是程式容易錯的地方。</div><div class="mini"><b>測試方式</b><br/>每做完 insert/delete，都用 print 檢查目前串列是否符合預期。</div></div><div class="example">學習 Linked List 時，請先記住「資料」和「連結」是分開的。Array 像是一排固定座位，Linked List 像是每個人手上拿著下一個人的地址。</div></div></details>
+<details open=""><summary>六、可編輯 C 程式範例：含中文註解與線上編輯器</summary><div class="content"><div class="codewrap"><div class="codebar"><span>linked_list_intro.c</span><div class="btns"><button class="btn green" onclick="copyCode('code1')">複製程式</button><button class="btn orange" onclick="downloadCode('code1','linked_list_intro.c')">下載 .c</button><a class="btn secondary" href="https://www.onlinegdb.com/online_c_compiler" target="_blank">OnlineGDB</a><a class="btn secondary" href="https://www.programiz.com/c-programming/online-compiler/" target="_blank">Programiz</a><a class="btn secondary" href="https://onecompiler.com/c" target="_blank">OneCompiler</a></div></div><textarea class="codearea" id="code1" spellcheck="false">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+/*
+    Lesson 5：Linked List 基本節點示範
+    功能：建立三個節點，並用 next pointer 串成一條 linked list。
+*/
+
+typedef struct Node {
+    int data;              // data：節點中保存的資料
+    struct Node *next;     // next：指向下一個節點的指標
+} Node;
+
+Node* createNode(int value) {
+    Node *newNode = (Node*)malloc(sizeof(Node));
+    if (newNode == NULL) {
+        printf("記憶體配置失敗\n");
+        exit(1);
+    }
+    newNode-&gt;data = value; // 設定資料
+    newNode-&gt;next = NULL;  // 一開始還沒有接到下一個節點
+    return newNode;
+}
+
+void printList(Node *head) {
+    Node *current = head;  // 從 head 開始走訪
+    while (current != NULL) {
+        printf("%d -&gt; ", current-&gt;data);
+        current = current-&gt;next;
+    }
+    printf("NULL\n");
+}
+
+int main(void) {
+    Node *head = createNode(10);
+    head-&gt;next = createNode(20);
+    head-&gt;next-&gt;next = createNode(30);
+
+    printf("Linked List 內容：");
+    printList(head);
+    return 0;
+}
+</textarea></div></div></details>
+
+<section class="card program-teaching-card">
+<h2>新增：程式題目教學內容（依指定格式）</h2>
+<div class="content">
+<h3>一、程式題目講解</h3>
+<p>本題透過建立三個節點，讓學生理解 Linked List 不是用連續記憶體保存資料，而是靠每個節點的 next 指標連接下一個節點。核心概念包含 struct 節點、malloc 動態配置、head 入口指標，以及從 head 開始走訪到 NULL 的方式。</p>
+<h3>二、完整程式碼</h3>
+<p>以下為本頁程式題目的完整可執行 C 程式碼，已在重要程式區塊加入中文註解，方便初學者理解程式功能與流程。</p>
+<pre class="codearea" style="height:auto;min-height:0;white-space:pre-wrap;overflow:auto;">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+/*
+    Lesson 5：Linked List 基本節點示範
+    功能：建立三個節點，並用 next pointer 串成一條 linked list。
+*/
+
+typedef struct Node {
+    int data;              // data：節點中保存的資料
+    struct Node *next;     // next：指向下一個節點的指標
+} Node;
+
+Node* createNode(int value) {
+    Node *newNode = (Node*)malloc(sizeof(Node));
+    if (newNode == NULL) {
+        printf(&quot;記憶體配置失敗\n&quot;);
+        exit(1);
+    }
+    newNode-&gt;data = value; // 設定資料
+    newNode-&gt;next = NULL;  // 一開始還沒有接到下一個節點
+    return newNode;
+}
+
+void printList(Node *head) {
+    Node *current = head;  // 從 head 開始走訪
+    while (current != NULL) {
+        printf(&quot;%d -&gt; &quot;, current-&gt;data);
+        current = current-&gt;next;
+    }
+    printf(&quot;NULL\n&quot;);
+}
+
+int main(void) {
+    Node *head = createNode(10);
+    head-&gt;next = createNode(20);
+    head-&gt;next-&gt;next = createNode(30);
+
+    printf(&quot;Linked List 內容：&quot;);
+    printList(head);
+    return 0;
+}
+</pre>
+<h3>三、程式執行結果</h3>
+<p>程式執行後會得到以下輸出：</p>
+<pre class="codearea" style="height:auto;min-height:0;white-space:pre-wrap;overflow:auto;">Linked List 內容：10 -&gt; 20 -&gt; 30 -&gt; NULL</pre>
+<p>程式先建立 10、20、30 三個節點，並用 head-&gt;next 與 head-&gt;next-&gt;next 串接起來。printList 從 head 開始依序輸出節點資料，走到最後一個節點後遇到 NULL，因此結果會顯示 10 -&gt; 20 -&gt; 30 -&gt; NULL。</p>
+<h3>四、程式流程圖與流程圖說明</h3>
+<p>本題流程圖如下，呈現程式的主要執行順序、判斷條件與資料處理流程。</p>
+<div class="program-flow-figure"><img alt="主題 1 程式流程圖" class="program-flow-img" src="assets/program_flow_topic1.svg"/><div class="figure-caption">主題 1：Linked Lists 鏈結串列導論：程式流程圖</div></div>
+<p>流程先宣告 head，再呼叫 createNode 建立第一個節點，接著用 next 指標連接第二與第三個節點。輸出時 current 從 head 出發，每印出一個 data 就移動到下一個節點，直到 current 等於 NULL 才停止。</p>
+<h3>五、重要函數與語法說明</h3>
+<ol><li>typedef struct Node：定義節點格式，包含 data 與 next。</li><li>malloc(sizeof(Node))：在執行期間配置一個節點大小的記憶體。</li><li>createNode(value)：建立新節點並初始化 data 與 next。</li><li>printList(head)：從 head 開始走訪串列並輸出內容。</li><li>while (current != NULL)：控制走訪流程，確保走到串列尾端才停止。</li></ol>
+<h3>六、整體說明</h3>
+<p>本題重點是理解 Linked List 的基本組成：head 是入口，Node 保存資料，next 負責連接下一個節點。只要掌握「節點建立、指標連接、走訪輸出」三個步驟，就能看懂後續插入、刪除與進階串列操作。</p>
+</div>
+</section>
+<section class="card program-flow-card">
+<h2>七、程式流程圖：Linked List 基本節點建立</h2>
+<p>下圖是本主題對應的程式執行流程，適合搭配下方 C 程式碼一起看。</p>
+<div class="program-flow-figure"><img alt="主題 1 程式流程圖" class="program-flow-img" src="assets/program_flow_topic1.svg"/><div class="figure-caption">主題 1 程式流程圖：Linked List 基本節點建立</div></div>
+<div class="flow-explain"><h3>流程講解</h3><ol><li>程式先宣告 head 作為整條 linked list 的入口。</li><li>每次建立節點時使用 malloc 配置記憶體，並把 data 放入節點。</li><li>新節點的 next 先設定為 NULL，避免指標指到不確定的位置。</li><li>透過 head-&gt;next、next-&gt;next 把節點串起來。</li><li>最後從 head 開始用 while 走訪，直到 current == NULL 為止。</li></ol><p>這張流程圖把本頁程式的執行順序整理成一條清楚路徑。閱讀時先看資料如何被建立，再看條件判斷與指標如何改變，最後用輸出結果確認程式邏輯是否正確。</p></div>
+</section>
+</main></div></div><footer class="footer">Lesson 5｜主題 1：Linked Lists 鏈結串列導論</footer></body></html>

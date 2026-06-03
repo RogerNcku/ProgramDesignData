@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+
+<html lang="zh-Hant"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/><title>主題六 Binary Search Trees</title><link href="assets/style.css" rel="stylesheet"/><script src="assets/script.js"></script>
+<style>
+.slide-dropdown-section{margin-top:22px}.slide-dropdown-section>.note{margin-bottom:14px}.slide-explain-item{border:1px solid rgba(100,116,139,.28);border-radius:16px;margin:14px 0;background:rgba(255,255,255,.86);overflow:hidden}.slide-explain-item>summary{cursor:pointer;font-weight:700;padding:16px 18px;line-height:1.5;background:linear-gradient(90deg,rgba(241,245,249,.95),rgba(255,255,255,.88));list-style:none}.slide-explain-item>summary::-webkit-details-marker{display:none}.slide-explain-item>summary:before{content:'▸';display:inline-block;margin-right:8px;transition:transform .2s}.slide-explain-item[open]>summary:before{transform:rotate(90deg)}.slide-explain-body{display:grid;grid-template-columns:minmax(280px,46%) 1fr;gap:22px;padding:18px}.slide-explain-media{align-self:start}.slide-explain-img{width:100%;height:auto;border-radius:14px;box-shadow:0 10px 28px rgba(15,23,42,.18);background:white}.slide-explain-text h3{font-size:1.04rem;margin:0.9rem 0 .35rem}.slide-explain-text h3:first-child{margin-top:0}.slide-explain-text p,.slide-explain-text li{line-height:1.85}.slide-explain-text ul{margin-top:.2rem;padding-left:1.4rem}.memory-box{margin-top:14px;padding:12px 14px;border-left:5px solid #f59e0b;background:#fff7ed;border-radius:10px;line-height:1.75;font-weight:600}@media(max-width:820px){.slide-explain-body{grid-template-columns:1fr}.slide-explain-item>summary{padding:14px}.slide-explain-body{padding:14px}}
+</style>
+</head><body><section class="hero"><div class="hero-inner"><span class="badge">主題六｜投影片 22</span><h1>Binary Search Trees 二元搜尋樹</h1><p>Binary Search Tree，簡稱 BST，是一種讓搜尋更有效率的二元樹。規則很簡單：左邊都比較小，右邊都比較大。</p><div class="nav"><a class="btn" href="../index.html">回 L6 首頁</a><a class="btn" href="topic5.html">上一章：Binary Tree Traversals</a><a class="btn" href="binary_search_tree.c">下載本章 C 程式</a></div></div></section><main class="wrap"><section class="card slide-dropdown-section"><h2>投影片逐張下拉式詳細講解</h2><p class="note">每一張投影片都把圖片與自己的中文講解放在同一個下拉式區塊中，打開後可以直接對照圖與文字。</p><details class="slide-explain-item"><summary>投影片 22：Binary Search Trees 搜尋規則</summary><div class="slide-explain-body"><div class="slide-explain-media"><img alt="投影片 22：Binary Search Trees 的搜尋規則" class="slide-explain-img" src="assets/slide22.jpg"/><div class="figure-caption">投影片 22：Binary Search Trees 的搜尋規則</div></div><div class="slide-explain-text"><h3>（一）這張投影片在說什麼？</h3><p>這張投影片介紹 BST。對任何節點而言，左子樹的 key 比自己小，右子樹的 key 比自己大；左右子樹本身也必須符合 BST。</p><h3>（二）核心觀念</h3><ul><li>左子樹 key &lt; root key。</li><li>右子樹 key &gt; root key。</li><li>每一層都符合相同規則。</li><li>搜尋時可依大小決定往左或往右。</li></ul><h3>（三）學習與考試重點</h3><p>BST 的效率來自每次比較都能排除一邊子樹，但若樹太歪，效率會退化。</p><div class="memory-box">一句話記憶：BST：小的往左，大的往右。</div></div></div></details></section><details open=""><summary>一、BST 的基本定義</summary><div class="detail-body"><p><span class="pill">核心概念</span></p><p>BST 是一棵 binary tree，但它多了一個排序規則：對於任一節點 x，左子樹所有節點的值都小於 x，右子樹所有節點的值都大於 x。這個規則讓我們搜尋時不必看完整棵樹。</p><div class="concept-map"><div class="concept">目前節點 x<span>拿 target 來比較</span></div><div class="arrow">→</div><div class="concept">target &lt; x<span>往左子樹</span></div><div class="arrow">→</div><div class="concept">target &gt; x<span>往右子樹</span></div></div><p class="note">投影片 22 的重點：左子樹所有值小於節點值；右子樹所有值大於節點值。</p></div></details><details open=""><summary>二、BST 搜尋流程</summary><div class="detail-body"><div class="flowbox" data-flow="bstflow"><div class="flow-steps"><div class="flow-step" data-caption="從 root 開始，把 target 和目前節點比較。">從 root 開始</div><div class="flow-step" data-caption="如果 target 等於目前節點，搜尋成功。">相等 → 找到</div><div class="flow-step" data-caption="如果 target 比目前節點小，就往 left child 走。">較小 → 往左</div><div class="flow-step" data-caption="如果 target 比目前節點大，就往 right child 走。">較大 → 往右</div><div class="flow-step" data-caption="如果走到 NULL，代表樹中沒有這個值。">NULL → 找不到</div></div><div class="flow-caption"></div><div class="flow-controls"><button class="btn mini" onclick="prevFlow('bstflow')">上一步</button><button class="btn mini primary" onclick="nextFlow('bstflow')">下一步</button><button class="btn mini" onclick="autoFlow('bstflow')">自動播放</button><button class="btn mini" onclick="resetFlow('bstflow')">重新開始</button></div></div></div></details><details open=""><summary>三、互動動畫：搜尋 1、8、15、16</summary><div class="detail-body"><div class="bst-stage"><div class="tree-level"><div class="node" id="bst7">7</div></div><div class="edge-row">╱ ╲</div><div class="tree-level"><div class="node small" id="bst3">3</div><div class="node small" id="bst14">14</div></div><div class="edge-row">╱╲ ╱╲</div><div class="tree-level"><div class="node small" id="bst2">2</div><div class="node small" id="bst4">4</div><div class="node small" id="bst10">10</div><div class="node small" id="bst16">16</div></div><div class="edge-row">╱ ╱</div><div class="tree-level"><div class="node small leaf" id="bst1">1</div><div class="node small leaf" id="bst8">8</div></div><div class="traversal-controls"><button class="btn mini primary" onclick="searchBST(1)">搜尋 1</button><button class="btn mini primary" onclick="searchBST(8)">搜尋 8</button><button class="btn mini primary" onclick="searchBST(15)">搜尋 15</button><button class="btn mini primary" onclick="searchBST(16)">搜尋 16</button><button class="btn mini" onclick="resetBST()">清除</button></div><div class="search-log" id="bstLog">選一個數字開始搜尋。</div></div><p class="good">搜尋 15 時會走 7 → 14 → 10 → 16，因為 15 小於 16，所以接下來應該往 16 的左邊走；若左邊是空，就代表找不到。</p></div></details><details open=""><summary>四、BST 與 Traversal 的關係</summary><div class="detail-body"><p>BST 最重要的性質之一是：對 BST 做 inorder traversal，會得到由小到大的結果。原因是 inorder 的順序是 Left → Visit → Right，而 BST 的左邊較小、節點在中間、右邊較大，所以自然會變成排序。</p><div class="tag-row"><span class="tag">BST 規則：左小右大</span><span class="tag">Inorder：L V R</span><span class="tag">結果：由小到大</span></div></div></details><details open=""><summary>五、C 程式碼：建立 BST、搜尋與 Inorder 排序</summary><div class="detail-body"><div class="download-card"><div><h3>binary_search_tree.c</h3><p>包含 Node 結構、insert、search、inorder 與 main 測試。程式會先插入資料，再用 inorder 印出排序結果。</p></div><a class="btn primary" href="binary_search_tree.c">下載 C 程式</a></div><div class="codebox"><div class="bar"><span>binary_search_tree.c</span><div class="code-actions"><button class="btn mini" onclick="copyCode('codeBST')">複製程式碼</button></div></div><pre><code id="codeBST">/*
+  中文註解版程式：binary_search_tree.c
+  說明：主題 6：Binary Search Tree 示範。包含插入、搜尋與 inorder 排序輸出。
+  閱讀方式：先看資料結構定義，再看操作函式，最後看 main() 如何測試。
+*/
+
+// 匯入標準輸入輸出函式庫，提供 printf / scanf 等功能。
+#include &lt;stdio.h&gt;
+// 匯入標準函式庫，提供 malloc / free / exit 等記憶體與程式控制功能。
+#include &lt;stdlib.h&gt;
+
+// 定義節點結構：資料欄位存節點內容，指標欄位負責連到其他節點。
+typedef struct Node {
+    int key;
+    struct Node *left;
+    struct Node *right;
+} Node;
+
+// 建立新節點：配置記憶體、填入資料，並把左右指標初始化為 NULL。
+Node* createNode(int key) {
+    Node* n = (Node*)malloc(sizeof(Node));
+    n-&gt;key = key;
+    n-&gt;left = NULL;
+    n-&gt;right = NULL;
+    return n;
+}
+
+// BST 插入：比目前節點小往左，大往右；空位置就是新節點位置。
+Node* insert(Node* root, int key) {
+    if (root == NULL) return createNode(key);  // 空位置就是插入點
+    if (key &lt; root-&gt;key)
+        root-&gt;left = insert(root-&gt;left, key);  // 較小的 key 放左子樹
+    else if (key &gt; root-&gt;key)
+        root-&gt;right = insert(root-&gt;right, key);  // 較大的 key 放右子樹
+    return root;
+}
+
+// BST 搜尋：從 root 開始比較，小往左、大往右，走到 NULL 表示找不到。
+Node* search(Node* root, int key) {
+    if (root == NULL || root-&gt;key == key)
+        return root;
+    if (key &lt; root-&gt;key)
+        return search(root-&gt;left, key);
+    else
+        return search(root-&gt;right, key);
+}
+
+// Inorder 走訪：Left → Visit → Right；套用在 BST 會得到由小到大的排序。
+void inorder(Node* root) {
+    if (root == NULL) return;  // 遞迴終止條件：空節點不需要處理
+    inorder(root-&gt;left);   // 先走左子樹
+    printf("%d ", root-&gt;key);  // 再拜訪目前節點
+    inorder(root-&gt;right);  // 最後走右子樹
+}
+
+// 主程式：建立測試資料，呼叫上方函式，觀察輸出結果。
+int main(void) {
+    int data[] = {7, 3, 14, 2, 4, 10, 16, 1, 8, 9};
+    int n = sizeof(data) / sizeof(data[0]);
+    Node* root = NULL;
+    for (int i = 0; i &lt; n; i++)
+        root = insert(root, data[i]);
+
+    printf("Inorder sorted result: ");
+    inorder(root);
+    printf("\n");
+
+    int target = 8;
+    Node* ans = search(root, target);
+    if (ans != NULL)
+        printf("Find %d: FOUND\n", target);
+    else
+        printf("Find %d: NOT FOUND\n", target);
+    return 0;
+}
+</code></pre></div></div></details><details open=""><summary>六、考試重點</summary><div class="detail-body"><p class="warning">BST 搜尋不是從左到右全部掃描，而是每次比較後只走一邊。若樹很平衡，搜尋效率很好；若樹很歪，最壞情況可能退化成 linked list。</p></div></details>
+<details class="lab7-code-section" open=""><summary>可編輯 C 程式範例：含中文註解與線上編輯器</summary><div class="content detail-body"><p>這一段提供可直接修改的 C 程式碼。可以按「複製程式」貼到線上編輯器執行，也可以下載 .c 檔案。</p><div class="codewrap"><div class="codebar"><span>binary_search_tree.c</span><div class="btns"><button class="btn green" onclick="copyCode('code6')">複製程式</button><button class="btn orange" onclick="downloadCode('code6','binary_search_tree.c')">下載 .c</button><a class="btn secondary" href="https://www.onlinegdb.com/online_c_compiler" target="_blank">OnlineGDB</a><a class="btn secondary" href="https://www.programiz.com/c-programming/online-compiler/" target="_blank">Programiz</a><a class="btn secondary" href="https://onecompiler.com/c" target="_blank">OneCompiler</a></div></div><textarea class="codearea" id="code6" spellcheck="false">/*
+  中文註解版程式：binary_search_tree.c
+  說明：主題 6：Binary Search Tree 示範。包含插入、搜尋與 inorder 排序輸出。
+  閱讀方式：先看資料結構定義，再看操作函式，最後看 main() 如何測試。
+*/
+
+// 匯入標準輸入輸出函式庫，提供 printf / scanf 等功能。
+#include &lt;stdio.h&gt;
+// 匯入標準函式庫，提供 malloc / free / exit 等記憶體與程式控制功能。
+#include &lt;stdlib.h&gt;
+
+// 定義節點結構：資料欄位存節點內容，指標欄位負責連到其他節點。
+typedef struct Node {
+    int key;
+    struct Node *left;
+    struct Node *right;
+} Node;
+
+// 建立新節點：配置記憶體、填入資料，並把左右指標初始化為 NULL。
+Node* createNode(int key) {
+    Node* n = (Node*)malloc(sizeof(Node));
+    n-&gt;key = key;
+    n-&gt;left = NULL;
+    n-&gt;right = NULL;
+    return n;
+}
+
+// BST 插入：比目前節點小往左，大往右；空位置就是新節點位置。
+Node* insert(Node* root, int key) {
+    if (root == NULL) return createNode(key);  // 空位置就是插入點
+    if (key &lt; root-&gt;key)
+        root-&gt;left = insert(root-&gt;left, key);  // 較小的 key 放左子樹
+    else if (key &gt; root-&gt;key)
+        root-&gt;right = insert(root-&gt;right, key);  // 較大的 key 放右子樹
+    return root;
+}
+
+// BST 搜尋：從 root 開始比較，小往左、大往右，走到 NULL 表示找不到。
+Node* search(Node* root, int key) {
+    if (root == NULL || root-&gt;key == key)
+        return root;
+    if (key &lt; root-&gt;key)
+        return search(root-&gt;left, key);
+    else
+        return search(root-&gt;right, key);
+}
+
+// Inorder 走訪：Left → Visit → Right；套用在 BST 會得到由小到大的排序。
+void inorder(Node* root) {
+    if (root == NULL) return;  // 遞迴終止條件：空節點不需要處理
+    inorder(root-&gt;left);   // 先走左子樹
+    printf("%d ", root-&gt;key);  // 再拜訪目前節點
+    inorder(root-&gt;right);  // 最後走右子樹
+}
+
+// 主程式：建立測試資料，呼叫上方函式，觀察輸出結果。
+int main(void) {
+    int data[] = {7, 3, 14, 2, 4, 10, 16, 1, 8, 9};
+    int n = sizeof(data) / sizeof(data[0]);
+    Node* root = NULL;
+    for (int i = 0; i &lt; n; i++)
+        root = insert(root, data[i]);
+
+    printf("Inorder sorted result: ");
+    inorder(root);
+    printf("\n");
+
+    int target = 8;
+    Node* ans = search(root, target);
+    if (ans != NULL)
+        printf("Find %d: FOUND\n", target);
+    else
+        printf("Find %d: NOT FOUND\n", target);
+    return 0;
+}
+</textarea></div></div></details>
+<details class="lab7-teaching-content" open=""><summary>程式題目教學內容：Binary Search Tree 搜尋與排序</summary><div class="content detail-body">
+<h3>一、程式題目講解</h3>
+<p>本題示範 BST 的插入、搜尋與 inorder 排序輸出。學生需要理解 BST 的規則：左子樹小於 root，右子樹大於 root。</p>
+<h3>二、完整程式碼</h3>
+<p>完整可執行程式碼已保留在上方「可編輯 C 程式範例：含中文註解與線上編輯器」區塊中，檔名為 <code>binary_search_tree.c</code>。該程式碼已加入中文註解，學生可以直接複製到 OnlineGDB、Programiz 或 OneCompiler 執行。</p>
+<h3>三、程式執行結果</h3>
+<pre><code>Inorder sorted result: 1 2 3 4 7 8 9 10 14 16 
+Find 8: FOUND</code></pre>
+<p>Inorder 輸出為 1 2 3 4 7 8 9 10 14 16，代表 BST 透過中序走訪可得到排序結果；Find 8 顯示 FOUND，表示程式依照 BST 規則成功找到 8。</p>
+<h3>四、程式流程圖與流程圖說明</h3>
+<p>本頁下方已保留原本的程式流程圖。閱讀流程圖時，可以依序掌握「初始化資料或節點 → 執行主要函式或判斷 → 輸出結果」的過程。先把資料逐一插入 BST，再用 inorder 印出排序結果，最後呼叫 search 找 8。搜尋時若目標小於目前節點就往左，若大於目前節點就往右。</p>
+<h3>五、重要函數與語法說明</h3>
+<p>insert()：依照大小規則插入節點；search()：依照 BST 規則搜尋資料；inorder()：輸出排序結果；strcmp 不使用，本範例以整數比較為主。</p>
+<h3>六、整體說明</h3>
+<p>本題重點是 BST 把資料排列成可搜尋的樹形結構；中序走訪可排序，搜尋則可減少不必要比較。</p>
+</div></details>
+
+<section class="card program-flow-card">
+<h2>程式流程圖：BST 搜尋流程</h2>
+<p>下圖是本主題對應的程式執行流程，適合搭配本頁 C 程式碼一起看。</p>
+<div class="program-flow-figure"><img alt="主題 6 程式流程圖" class="program-flow-img" src="assets/program_flow_topic6.svg"/><div class="figure-caption">主題 6 程式流程圖：BST 搜尋流程</div></div>
+<div class="flow-explain"><h3>流程講解</h3><ol><li>BST 搜尋從 root 開始，因為 root 可決定要往左或往右。</li><li>若 target 小於目前節點，代表答案只可能在左子樹。</li><li>若 target 大於目前節點，代表答案只可能在右子樹。</li><li>若一路走到 NULL，表示資料不存在於 BST 中。</li></ol><p>這張流程圖把本頁程式的執行順序整理成一條清楚路徑。閱讀時先看輸入與資料如何建立，再看條件判斷、指標或陣列索引如何改變，最後用輸出結果確認程式邏輯是否正確。</p></div>
+</section>
+</main><div class="footer">Lesson 6 Trees｜主題六：Binary Search Trees</div></body></html>

@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="zh-Hant"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/><title>主題 5：Infix-to-Prefix 中序轉前序演算法</title><link href="assets/style.css" rel="stylesheet"/><script src="assets/script.js"></script>
+<style>
+.slide-dropdown-card{margin-top:18px;}
+.slide-dropdown-card h2{margin-bottom:12px;}
+.slide-detail-block{border:1px solid rgba(120,120,120,.25);border-radius:16px;margin:14px 0;background:rgba(255,255,255,.04);overflow:hidden;}
+.slide-detail-block summary{cursor:pointer;font-weight:700;padding:14px 18px;line-height:1.5;background:rgba(0,0,0,.035);}
+.slide-detail-inner{display:grid;grid-template-columns:minmax(280px,46%) 1fr;gap:18px;align-items:start;padding:18px;}
+.slide-detail-image{width:100%;max-width:100%;border-radius:14px;box-shadow:0 8px 24px rgba(0,0,0,.16);background:#fff;}
+.slide-detail-caption{text-align:center;font-size:.92rem;opacity:.82;margin-top:8px;}
+.slide-detail-text h3{margin-top:0;margin-bottom:10px;}
+.slide-detail-text p{line-height:1.85;margin:.55rem 0;}
+.slide-memory{padding:10px 12px;border-left:4px solid #f59e0b;background:rgba(245,158,11,.10);border-radius:10px;margin-top:10px;}
+@media(max-width:820px){.slide-detail-inner{grid-template-columns:1fr}.slide-detail-block summary{padding:12px 14px}.slide-detail-inner{padding:14px}}
+</style>
+</head><body><header class="hero"><div class="inner"><h1>主題 5：Infix-to-Prefix 中序轉前序演算法</h1><p>包含投影片 7–8｜用動畫流程圖說明中序式如何轉換成前序式，並提供可編輯 C 程式範例。</p><div class="toolbar"><a class="btn secondary" href="../../index.html">回主頁</a><a class="btn secondary" href="topic5.html">主題 5</a><a class="btn secondary" href="topic6.html">主題 6</a></div></div></header><div class="wrap"><div class="layout"><aside class="sidebar"><div class="side-title">Lesson 7 主題 5–6</div><nav class="nav"><a href="../../index.html">主頁</a><a class="active" href="topic5.html">5. Infix-to-Prefix</a><a href="topic6.html">6. Stack 轉 Postfix</a></nav></aside><main><section class="card"><span class="badge">投影片 7–8</span><h2>五、Algorithm Infix-to-Prefix 中序轉前序演算法</h2><p>這個主題延續前面的 Infix-to-Postfix，不同的是 Prefix 的運算子會放在兩個運算元前面。投影片的概念是：先把中序式依照優先順序完整括號化，再把每個運算子移到它對應的左括號位置，最後移除所有括號，就會得到 prefix expression。</p></section>
+<section class="card slide-dropdown-card"><h2>一、投影片逐張下拉式詳細講解</h2><p>每一張投影片都已和自己的圖片、詳細中文說明、核心觀念、學習重點與一句話記憶整合在同一個下拉式區塊中。</p><details class="slide-detail-block" open=""><summary>投影片 7：Algorithm Infix-to-Prefix</summary><div class="slide-detail-inner"><figure><img alt="投影片 7：Algorithm Infix-to-Prefix" class="slide-detail-image slide-img" src="assets/slide7.jpg"/><figcaption class="slide-detail-caption">投影片 7：Algorithm Infix-to-Prefix</figcaption></figure><div class="slide-detail-text"><h3>Algorithm Infix-to-Prefix 中序轉前序演算法</h3><p><b>（一）這張投影片在說什麼？</b> 這張投影片說明 Infix-to-Prefix 的基本方法。和後序不同，Prefix 是把運算子移到它對應的左括號位置，因此運算子會出現在相關運算元之前。</p><p><b>（二）核心觀念</b> 轉 Prefix 時，仍然要先確認運算優先順序與括號結構。只有先知道哪一組運算要先做，才能知道哪一個 operator 要放到哪個位置。</p><p><b>（三）為什麼重要？</b> Prefix 可以把運算規則放在前面，對遞迴解析和樹狀結構特別直觀，因為根節點或主要運算子會先被看到。</p><p><b>（四）學習與考試重點</b> 請注意 Prefix 和 Postfix 的差異：Postfix 是 operator 移到右括號位置，Prefix 是 operator 移到左括號位置。</p><div class="slide-memory">一句話記憶：中序轉前序，就是把 operator 移到對應左括號的位置。</div></div></div></details><details class="slide-detail-block"><summary>投影片 8：Algorithm Infix-to-Prefix 範例</summary><div class="slide-detail-inner"><figure><img alt="投影片 8：Algorithm Infix-to-Prefix 範例" class="slide-detail-image slide-img" src="assets/slide8.jpg"/><figcaption class="slide-detail-caption">投影片 8：Algorithm Infix-to-Prefix 範例</figcaption></figure><div class="slide-detail-text"><h3>Algorithm Infix-to-Prefix 範例</h3><p><b>（一）這張投影片在說什麼？</b> 這張投影片用實際例子示範中序轉前序。重點是看清楚每一層括號所代表的子運算，並把該層的 operator 放到這一組運算的最前面。</p><p><b>（二）核心觀念</b> Prefix 的排列順序通常會先出現整個式子的主運算子，接著才是左子式與右子式。這和 Expression Tree 的 Preorder Traversal 概念非常接近。</p><p><b>（三）為什麼重要？</b> 這張範例幫助你把 Prefix 與樹的根、左子樹、右子樹連結起來。後面學 Expression Tree 時，Preorder 就會自然得到 Prefix。</p><p><b>（四）學習與考試重點</b> 如果題目要求 Prefix，不要照 Postfix 的移動方向做；要確認 operator 是移到左括號位置。</p><div class="slide-memory">一句話記憶：Prefix 先看到主要運算子，再看到左右運算內容。</div></div></div></details></section>
+<section class="card"><h2>二、動畫流程圖：Infix 轉 Prefix 的步驟</h2><div class="flow-area" id="flow5"><div class="flow"><div class="node">輸入 Infix</div><div class="node">完整括號化</div><div class="node">運算子移左</div><div class="node">移除括號</div><div class="node">得到 Prefix</div></div><div class="progress"><div class="bar"></div></div><div class="stepbox"></div><div class="btns" style="margin-top:12px"><button class="btn secondary" onclick="prevFlow('flow5')">上一步</button><button class="btn" onclick="nextFlow('flow5')">下一步</button><button class="btn orange" onclick="playFlow('flow5')">自動播放</button><button class="btn secondary" onclick="resetFlow('flow5')">重新開始</button></div></div><script>initFlow('flow5',['先輸入中序式，例如 A + B * C。','依照優先順序加上完整括號，得到 (A + (B * C))。','Prefix 的重點是把運算子移到它對應的左括號位置。','刪除所有括號，保留移動後的運算子與運算元。','最後得到 prefix：+ A * B C。']);</script></section>
+<details open=""><summary>三、完整中文講解</summary><div class="content"><h3>（一）Prefix 是什麼？</h3><p>Prefix 中文可稱為「前序表示法」。它的特徵是運算子出現在運算元前面。例如 <b>A + B</b> 的 prefix 形式是 <b>+ A B</b>。如果是 <b>A + B * C</b>，因為 <b>B * C</b> 要先處理，所以 prefix 會寫成 <b>+ A * B C</b>。</p><h3>（二）與 Postfix 的差異</h3><table class="compare"><tr><th>表示法</th><th>形式</th><th>例子 A + B * C</th><th>運算子位置</th></tr><tr><td>Infix</td><td>中序</td><td>A + B * C</td><td>運算子在中間</td></tr><tr><td>Postfix</td><td>後序</td><td>A B C * +</td><td>運算子在後面</td></tr><tr><td>Prefix</td><td>前序</td><td>+ A * B C</td><td>運算子在前面</td></tr></table><h3>（三）投影片的概念式方法</h3><p>投影片 7 說明的做法是：先把 expression 完整括號化，然後把每一個 operation 移到它對應的左括號位置。當所有左括號都被運算子取代後，再刪除右括號，最後結果就是 prefix。</p><div class="example"><b>簡單範例：</b><br/>Infix：A + B * C<br/>完整括號化：(A + (B * C))<br/>B * C 的 prefix：* B C<br/>A + 結果的 prefix：+ A * B C<br/>Prefix：+ A * B C</div><h3>（四）程式常用方法</h3><p>程式實作時，可以利用已經會寫的 infix-to-postfix 來完成 prefix。常見步驟是：反轉 infix，交換左右括號，轉成 postfix，再反轉 postfix，就會得到 prefix。這個方法的好處是可以重複使用 postfix 的 stack 邏輯。</p></div></details>
+<details open=""><summary>四、可編輯 C 程式範例：Infix 轉 Prefix</summary><div class="content"><p>這份程式支援單字元運算元、括號與常見運算子。你可以在下面直接修改程式碼，再複製到線上 C 編輯器執行。</p><div class="codewrap"><div class="codebar"><span>infix_to_prefix.c</span><div class="btns"><button class="btn green" onclick="copyCode('code5')">複製程式</button><button class="btn orange" onclick="downloadCode('code5','infix_to_prefix.c')">下載 .c</button><a class="btn secondary" href="https://www.onlinegdb.com/online_c_compiler" target="_blank">OnlineGDB</a><a class="btn secondary" href="https://www.programiz.com/c-programming/online-compiler/" target="_blank">Programiz</a><a class="btn secondary" href="https://onecompiler.com/c" target="_blank">OneCompiler</a></div></div><textarea class="codearea" id="code5" spellcheck="false">#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+#include &lt;ctype.h&gt;
+
+/*
+    主題 5：Infix-to-Prefix 中序轉前序
+    說明：
+    Prefix 的運算子放在運算元前面，例如：+ A B。
+
+    常見做法：
+    1. 將 infix 字串反轉。
+    2. 反轉時把 '(' 和 ')' 對調。
+    3. 對反轉後的式子做 infix-to-postfix。
+    4. 再把得到的 postfix 反轉，就得到 prefix。
+
+    範例：
+    Infix : A+B*C
+    Prefix: +A*BC
+*/
+
+#define MAX 200
+
+char stack[MAX];
+int top = -1;
+
+void push(char ch) {
+    if (top &lt; MAX - 1) stack[++top] = ch;
+}
+
+char pop(void) {
+    if (top &gt;= 0) return stack[top--];
+    return '\0';
+}
+
+char peek(void) {
+    if (top &gt;= 0) return stack[top];
+    return '\0';
+}
+
+int isEmpty(void) {
+    return top == -1;
+}
+
+int priority(char op) {
+    if (op == '^') return 3;
+    if (op == '*' || op == '/') return 2;
+    if (op == '+' || op == '-') return 1;
+    return 0;
+}
+
+int isOperator(char ch) {
+    return ch == '+' || ch == '-' || ch == '*' || ch == '/' || ch == '^';
+}
+
+void reverseString(char s[]) {
+    int i, j;
+    char temp;
+    for (i = 0, j = strlen(s) - 1; i &lt; j; i++, j--) {
+        temp = s[i];
+        s[i] = s[j];
+        s[j] = temp;
+    }
+}
+
+void swapParentheses(char s[]) {
+    int i;
+    for (i = 0; s[i] != '\0'; i++) {
+        if (s[i] == '(') s[i] = ')';
+        else if (s[i] == ')') s[i] = '(';
+    }
+}
+
+void infixToPostfix(char infix[], char postfix[]) {
+    int i, j = 0;
+    top = -1; // 每次轉換前先清空 stack
+
+    for (i = 0; infix[i] != '\0'; i++) {
+        char ch = infix[i];
+
+        if (isalnum(ch)) {
+            // 運算元直接輸出
+            postfix[j++] = ch;
+        }
+        else if (ch == '(') {
+            // 左括號先進 stack
+            push(ch);
+        }
+        else if (ch == ')') {
+            // 右括號：一直 pop 到左括號
+            while (!isEmpty() &amp;&amp; peek() != '(') {
+                postfix[j++] = pop();
+            }
+            pop(); // 丟掉左括號
+        }
+        else if (isOperator(ch)) {
+            // 若 stack 頂端運算子優先順序較高或相同，就先輸出
+            while (!isEmpty() &amp;&amp; peek() != '(' &amp;&amp; priority(peek()) &gt;= priority(ch)) {
+                postfix[j++] = pop();
+            }
+            push(ch);
+        }
+    }
+
+    while (!isEmpty()) {
+        postfix[j++] = pop();
+    }
+
+    postfix[j] = '\0';
+}
+
+void infixToPrefix(char infix[], char prefix[]) {
+    char temp[MAX];
+    char postfix[MAX];
+
+    strcpy(temp, infix);
+
+    // 第 1 步：反轉 infix
+    reverseString(temp);
+
+    // 第 2 步：左右括號互換
+    swapParentheses(temp);
+
+    // 第 3 步：轉成 postfix
+    infixToPostfix(temp, postfix);
+
+    // 第 4 步：反轉 postfix，得到 prefix
+    reverseString(postfix);
+    strcpy(prefix, postfix);
+}
+
+int main(void) {
+    char infix[MAX];
+    char prefix[MAX];
+
+    printf("請輸入中序式，例如 A+B*C 或 (A+B)*C：");
+    scanf("%199s", infix);
+
+    infixToPrefix(infix, prefix);
+
+    printf("\n===== 結果 =====\n");
+    printf("Infix  ：%s\n", infix);
+    printf("Prefix ：%s\n", prefix);
+
+    return 0;
+}
+</textarea></div></div></details>
+<details><summary>五、文字版流程圖</summary><div class="content"><div class="mermaid-like">輸入 Infix → 完整括號化 → 運算子移到左括號位置 → 移除括號 → 輸出 Prefix</div></div></details>
+<section class="card program-teaching-card" id="program-teaching-content" style="margin-top:18px;">
+  <h2>程式題目教學內容</h2>
+
+  <details class="details" open>
+    <summary>一、程式題目講解</summary>
+    <p>這個程式示範將中序表示式轉成前序表示式。學生需要理解 Prefix 的運算子放在運算元前方，而且常見做法會先反轉字串，再利用 Infix-to-Postfix 的概念完成轉換。</p>
+  </details>
+
+  <details class="details">
+    <summary>二、完整程式碼</summary>
+    <p>以下保留本頁原本的完整 C 程式碼，並搭配中文註解說明主要功能與流程。</p>
+    <pre class="codebox" style="white-space:pre-wrap;overflow:auto;max-height:520px;"><code>#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+#include &lt;ctype.h&gt;
+
+/*
+    主題 5：Infix-to-Prefix 中序轉前序
+    說明：
+    Prefix 的運算子放在運算元前面，例如：+ A B。
+
+    常見做法：
+    1. 將 infix 字串反轉。
+    2. 反轉時把 &#x27;(&#x27; 和 &#x27;)&#x27; 對調。
+    3. 對反轉後的式子做 infix-to-postfix。
+    4. 再把得到的 postfix 反轉，就得到 prefix。
+
+    範例：
+    Infix : A+B*C
+    Prefix: +A*BC
+*/
+
+#define MAX 200
+
+char stack[MAX];
+int top = -1;
+
+void push(char ch) {
+    if (top &lt; MAX - 1) stack[++top] = ch;
+}
+
+char pop(void) {
+    if (top &gt;= 0) return stack[top--];
+    return &#x27;\0&#x27;;
+}
+
+char peek(void) {
+    if (top &gt;= 0) return stack[top];
+    return &#x27;\0&#x27;;
+}
+
+int isEmpty(void) {
+    return top == -1;
+}
+
+int priority(char op) {
+    if (op == &#x27;^&#x27;) return 3;
+    if (op == &#x27;*&#x27; || op == &#x27;/&#x27;) return 2;
+    if (op == &#x27;+&#x27; || op == &#x27;-&#x27;) return 1;
+    return 0;
+}
+
+int isOperator(char ch) {
+    return ch == &#x27;+&#x27; || ch == &#x27;-&#x27; || ch == &#x27;*&#x27; || ch == &#x27;/&#x27; || ch == &#x27;^&#x27;;
+}
+
+void reverseString(char s[]) {
+    int i, j;
+    char temp;
+    for (i = 0, j = strlen(s) - 1; i &lt; j; i++, j--) {
+        temp = s[i];
+        s[i] = s[j];
+        s[j] = temp;
+    }
+}
+
+void swapParentheses(char s[]) {
+    int i;
+    for (i = 0; s[i] != &#x27;\0&#x27;; i++) {
+        if (s[i] == &#x27;(&#x27;) s[i] = &#x27;)&#x27;;
+        else if (s[i] == &#x27;)&#x27;) s[i] = &#x27;(&#x27;;
+    }
+}
+
+void infixToPostfix(char infix[], char postfix[]) {
+    int i, j = 0;
+    top = -1; // 每次轉換前先清空 stack
+
+    for (i = 0; infix[i] != &#x27;\0&#x27;; i++) {
+        char ch = infix[i];
+
+        if (isalnum(ch)) {
+            // 運算元直接輸出
+            postfix[j++] = ch;
+        }
+        else if (ch == &#x27;(&#x27;) {
+            // 左括號先進 stack
+            push(ch);
+        }
+        else if (ch == &#x27;)&#x27;) {
+            // 右括號：一直 pop 到左括號
+            while (!isEmpty() &amp;&amp; peek() != &#x27;(&#x27;) {
+                postfix[j++] = pop();
+            }
+            pop(); // 丟掉左括號
+        }
+        else if (isOperator(ch)) {
+            // 若 stack 頂端運算子優先順序較高或相同，就先輸出
+            while (!isEmpty() &amp;&amp; peek() != &#x27;(&#x27; &amp;&amp; priority(peek()) &gt;= priority(ch)) {
+                postfix[j++] = pop();
+            }
+            push(ch);
+        }
+    }
+
+    while (!isEmpty()) {
+        postfix[j++] = pop();
+    }
+
+    postfix[j] = &#x27;\0&#x27;;
+}
+
+void infixToPrefix(char infix[], char prefix[]) {
+    char temp[MAX];
+    char postfix[MAX];
+
+    strcpy(temp, infix);
+
+    // 第 1 步：反轉 infix
+    reverseString(temp);
+
+    // 第 2 步：左右括號互換
+    swapParentheses(temp);
+
+    // 第 3 步：轉成 postfix
+    infixToPostfix(temp, postfix);
+
+    // 第 4 步：反轉 postfix，得到 prefix
+    reverseString(postfix);
+    strcpy(prefix, postfix);
+}
+
+int main(void) {
+    char infix[MAX];
+    char prefix[MAX];
+
+    printf(&quot;請輸入中序式，例如 A+B*C 或 (A+B)*C：&quot;);
+    scanf(&quot;%199s&quot;, infix);
+
+    infixToPrefix(infix, prefix);
+
+    printf(&quot;\n===== 結果 =====\n&quot;);
+    printf(&quot;Infix  ：%s\n&quot;, infix);
+    printf(&quot;Prefix ：%s\n&quot;, prefix);
+
+    return 0;
+}
+</code></pre>
+  </details>
+
+  <details class="details" open>
+    <summary>三、程式執行結果</summary>
+    <p><strong>範例輸入：A+B*C</strong></p>
+    <pre class="codebox" style="white-space:pre-wrap;overflow:auto;max-height:420px;"><code>請輸入中序式，例如 A+B*C 或 (A+B)*C：
+===== 結果 =====
+Infix  ：A+B*C
+Prefix ：+A*BC</code></pre>
+    <p>原式 A+B*C 中，乘法 B*C 優先，最後才與 A 相加。因此 Prefix 會把最後執行的 + 放在最前面，得到 +A*BC。</p>
+  </details>
+
+  <details class="details">
+    <summary>四、程式流程圖與流程圖說明</summary>
+    <svg class="teaching-flow-svg" viewBox="0 0 760 474" role="img" aria-label="Infix-to-Prefix 中序轉前序演算法 流程圖" style="width:100%;max-width:820px;height:auto;display:block;margin:12px auto;"><defs><linearGradient id="g" x1="0" x2="1"><stop offset="0%" stop-color="#eef6ff"/><stop offset="100%" stop-color="#ffffff"/></linearGradient></defs><rect x="70" y="50" width="620" height="46" rx="14" fill="url(#g)" stroke="#7aa7d9" stroke-width="2"></rect><text x="380" y="79" text-anchor="middle" font-size="16" fill="#1f2937">1. 輸入中序表示式</text><line x1="380" y1="96" x2="380" y2="108" stroke="#7aa7d9" stroke-width="2"></line><polygon points="374,108 386,108 380,114" fill="#7aa7d9"></polygon><rect x="70" y="114" width="620" height="46" rx="14" fill="url(#g)" stroke="#7aa7d9" stroke-width="2"></rect><text x="380" y="143" text-anchor="middle" font-size="16" fill="#1f2937">2. 反轉整個字串</text><line x1="380" y1="160" x2="380" y2="172" stroke="#7aa7d9" stroke-width="2"></line><polygon points="374,172 386,172 380,178" fill="#7aa7d9"></polygon><rect x="70" y="178" width="620" height="46" rx="14" fill="url(#g)" stroke="#7aa7d9" stroke-width="2"></rect><text x="380" y="207" text-anchor="middle" font-size="16" fill="#1f2937">3. 反轉時交換左右括號</text><line x1="380" y1="224" x2="380" y2="236" stroke="#7aa7d9" stroke-width="2"></line><polygon points="374,236 386,236 380,242" fill="#7aa7d9"></polygon><rect x="70" y="242" width="620" height="46" rx="14" fill="url(#g)" stroke="#7aa7d9" stroke-width="2"></rect><text x="380" y="271" text-anchor="middle" font-size="16" fill="#1f2937">4. 對反轉後字串做 Infix-to-Postfix</text><line x1="380" y1="288" x2="380" y2="300" stroke="#7aa7d9" stroke-width="2"></line><polygon points="374,300 386,300 380,306" fill="#7aa7d9"></polygon><rect x="70" y="306" width="620" height="46" rx="14" fill="url(#g)" stroke="#7aa7d9" stroke-width="2"></rect><text x="380" y="335" text-anchor="middle" font-size="16" fill="#1f2937">5. 再反轉得到的 postfix</text><line x1="380" y1="352" x2="380" y2="364" stroke="#7aa7d9" stroke-width="2"></line><polygon points="374,364 386,364 380,370" fill="#7aa7d9"></polygon><rect x="70" y="370" width="620" height="46" rx="14" fill="url(#g)" stroke="#7aa7d9" stroke-width="2"></rect><text x="380" y="399" text-anchor="middle" font-size="16" fill="#1f2937">6. 輸出 prefix 結果</text></svg>
+    <p>流程圖說明：本程式的主要邏輯可以依照下列順序理解：</p>
+    <ol><li>輸入中序表示式</li><li>反轉整個字串</li><li>反轉時交換左右括號</li><li>對反轉後字串做 Infix-to-Postfix</li><li>再反轉得到的 postfix</li><li>輸出 prefix 結果</li></ol>
+  </details>
+
+  <details class="details">
+    <summary>五、重要函數與語法說明</summary>
+    <ul><li>reverseString(s)：反轉字串順序。</li><li>swapParentheses(s)：反轉後修正括號方向。</li><li>infixToPostfix()：利用 Stack 轉換成 postfix。</li><li>priority(op)：判斷運算子優先順序。</li><li>push() / pop() / peek()：管理 Stack。</li></ul>
+  </details>
+
+  <details class="details" open>
+    <summary>六、整體說明</summary>
+    <p>本題重點是中序轉前序的常見技巧：反轉、換括號、轉後序、再反轉。它讓學生看見不同表示法之間可以互相轉換。</p>
+  </details>
+</section>
+</main></div></div><footer class="footer">Lesson 7 Expressions｜主題 5：Infix-to-Prefix</footer></body></html>

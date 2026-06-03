@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+
+<html lang="zh-Hant"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/><title>主題一 Trees 樹的基本概念</title><link href="assets/style.css" rel="stylesheet"/><script src="assets/script.js"></script>
+<style>
+.slide-dropdown-section{margin-top:22px}.slide-dropdown-section>.note{margin-bottom:14px}.slide-explain-item{border:1px solid rgba(100,116,139,.28);border-radius:16px;margin:14px 0;background:rgba(255,255,255,.86);overflow:hidden}.slide-explain-item>summary{cursor:pointer;font-weight:700;padding:16px 18px;line-height:1.5;background:linear-gradient(90deg,rgba(241,245,249,.95),rgba(255,255,255,.88));list-style:none}.slide-explain-item>summary::-webkit-details-marker{display:none}.slide-explain-item>summary:before{content:'▸';display:inline-block;margin-right:8px;transition:transform .2s}.slide-explain-item[open]>summary:before{transform:rotate(90deg)}.slide-explain-body{display:grid;grid-template-columns:minmax(280px,46%) 1fr;gap:22px;padding:18px}.slide-explain-media{align-self:start}.slide-explain-img{width:100%;height:auto;border-radius:14px;box-shadow:0 10px 28px rgba(15,23,42,.18);background:white}.slide-explain-text h3{font-size:1.04rem;margin:0.9rem 0 .35rem}.slide-explain-text h3:first-child{margin-top:0}.slide-explain-text p,.slide-explain-text li{line-height:1.85}.slide-explain-text ul{margin-top:.2rem;padding-left:1.4rem}.memory-box{margin-top:14px;padding:12px 14px;border-left:5px solid #f59e0b;background:#fff7ed;border-radius:10px;line-height:1.75;font-weight:600}@media(max-width:820px){.slide-explain-body{grid-template-columns:1fr}.slide-explain-item>summary{padding:14px}.slide-explain-body{padding:14px}}
+</style>
+</head><body>
+<section class="hero"><div class="hero-inner"><span class="badge">主題一｜投影片 1–7</span><h1>Trees 樹的基本概念</h1><p>Tree 是資料結構中很重要的階層式結構。這一章先建立「樹是由節點與子樹組成」的觀念，並說明常見術語與應用。</p><div class="nav"><a class="btn" href="../index.html">回 L6 首頁</a><a class="btn primary" href="topic2.html">下一章：樹的表示法</a></div></div></section>
+<main class="wrap">
+<section class="card slide-dropdown-section"><h2>投影片逐張下拉式詳細講解</h2><p class="note">每一張投影片都把圖片與自己的中文講解放在同一個下拉式區塊中，打開後可以直接對照圖與文字。</p><details class="slide-explain-item" open=""><summary>投影片 1：Lesson 6：Trees 樹狀結構導入</summary><div class="slide-explain-body"><div class="slide-explain-media"><img alt="投影片 1：Lesson 6 Trees" class="slide-explain-img" src="assets/slide1.png"/><div class="figure-caption">投影片 1：Lesson 6 Trees</div></div><div class="slide-explain-text"><h3>（一）這張投影片在說什麼？</h3><p>這張投影片是本章開場，主題是 Trees。樹狀結構用來表示具有上下層、父子關係、分類層次的資料，例如資料夾、組織圖、家族關係、語法樹與搜尋結構。</p><h3>（二）核心觀念</h3><ul><li>Tree 不是線性結構，而是階層式結構。</li><li>最上層稱為 root，往下可以分成許多 subtree。</li><li>本章會從一般樹進入 binary tree，再延伸到 BST、heap 與 forest。</li></ul><h3>（三）學習與考試重點</h3><p>學習時要先建立「一個節點可以連到多個子節點」的觀念，後面所有插入、刪除、走訪與搜尋都會依賴這個階層關係。</p><div class="memory-box">一句話記憶：樹就是把資料用「上層管理下層」的方式組織起來。</div></div></div></details><details class="slide-explain-item"><summary>投影片 2：Tree structure 範例</summary><div class="slide-explain-body"><div class="slide-explain-media"><img alt="投影片 2：Tree structure 範例" class="slide-explain-img" src="assets/slide2.png"/><div class="figure-caption">投影片 2：Tree structure 範例</div></div><div class="slide-explain-text"><h3>（一）這張投影片在說什麼？</h3><p>這張投影片用實際圖形說明 tree 的外觀。你可以看到一個節點在上方，下面再分出其他節點，形成像倒過來的樹。</p><h3>（二）核心觀念</h3><ul><li>Tree 的每一個圓點或方塊都是 node。</li><li>節點之間的連線表示 parent-child 關係。</li><li>同一個父節點底下的子節點彼此是 siblings。</li></ul><h3>（三）學習與考試重點</h3><p>這張圖的重點不是背節點名稱，而是看懂層次：誰是父節點、誰是子節點、哪些節點在同一層。</p><div class="memory-box">一句話記憶：看 tree 時，先找 root，再一層一層往下看。</div></div></div></details><details class="slide-explain-item"><summary>投影片 3：Tree definition 樹的遞迴定義</summary><div class="slide-explain-body"><div class="slide-explain-media"><img alt="投影片 3：Tree definition" class="slide-explain-img" src="assets/slide3.png"/><div class="figure-caption">投影片 3：Tree definition</div></div><div class="slide-explain-text"><h3>（一）這張投影片在說什麼？</h3><p>這張投影片正式定義 tree：一棵樹由一個 root 加上零個或多個互不重疊的 subtrees 組成。每一個 subtree 本身也還是一棵 tree。</p><h3>（二）核心觀念</h3><ul><li>Tree 的定義具有 recursive 性質。</li><li>root 是整棵樹的起點。</li><li>扣掉 root 後，剩下的部分可以分成多棵互不相交的子樹。</li></ul><h3>（三）學習與考試重點</h3><p>因為 tree 本身是遞迴定義，所以很多 tree 演算法也會用遞迴處理，例如 traversal、search、height 計算。</p><div class="memory-box">一句話記憶：Tree = root + subtrees；subtree 仍然是 tree。</div></div></div></details><details class="slide-explain-item"><summary>投影片 4：Terminology：node、root、degree、leaf</summary><div class="slide-explain-body"><div class="slide-explain-media"><img alt="投影片 4：Terminology" class="slide-explain-img" src="assets/slide4.png"/><div class="figure-caption">投影片 4：Terminology</div></div><div class="slide-explain-text"><h3>（一）這張投影片在說什麼？</h3><p>這張投影片介紹樹的基本術語。Node 是資料單位，root 是最上面的節點，degree 是一個節點有幾棵子樹，leaf 是 degree 為 0 的節點。</p><h3>（二）核心觀念</h3><ul><li>Node：樹中的一個資料單位。</li><li>Root：沒有 parent 的最上層節點。</li><li>Degree：節點的子樹數量。</li><li>Leaf：沒有孩子的節點，也稱 terminal node。</li></ul><h3>（三）學習與考試重點</h3><p>考題常要求你根據圖判斷某節點的 degree、哪些是 leaf、哪些是 nonterminal node。</p><div class="memory-box">一句話記憶：沒有小孩就是 leaf；有幾個小孩，degree 就是多少。</div></div></div></details><details class="slide-explain-item"><summary>投影片 5：Terminology 補充：parent、children、siblings、ancestor</summary><div class="slide-explain-body"><div class="slide-explain-media"><img alt="投影片 5：Terminology 補充" class="slide-explain-img" src="assets/slide5.png"/><div class="figure-caption">投影片 5：Terminology 補充</div></div><div class="slide-explain-text"><h3>（一）這張投影片在說什麼？</h3><p>這張投影片補充更多關係名詞。Children 是某節點直接往下連的節點，parent 是其上一層節點，siblings 是同一個 parent 的節點，ancestors 是從 root 到該節點路徑上的上層節點。</p><h3>（二）核心觀念</h3><ul><li>Parent/Children 是直接上下層關係。</li><li>Siblings 是同父節點的平行關係。</li><li>Ancestors 是一路往上追溯到 root 的節點。</li><li>Level 表示節點所在層數，height/depth 表示樹的最大層數。</li></ul><h3>（三）學習與考試重點</h3><p>要注意有些課本把 root level 定為 0，有些定為 1；本投影片採用 root level = 1 的表示。</p><div class="memory-box">一句話記憶：往上是 ancestor，往下是 descendant，同層同父是 sibling。</div></div></div></details><details class="slide-explain-item"><summary>投影片 6：Root、Subtree、Siblings 的整體判讀</summary><div class="slide-explain-body"><div class="slide-explain-media"><img alt="投影片 6：Root、Subtree、Siblings" class="slide-explain-img" src="assets/slide6.png"/><div class="figure-caption">投影片 6：Root、Subtree、Siblings</div></div><div class="slide-explain-text"><h3>（一）這張投影片在說什麼？</h3><p>這張投影片用同一棵樹整合前面的術語，讓你練習從圖上找 root、subtree、parent、children、siblings 與 level。</p><h3>（二）核心觀念</h3><ul><li>先確定 root，才能判斷其他節點的層級。</li><li>Subtree 是從某節點往下切出來的一整棵小樹。</li><li>同一父節點底下的節點才算 siblings，不只是同一層就一定是 siblings。</li></ul><h3>（三）學習與考試重點</h3><p>做樹的題目時，最安全的方法是先畫出 parent-child 關係，再判斷術語，不要只靠節點位置猜。</p><div class="memory-box">一句話記憶：Subtree 是從某個節點往下整包拿出來。</div></div></div></details><details class="slide-explain-item"><summary>投影片 7：Applications of Trees 樹的應用</summary><div class="slide-explain-body"><div class="slide-explain-media"><img alt="投影片 7：Applications of Trees" class="slide-explain-img" src="assets/slide7.png"/><div class="figure-caption">投影片 7：Applications of Trees</div></div><div class="slide-explain-text"><h3>（一）這張投影片在說什麼？</h3><p>這張投影片說明 trees 的應用範圍。樹可以用在資料分類、檔案系統、語法分析、搜尋、排序、優先權佇列與集合表示。</p><h3>（二）核心觀念</h3><ul><li>樹適合表示階層資料。</li><li>二元樹可用於表示運算式與搜尋。</li><li>BST 支援較有效率的查找。</li><li>Heap 可用來實作 priority queue。</li></ul><h3>（三）學習與考試重點</h3><p>這張是整章的應用地圖：後面學到的 binary tree、BST、heap、forest 都是 tree 的延伸。</p><div class="memory-box">一句話記憶：只要資料有層次，通常就可以考慮用 tree。</div></div></div></details></section>
+<details open=""><summary>一、Tree 是什麼？</summary><div class="detail-body"><p><span class="pill">核心概念</span></p><p>Tree 可以翻成「樹」或「樹狀結構」。它不是一般線性的資料排列，而是一種有上下層關係的階層式結構。投影片用組織圖當例子：最上面是 President，下面分成不同 Vice-President，再往下分成 Manager。這種「一個上層節點往下分出多個下層節點」的形式，就是樹的基本樣子。</p><div class="concept-map"><div class="concept">Root<span>根節點</span></div><div class="arrow">→</div><div class="concept">Subtrees<span>多個子樹</span></div><div class="arrow">→</div><div class="concept">Nodes<span>節點彼此連結</span></div></div><p>從定義來看，一棵樹是由有限個節點組成，而且一定有一個特別指定的節點叫做 <span class="k">root</span>。root 以外的節點會被分成若干個互不重疊的集合，每一個集合本身也可以看成一棵樹，所以 tree 的定義具有遞迴性。</p></div></details>
+<details open=""><summary>二、互動示意：Root、Parent、Child、Leaf、Subtree</summary><div class="detail-body"><p>請點選下方按鈕，觀察不同術語在樹上的位置。</p><div class="tree-demo"><div class="tree-level"><div class="node" data-node="root parent">A</div></div><div class="tree-level"><div class="node small" data-node="child parent subtree">B</div><div class="node small" data-node="child parent subtree">C</div></div><div class="tree-level"><div class="node small leaf" data-node="leaf child subtree">D</div><div class="node small leaf" data-node="leaf child subtree">E</div><div class="node small leaf" data-node="leaf child subtree">F</div></div><p class="tree-caption" id="treeText">Root 是最上方的節點，是整棵樹的起點。</p><div class="flow-controls"><button class="btn mini primary" onclick="highlightTree('root')">Root</button><button class="btn mini" onclick="highlightTree('parent')">Parent</button><button class="btn mini" onclick="highlightTree('child')">Children</button><button class="btn mini" onclick="highlightTree('leaf')">Leaf</button><button class="btn mini" onclick="highlightTree('subtree')">Subtree</button></div></div></div></details>
+<details open=""><summary>三、重要術語完整說明</summary><div class="detail-body"><p><b>Node 節點：</b>樹中的每一個資料單位都叫做 node。投影片中的 A、B、C、D、E、F 都是節點。</p><p><b>Root 根節點：</b>位於最上方的節點，是整棵樹的起點。沒有 parent。</p><p><b>Degree 分支度：</b>一個節點有幾棵子樹，它的 degree 就是多少。例如 A 有 B、C 兩個孩子，degree 就是 2；D 沒有孩子，degree 是 0。</p><p><b>Leaf 葉節點：</b>degree 為 0 的節點，也就是沒有任何孩子的節點。</p><p><b>Height 高度：</b>從 root 到 leaf 的最長路徑長度。投影片說明 height 會和最長路徑上的節點數有關。</p><p><b>Parent / Children：</b>如果某節點下面接出其他節點，這個節點就是 parent；下面被接出的節點就是 children。</p><p><b>Siblings 兄弟節點：</b>具有相同 parent 的節點。例如 B 和 C 若都由 A 連出，它們就是 siblings。</p><p><b>Ancestors 祖先節點：</b>從 root 到某節點路徑上經過的所有上層節點。</p><p><b>Descendants 後代節點：</b>某節點底下所有子樹中的節點，都可以視為它的 descendants。</p></div></details>
+<details open=""><summary>四、動畫流程圖：如何判斷一棵 Tree？</summary><div class="detail-body"><div class="flowbox" data-flow="t1"><div class="flow-steps"><div class="flow-step" data-caption="先找出最上層或最核心的節點，這個節點通常就是 root。">找 Root</div><div class="flow-step" data-caption="觀察 root 往下連到哪些節點，這些是 root 的 children。">找 Children</div><div class="flow-step" data-caption="每個 child 往下又可能形成自己的 subtree。">切成 Subtrees</div><div class="flow-step" data-caption="沒有孩子的節點就是 leaf，也就是樹的末端。">找 Leaf</div><div class="flow-step" data-caption="最後計算 degree、level、height，就能描述整棵樹的結構。">描述結構</div></div><div class="flow-caption"></div><div class="flow-controls"><button class="btn mini" onclick="prevFlow('t1')">上一步</button><button class="btn mini primary" onclick="nextFlow('t1')">下一步</button><button class="btn mini" onclick="autoFlow('t1')">自動播放</button><button class="btn mini" onclick="resetFlow('t1')">重新開始</button></div></div></div></details>
+<details open=""><summary>五、Trees 的應用</summary><div class="detail-body"><p>投影片列出 Trees 的應用包含：computer systems directory structures、decision trees、game trees。這些例子共同點是「資料本身具有層級或分支選擇」。</p><div class="compare"><div class="box"><h3>Directory Structure 目錄結構</h3><p>電腦資料夾常常是一層包一層，例如根目錄底下有多個資料夾，每個資料夾底下又有檔案或子資料夾。</p></div><div class="box"><h3>Decision Tree 決策樹</h3><p>從一個問題開始，依照不同答案往不同方向走，最後得到結果。很適合表示分類與判斷流程。</p></div><div class="box"><h3>Game Tree 遊戲樹</h3><p>每一步棋或每個選項都會產生新的可能狀態，因此可以用樹來表示所有可能發展。</p></div><div class="box"><h3>資料結構課程中的 Tree</h3><p>後面會延伸到 binary tree、binary search tree、heap、forest 等重要主題。</p></div></div></div></details>
+<details class="lab7-code-section" open=""><summary>可編輯 C 程式範例：含中文註解與線上編輯器</summary><div class="content detail-body"><p>這一段提供可直接修改的 C 程式碼。可以按「複製程式」貼到線上編輯器執行，也可以下載 .c 檔案。</p><div class="codewrap"><div class="codebar"><span>lesson6_topic1_demo.c</span><div class="btns"><button class="btn green" onclick="copyCode('code1')">複製程式</button><button class="btn orange" onclick="downloadCode('code1','lesson6_topic1_demo.c')">下載 .c</button><a class="btn secondary" href="https://www.onlinegdb.com/online_c_compiler" target="_blank">OnlineGDB</a><a class="btn secondary" href="https://www.programiz.com/c-programming/online-compiler/" target="_blank">Programiz</a><a class="btn secondary" href="https://onecompiler.com/c" target="_blank">OneCompiler</a></div></div><textarea class="codearea" id="code1" spellcheck="false">/*
+  中文註解版程式：lesson6_topic1_demo.c
+  說明：主題 1：樹的基本概念示範。用 left-child / right-sibling 指標建立 Root 與 Children。
+  閱讀方式：先看資料結構定義，再看操作函式，最後看 main() 如何測試。
+*/
+
+// 匯入標準輸入輸出函式庫，提供 printf / scanf 等功能。
+#include &lt;stdio.h&gt;
+// 匯入標準函式庫，提供 malloc / free / exit 等記憶體與程式控制功能。
+#include &lt;stdlib.h&gt;
+
+// 定義節點結構：資料欄位存節點內容，指標欄位負責連到其他節點。
+typedef struct TreeNode {
+    char data;
+    struct TreeNode *leftChild;
+    struct TreeNode *rightSibling;
+} TreeNode;
+
+// 建立新節點：配置記憶體、填入資料，並把指標初始化為 NULL。
+TreeNode* createNode(char data) {
+    TreeNode* node = (TreeNode*)malloc(sizeof(TreeNode));
+    node-&gt;data = data;
+    node-&gt;leftChild = NULL;
+    node-&gt;rightSibling = NULL;
+    return node;
+}
+
+// 主程式：建立測試資料，呼叫上方函式，觀察輸出結果。
+int main(void) {
+    TreeNode *root = createNode('A');
+    root-&gt;leftChild = createNode('B');
+    root-&gt;leftChild-&gt;rightSibling = createNode('C');
+    printf("Root = %c\n", root-&gt;data);
+    printf("Children = %c, %c\n", root-&gt;leftChild-&gt;data, root-&gt;leftChild-&gt;rightSibling-&gt;data);
+    return 0;
+}
+</textarea></div></div></details>
+<details class="lab7-teaching-content" open=""><summary>程式題目教學內容：樹的基本概念示範</summary><div class="content detail-body">
+<h3>一、程式題目講解</h3>
+<p>本題用最小的 C 程式建立一個 root 與兩個 children，讓學生理解樹不是單純線性串列，而是由根節點往下分支的階層結構。重點觀念包含 root、children、leftChild 與 rightSibling 的連結方式。</p>
+<h3>二、完整程式碼</h3>
+<p>完整可執行程式碼已保留在上方「可編輯 C 程式範例：含中文註解與線上編輯器」區塊中，檔名為 <code>lesson6_topic1_demo.c</code>。該程式碼已加入中文註解，學生可以直接複製到 OnlineGDB、Programiz 或 OneCompiler 執行。</p>
+<h3>三、程式執行結果</h3>
+<pre><code>Root = A
+Children = B, C</code></pre>
+<p>輸出先顯示根節點 A，再顯示 A 的兩個孩子 B、C。因為程式中 A 的 leftChild 指向 B，而 B 的 rightSibling 指向 C，所以可以用 Left-Child Right-Sibling 的方式表示多個子節點。</p>
+<h3>四、程式流程圖與流程圖說明</h3>
+<p>本頁下方已保留原本的程式流程圖。閱讀流程圖時，可以依序掌握「初始化資料或節點 → 執行主要函式或判斷 → 輸出結果」的過程。流程由建立節點開始，先建立 A、B、C 三個節點，再讓 A 連到第一個孩子 B，並讓 B 連到同層兄弟 C，最後印出 root 與 children。</p>
+<h3>五、重要函數與語法說明</h3>
+<p>createNode(char data)：配置並初始化一個樹節點；malloc(sizeof(TreeNode))：向記憶體配置節點空間；printf()：輸出根節點與子節點資料。</p>
+<h3>六、整體說明</h3>
+<p>本題的重點是理解一般樹可以透過指標連結來表示，leftChild 負責往下一層，rightSibling 負責同一層的下一個節點。</p>
+</div></details>
+
+<section class="card program-flow-card">
+<h2>程式流程圖：Tree 基本概念判斷流程</h2>
+<p>下圖是本主題對應的程式執行流程，適合搭配本頁 C 程式碼一起看。</p>
+<div class="program-flow-figure"><img alt="主題 1 程式流程圖" class="program-flow-img" src="assets/program_flow_topic1.svg"/><div class="figure-caption">主題 1 程式流程圖：Tree 基本概念判斷流程</div></div>
+<div class="flow-explain"><h3>流程講解</h3><ol><li>先找出整棵樹的 root，因為所有 parent、child、subtree 的判斷都從 root 開始。</li><li>再依照節點之間的上下層關係建立 parent 與 children。</li><li>沒有 child 的節點標記為 leaf，有 child 的節點標記為 internal node。</li><li>最後計算 degree、level、height，讓程式能用數字描述 tree 結構。</li></ol><p>這張流程圖把本頁程式的執行順序整理成一條清楚路徑。閱讀時先看輸入與資料如何建立，再看條件判斷、指標或陣列索引如何改變，最後用輸出結果確認程式邏輯是否正確。</p></div>
+</section>
+</main><div class="footer">Lesson 6 Trees｜主題一：樹的基本概念</div></body></html>

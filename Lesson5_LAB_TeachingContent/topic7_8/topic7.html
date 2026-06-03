@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="zh-Hant"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/><link href="assets/style.css" rel="stylesheet"/><script src="assets/script.js"></script><title>Lesson 5 主題 7：Adding Polynomials 多項式相加</title></head><body>
+<header class="hero"><div class="inner"><span class="badge">Lesson 5｜主題 7｜投影片 15–17</span><h1>主題 7：Adding Polynomials 多項式相加</h1><p>用 Linked List 同時走訪兩個多項式，依照 exponent 比較完成相加。</p><div class="toolbar"><a class="btn secondary" href="../index.html">回 L5 首頁</a><a class="btn secondary" href="topic8.html">下一個：主題 8</a></div></div></header>
+<div class="wrap"><div class="layout"><aside class="sidebar"><div class="side-title">Lesson 5 主題導覽</div><nav class="nav"><a href="../index.html">L5 首頁</a><a class="active" href="topic7.html">7. Adding Polynomials 多項式相加</a>
+<a href="topic8.html">8. Circularly Linked List 環狀鏈結串列</a></nav></aside><main>
+<section class="card"><span class="badge">投影片 15–17</span><h2>一、主題核心概念</h2><p>多項式相加可以視為兩條已排序 linked list 的合併。若兩項 exponent 相同，就把 coefficient 相加；若 exponent 不同，就先複製 exponent 較大的項目到結果 C(x)。</p></section>
+<section class="card"><h2>二、投影片逐張下拉式詳細講解</h2><p>每一張投影片都已把圖片與自己的文字講解合併在同一個下拉式區塊中。點開後可以直接對照圖片閱讀說明。</p><div class="slide-detail-list"><details class="slide-detail"><summary>投影片 15｜Adding Polynomials：多項式相加（一）</summary><div class="slide-detail-body"><div class="slide-detail-grid"><div><img alt="投影片 15：Adding Polynomials：多項式相加（一）" class="slide-detail-img" src="assets/slide15.jpg"/><div class="figure-caption">投影片 15</div></div><div class="slide-explain"><h3>Adding Polynomials：多項式相加（一）</h3><h4>詳細說明與講解</h4><p>1、這張投影片開始示範多項式相加。每個節點代表一個項目，通常包含係數與指數，例如 9x^20、-1x^10 或 -12x^0。</p><p>2、多項式相加的基本規則是：指數相同的項才能合併，係數相加；指數不同的項不能合併，只能照順序放入結果多項式。</p><p>3、圖中 A(x)、B(x)、C(x) 分別代表兩個輸入多項式與相加結果。操作時會同時比較 A 與 B 目前節點的 exponent，決定要合併、取 A 的項，或取 B 的項。</p><p>4、這個流程很像 merge。因為兩條 Linked List 已經依照 exponent 排好，所以只要從前往後掃描一次，就可以產生結果。</p><div class="slide-memory">一句話記憶：多項式相加就是依 exponent 合併兩條有序串列。</div></div></div></div></details><details class="slide-detail"><summary>投影片 16｜Adding Polynomials：多項式相加（二）</summary><div class="slide-detail-body"><div class="slide-detail-grid"><div><img alt="投影片 16：Adding Polynomials：多項式相加（二）" class="slide-detail-img" src="assets/slide16.jpg"/><div class="figure-caption">投影片 16</div></div><div class="slide-explain"><h3>Adding Polynomials：多項式相加（二）</h3><h4>詳細說明與講解</h4><p>1、這張投影片延續多項式相加，展示比較與合併過程中的中間狀態。當 A 與 B 的目前項指數相同時，就把係數相加並放入 C。</p><p>2、如果係數相加後變成 0，通常不需要把該項放入結果，因為多項式表示法只保存非零項。這點對節省空間很重要。</p><p>3、若某一邊的指數較大，代表那一項目前沒有對應項可以合併，就直接複製到 C，然後該串列的指標往下一個節點移動。</p><p>4、這張圖的學習重點是 current pointer 的移動：合併時兩邊都移動；只複製 A 時 A 移動；只複製 B 時 B 移動。</p><div class="slide-memory">一句話記憶：指數相同就合併，不同就複製指數較大的那一項。</div></div></div></div></details><details class="slide-detail"><summary>投影片 17｜Adding Polynomials：多項式相加（三）</summary><div class="slide-detail-body"><div class="slide-detail-grid"><div><img alt="投影片 17：Adding Polynomials：多項式相加（三）" class="slide-detail-img" src="assets/slide17.jpg"/><div class="figure-caption">投影片 17</div></div><div class="slide-explain"><h3>Adding Polynomials：多項式相加（三）</h3><h4>詳細說明與講解</h4><p>1、這張投影片展示多項式相加接近完成時的結果。當其中一條串列已經走完，另一條串列剩下的項目就可以直接接到結果後面。</p><p>2、這是因為剩下的項已經沒有另一邊可以合併，而且原本已經按照 exponent 排好順序，所以不需要再逐一比較。</p><p>3、在程式實作上，這通常會寫成 while 或 for 迴圈：先處理兩邊都還有節點的情況，最後再把 A 剩下的節點或 B 剩下的節點接到 C。</p><p>4、這張也提醒我們 Linked List 在多項式應用上的優勢：結果多項式的長度不必事先知道，可以邊比較邊新增節點。</p><div class="slide-memory">一句話記憶：一邊走完後，另一邊剩下的項直接接到結果。</div></div></div></div></details></div></section>
+<section class="card"><h2>三、動畫流程圖：Adding Polynomials 多項式相加</h2><div class="flow-area" id="flow7"><div class="flow"><div class="node">A/B 指向首項</div><div class="node">比較 exp</div><div class="node">exp 相同相加</div><div class="node">exp 大者複製</div><div class="node">指標前進</div><div class="node">接上剩餘項</div></div><div class="progress"><div class="bar"></div></div><div class="stepbox"></div><div class="btns" style="margin-top:12px"><button class="btn secondary" onclick="prevFlow('flow7')">上一步</button><button class="btn" onclick="nextFlow('flow7')">下一步</button><button class="btn orange" onclick="playFlow('flow7')">自動播放</button><button class="btn secondary" onclick="resetFlow('flow7')">重新開始</button></div></div><script>initFlow('flow7',['A 與 B 各用一個指標指向目前項。','比較目前兩項的 exponent。','如果 exponent 相同，係數相加，非零才加入 C。','如果 exponent 不同，先複製 exponent 較大的那一項。','被處理的那一條串列指標往下一項。','當其中一條走完，把另一條剩餘項直接接到 C。']);</script></section>
+<section class="card"><h2>四、動畫表格：步驟與重點整理</h2><p>請按「下一步」或「自動播放」觀察本主題的操作流程與注意事項。</p><div class="flow-area" id="table7"><div class="anim-table-wrap"><table class="anim-table"><thead><tr><th>目前比較</th><th>判斷</th><th>C(x) 動作</th><th>指標移動</th></tr></thead><tbody><tr><td>A: 9x^20, B: 3x^10</td><td>20 &gt; 10</td><td>C 加入 9x^20</td><td>A 前進</td></tr><tr><td>A: -x^10, B: 3x^10</td><td>10 = 10</td><td>係數 -1+3=2</td><td>兩邊前進</td></tr><tr><td>A: 12, B: -7x^2</td><td>0 &lt; 2</td><td>C 加入 -7x^2</td><td>B 前進</td></tr><tr><td>A: 12, B: 2x</td><td>0 &lt; 1</td><td>C 加入 2x</td><td>B 前進</td></tr><tr><td>A: 12, B: -1</td><td>0 = 0</td><td>係數 12-1=11</td><td>完成</td></tr></tbody></table></div><div class="progress"><div class="bar"></div></div><div class="table-note"></div><div class="btns" style="margin-top:12px"><button class="btn secondary" onclick="prevTable('table7')">上一步</button><button class="btn" onclick="nextTable('table7')">下一步</button><button class="btn orange" onclick="playTable('table7')">自動播放</button><button class="btn secondary" onclick="resetTable('table7')">重新開始</button></div></div><script>initTable('table7',['A: 9x^20, B: 3x^10 → 20 > 10 → C 加入 9x^20 → A 前進','A: -x^10, B: 3x^10 → 10 = 10 → 係數 -1+3=2 → 兩邊前進','A: 12, B: -7x^2 → 0 < 2 → C 加入 -7x^2 → B 前進','A: 12, B: 2x → 0 < 1 → C 加入 2x → B 前進','A: 12, B: -1 → 0 = 0 → 係數 12-1=11 → 完成']);</script></section>
+<details open=""><summary>五、完整中文講解</summary><div class="content"><h3>（一）本主題要學會什麼？</h3><p>多項式相加可以視為兩條已排序 linked list 的合併。若兩項 exponent 相同，就把 coefficient 相加；若 exponent 不同，就先複製 exponent 較大的項目到結果 C(x)。</p><h3>（二）實作時最重要的觀念</h3><div class="grid2"><div class="mini"><b>資料結構</b><br/>先看清楚資料是用 Array、Node、Singly List、Circular List 或 Doubly List 表示。</div><div class="mini"><b>指標方向</b><br/>Linked List 題目幾乎都在考指標怎麼接、怎麼斷、怎麼重新連起來。</div><div class="mini"><b>特殊情況</b><br/>空串列、頭節點、尾節點、找不到資料，都是程式容易錯的地方。</div><div class="mini"><b>測試方式</b><br/>每做完 insert/delete，都用 print 檢查目前串列是否符合預期。</div></div><div class="example">多項式相加的想法很像 merge two sorted lists。排序依據不是係數大小，而是指數 exponent 的大小。</div></div></details>
+<details open=""><summary>六、可編輯 C 程式範例：含中文註解與線上編輯器</summary><div class="content"><div class="codewrap"><div class="codebar"><span>polynomial_addition.c</span><div class="btns"><button class="btn green" onclick="copyCode('code7')">複製程式</button><button class="btn orange" onclick="downloadCode('code7','polynomial_addition.c')">下載 .c</button><a class="btn secondary" href="https://www.onlinegdb.com/online_c_compiler" target="_blank">OnlineGDB</a><a class="btn secondary" href="https://www.programiz.com/c-programming/online-compiler/" target="_blank">Programiz</a><a class="btn secondary" href="https://onecompiler.com/c" target="_blank">OneCompiler</a></div></div><textarea class="codearea" id="code7" spellcheck="false">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+/*
+    Adding Polynomials：用 Linked List 做多項式相加
+    假設兩個多項式都已經依 exponent 由大到小排序。
+*/
+
+typedef struct Term {
+    int coef;
+    int exp;
+    struct Term *next;
+} Term;
+
+Term* createTerm(int coef, int exp) {
+    Term *t = (Term*)malloc(sizeof(Term));
+    if (!t) exit(1);
+    t-&gt;coef = coef;
+    t-&gt;exp = exp;
+    t-&gt;next = NULL;
+    return t;
+}
+
+void appendTerm(Term **poly, int coef, int exp) {
+    if (coef == 0) return;
+    Term *newTerm = createTerm(coef, exp);
+    if (*poly == NULL) { *poly = newTerm; return; }
+    Term *p = *poly;
+    while (p-&gt;next) p = p-&gt;next;
+    p-&gt;next = newTerm;
+}
+
+Term* addPoly(Term *A, Term *B) {
+    Term *C = NULL;
+    while (A != NULL &amp;&amp; B != NULL) {
+        if (A-&gt;exp == B-&gt;exp) {
+            appendTerm(&amp;C, A-&gt;coef + B-&gt;coef, A-&gt;exp);
+            A = A-&gt;next;
+            B = B-&gt;next;
+        } else if (A-&gt;exp &gt; B-&gt;exp) {
+            appendTerm(&amp;C, A-&gt;coef, A-&gt;exp);
+            A = A-&gt;next;
+        } else {
+            appendTerm(&amp;C, B-&gt;coef, B-&gt;exp);
+            B = B-&gt;next;
+        }
+    }
+    while (A != NULL) { appendTerm(&amp;C, A-&gt;coef, A-&gt;exp); A = A-&gt;next; }
+    while (B != NULL) { appendTerm(&amp;C, B-&gt;coef, B-&gt;exp); B = B-&gt;next; }
+    return C;
+}
+
+void printPoly(Term *p) {
+    if (!p) { printf("0\n"); return; }
+    while (p) {
+        printf("%dx^%d", p-&gt;coef, p-&gt;exp);
+        if (p-&gt;next) printf(" + ");
+        p = p-&gt;next;
+    }
+    printf("\n");
+}
+
+int main(void) {
+    Term *A = NULL, *B = NULL;
+    appendTerm(&amp;A, 9, 20); appendTerm(&amp;A, -1, 10); appendTerm(&amp;A, 12, 0);
+    appendTerm(&amp;B, 3, 10); appendTerm(&amp;B, -7, 2); appendTerm(&amp;B, 2, 1); appendTerm(&amp;B, -1, 0);
+    Term *C = addPoly(A, B);
+    printf("A(x) = "); printPoly(A);
+    printf("B(x) = "); printPoly(B);
+    printf("C(x) = "); printPoly(C);
+    return 0;
+}
+</textarea></div></div></details>
+
+<section class="card program-teaching-card">
+<h2>新增：程式題目教學內容（依指定格式）</h2>
+<div class="content">
+<h3>一、程式題目講解</h3>
+<p>本題示範用 Linked List 進行多項式相加。學生需要理解兩個已排序多項式可以用雙指標同時走訪，依照 exponent 大小決定要合併或直接保留項目。</p>
+<h3>二、完整程式碼</h3>
+<p>以下為本頁程式題目的完整可執行 C 程式碼，已在重要程式區塊加入中文註解，方便初學者理解程式功能與流程。</p>
+<pre class="codearea" style="height:auto;min-height:0;white-space:pre-wrap;overflow:auto;">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+/*
+    Adding Polynomials：用 Linked List 做多項式相加
+    假設兩個多項式都已經依 exponent 由大到小排序。
+*/
+
+typedef struct Term {
+    int coef;
+    int exp;
+    struct Term *next;
+} Term;
+
+Term* createTerm(int coef, int exp) {
+    Term *t = (Term*)malloc(sizeof(Term));
+    if (!t) exit(1);
+    t-&gt;coef = coef;
+    t-&gt;exp = exp;
+    t-&gt;next = NULL;
+    return t;
+}
+
+void appendTerm(Term **poly, int coef, int exp) {
+    if (coef == 0) return;
+    Term *newTerm = createTerm(coef, exp);
+    if (*poly == NULL) { *poly = newTerm; return; }
+    Term *p = *poly;
+    while (p-&gt;next) p = p-&gt;next;
+    p-&gt;next = newTerm;
+}
+
+Term* addPoly(Term *A, Term *B) {
+    Term *C = NULL;
+    while (A != NULL &amp;&amp; B != NULL) {
+        if (A-&gt;exp == B-&gt;exp) {
+            appendTerm(&amp;C, A-&gt;coef + B-&gt;coef, A-&gt;exp);
+            A = A-&gt;next;
+            B = B-&gt;next;
+        } else if (A-&gt;exp &gt; B-&gt;exp) {
+            appendTerm(&amp;C, A-&gt;coef, A-&gt;exp);
+            A = A-&gt;next;
+        } else {
+            appendTerm(&amp;C, B-&gt;coef, B-&gt;exp);
+            B = B-&gt;next;
+        }
+    }
+    while (A != NULL) { appendTerm(&amp;C, A-&gt;coef, A-&gt;exp); A = A-&gt;next; }
+    while (B != NULL) { appendTerm(&amp;C, B-&gt;coef, B-&gt;exp); B = B-&gt;next; }
+    return C;
+}
+
+void printPoly(Term *p) {
+    if (!p) { printf(&quot;0\n&quot;); return; }
+    while (p) {
+        printf(&quot;%dx^%d&quot;, p-&gt;coef, p-&gt;exp);
+        if (p-&gt;next) printf(&quot; + &quot;);
+        p = p-&gt;next;
+    }
+    printf(&quot;\n&quot;);
+}
+
+int main(void) {
+    Term *A = NULL, *B = NULL;
+    appendTerm(&amp;A, 9, 20); appendTerm(&amp;A, -1, 10); appendTerm(&amp;A, 12, 0);
+    appendTerm(&amp;B, 3, 10); appendTerm(&amp;B, -7, 2); appendTerm(&amp;B, 2, 1); appendTerm(&amp;B, -1, 0);
+    Term *C = addPoly(A, B);
+    printf(&quot;A(x) = &quot;); printPoly(A);
+    printf(&quot;B(x) = &quot;); printPoly(B);
+    printf(&quot;C(x) = &quot;); printPoly(C);
+    return 0;
+}
+</pre>
+<h3>三、程式執行結果</h3>
+<p>程式執行後會得到以下輸出：</p>
+<pre class="codearea" style="height:auto;min-height:0;white-space:pre-wrap;overflow:auto;">A(x) = 9x^20 + -1x^10 + 12x^0
+B(x) = 3x^10 + -7x^2 + 2x^1 + -1x^0
+C(x) = 9x^20 + 2x^10 + -7x^2 + 2x^1 + 11x^0</pre>
+<p>A 與 B 都依照指數由大到小排列。addPoly 比較 A 與 B 的 exp：相同指數就係數相加，不同指數則保留指數較大的那一項。-1x^10 與 3x^10 合併成 2x^10，12x^0 與 -1x^0 合併成 11x^0，所以 C(x) 會得到輸出中的結果。</p>
+<h3>四、程式流程圖與流程圖說明</h3>
+<p>本題流程圖如下，呈現程式的主要執行順序、判斷條件與資料處理流程。</p>
+<div class="program-flow-figure"><img alt="主題 7 程式流程圖" class="program-flow-img" src="assets/program_flow_topic7.svg"/><div class="figure-caption">主題 7：Adding Polynomials 多項式相加：程式流程圖</div></div>
+<p>流程先建立 A、B 兩個多項式，再讓 addPoly 同時比較兩條串列。若指數相同就合併係數；若 A 的指數較大，先放 A 的項；若 B 的指數較大，先放 B 的項。最後把剩餘項目接到結果 C。</p>
+<h3>五、重要函數與語法說明</h3>
+<ol><li>addPoly(Term *A, Term *B)：多項式相加的主函式。</li><li>appendTerm：將結果項目加入 C 多項式。</li><li>A-&gt;exp == B-&gt;exp：判斷同類項。</li><li>while (A != NULL &amp;&amp; B != NULL)：同時走訪兩個多項式。</li><li>if (coef == 0) return：避免把係數為 0 的項放入結果。</li></ol>
+<h3>六、整體說明</h3>
+<p>本題核心是同類項合併。只要兩個多項式已經排序，就能像合併兩條有序串列一樣完成相加，這也是 Linked List 在資料合併問題中的典型應用。</p>
+</div>
+</section>
+<section class="card program-flow-card">
+<h2>七、程式流程圖：Polynomial Addition 合併流程</h2>
+<p>下圖是本主題對應的程式執行流程，適合搭配下方 C 程式碼一起看。</p>
+<div class="program-flow-figure"><img alt="主題 7 程式流程圖" class="program-flow-img" src="assets/program_flow_topic7.svg"/><div class="figure-caption">主題 7 程式流程圖：Polynomial Addition 合併流程</div></div>
+<div class="flow-explain"><h3>流程講解</h3><ol><li>兩個多項式都用 termArray 表示，因此可以像 merge 一樣從前往後比較。</li><li>若兩邊 exponent 相同，就把 coefficient 相加。</li><li>若相加結果不是 0，才加入結果多項式。</li><li>若 exponent 不同，先複製 exponent 較大的那一項。</li><li>其中一邊掃完後，再把另一邊剩下的項目全部接到結果後面。</li></ol><p>這張流程圖把本頁程式的執行順序整理成一條清楚路徑。閱讀時先看資料如何被建立，再看條件判斷與指標如何改變，最後用輸出結果確認程式邏輯是否正確。</p></div>
+</section>
+</main></div></div><footer class="footer">Lesson 5｜主題 7：Adding Polynomials 多項式相加</footer></body></html>

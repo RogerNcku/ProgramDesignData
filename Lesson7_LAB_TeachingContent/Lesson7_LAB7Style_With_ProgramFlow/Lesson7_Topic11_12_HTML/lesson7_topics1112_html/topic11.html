@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="zh-Hant"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/><link href="assets/style.css" rel="stylesheet"/><script src="assets/script.js"></script><title>Lesson 7 主題 11｜Expression 綜合複習</title>
+<style>
+.slide-dropdown-card{margin-top:18px;}
+.slide-dropdown-card h2{margin-bottom:12px;}
+.slide-detail-block{border:1px solid rgba(120,120,120,.25);border-radius:16px;margin:14px 0;background:rgba(255,255,255,.04);overflow:hidden;}
+.slide-detail-block summary{cursor:pointer;font-weight:700;padding:14px 18px;line-height:1.5;background:rgba(0,0,0,.035);}
+.slide-detail-inner{display:grid;grid-template-columns:minmax(280px,46%) 1fr;gap:18px;align-items:start;padding:18px;}
+.slide-detail-image{width:100%;max-width:100%;border-radius:14px;box-shadow:0 8px 24px rgba(0,0,0,.16);background:#fff;}
+.slide-detail-caption{text-align:center;font-size:.92rem;opacity:.82;margin-top:8px;}
+.slide-detail-text h3{margin-top:0;margin-bottom:10px;}
+.slide-detail-text p{line-height:1.85;margin:.55rem 0;}
+.slide-memory{padding:10px 12px;border-left:4px solid #f59e0b;background:rgba(245,158,11,.10);border-radius:10px;margin-top:10px;}
+@media(max-width:820px){.slide-detail-inner{grid-template-columns:1fr}.slide-detail-block summary{padding:12px 14px}.slide-detail-inner{padding:14px}}
+</style>
+</head><body>
+<header class="hero"><div class="inner"><h1>Lesson 7 主題 11｜Expression 綜合複習</h1><p>本檔延續 Lesson 7 前面主題的相同版型，加入圖片、動畫流程圖、動畫表格、下拉式講解與可編輯 C 程式碼。主題 11–12 是依照 Lesson 7 Expressions 的內容做成「補充統整與練習」版本，方便把前面 Infix、Postfix、Prefix、Stack、Expression Tree 的概念整合起來。</p><div class="toolbar"><a class="btn secondary" href="topic11.html">主題 11</a><a class="btn secondary" href="topic12.html">主題 12</a><a class="btn orange" href="https://www.onlinegdb.com/online_c_compiler" target="_blank">OnlineGDB</a><a class="btn green" href="https://www.programiz.com/c-programming/online-compiler/" target="_blank">Programiz</a><a class="btn" href="https://onecompiler.com/c" target="_blank">OneCompiler</a></div></div></header>
+<div class="wrap"><div class="layout"><aside class="sidebar"><div class="side-title">Lesson 7 主題 11–12</div><nav class="nav"><a class="" href="../../index.html">主頁</a><a class="active" href="topic11.html">11. 綜合複習與觀念整理</a><a class="" href="topic12.html">12. 整合範例與練習</a></nav></aside><main>
+<section class="card"><span class="badge">Topic 11</span><h2>Expression 綜合複習與觀念整理</h2><p>這個主題把 Lesson 7 前半段的核心概念重新整理：Expression 是由 operand 與 operator 組合而成；Infix 是人類最常看到的寫法，但是電腦處理時需要判斷括號與優先順序；Postfix 與 Prefix 則把運算順序藏在符號排列中，因此比較適合用 Stack 或 Tree 進行處理。</p><div class="pill-list"><span class="pill">Operand</span><span class="pill">Operator</span><span class="pill">Infix</span><span class="pill">Postfix</span><span class="pill">Prefix</span><span class="pill">Priority</span></div></section>
+<section class="card slide-dropdown-card"><h2>一、投影片逐張下拉式詳細講解</h2><p>每一張投影片都已和自己的圖片、詳細中文說明、核心觀念、學習重點與一句話記憶整合在同一個下拉式區塊中。</p><details class="slide-detail-block" open=""><summary>投影片說明 Expression、Infix、Postfix、Prefix。</summary><div class="slide-detail-inner"><figure><img alt="投影片說明 Expression、Infix、Postfix、Prefix。" class="slide-detail-image slide-img" src="assets/slide2.jpg"/><figcaption class="slide-detail-caption">投影片說明 Expression、Infix、Postfix、Prefix。</figcaption></figure><div class="slide-detail-text"><h3>Expressions、Infix、Postfix、Prefix 基本定義</h3><p><b>（一）這張投影片在說什麼？</b> 這張投影片正式定義 Expression 是由 operands 與 operators 組成。Operand 是被運算的資料，例如 A、B、5、10；Operator 是負責計算的符號，例如 +、-、*、/。</p><p><b>（二）核心觀念</b> 同一個運算可以有三種常見寫法：Infix 是運算子放中間，例如 A+B；Postfix 是運算子放後面，例如 AB+；Prefix 是運算子放前面，例如 +AB。差別只在符號位置，但會影響程式如何解析。</p><p><b>（三）為什麼重要？</b> 人類習慣 Infix，因為它接近數學課本的寫法；電腦常用 Postfix 或 Prefix，因為它們可以減少括號與優先順序的判斷。</p><p><b>（四）學習與考試重點</b> 請特別記住：Infix 要考慮括號與優先順序；Postfix 與 Prefix 通常可以直接配合 Stack 或 Tree 處理。</p><div class="slide-memory">一句話記憶：Infix 給人看，Postfix / Prefix 更方便給電腦算。</div></div></div></details><details class="slide-detail-block"><summary>投影片說明 Infix 需要運算優先順序與括號。</summary><div class="slide-detail-inner"><figure><img alt="投影片說明 Infix 需要運算優先順序與括號。" class="slide-detail-image slide-img" src="assets/slide3.jpg"/><figcaption class="slide-detail-caption">投影片說明 Infix 需要運算優先順序與括號。</figcaption></figure><div class="slide-detail-text"><h3>Infix Expressions 中序表示法</h3><p><b>（一）這張投影片在說什麼？</b> 這張投影片說明 Infix Expression，也就是我們最熟悉的中序寫法。中序的特色是運算子出現在兩個運算元中間，例如 A+B、A*B+C。</p><p><b>（二）核心觀念</b> Infix 的問題在於它必須依賴 operation hierarchy，也就是運算優先順序。一般規則是括號最優先，接著乘除，最後加減；如果沒有正確處理，計算結果就會錯。</p><p><b>（三）為什麼重要？</b> 這也是為什麼電腦不能只從左到右盲目計算 Infix。它必須先判斷括號、優先順序與結合方向，才知道真正的計算流程。</p><p><b>（四）學習與考試重點</b> 常見考點是比較 5+2*3 與 (5+2)*3，前者先乘後加，後者先算括號。</p><div class="slide-memory">一句話記憶：Infix 好讀，但電腦處理時最麻煩。</div></div></div></details></section>
+<section class="card"><h2>動畫流程圖：從 Expression 到三種表示法</h2><div class="flow-area" id="flow11"><div class="flow"><div class="node">輸入 Expression</div><div class="node">拆成 Operand / Operator</div><div class="node">判斷表示法</div><div class="node">檢查優先順序</div><div class="node">決定計算順序</div></div><div class="progress"><div class="bar"></div></div><div class="stepbox"></div><div class="btns" style="margin-top:12px"><button class="btn secondary" onclick="prevFlow('flow11')">上一步</button><button class="btn" onclick="nextFlow('flow11')">下一步</button><button class="btn orange" onclick="playFlow('flow11')">自動播放</button><button class="btn secondary" onclick="resetFlow('flow11')">重新開始</button></div></div><script>initFlow('flow11',['先輸入一個運算式，例如 A+B*C。','把 A、B、C 視為 operand，把 +、* 視為 operator。','觀察 operator 的位置：在中間是 Infix，在後面是 Postfix，在前面是 Prefix。','如果是 Infix，就必須檢查 * 是否比 + 優先。','最後確認真正的計算順序是先 B*C，再加上 A。']);</script></section>
+<section class="card"><h2>動畫表格：同一個式子的三種表示法</h2><div class="table-wrap"><table class="anim-table" id="table11"><thead><tr><th>步驟</th><th>表示法</th><th>範例</th><th>說明</th></tr></thead><tbody><tr><td>1</td><td>Infix</td><td>A + B</td><td>運算子在兩個運算元中間。</td></tr><tr><td>2</td><td>Postfix</td><td>A B +</td><td>運算子放在運算元後面。</td></tr><tr><td>3</td><td>Prefix</td><td>+ A B</td><td>運算子放在運算元前面。</td></tr><tr><td>4</td><td>Infix 複合式</td><td>A + B * C</td><td>需要先看 * 的優先順序。</td></tr><tr><td>5</td><td>Postfix 複合式</td><td>A B C * +</td><td>從左到右配合 Stack 就可計算。</td></tr></tbody></table></div><div class="btns" style="margin-top:12px"><button class="btn secondary" onclick="prevRow('table11')">上一步</button><button class="btn" onclick="nextRow('table11')">下一步</button><button class="btn secondary" onclick="resetTable('table11')">重新開始</button></div><script>initTable('table11')</script></section>
+<section class="card"><details class="details" open=""><summary>完整中文講解</summary><p>Expression 的基本結構是「運算元加上運算子」。例如 A+B*C 中，A、B、C 是運算元，+ 與 * 是運算子。Infix 的優點是容易閱讀，但缺點是程式必須知道優先順序。像 A+B*C 不能從左到右直接算，因為乘法要先做，所以真正順序是 A+(B*C)。Postfix 與 Prefix 則把運算子放在固定位置，使得電腦可以用比較一致的規則處理。</p></details><details class="details"><summary>範例說明</summary><p>以 A+B*C 為例，Infix 是 A+B*C；Postfix 是 ABC*+；Prefix 是 +A*BC。雖然三種寫法不同，但代表同一個運算意義。這也是 Lesson 7 後面要學 Stack 與 Expression Tree 的原因：它們可以幫助程式把人類習慣的 Infix 轉成電腦較容易處理的形式。</p></details></section>
+<section class="card"><h2>C 程式範例：Expression Token 分析器</h2><p>這個程式可以輸入一個 Infix expression，逐字判斷每個符號是 operand、operator 或括號，並顯示 operator 的優先順序。</p><div class="btns" style="margin-bottom:12px"><button class="btn" onclick="copyCode('code11')">複製程式碼</button><a class="btn orange" href="https://www.onlinegdb.com/online_c_compiler" target="_blank">到 OnlineGDB 編輯</a><a class="btn green" href="https://www.programiz.com/c-programming/online-compiler/" target="_blank">到 Programiz 編輯</a><a class="btn" href="https://onecompiler.com/c" target="_blank">到 OneCompiler 編輯</a></div><textarea class="codebox" id="code11">#include &lt;stdio.h&gt;
+#include &lt;ctype.h&gt;
+#include &lt;string.h&gt;
+
+/*
+   Lesson 7 主題 11：Expression 綜合複習工具
+   功能：
+   1. 逐字分析 expression 裡的 token
+   2. 判斷 operand / operator / parenthesis
+   3. 顯示運算子的優先順序
+   這個程式適合用來複習主題 1 到主題 10 的基本概念。
+*/
+
+// 判斷是否為運算子
+int isOperator(char ch) {
+    return ch == '+' || ch == '-' || ch == '*' || ch == '/' || ch == '^';
+}
+
+// 回傳運算子優先順序，數字越大代表越優先
+int priority(char op) {
+    if (op == '^') return 3;
+    if (op == '*' || op == '/') return 2;
+    if (op == '+' || op == '-') return 1;
+    return 0;
+}
+
+int main() {
+    char exp[100];
+
+    printf("請輸入一個 Infix expression，例如 A+B*C 或 (A+B)*C：\n");
+    scanf("%99s", exp);
+
+    printf("\n逐步分析結果：\n");
+    printf("--------------------------------------\n");
+    printf("字元\t類型\t\t補充說明\n");
+    printf("--------------------------------------\n");
+
+    for (int i = 0; i &lt; strlen(exp); i++) {
+        char ch = exp[i];
+
+        if (isalnum(ch)) {
+            // isalnum 表示英文字母或數字，這裡視為 operand
+            printf("%c\tOperand\t\t運算元，可代表變數或數字\n", ch);
+        } else if (isOperator(ch)) {
+            // 運算子需要看優先順序
+            printf("%c\tOperator\t優先順序 = %d\n", ch, priority(ch));
+        } else if (ch == '(') {
+            printf("%c\tLeft Paren\t左括號，代表新的計算範圍開始\n", ch);
+        } else if (ch == ')') {
+            printf("%c\tRight Paren\t右括號，代表括號內要先完成\n", ch);
+        } else {
+            printf("%c\tUnknown\t\t不是本程式處理的符號\n", ch);
+        }
+    }
+
+    printf("--------------------------------------\n");
+    printf("複習重點：Infix 對人類直覺，但程式需要判斷括號與運算子優先順序。\n");
+
+    return 0;
+}
+</textarea></section>
+
+<section class="card program-teaching-card" id="program-teaching-content" style="margin-top:18px;">
+  <h2>程式題目教學內容</h2>
+
+  <details class="details" open>
+    <summary>一、程式題目講解</summary>
+    <p>這個程式用來複習 Expression 的基本組成，會逐字分析輸入的 Infix expression，判斷每個 token 是運算元、運算子或括號，並顯示運算子的優先順序。</p>
+  </details>
+
+  <details class="details">
+    <summary>二、完整程式碼</summary>
+    <p>以下保留本頁原本的完整 C 程式碼，並搭配中文註解說明主要功能與流程。</p>
+    <pre class="codebox" style="white-space:pre-wrap;overflow:auto;max-height:520px;"><code>#include &lt;stdio.h&gt;
+#include &lt;ctype.h&gt;
+#include &lt;string.h&gt;
+
+/*
+   Lesson 7 主題 11：Expression 綜合複習工具
+   功能：
+   1. 逐字分析 expression 裡的 token
+   2. 判斷 operand / operator / parenthesis
+   3. 顯示運算子的優先順序
+   這個程式適合用來複習主題 1 到主題 10 的基本概念。
+*/
+
+// 判斷是否為運算子
+int isOperator(char ch) {
+    return ch == &#x27;+&#x27; || ch == &#x27;-&#x27; || ch == &#x27;*&#x27; || ch == &#x27;/&#x27; || ch == &#x27;^&#x27;;
+}
+
+// 回傳運算子優先順序，數字越大代表越優先
+int priority(char op) {
+    if (op == &#x27;^&#x27;) return 3;
+    if (op == &#x27;*&#x27; || op == &#x27;/&#x27;) return 2;
+    if (op == &#x27;+&#x27; || op == &#x27;-&#x27;) return 1;
+    return 0;
+}
+
+int main() {
+    char exp[100];
+
+    printf(&quot;請輸入一個 Infix expression，例如 A+B*C 或 (A+B)*C：\n&quot;);
+    scanf(&quot;%99s&quot;, exp);
+
+    printf(&quot;\n逐步分析結果：\n&quot;);
+    printf(&quot;--------------------------------------\n&quot;);
+    printf(&quot;字元\t類型\t\t補充說明\n&quot;);
+    printf(&quot;--------------------------------------\n&quot;);
+
+    for (int i = 0; i &lt; strlen(exp); i++) {
+        char ch = exp[i];
+
+        if (isalnum(ch)) {
+            // isalnum 表示英文字母或數字，這裡視為 operand
+            printf(&quot;%c\tOperand\t\t運算元，可代表變數或數字\n&quot;, ch);
+        } else if (isOperator(ch)) {
+            // 運算子需要看優先順序
+            printf(&quot;%c\tOperator\t優先順序 = %d\n&quot;, ch, priority(ch));
+        } else if (ch == &#x27;(&#x27;) {
+            printf(&quot;%c\tLeft Paren\t左括號，代表新的計算範圍開始\n&quot;, ch);
+        } else if (ch == &#x27;)&#x27;) {
+            printf(&quot;%c\tRight Paren\t右括號，代表括號內要先完成\n&quot;, ch);
+        } else {
+            printf(&quot;%c\tUnknown\t\t不是本程式處理的符號\n&quot;, ch);
+        }
+    }
+
+    printf(&quot;--------------------------------------\n&quot;);
+    printf(&quot;複習重點：Infix 對人類直覺，但程式需要判斷括號與運算子優先順序。\n&quot;);
+
+    return 0;
+}
+</code></pre>
+  </details>
+
+  <details class="details" open>
+    <summary>三、程式執行結果</summary>
+    <p><strong>範例輸入：A+B*C</strong></p>
+    <pre class="codebox" style="white-space:pre-wrap;overflow:auto;max-height:420px;"><code>請輸入一個 Infix expression，例如 A+B*C 或 (A+B)*C：
+
+逐步分析結果：
+--------------------------------------
+字元	類型		補充說明
+--------------------------------------
+A	Operand		運算元，可代表變數或數字
++	Operator	優先順序 = 1
+B	Operand		運算元，可代表變數或數字
+*	Operator	優先順序 = 2
+C	Operand		運算元，可代表變數或數字
+--------------------------------------
+複習重點：Infix 對人類直覺，但程式需要判斷括號與運算子優先順序。</code></pre>
+    <p>程式會把 A、B、C 判斷為 Operand，把 + 與 * 判斷為 Operator。由於 * 的優先順序是 2，+ 的優先順序是 1，所以學生可以清楚看到乘法比加法優先。</p>
+  </details>
+
+  <details class="details">
+    <summary>四、程式流程圖與流程圖說明</summary>
+    <svg class="teaching-flow-svg" viewBox="0 0 760 474" role="img" aria-label="Expression 綜合複習工具 流程圖" style="width:100%;max-width:820px;height:auto;display:block;margin:12px auto;"><defs><linearGradient id="g" x1="0" x2="1"><stop offset="0%" stop-color="#eef6ff"/><stop offset="100%" stop-color="#ffffff"/></linearGradient></defs><rect x="70" y="50" width="620" height="46" rx="14" fill="url(#g)" stroke="#7aa7d9" stroke-width="2"></rect><text x="380" y="79" text-anchor="middle" font-size="16" fill="#1f2937">1. 輸入一個 Infix expression</text><line x1="380" y1="96" x2="380" y2="108" stroke="#7aa7d9" stroke-width="2"></line><polygon points="374,108 386,108 380,114" fill="#7aa7d9"></polygon><rect x="70" y="114" width="620" height="46" rx="14" fill="url(#g)" stroke="#7aa7d9" stroke-width="2"></rect><text x="380" y="143" text-anchor="middle" font-size="16" fill="#1f2937">2. 逐字讀取 expression</text><line x1="380" y1="160" x2="380" y2="172" stroke="#7aa7d9" stroke-width="2"></line><polygon points="374,172 386,172 380,178" fill="#7aa7d9"></polygon><rect x="70" y="178" width="620" height="46" rx="14" fill="url(#g)" stroke="#7aa7d9" stroke-width="2"></rect><text x="380" y="207" text-anchor="middle" font-size="16" fill="#1f2937">3. 判斷是否為運算元</text><line x1="380" y1="224" x2="380" y2="236" stroke="#7aa7d9" stroke-width="2"></line><polygon points="374,236 386,236 380,242" fill="#7aa7d9"></polygon><rect x="70" y="242" width="620" height="46" rx="14" fill="url(#g)" stroke="#7aa7d9" stroke-width="2"></rect><text x="380" y="271" text-anchor="middle" font-size="16" fill="#1f2937">4. 判斷是否為運算子</text><line x1="380" y1="288" x2="380" y2="300" stroke="#7aa7d9" stroke-width="2"></line><polygon points="374,300 386,300 380,306" fill="#7aa7d9"></polygon><rect x="70" y="306" width="620" height="46" rx="14" fill="url(#g)" stroke="#7aa7d9" stroke-width="2"></rect><text x="380" y="335" text-anchor="middle" font-size="16" fill="#1f2937">5. 若是括號則標示括號功能</text><line x1="380" y1="352" x2="380" y2="364" stroke="#7aa7d9" stroke-width="2"></line><polygon points="374,364 386,364 380,370" fill="#7aa7d9"></polygon><rect x="70" y="370" width="620" height="46" rx="14" fill="url(#g)" stroke="#7aa7d9" stroke-width="2"></rect><text x="380" y="399" text-anchor="middle" font-size="16" fill="#1f2937">6. 輸出每個 token 的類型與補充說明</text></svg>
+    <p>流程圖說明：本程式的主要邏輯可以依照下列順序理解：</p>
+    <ol><li>輸入一個 Infix expression</li><li>逐字讀取 expression</li><li>判斷是否為運算元</li><li>判斷是否為運算子</li><li>若是括號則標示括號功能</li><li>輸出每個 token 的類型與補充說明</li></ol>
+  </details>
+
+  <details class="details">
+    <summary>五、重要函數與語法說明</summary>
+    <ul><li>isOperator(ch)：判斷字元是否為運算子。</li><li>priority(op)：回傳運算子優先順序。</li><li>isalnum(ch)：判斷是否為字母或數字。</li><li>scanf(&quot;%99s&quot;, exp)：讀取 expression 並限制輸入長度。</li><li>strlen(exp)：取得 expression 長度。</li></ul>
+  </details>
+
+  <details class="details" open>
+    <summary>六、整體說明</summary>
+    <p>本題重點是把 Lesson 7 前面學過的 expression 元素重新整理。學生可以透過逐字分析理解電腦如何辨認運算元、運算子與括號。</p>
+  </details>
+</section>
+</main></div></div><footer class="footer">Lesson 7 Expressions｜Topic 11–12 HTML 教學檔</footer></body></html>

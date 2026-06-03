@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-Hant"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/><link href="assets/style.css" rel="stylesheet"/><script src="assets/script.js"></script><title>Lesson 5 主題 10：Doubly Linked List 的插入與刪除</title></head><body>
+<header class="hero"><div class="inner"><span class="badge">Lesson 5｜主題 10｜投影片 21–22</span><h1>主題 10：Doubly Linked List 的插入與刪除</h1><p>插入與刪除都要同時維護左右兩個方向的指標。</p><div class="toolbar"><a class="btn secondary" href="../index.html">回 L5 首頁</a><a class="btn secondary" href="topic9.html">上一個：主題 9</a></div></div></header>
+<div class="wrap"><div class="layout"><aside class="sidebar"><div class="side-title">Lesson 5 主題導覽</div><nav class="nav"><a href="../index.html">L5 首頁</a><a href="topic9.html">9. Doubly Linked List 雙向鏈結串列基本概念</a>
+<a class="active" href="topic10.html">10. Doubly Linked List 的插入與刪除</a></nav></aside><main>
+<section class="card"><span class="badge">投影片 21–22</span><h2>一、主題核心概念</h2><p>雙向鏈結串列插入與刪除時，必須同時處理 llink 與 rlink。插入新節點要讓新節點接前後，也要讓前後節點接回新節點；刪除則讓前後節點直接互相連接。</p></section>
+<section class="card"><h2>二、投影片逐張下拉式詳細講解</h2><p>每一張投影片都已把圖片與自己的文字講解合併在同一個下拉式區塊中。點開後可以直接對照圖片閱讀說明。</p><div class="slide-detail-list"><details class="slide-detail"><summary>投影片 21｜Insertion in Doubly Linked List 雙向串列插入</summary><div class="slide-detail-body"><div class="slide-detail-grid"><div><img alt="投影片 21：Insertion in Doubly Linked List 雙向串列插入" class="slide-detail-img" src="assets/slide21.jpg"/><div class="figure-caption">投影片 21</div></div><div class="slide-explain"><h3>Insertion in Doubly Linked List 雙向串列插入</h3><h4>詳細說明與講解</h4><p>1、這張投影片說明在雙向鏈結串列中插入一個新節點。因為每個節點有 left link 與 right link，所以插入時要更新四個連結。</p><p>2、假設要把 node 插入 current 前面或某兩個節點中間，必須先讓 node 的左連結接到前一個節點，node 的右連結接到 current。</p><p>3、接著要讓前一個節點的右連結指向 node，並讓 current 的左連結指向 node。這樣左右兩個方向才都能正常走訪。</p><p>4、投影片列出的步驟可以當作寫程式的順序參考。雙向串列比單向串列更容易回頭找節點，但插入時 pointer 更新較多，順序更要小心。</p><div class="slide-memory">一句話記憶：雙向串列插入通常要改四條 link。</div></div></div></div></details><details class="slide-detail"><summary>投影片 22｜Deletion in Doubly Linked List 雙向串列刪除</summary><div class="slide-detail-body"><div class="slide-detail-grid"><div><img alt="投影片 22：Deletion in Doubly Linked List 雙向串列刪除" class="slide-detail-img" src="assets/slide22.jpg"/><div class="figure-caption">投影片 22</div></div><div class="slide-explain"><h3>Deletion in Doubly Linked List 雙向串列刪除</h3><h4>詳細說明與講解</h4><p>1、這張投影片說明雙向鏈結串列的刪除。刪除 node 時，要讓 node 左邊的節點直接接到 node 右邊的節點，並且兩個方向都要接好。</p><p>2、核心操作通常是 node.left.link = node.link，以及 node.link.left = node.left。意思是左邊節點的 next 跳過 node，右邊節點的 prev 也跳過 node。</p><p>3、和單向串列相比，雙向串列刪除時不一定需要額外保存 previous，因為 node 本身就有 left 或 prev 可以找到前一個節點。</p><p>4、不過如果刪除的是特殊位置，例如第一個資料節點、最後一個資料節點或空串列，仍然要依照是否有 header node 或 NULL 來處理。</p><div class="slide-memory">一句話記憶：雙向串列刪除要讓左右鄰居互相接起來。</div></div></div></div></details></div></section>
+<section class="card"><h2>三、動畫流程圖：Doubly Linked List 的插入與刪除</h2><div class="flow-area" id="flow10"><div class="flow"><div class="node">找到 A 與 C</div><div class="node">B.rlink=C</div><div class="node">B.llink=A</div><div class="node">A.rlink=B</div><div class="node">C.llink=B</div><div class="node">刪除時前後相接</div></div><div class="progress"><div class="bar"></div></div><div class="stepbox"></div><div class="btns" style="margin-top:12px"><button class="btn secondary" onclick="prevFlow('flow10')">上一步</button><button class="btn" onclick="nextFlow('flow10')">下一步</button><button class="btn orange" onclick="playFlow('flow10')">自動播放</button><button class="btn secondary" onclick="resetFlow('flow10')">重新開始</button></div></div><script>initFlow('flow10',['假設要在 A 與 C 之間插入 B。','先讓 B 的右指標接到 C。','再讓 B 的左指標接回 A。','讓 A 的右指標改指向 B。','讓 C 的左指標改指向 B。','刪除 C 時，讓 C 左右兩邊節點直接相接即可。']);</script></section>
+<section class="card"><h2>四、動畫表格：步驟與重點整理</h2><p>請按「下一步」或「自動播放」觀察本主題的操作流程與注意事項。</p><div class="flow-area" id="table10"><div class="anim-table-wrap"><table class="anim-table"><thead><tr><th>操作</th><th>程式指標</th><th>作用</th><th>注意事項</th></tr></thead><tbody><tr><td>插入 B 第 1 步</td><td>B.rlink = C</td><td>B 先接右邊</td><td>避免失去 C</td></tr><tr><td>插入 B 第 2 步</td><td>B.llink = A</td><td>B 接回左邊</td><td>形成 B 的雙向連線</td></tr><tr><td>插入 B 第 3 步</td><td>A.rlink = B</td><td>左節點接到 B</td><td>改變前方連結</td></tr><tr><td>插入 B 第 4 步</td><td>C.llink = B</td><td>右節點接回 B</td><td>完成插入</td></tr><tr><td>刪除節點</td><td>left.rlink=right; right.llink=left</td><td>前後直接相接</td><td>再 free 目標節點</td></tr></tbody></table></div><div class="progress"><div class="bar"></div></div><div class="table-note"></div><div class="btns" style="margin-top:12px"><button class="btn secondary" onclick="prevTable('table10')">上一步</button><button class="btn" onclick="nextTable('table10')">下一步</button><button class="btn orange" onclick="playTable('table10')">自動播放</button><button class="btn secondary" onclick="resetTable('table10')">重新開始</button></div></div><script>initTable('table10',['插入 B 第 1 步 → B.rlink = C → B 先接右邊 → 避免失去 C','插入 B 第 2 步 → B.llink = A → B 接回左邊 → 形成 B 的雙向連線','插入 B 第 3 步 → A.rlink = B → 左節點接到 B → 改變前方連結','插入 B 第 4 步 → C.llink = B → 右節點接回 B → 完成插入','刪除節點 → left.rlink=right; right.llink=left → 前後直接相接 → 再 free 目標節點']);</script></section>
+<details open=""><summary>五、完整中文講解</summary><div class="content"><h3>（一）本主題要學會什麼？</h3><p>雙向鏈結串列插入與刪除時，必須同時處理 llink 與 rlink。插入新節點要讓新節點接前後，也要讓前後節點接回新節點；刪除則讓前後節點直接互相連接。</p><h3>（二）實作時最重要的觀念</h3><div class="grid2"><div class="mini"><b>資料結構</b><br/>先看清楚資料是用 Array、Node、Singly List、Circular List 或 Doubly List 表示。</div><div class="mini"><b>指標方向</b><br/>Linked List 題目幾乎都在考指標怎麼接、怎麼斷、怎麼重新連起來。</div><div class="mini"><b>特殊情況</b><br/>空串列、頭節點、尾節點、找不到資料，都是程式容易錯的地方。</div><div class="mini"><b>測試方式</b><br/>每做完 insert/delete，都用 print 檢查目前串列是否符合預期。</div></div><div class="example">雙向串列操作可以用「前後兩邊都要接好」來理解。插入新節點時，新節點要接前後，前後節點也要接回新節點。</div></div></details>
+<details open=""><summary>六、可編輯 C 程式範例：含中文註解與線上編輯器</summary><div class="content"><div class="codewrap"><div class="codebar"><span>doubly_insert_delete.c</span><div class="btns"><button class="btn green" onclick="copyCode('code10')">複製程式</button><button class="btn orange" onclick="downloadCode('code10','doubly_insert_delete.c')">下載 .c</button><a class="btn secondary" href="https://www.onlinegdb.com/online_c_compiler" target="_blank">OnlineGDB</a><a class="btn secondary" href="https://www.programiz.com/c-programming/online-compiler/" target="_blank">Programiz</a><a class="btn secondary" href="https://onecompiler.com/c" target="_blank">OneCompiler</a></div></div><textarea class="codearea" id="code10" spellcheck="false">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+/*
+    Doubly Linked List：插入與刪除
+    插入要接四條線；刪除要讓前後節點互相接回。
+*/
+
+typedef struct DNode {
+    int data;
+    struct DNode *llink; // 左指標：前一個節點
+    struct DNode *rlink; // 右指標：下一個節點
+} DNode;
+
+DNode* createNode(int data) {
+    DNode *n = (DNode*)malloc(sizeof(DNode));
+    if (!n) exit(1);
+    n-&gt;data = data;
+    n-&gt;llink = NULL;
+    n-&gt;rlink = NULL;
+    return n;
+}
+
+void insertAfter(DNode *A, int data) {
+    DNode *B = createNode(data);
+    DNode *C = A-&gt;rlink;
+
+    B-&gt;rlink = C;     // B 接右邊 C
+    B-&gt;llink = A;     // B 接左邊 A
+    A-&gt;rlink = B;     // A 接到 B
+    if (C != NULL) C-&gt;llink = B; // C 接回 B
+}
+
+void deleteNode(DNode **head, DNode *node) {
+    if (node == NULL) return;
+    if (node-&gt;llink != NULL) node-&gt;llink-&gt;rlink = node-&gt;rlink;
+    else *head = node-&gt;rlink; // 刪除第一個節點
+    if (node-&gt;rlink != NULL) node-&gt;rlink-&gt;llink = node-&gt;llink;
+    free(node);
+}
+
+void printList(DNode *head) {
+    while (head) { printf("%d &lt;-&gt; ", head-&gt;data); head = head-&gt;rlink; }
+    printf("NULL\n");
+}
+
+int main(void) {
+    DNode *A = createNode(10);
+    DNode *C = createNode(30);
+    A-&gt;rlink = C;
+    C-&gt;llink = A;
+
+    insertAfter(A, 20); // 插入 B=20
+    printList(A);
+    deleteNode(&amp;A, A-&gt;rlink); // 刪除 20
+    printList(A);
+    return 0;
+}
+</textarea></div></div></details>
+
+<section class="card program-teaching-card">
+<h2>新增：程式題目教學內容（依指定格式）</h2>
+<div class="content">
+<h3>一、程式題目講解</h3>
+<p>本題示範雙向鏈結串列的插入與刪除。學生需要理解插入時要接好左右兩邊指標，刪除時要讓被刪節點的前後節點重新連接。</p>
+<h3>二、完整程式碼</h3>
+<p>以下為本頁程式題目的完整可執行 C 程式碼，已在重要程式區塊加入中文註解，方便初學者理解程式功能與流程。</p>
+<pre class="codearea" style="height:auto;min-height:0;white-space:pre-wrap;overflow:auto;">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+/*
+    Doubly Linked List：插入與刪除
+    插入要接四條線；刪除要讓前後節點互相接回。
+*/
+
+typedef struct DNode {
+    int data;
+    struct DNode *llink; // 左指標：前一個節點
+    struct DNode *rlink; // 右指標：下一個節點
+} DNode;
+
+DNode* createNode(int data) {
+    DNode *n = (DNode*)malloc(sizeof(DNode));
+    if (!n) exit(1);
+    n-&gt;data = data;
+    n-&gt;llink = NULL;
+    n-&gt;rlink = NULL;
+    return n;
+}
+
+void insertAfter(DNode *A, int data) {
+    DNode *B = createNode(data);
+    DNode *C = A-&gt;rlink;
+
+    B-&gt;rlink = C;     // B 接右邊 C
+    B-&gt;llink = A;     // B 接左邊 A
+    A-&gt;rlink = B;     // A 接到 B
+    if (C != NULL) C-&gt;llink = B; // C 接回 B
+}
+
+void deleteNode(DNode **head, DNode *node) {
+    if (node == NULL) return;
+    if (node-&gt;llink != NULL) node-&gt;llink-&gt;rlink = node-&gt;rlink;
+    else *head = node-&gt;rlink; // 刪除第一個節點
+    if (node-&gt;rlink != NULL) node-&gt;rlink-&gt;llink = node-&gt;llink;
+    free(node);
+}
+
+void printList(DNode *head) {
+    while (head) { printf(&quot;%d &lt;-&gt; &quot;, head-&gt;data); head = head-&gt;rlink; }
+    printf(&quot;NULL\n&quot;);
+}
+
+int main(void) {
+    DNode *A = createNode(10);
+    DNode *C = createNode(30);
+    A-&gt;rlink = C;
+    C-&gt;llink = A;
+
+    insertAfter(A, 20); // 插入 B=20
+    printList(A);
+    deleteNode(&amp;A, A-&gt;rlink); // 刪除 20
+    printList(A);
+    return 0;
+}
+</pre>
+<h3>三、程式執行結果</h3>
+<p>程式執行後會得到以下輸出：</p>
+<pre class="codearea" style="height:auto;min-height:0;white-space:pre-wrap;overflow:auto;">10 &lt;-&gt; 20 &lt;-&gt; 30 &lt;-&gt; NULL
+10 &lt;-&gt; 30 &lt;-&gt; NULL</pre>
+<p>程式先建立 10 與 30，再用 insertAfter(A, 20) 把 20 插到 10 後面，所以第一次輸出為 10 &lt;-&gt; 20 &lt;-&gt; 30 &lt;-&gt; NULL。接著 deleteNode 刪除 20，10 的 rlink 改接 30，30 的 llink 改接 10，所以第二次輸出為 10 &lt;-&gt; 30 &lt;-&gt; NULL。</p>
+<h3>四、程式流程圖與流程圖說明</h3>
+<p>本題流程圖如下，呈現程式的主要執行順序、判斷條件與資料處理流程。</p>
+<div class="program-flow-figure"><img alt="主題 10 程式流程圖" class="program-flow-img" src="assets/program_flow_topic10.svg"/><div class="figure-caption">主題 10：Doubly Linked List 的插入與刪除：程式流程圖</div></div>
+<p>流程先建立 A 與 C 並形成 10 &lt;-&gt; 30。插入 B 時，B 的 rlink 接 C、llink 接 A，A 的 rlink 接 B，C 的 llink 接 B。刪除時則把 node 左邊的 rlink 接到 node 右邊，並把右邊的 llink 接回左邊，最後 free node。</p>
+<h3>五、重要函數與語法說明</h3>
+<ol><li>insertAfter(DNode *A, int data)：在指定節點 A 後插入新節點。</li><li>llink：指向左邊或前一個節點。</li><li>rlink：指向右邊或下一個節點。</li><li>deleteNode：刪除指定節點並重新連接左右指標。</li><li>if (node-&gt;llink != NULL)：判斷被刪除節點是否為第一個節點。</li></ol>
+<h3>六、整體說明</h3>
+<p>本題重點是雙向串列操作要同時處理兩個方向。插入通常要改四條線，刪除則要讓左右節點越過被刪除節點重新接起來。</p>
+</div>
+</section>
+<section class="card program-flow-card">
+<h2>七、程式流程圖：Doubly Linked List 插入與刪除</h2>
+<p>下圖是本主題對應的程式執行流程，適合搭配下方 C 程式碼一起看。</p>
+<div class="program-flow-figure"><img alt="主題 10 程式流程圖" class="program-flow-img" src="assets/program_flow_topic10.svg"/><div class="figure-caption">主題 10 程式流程圖：Doubly Linked List 插入與刪除</div></div>
+<div class="flow-explain"><h3>流程講解</h3><ol><li>雙向串列插入時，新節點必須同時接住前方與後方。</li><li>先設定 newNode-&gt;prev 與 newNode-&gt;next，再更新相鄰節點。</li><li>刪除時要讓前一個節點的 next 指向後一個節點。</li><li>同時也要讓後一個節點的 prev 指回前一個節點。</li><li>如果刪除的是 head 或 tail，要另外更新 head 或 tail 指標。</li></ol><p>這張流程圖把本頁程式的執行順序整理成一條清楚路徑。閱讀時先看資料如何被建立，再看條件判斷與指標如何改變，最後用輸出結果確認程式邏輯是否正確。</p></div>
+</section>
+</main></div></div><footer class="footer">Lesson 5｜主題 10：Doubly Linked List 的插入與刪除</footer></body></html>

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+
+<html lang="zh-Hant"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/><title>Lesson 6 Topic 12</title><link href="assets/style.css" rel="stylesheet"/><script src="assets/script.js"></script>
+<style>
+.slide-dropdown-section{margin-top:22px}.slide-dropdown-section>.note{margin-bottom:14px}.slide-explain-item{border:1px solid rgba(100,116,139,.28);border-radius:16px;margin:14px 0;background:rgba(255,255,255,.86);overflow:hidden}.slide-explain-item>summary{cursor:pointer;font-weight:700;padding:16px 18px;line-height:1.5;background:linear-gradient(90deg,rgba(241,245,249,.95),rgba(255,255,255,.88));list-style:none}.slide-explain-item>summary::-webkit-details-marker{display:none}.slide-explain-item>summary:before{content:'▸';display:inline-block;margin-right:8px;transition:transform .2s}.slide-explain-item[open]>summary:before{transform:rotate(90deg)}.slide-explain-body{display:grid;grid-template-columns:minmax(280px,46%) 1fr;gap:22px;padding:18px}.slide-explain-media{align-self:start}.slide-explain-img{width:100%;height:auto;border-radius:14px;box-shadow:0 10px 28px rgba(15,23,42,.18);background:white}.slide-explain-text h3{font-size:1.04rem;margin:0.9rem 0 .35rem}.slide-explain-text h3:first-child{margin-top:0}.slide-explain-text p,.slide-explain-text li{line-height:1.85}.slide-explain-text ul{margin-top:.2rem;padding-left:1.4rem}.memory-box{margin-top:14px;padding:12px 14px;border-left:5px solid #f59e0b;background:#fff7ed;border-radius:10px;line-height:1.75;font-weight:600}@media(max-width:820px){.slide-explain-body{grid-template-columns:1fr}.slide-explain-item>summary{padding:14px}.slide-explain-body{padding:14px}}
+</style>
+</head><body><section class="hero"><h1>主題 12：Heap Sort 堆積排序</h1><p>頁碼：45–47。Heap Sort 的核心是先建立 Max Heap，接著每次把 root 最大值換到陣列最後，再縮小 heap 範圍並重新 heapify。</p><div class="nav"><a class="btn" href="../index.html">回 L6 首頁</a><a class="btn" href="topic11.html">上一主題：Max Heap 操作</a></div></section><main class="wrap">
+<section class="card slide-dropdown-section"><h2>投影片逐張下拉式詳細講解</h2><p class="note">每一張投影片都把圖片與自己的中文講解放在同一個下拉式區塊中，打開後可以直接對照圖與文字。</p><details class="slide-explain-item"><summary>投影片 45：Heap Sort 起始</summary><div class="slide-explain-body"><div class="slide-explain-media"><img alt="Slide 45：Heap Sort 起始" class="slide-explain-img" src="assets/slide45.jpg"/><div class="figure-caption">Slide 45：Heap Sort 起始</div></div><div class="slide-explain-text"><h3>（一）這張投影片在說什麼？</h3><p>這張投影片介紹 heap sort 的起點：先把陣列建立成 max heap。建立完成後，最大值位於 root，可以被移到陣列最後。</p><h3>（二）核心觀念</h3><ul><li>第一步是 build max heap。</li><li>最大值在 index 1。</li><li>準備把最大值交換到未排序區最後。</li><li>右側將逐步形成 sorted region。</li></ul><h3>（三）學習與考試重點</h3><p>Heap sort 的核心不是一直找最大值，而是利用 heap 讓最大值每次都在 root。</p><div class="memory-box">一句話記憶：Heap sort 先建 heap，再一次取一個最大值。</div></div></div></details><details class="slide-explain-item"><summary>投影片 46：Heap Sort 過程</summary><div class="slide-explain-body"><div class="slide-explain-media"><img alt="Slide 46：Heap Sort 過程" class="slide-explain-img" src="assets/slide46.jpg"/><div class="figure-caption">Slide 46：Heap Sort 過程</div></div><div class="slide-explain-text"><h3>（一）這張投影片在說什麼？</h3><p>這張投影片展示 heap sort 的重複流程：root 與最後一個未排序元素交換，heap size 減一，然後對新的 root 做 heapify。</p><h3>（二）核心觀念</h3><ul><li>交換 root 與最後未排序元素。</li><li>最大值被固定到右側。</li><li>heap size 減一。</li><li>重新調整 root，使剩餘元素恢復 max heap。</li></ul><h3>（三）學習與考試重點</h3><p>排序區和 heap 區要分清楚：右邊已排序元素不再參與 heapify。</p><div class="memory-box">一句話記憶：換到右邊、縮小 heap、重新調整。</div></div></div></details><details class="slide-explain-item"><summary>投影片 47：Heap Sort 完成</summary><div class="slide-explain-body"><div class="slide-explain-media"><img alt="Slide 47：Heap Sort 完成" class="slide-explain-img" src="assets/slide47.jpg"/><div class="figure-caption">Slide 47：Heap Sort 完成</div></div><div class="slide-explain-text"><h3>（一）這張投影片在說什麼？</h3><p>這張投影片展示 heap sort 完成後的狀態。透過不斷把最大值放到右端，整個陣列最後會形成由小到大的順序。</p><h3>（二）核心觀念</h3><ul><li>Max heap 可產生 ascending order。</li><li>每一輪固定一個最大值。</li><li>時間複雜度通常為 O(n log n)。</li><li>排序可在原陣列內完成。</li></ul><h3>（三）學習與考試重點</h3><p>Heap sort 的優點是時間穩定，且不需要額外大量空間；缺點是資料移動與實作較不直觀。</p><div class="memory-box">一句話記憶：最大值一個一個往右排，最後就由小到大。</div></div></div></details></section>
+<section class="card"><h2>Heap Sort 動畫概念</h2><div class="flow"><div class="node">Build Max Heap</div><div class="arrow">→</div><div class="node">最大值在 root</div><div class="arrow">→</div><div class="node">root 與最後交換</div><div class="arrow">→</div><div class="node">heap size - 1</div><div class="arrow">→</div><div class="node">重新 heapify</div></div><div class="sort-strip"><div class="bar" style="height:60px">4</div><div class="bar" style="height:30px">1</div><div class="bar" style="height:50px">3</div><div class="bar" style="height:90px">8</div><div class="bar" style="height:120px">14</div><div class="bar" style="height:145px">16</div></div><p class="note">使用 Max Heap 做由小到大排序時，每一回合會把目前最大的值放到陣列右邊，所以右邊會逐步形成已排序區。</p></section>
+<section class="accordion"><details open=""><summary>一、Heap Sort 的第一步：建立 Max Heap</summary><div><p>Heap Sort 不會一開始就直接比較所有元素，而是先把陣列視為 complete binary tree，然後從最後一個非葉節點開始做 heapify。完成後，最大值一定會在 index 1，也就是 root。</p></div></details><details><summary>二、為什麼要把 root 和最後一個元素交換？</summary><div><p>因為 root 是目前 heap 裡的最大值。把 root 和最後一個元素交換後，最大值就會被固定在陣列最後面。接著 heap size 減一，最後的排序區不再參與 heapify。</p><div class="array"><span class="cell">16</span><span class="cell">14</span><span class="cell">10</span><span class="cell">8</span><span class="cell">7</span><span class="cell">9</span></div><div class="flow"><div class="node">16 最大</div><div class="arrow">→</div><div class="node">和最後交換</div><div class="arrow">→</div><div class="node">16 固定到右邊</div></div></div></details><details><summary>三、Heap Sort 的完整流程</summary><div><p>重複「交換 root 與最後一個未排序元素」以及「重新調整 root」兩個動作，直到 heap size 只剩 1。最後陣列就會由小到大排列。</p></div></details><details><summary>四、時間與空間複雜度</summary><div><p>建立 heap 可視為 O(n)，每次刪除最大值後重新 heapify 是 O(log n)，共做 n 次，因此整體時間複雜度是 O(n log n)。Heap Sort 可以在原陣列中完成，所以額外空間通常是 O(1)。</p></div></details></section>
+<section class="card"><h2>C 程式碼：Heap Sort</h2><p><a class="btn primary" download="" href="heap_sort_demo.c">下載 .c 檔</a> <button class="btn" onclick="copyCode('code2')">複製程式碼</button></p><pre class="codebox"><code id="code2">/*
+  中文註解版程式：heap_sort_demo.c
+  說明：主題 12：Heap Sort。先建立 Max Heap，再反覆把最大值移到陣列尾端完成排序。
+  閱讀方式：先看資料結構定義，再看操作函式，最後看 main() 如何測試。
+*/
+
+// 匯入標準輸入輸出函式庫，提供 printf / scanf 等功能。
+#include &lt;stdio.h&gt;
+
+// 交換兩個整數的值，用於排序或 Heap 調整。
+void swap(int *a, int *b) {
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+// 印出陣列內容；Heap 範例保留 a[0] 不使用，從 index 1 開始。
+void printArray(int a[], int n) {
+    for (int i = 1; i &lt;= n; i++) {
+        printf("%d ", a[i]);
+    }
+    printf("\n");
+}
+
+// Adjust 是 Heapify 的核心：把 root 節點向下移到正確位置。
+void adjust(int a[], int root, int n) {
+    int e = a[root];
+    int child;
+
+    for (child = 2 * root; child &lt;= n; child *= 2) {
+        if (child &lt; n &amp;&amp; a[child] &lt; a[child + 1]) {
+            child++;
+        }
+        if (e &gt;= a[child]) {
+            break;
+        }
+        a[child / 2] = a[child];
+    }
+    a[child / 2] = e;
+}
+
+// Heap Sort 主流程：先建 Max Heap，再反覆取出最大值。
+void heapSort(int a[], int n) {
+    for (int i = n / 2; i &gt;= 1; i--) {
+        adjust(a, i, n);
+    }
+
+    printf("After building max heap:\n");
+    printArray(a, n);
+
+    for (int i = n - 1; i &gt;= 1; i--) {
+        swap(&amp;a[1], &amp;a[i + 1]);  // 把目前最大值換到未排序區最後
+        adjust(a, 1, i);  // 縮小 heap 範圍後重新調整 root
+    }
+}
+
+// 主程式：建立測試資料，呼叫上方函式，觀察輸出結果。
+int main() {
+    int a[] = {0, 4, 1, 3, 2, 16, 9, 10, 14, 8, 7};
+    int n = 10;
+
+    printf("Original array:\n");
+    printArray(a, n);
+
+    heapSort(a, n);
+
+    printf("Sorted array:\n");
+    printArray(a, n);
+
+    return 0;
+}
+</code></pre></section>
+<details class="lab7-code-section" open=""><summary>可編輯 C 程式範例：含中文註解與線上編輯器</summary><div class="content detail-body"><p>這一段提供可直接修改的 C 程式碼。可以按「複製程式」貼到線上編輯器執行，也可以下載 .c 檔案。</p><div class="codewrap"><div class="codebar"><span>heap_sort_demo.c</span><div class="btns"><button class="btn green" onclick="copyCode('code12')">複製程式</button><button class="btn orange" onclick="downloadCode('code12','heap_sort_demo.c')">下載 .c</button><a class="btn secondary" href="https://www.onlinegdb.com/online_c_compiler" target="_blank">OnlineGDB</a><a class="btn secondary" href="https://www.programiz.com/c-programming/online-compiler/" target="_blank">Programiz</a><a class="btn secondary" href="https://onecompiler.com/c" target="_blank">OneCompiler</a></div></div><textarea class="codearea" id="code12" spellcheck="false">/*
+  中文註解版程式：heap_sort_demo.c
+  說明：主題 12：Heap Sort。先建立 Max Heap，再反覆把最大值移到陣列尾端完成排序。
+  閱讀方式：先看資料結構定義，再看操作函式，最後看 main() 如何測試。
+*/
+
+// 匯入標準輸入輸出函式庫，提供 printf / scanf 等功能。
+#include &lt;stdio.h&gt;
+
+// 交換兩個整數的值，用於排序或 Heap 調整。
+void swap(int *a, int *b) {
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+// 印出陣列內容；Heap 範例保留 a[0] 不使用，從 index 1 開始。
+void printArray(int a[], int n) {
+    for (int i = 1; i &lt;= n; i++) {
+        printf("%d ", a[i]);
+    }
+    printf("\n");
+}
+
+// Adjust 是 Heapify 的核心：把 root 節點向下移到正確位置。
+void adjust(int a[], int root, int n) {
+    int e = a[root];
+    int child;
+
+    for (child = 2 * root; child &lt;= n; child *= 2) {
+        if (child &lt; n &amp;&amp; a[child] &lt; a[child + 1]) {
+            child++;
+        }
+        if (e &gt;= a[child]) {
+            break;
+        }
+        a[child / 2] = a[child];
+    }
+    a[child / 2] = e;
+}
+
+// Heap Sort 主流程：先建 Max Heap，再反覆取出最大值。
+void heapSort(int a[], int n) {
+    for (int i = n / 2; i &gt;= 1; i--) {
+        adjust(a, i, n);
+    }
+
+    printf("After building max heap:\n");
+    printArray(a, n);
+
+    for (int i = n - 1; i &gt;= 1; i--) {
+        swap(&amp;a[1], &amp;a[i + 1]);  // 把目前最大值換到未排序區最後
+        adjust(a, 1, i);  // 縮小 heap 範圍後重新調整 root
+    }
+}
+
+// 主程式：建立測試資料，呼叫上方函式，觀察輸出結果。
+int main() {
+    int a[] = {0, 4, 1, 3, 2, 16, 9, 10, 14, 8, 7};
+    int n = 10;
+
+    printf("Original array:\n");
+    printArray(a, n);
+
+    heapSort(a, n);
+
+    printf("Sorted array:\n");
+    printArray(a, n);
+
+    return 0;
+}
+</textarea></div></div></details>
+<details class="lab7-teaching-content" open=""><summary>程式題目教學內容：Tree Representation：Left-Child Right-Sibling</summary><div class="content detail-body">
+<h3>一、程式題目講解</h3>
+<p>本題說明一般樹如何用 left child 與 right sibling 兩個指標表示。學生需要理解：第一個孩子用 leftChild 連接，其餘兄弟節點用 rightSibling 串接。</p>
+<h3>二、完整程式碼</h3>
+<p>完整可執行程式碼已保留在上方「可編輯 C 程式範例：含中文註解與線上編輯器」區塊中，檔名為 <code>heap_sort_demo.c</code>。該程式碼已加入中文註解，學生可以直接複製到 OnlineGDB、Programiz 或 OneCompiler 執行。</p>
+<h3>三、程式執行結果</h3>
+<pre><code>A 的 left child 是 B
+B 的 right sibling 是 C</code></pre>
+<p>輸出顯示 A 的 left child 是 B，B 的 right sibling 是 C，代表 A 的第一個孩子為 B，而 C 是 B 的同層兄弟，因此 A 實際上有 B、C 兩個孩子。</p>
+<h3>四、程式流程圖與流程圖說明</h3>
+<p>本頁下方已保留原本的程式流程圖。閱讀流程圖時，可以依序掌握「初始化資料或節點 → 執行主要函式或判斷 → 輸出結果」的過程。先建立 A、B、C 節點，再設定 A-&gt;leftChild = B，接著設定 B-&gt;rightSibling = C，最後印出這兩個連結關係。</p>
+<h3>五、重要函數與語法說明</h3>
+<p>createNode()：建立並初始化節點；malloc()：配置節點記憶體；-&gt;：透過指標存取結構成員；printf()：輸出節點關係。</p>
+<h3>六、整體說明</h3>
+<p>本題讓學生理解一般樹轉成二元形式的基礎：向下看第一個孩子，向右看下一個兄弟。</p>
+</div></details>
+
+<section class="card program-flow-card">
+<h2>程式流程圖：Heap Sort 排序流程</h2>
+<p>下圖是本主題對應的程式執行流程，適合搭配本頁 C 程式碼一起看。</p>
+<div class="program-flow-figure"><img alt="主題 12 程式流程圖" class="program-flow-img" src="assets/program_flow_topic12.svg"/><div class="figure-caption">主題 12 程式流程圖：Heap Sort 排序流程</div></div>
+<div class="flow-explain"><h3>流程講解</h3><ol><li>Heap sort 先把陣列整理成 max heap。</li><li>每一輪把 root 最大值交換到目前 heap 的最後。</li><li>縮小 heap 範圍後，對新的 root 做 adjust。</li><li>重複後，陣列就會由小到大排列完成。</li></ol><p>這張流程圖把本頁程式的執行順序整理成一條清楚路徑。閱讀時先看輸入與資料如何建立，再看條件判斷、指標或陣列索引如何改變，最後用輸出結果確認程式邏輯是否正確。</p></div>
+</section>
+</main></body></html>
