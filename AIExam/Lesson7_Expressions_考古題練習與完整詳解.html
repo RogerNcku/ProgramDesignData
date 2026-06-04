@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 7 Expressions 考古題練習與完整詳解</title>
+<style>
+:root{
+  --bg:#f4f7fb; --card:#ffffff; --ink:#1f2937; --muted:#64748b;
+  --main:#2563eb; --main2:#1d4ed8; --accent:#f59e0b; --ok:#16a34a;
+  --danger:#dc2626; --line:#cbd5e1; --code:#111827; --codeText:#e5e7eb;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:linear-gradient(180deg,#eef5ff 0%,#f8fafc 42%,#fff 100%);color:var(--ink);font-family:"Noto Sans TC","Microsoft JhengHei",Arial,sans-serif;line-height:1.75}
+header{background:linear-gradient(135deg,#1d4ed8,#2563eb,#60a5fa);color:white;padding:34px 20px 28px;text-align:center;box-shadow:0 12px 35px rgba(37,99,235,.25)}
+header h1{margin:0;font-size:clamp(26px,4vw,44px);letter-spacing:.5px}
+header p{max-width:980px;margin:12px auto 0;opacity:.96;font-size:17px}
+.container{max-width:1180px;margin:0 auto;padding:24px 18px 60px}
+.toolbar{position:sticky;top:0;z-index:20;background:rgba(248,250,252,.92);backdrop-filter:blur(10px);border-bottom:1px solid #dbeafe;margin:0 -18px 18px;padding:12px 18px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.btn{border:0;border-radius:10px;background:var(--main);color:white;padding:9px 14px;cursor:pointer;font-weight:700;box-shadow:0 4px 12px rgba(37,99,235,.25)}
+.btn:hover{background:var(--main2)}
+.btn.secondary{background:#475569}
+.btn.ghost{background:#e0ecff;color:#1d4ed8;box-shadow:none}
+.btn.small{font-size:13px;padding:6px 10px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
+.toc{background:white;border:1px solid #dbeafe;border-radius:18px;padding:18px;margin:18px 0;box-shadow:0 8px 24px rgba(15,23,42,.06)}
+.toc a{display:block;text-decoration:none;color:#1e40af;padding:8px 10px;border-radius:10px}
+.toc a:hover{background:#eff6ff}
+.exam-focus{background:#fff7ed;border:1px solid #fed7aa;border-radius:18px;padding:18px;margin:18px 0;box-shadow:0 8px 24px rgba(245,158,11,.08)}
+.exam-focus h2,.toc h2{margin-top:0}
+.focus-badge{display:inline-block;background:#ffedd5;color:#9a3412;padding:3px 8px;border-radius:999px;font-weight:700;margin:2px}
+.accordion{margin:16px 0;border-radius:18px;overflow:hidden;border:1px solid #dbeafe;background:white;box-shadow:0 8px 26px rgba(15,23,42,.08)}
+.acc-head{width:100%;border:0;background:linear-gradient(90deg,#eff6ff,#ffffff);padding:18px 20px;display:flex;justify-content:space-between;gap:10px;text-align:left;cursor:pointer}
+.acc-head h2{margin:0;font-size:21px;color:#0f172a}
+.acc-head .meta{color:#475569;font-size:14px;margin-top:4px}
+.chev{font-size:26px;color:#2563eb;transition:.25s}
+.accordion.open .chev{transform:rotate(180deg)}
+.acc-body{display:none;padding:0 20px 24px}
+.accordion.open .acc-body{display:block}
+.section{background:#f8fafc;border:1px solid #e2e8f0;border-radius:14px;padding:14px;margin:14px 0}
+.section h3{margin:0 0 8px;color:#1e3a8a;font-size:18px}
+.en{background:#f1f5f9;border-left:5px solid #2563eb;padding:12px;border-radius:12px;white-space:pre-wrap}
+.answer{background:#ecfdf5;border-left:5px solid #16a34a;padding:12px;border-radius:12px}
+.warn{background:#fef2f2;border-left:5px solid #dc2626;padding:12px;border-radius:12px}
+.key{background:#eff6ff;border-left:5px solid #3b82f6;padding:12px;border-radius:12px}
+.formula{font-family:Consolas,monospace;background:#111827;color:#fef3c7;padding:10px 12px;border-radius:10px;display:inline-block}
+.svgbox{background:white;border:1px solid #cbd5e1;border-radius:14px;padding:12px;overflow:auto;margin:10px 0}
+svg{max-width:100%;height:auto}
+.node circle,.tree-node circle{fill:#dbeafe;stroke:#2563eb;stroke-width:2}
+.node text,.tree-node text{font-weight:700;fill:#0f172a}
+.node.active circle,.tree-node.active circle{fill:#fde68a;stroke:#f59e0b;stroke-width:4}
+.node.done circle,.tree-node.done circle{fill:#bbf7d0;stroke:#16a34a}
+.edge{stroke:#64748b;stroke-width:2}
+.token{display:inline-block;border:1px solid #93c5fd;background:#eff6ff;border-radius:9px;padding:6px 10px;margin:3px;font-family:Consolas,monospace}
+.token.active{background:#fde68a;border-color:#f59e0b}
+.stack-wrap{display:flex;gap:20px;align-items:flex-end;flex-wrap:wrap}
+.stack{display:flex;flex-direction:column-reverse;gap:4px;min-height:160px;width:110px;border:2px solid #94a3b8;border-top:0;padding:6px;background:#fff;border-radius:0 0 10px 10px}
+.stack-cell{background:#dbeafe;border:1px solid #60a5fa;border-radius:8px;text-align:center;padding:7px;font-weight:700;font-family:Consolas,monospace}
+.output-box{min-height:46px;background:#f8fafc;border:1px dashed #94a3b8;border-radius:12px;padding:10px;font-family:Consolas,monospace;font-weight:700}
+.anim-card{background:#ffffff;border:1px solid #bfdbfe;border-radius:16px;padding:14px;margin:12px 0}
+.anim-controls{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.anim-note{background:#fffbeb;border:1px solid #fde68a;border-radius:12px;padding:10px;margin-top:8px}
+.codebox{position:relative;margin:12px 0;border-radius:14px;overflow:hidden;background:var(--code);box-shadow:0 8px 20px rgba(0,0,0,.18)}
+.codebox .label{background:#1f2937;color:#bfdbfe;padding:8px 12px;font-size:13px;font-weight:700}
+.copy-btn{position:absolute;top:8px;right:8px;background:#10b981;color:#fff;border:0;border-radius:8px;padding:5px 10px;cursor:pointer;font-size:13px}
+pre{margin:0;padding:14px;overflow:auto;color:var(--codeText);font-family:Consolas,"Courier New",monospace;font-size:14px;line-height:1.55}
+.flow{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.flow .box{background:#e0f2fe;border:2px solid #0284c7;border-radius:12px;padding:10px 13px;font-weight:700}
+.flow .diamond{background:#fef3c7;border:2px solid #f59e0b;transform:skew(-10deg);border-radius:10px;padding:10px 13px;font-weight:700}
+.flow .arrow{font-size:24px;color:#64748b}
+.table{width:100%;border-collapse:collapse;background:white;border-radius:12px;overflow:hidden}
+.table th,.table td{border:1px solid #cbd5e1;padding:8px;text-align:left;vertical-align:top}
+.table th{background:#e0ecff}
+.kbd{font-family:Consolas,monospace;background:#e2e8f0;padding:2px 6px;border-radius:6px}
+@media (max-width:650px){
+ .acc-head{padding:15px}.acc-body{padding:0 14px 18px}.toolbar{position:static}
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>Lesson 7 Expressions 考古題練習與完整詳解</h1>
+  <p>依照老師考古題風格整理：題目短、任務明確，但解答完整。每題包含中文翻譯、核心觀念、步驟、SVG 圖解、動態動畫、程式碼、流程圖與考試提醒。</p>
+</header>
+
+<div class="container">
+  <div class="toolbar">
+    <button class="btn" onclick="openAll()">全部展開</button>
+    <button class="btn secondary" onclick="closeAll()">全部收合</button>
+    <button class="btn ghost" onclick="window.scrollTo({top:0,behavior:'smooth'})">回到最上方</button>
+  </div>
+
+  <section class="toc">
+    <h2>目錄</h2>
+    <div class="grid">
+      <a href="#q1">第 1 題 Expressions 基本概念</a>
+      <a href="#q2">第 2 題 Infix 與優先順序</a>
+      <a href="#q3">第 3 題 Postfix / Prefix</a>
+      <a href="#q4">第 4 題 Infix to Postfix</a>
+      <a href="#q5">第 5 題 Infix to Prefix</a>
+      <a href="#q6">第 6 題 Stack 轉 Postfix</a>
+      <a href="#q7">第 7 題 Postfix Evaluation</a>
+      <a href="#q8">第 8 題 Expression Tree</a>
+      <a href="#q9">第 9 題 C 實作 Infix-to-Postfix</a>
+    </div>
+  </section>
+
+  <section class="exam-focus">
+    <h2>考試重點整理</h2>
+    <p>依照老師習慣，最可能考成大題的是：</p>
+    <p>
+      <span class="focus-badge">Infix → Postfix</span>
+      <span class="focus-badge">Stack push / pop 追蹤</span>
+      <span class="focus-badge">Postfix 評估</span>
+      <span class="focus-badge">Expression Tree</span>
+      <span class="focus-badge">Prefix / Postfix traversal</span>
+      <span class="focus-badge">C 程式輸出追蹤</span>
+    </p>
+    <p>這章的核心是：把「算式」轉換成「可以用 stack 或 tree 處理的結構」。考試時要寫出過程，不能只寫最後答案。</p>
+  </section>
+
+  <!-- Q1 -->
+  <article class="accordion" id="q1">
+    <button class="acc-head" onclick="toggleAcc(this)">
+      <div><h2>第 1 題：Expressions 表達式基本概念</h2><div class="meta">主題：expression、operand、operator</div></div><span class="chev">⌄</span>
+    </button>
+    <div class="acc-body">
+      <div class="section"><h3>1、題目原文</h3><div class="en">Define an arithmetic expression. Please explain the meaning of operand and operator, and give one example.</div></div>
+      <div class="section"><h3>2、題目中文翻譯</h3><p>請定義什麼是算術表達式，並說明 operand 與 operator 的意思，最後舉一個例子。</p></div>
+      <div class="section"><h3>3、題目核心觀念</h3><p>表達式是由「運算元 operand」與「運算子 operator」組成。運算元是被計算的資料，運算子是計算動作。</p></div>
+      <div class="section"><h3>4、解題步驟</h3>
+        <ol><li>先說明 expression 是一個可以被計算的式子。</li><li>再分別定義 operand 與 operator。</li><li>最後用一個算式指出哪些是 operand，哪些是 operator。</li></ol>
+      </div>
+      <div class="section"><h3>5、圖解說明</h3>
+        <div class="svgbox">
+          <svg viewBox="0 0 780 180">
+            <rect x="30" y="30" width="720" height="120" rx="18" fill="#f8fafc" stroke="#cbd5e1"/>
+            <text x="390" y="65" text-anchor="middle" font-size="24" font-weight="700">A + B * C</text>
+            <rect x="125" y="90" width="80" height="35" rx="8" fill="#dbeafe" stroke="#2563eb"/><text x="165" y="114" text-anchor="middle">Operand</text>
+            <rect x="340" y="90" width="80" height="35" rx="8" fill="#dbeafe" stroke="#2563eb"/><text x="380" y="114" text-anchor="middle">Operand</text>
+            <rect x="555" y="90" width="80" height="35" rx="8" fill="#dbeafe" stroke="#2563eb"/><text x="595" y="114" text-anchor="middle">Operand</text>
+            <rect x="240" y="90" width="70" height="35" rx="8" fill="#fde68a" stroke="#f59e0b"/><text x="275" y="114" text-anchor="middle">Operator</text>
+            <rect x="455" y="90" width="70" height="35" rx="8" fill="#fde68a" stroke="#f59e0b"/><text x="490" y="114" text-anchor="middle">Operator</text>
+          </svg>
+        </div>
+      </div>
+      <div class="section"><h3>6、動畫說明</h3>
+        <div class="anim-card">
+          <div id="anim-q1-tokens"></div>
+          <div class="anim-controls"><button class="btn small" onclick="stepSimple('q1',-1)">上一步</button><button class="btn small" onclick="stepSimple('q1',1)">下一步</button><button class="btn small secondary" onclick="resetSimple('q1')">重播</button></div>
+          <div id="anim-q1-note" class="anim-note"></div>
+        </div>
+      </div>
+      <div class="section"><h3>7、完整答案</h3><div class="answer">Arithmetic expression 是由 operand 和 operator 組成的算式。例如 <span class="kbd">A + B * C</span> 中，A、B、C 是 operands；+、* 是 operators。</div></div>
+      <div class="section"><h3>8、考試容易錯的地方</h3><div class="warn">不要把 operator 和 operand 混淆。數字、變數是 operand；+、-、*、/、^ 是 operator。</div></div>
+    </div>
+  </article>
+
+  <!-- Q2 -->
+  <article class="accordion" id="q2">
+    <button class="acc-head" onclick="toggleAcc(this)">
+      <div><h2>第 2 題：Infix Expressions 與運算優先順序</h2><div class="meta">主題：operator precedence、^、*、/、+、-</div></div><span class="chev">⌄</span>
+    </button>
+    <div class="acc-body">
+      <div class="section"><h3>1、題目原文</h3><div class="en">Evaluate the following infix expression according to operator precedence.
+
+5 + 2 * 3 ^ 2 - 8 / 4
+
+Please show the order of operations.</div></div>
+      <div class="section"><h3>2、題目中文翻譯</h3><p>請依照運算子優先順序計算下列中序表示法，並寫出運算順序。</p></div>
+      <div class="section"><h3>3、題目核心觀念</h3><p>Infix expression 的 operator 在兩個 operand 中間，因此必須靠「優先順序」與「括號」決定先算誰。</p></div>
+      <div class="section"><h3>4、解題步驟</h3>
+        <ol><li>先算指數：3 ^ 2 = 9。</li><li>再算乘除：2 * 9 = 18，8 / 4 = 2。</li><li>最後算加減：5 + 18 - 2 = 21。</li></ol>
+      </div>
+      <div class="section"><h3>5、圖解說明</h3>
+        <table class="table"><tr><th>優先順序</th><th>運算子</th><th>本題處理</th></tr><tr><td>1</td><td>^</td><td>3 ^ 2</td></tr><tr><td>2</td><td>* /</td><td>2 * 9、8 / 4</td></tr><tr><td>3</td><td>+ -</td><td>5 + 18 - 2</td></tr></table>
+      </div>
+      <div class="section"><h3>6、動畫說明</h3>
+        <div class="anim-card">
+          <div id="anim-q2-tokens"></div>
+          <div class="output-box" id="anim-q2-output"></div>
+          <div class="anim-controls"><button class="btn small" onclick="stepSimple('q2',-1)">上一步</button><button class="btn small" onclick="stepSimple('q2',1)">下一步</button><button class="btn small secondary" onclick="resetSimple('q2')">重播</button></div>
+          <div id="anim-q2-note" class="anim-note"></div>
+        </div>
+      </div>
+      <div class="section"><h3>7、完整答案</h3><div class="answer"><span class="formula">5 + 2 * 3 ^ 2 - 8 / 4 = 21</span></div></div>
+      <div class="section"><h3>8、時間複雜度與考試提醒</h3><p>單純手算時依題目長度 n 逐步掃描，概念上是 O(n)。</p><div class="warn">最常錯：先算 2*3 再算平方，這是錯的。指數 ^ 比 * 更優先。</div></div>
+    </div>
+  </article>
+
+  <!-- Q3 -->
+  <article class="accordion" id="q3">
+    <button class="acc-head" onclick="toggleAcc(this)">
+      <div><h2>第 3 題：Postfix and Prefix Representations</h2><div class="meta">主題：infix、postfix、prefix</div></div><span class="chev">⌄</span>
+    </button>
+    <div class="acc-body">
+      <div class="section"><h3>1、題目原文</h3><div class="en">Convert the following infix expression into postfix and prefix expressions.
+
+A + B * C</div></div>
+      <div class="section"><h3>2、題目中文翻譯</h3><p>請將中序表示法 <span class="kbd">A + B * C</span> 轉成後序表示法與前序表示法。</p></div>
+      <div class="section"><h3>3、題目核心觀念</h3><p>Postfix 是 operator 放在 operand 後面；Prefix 是 operator 放在 operand 前面。先算 B*C，再與 A 相加。</p></div>
+      <div class="section"><h3>4、解題步驟</h3><ol><li>根據優先順序，原式等於 A + (B * C)。</li><li>B*C 的 postfix 是 B C *。</li><li>整體 postfix 是 A B C * +。</li><li>B*C 的 prefix 是 * B C。</li><li>整體 prefix 是 + A * B C。</li></ol></div>
+      <div class="section"><h3>5、圖解說明</h3>
+        <div class="svgbox">
+          <svg viewBox="0 0 520 260">
+            <line class="edge" x1="260" y1="60" x2="170" y2="130"/><line class="edge" x1="260" y1="60" x2="350" y2="130"/>
+            <line class="edge" x1="350" y1="130" x2="300" y2="205"/><line class="edge" x1="350" y1="130" x2="405" y2="205"/>
+            <g class="tree-node"><circle cx="260" cy="55" r="25"/><text x="260" y="63" text-anchor="middle">+</text></g>
+            <g class="tree-node"><circle cx="170" cy="130" r="25"/><text x="170" y="138" text-anchor="middle">A</text></g>
+            <g class="tree-node"><circle cx="350" cy="130" r="25"/><text x="350" y="138" text-anchor="middle">*</text></g>
+            <g class="tree-node"><circle cx="300" cy="205" r="25"/><text x="300" y="213" text-anchor="middle">B</text></g>
+            <g class="tree-node"><circle cx="405" cy="205" r="25"/><text x="405" y="213" text-anchor="middle">C</text></g>
+          </svg>
+        </div>
+      </div>
+      <div class="section"><h3>6、動畫說明</h3>
+        <div class="anim-card">
+          <div id="anim-q3-tokens"></div>
+          <div class="output-box" id="anim-q3-output"></div>
+          <div class="anim-controls"><button class="btn small" onclick="stepSimple('q3',-1)">上一步</button><button class="btn small" onclick="stepSimple('q3',1)">下一步</button><button class="btn small secondary" onclick="resetSimple('q3')">重播</button></div>
+          <div id="anim-q3-note" class="anim-note"></div>
+        </div>
+      </div>
+      <div class="section"><h3>7、完整答案</h3><div class="answer">Postfix：<span class="kbd">A B C * +</span><br>Prefix：<span class="kbd">+ A * B C</span></div></div>
+      <div class="section"><h3>8、考試容易錯的地方</h3><div class="warn">不要把 A+B 先組合。因為 * 比 + 優先，所以 B*C 是第一個子運算。</div></div>
+    </div>
+  </article>
+
+  <!-- Q4 -->
+  <article class="accordion" id="q4">
+    <button class="acc-head" onclick="toggleAcc(this)">
+      <div><h2>第 4 題：Algorithm — Infix to Postfix</h2><div class="meta">主題：後序轉換、括號、stack 思維</div></div><span class="chev">⌄</span>
+    </button>
+    <div class="acc-body">
+      <div class="section"><h3>1、題目原文</h3><div class="en">Transfer the following infix expression to a postfix expression.
+
+(A + B) * (C - D) / E
+
+Please show your steps.</div></div>
+      <div class="section"><h3>2、題目中文翻譯</h3><p>請將 <span class="kbd">(A + B) * (C - D) / E</span> 轉成 postfix expression，並寫出步驟。</p></div>
+      <div class="section"><h3>3、題目核心觀念</h3><p>Postfix 的規則是：左運算元、右運算元、運算子。括號內先轉，再處理外層 * 與 /。</p></div>
+      <div class="section"><h3>4、解題步驟</h3><ol><li>(A+B) 轉成 A B +。</li><li>(C-D) 轉成 C D -。</li><li>兩者相乘：A B + C D - *。</li><li>再除以 E：A B + C D - * E /。</li></ol></div>
+      <div class="section"><h3>5、圖解說明</h3>
+        <div class="svgbox"><svg viewBox="0 0 620 280">
+          <line class="edge" x1="310" y1="45" x2="220" y2="115"/><line class="edge" x1="310" y1="45" x2="420" y2="115"/>
+          <line class="edge" x1="220" y1="115" x2="150" y2="190"/><line class="edge" x1="220" y1="115" x2="290" y2="190"/>
+          <line class="edge" x1="420" y1="115" x2="360" y2="190"/><line class="edge" x1="420" y1="115" x2="485" y2="190"/>
+          <g class="tree-node"><circle cx="310" cy="45" r="24"/><text x="310" y="53" text-anchor="middle">/</text></g>
+          <g class="tree-node"><circle cx="220" cy="115" r="24"/><text x="220" y="123" text-anchor="middle">*</text></g>
+          <g class="tree-node"><circle cx="420" cy="115" r="24"/><text x="420" y="123" text-anchor="middle">E</text></g>
+          <g class="tree-node"><circle cx="150" cy="190" r="24"/><text x="150" y="198" text-anchor="middle">+</text></g>
+          <g class="tree-node"><circle cx="290" cy="190" r="24"/><text x="290" y="198" text-anchor="middle">-</text></g>
+          <line class="edge" x1="150" y1="190" x2="110" y2="245"/><line class="edge" x1="150" y1="190" x2="190" y2="245"/>
+          <line class="edge" x1="290" y1="190" x2="250" y2="245"/><line class="edge" x1="290" y1="190" x2="330" y2="245"/>
+          <g class="tree-node"><circle cx="110" cy="245" r="20"/><text x="110" y="252" text-anchor="middle">A</text></g>
+          <g class="tree-node"><circle cx="190" cy="245" r="20"/><text x="190" y="252" text-anchor="middle">B</text></g>
+          <g class="tree-node"><circle cx="250" cy="245" r="20"/><text x="250" y="252" text-anchor="middle">C</text></g>
+          <g class="tree-node"><circle cx="330" cy="245" r="20"/><text x="330" y="252" text-anchor="middle">D</text></g>
+        </svg></div>
+      </div>
+      <div class="section"><h3>6、動態動畫說明</h3>
+        <div class="anim-card">
+          <div class="stack-wrap">
+            <div><strong>目前 Token</strong><div id="q4-token" class="output-box"></div></div>
+            <div><strong>Operator Stack</strong><div id="q4-stack" class="stack"></div></div>
+            <div style="flex:1"><strong>Postfix Output</strong><div id="q4-output" class="output-box"></div></div>
+          </div>
+          <div class="anim-controls"><button class="btn small" onclick="animStep('q4',-1)">上一步</button><button class="btn small" onclick="animStep('q4',1)">下一步</button><button class="btn small secondary" onclick="animReset('q4')">重播</button></div>
+          <div id="q4-note" class="anim-note"></div>
+        </div>
+      </div>
+      <div class="section"><h3>7、完整答案</h3><div class="answer">Postfix：<span class="kbd">A B + C D - * E /</span></div></div>
+      <div class="section"><h3>8、流程圖</h3><div class="flow"><div class="box">開始</div><div class="arrow">→</div><div class="box">讀 token</div><div class="arrow">→</div><div class="diamond">operand?</div><div class="arrow">→</div><div class="box">輸出 / push-pop</div><div class="arrow">→</div><div class="box">結束</div></div></div>
+      <div class="section"><h3>9、時間複雜度與考試提醒</h3><p>每個 token 最多進 stack 一次、出 stack 一次，因此時間複雜度 O(n)。</p><div class="warn">右括號遇到時，要一直 pop 到左括號，但左括號本身不輸出。</div></div>
+    </div>
+  </article>
+
+  <!-- Q5 -->
+  <article class="accordion" id="q5">
+    <button class="acc-head" onclick="toggleAcc(this)">
+      <div><h2>第 5 題：Algorithm — Infix to Prefix</h2><div class="meta">主題：前序轉換、主要運算子</div></div><span class="chev">⌄</span>
+    </button>
+    <div class="acc-body">
+      <div class="section"><h3>1、題目原文</h3><div class="en">Transfer the following infix expression to a prefix expression.
+
+(A + B) * (C - D) / E
+
+Please show your steps.</div></div>
+      <div class="section"><h3>2、題目中文翻譯</h3><p>請將 <span class="kbd">(A + B) * (C - D) / E</span> 轉成 prefix expression，並列出步驟。</p></div>
+      <div class="section"><h3>3、題目核心觀念</h3><p>Prefix 是 operator 放在 operand 前面。最外層運算子要最先出現。</p></div>
+      <div class="section"><h3>4、解題步驟</h3><ol><li>補完整括號：((A+B)*(C-D))/E。</li><li>最外層 operator 是 /。</li><li>左邊子式 (A+B)*(C-D) 的 operator 是 *。</li><li>A+B 轉成 + A B；C-D 轉成 - C D。</li><li>整體 prefix 是 / * + A B - C D E。</li></ol></div>
+      <div class="section"><h3>5、圖解說明</h3><p>這題可用與第 4 題相同 expression tree；prefix 其實就是 preorder traversal：Root → Left → Right。</p></div>
+      <div class="section"><h3>6、動畫說明</h3>
+        <div class="anim-card">
+          <div id="anim-q5-tokens"></div><div id="anim-q5-output" class="output-box"></div>
+          <div class="anim-controls"><button class="btn small" onclick="stepSimple('q5',-1)">上一步</button><button class="btn small" onclick="stepSimple('q5',1)">下一步</button><button class="btn small secondary" onclick="resetSimple('q5')">重播</button></div>
+          <div id="anim-q5-note" class="anim-note"></div>
+        </div>
+      </div>
+      <div class="section"><h3>7、完整答案</h3><div class="answer">Prefix：<span class="kbd">/ * + A B - C D E</span></div></div>
+      <div class="section"><h3>8、考試容易錯的地方</h3><div class="warn">Prefix 不是把 postfix 倒過來。要從 expression tree 或主要 operator 的層次來看。</div></div>
+    </div>
+  </article>
+
+  <!-- Q6 -->
+  <article class="accordion" id="q6">
+    <button class="acc-head" onclick="toggleAcc(this)">
+      <div><h2>第 6 題：Infix to Postfix using a Stack</h2><div class="meta">主題：stack、push、pop、output trace</div></div><span class="chev">⌄</span>
+    </button>
+    <div class="acc-body">
+      <div class="section"><h3>1、題目原文</h3><div class="en">Use a stack to convert the following infix expression to postfix. Show the stack content after each operator is processed.
+
+A + B * C - D</div></div>
+      <div class="section"><h3>2、題目中文翻譯</h3><p>請用 stack 將 <span class="kbd">A + B * C - D</span> 轉成 postfix，並列出每次處理 operator 後 stack 的變化。</p></div>
+      <div class="section"><h3>3、題目核心觀念</h3><p>遇到 operand 直接輸出；遇到 operator 要比較 stack top 的優先權。如果 stack top 優先權較高或相同，先 pop 再 push 新 operator。</p></div>
+      <div class="section"><h3>4、解題步驟</h3><ol><li>A 輸出。</li><li>+ push。</li><li>B 輸出。</li><li>* 優先權高於 +，push。</li><li>C 輸出。</li><li>遇到 -，pop *、pop +，再 push -。</li><li>D 輸出。</li><li>最後 pop -。</li></ol></div>
+      <div class="section"><h3>5、圖解與動畫</h3>
+        <div class="anim-card">
+          <div class="stack-wrap">
+            <div><strong>目前 Token</strong><div id="q6-token" class="output-box"></div></div>
+            <div><strong>Operator Stack</strong><div id="q6-stack" class="stack"></div></div>
+            <div style="flex:1"><strong>Postfix Output</strong><div id="q6-output" class="output-box"></div></div>
+          </div>
+          <div class="anim-controls"><button class="btn small" onclick="animStep('q6',-1)">上一步</button><button class="btn small" onclick="animStep('q6',1)">下一步</button><button class="btn small secondary" onclick="animReset('q6')">重播</button></div>
+          <div id="q6-note" class="anim-note"></div>
+        </div>
+      </div>
+      <div class="section"><h3>6、完整答案</h3><div class="answer">Postfix：<span class="kbd">A B C * + D -</span></div></div>
+      <div class="section"><h3>7、流程圖</h3><div class="flow"><div class="box">讀 token</div><div class="arrow">→</div><div class="diamond">operand?</div><div class="arrow">→</div><div class="box">輸出</div><div class="arrow">/</div><div class="box">operator 比優先權</div><div class="arrow">→</div><div class="box">push / pop</div></div></div>
+      <div class="section"><h3>8、考試容易錯的地方</h3><div class="warn">遇到 - 時，因為 * 和 + 都應該先輸出，所以要連續 pop，不是只 pop 一個。</div></div>
+    </div>
+  </article>
+
+  <!-- Q7 -->
+  <article class="accordion" id="q7">
+    <button class="acc-head" onclick="toggleAcc(this)">
+      <div><h2>第 7 題：Evaluation of a Postfix Expression</h2><div class="meta">主題：postfix evaluation、stack 計算</div></div><span class="chev">⌄</span>
+    </button>
+    <div class="acc-body">
+      <div class="section"><h3>1、題目原文</h3><div class="en">Evaluate the following postfix expression by using a stack.
+
+6 3 3 ^ 2 * 8 1 + / /
+
+Please show the stack content after each step.</div></div>
+      <div class="section"><h3>2、題目中文翻譯</h3><p>請用 stack 評估 postfix expression，並列出每一步 stack 的變化。</p></div>
+      <div class="section"><h3>3、題目核心觀念</h3><p>Postfix evaluation 規則：operand push；operator pop 兩個 operand 計算，再把結果 push 回 stack。</p></div>
+      <div class="section"><h3>4、解題步驟與動畫</h3>
+        <div class="anim-card">
+          <div class="stack-wrap">
+            <div><strong>目前 Token</strong><div id="q7-token" class="output-box"></div></div>
+            <div><strong>Value Stack</strong><div id="q7-stack" class="stack"></div></div>
+            <div style="flex:1"><strong>運算說明</strong><div id="q7-output" class="output-box"></div></div>
+          </div>
+          <div class="anim-controls"><button class="btn small" onclick="animStep('q7',-1)">上一步</button><button class="btn small" onclick="animStep('q7',1)">下一步</button><button class="btn small secondary" onclick="animReset('q7')">重播</button></div>
+          <div id="q7-note" class="anim-note"></div>
+        </div>
+      </div>
+      <div class="section"><h3>5、完整答案</h3>
+        <table class="table"><tr><th>步驟</th><th>動作</th><th>Stack</th></tr><tr><td>1</td><td>push 6,3,3</td><td>6,3,3</td></tr><tr><td>2</td><td>3^3=27</td><td>6,27</td></tr><tr><td>3</td><td>27*2=54</td><td>6,54</td></tr><tr><td>4</td><td>8+1=9</td><td>6,54,9</td></tr><tr><td>5</td><td>54/9=6</td><td>6,6</td></tr><tr><td>6</td><td>6/6=1</td><td>1</td></tr></table>
+        <div class="answer">Final result：<span class="kbd">1</span></div>
+      </div>
+      <div class="section"><h3>6、流程圖</h3><div class="flow"><div class="box">開始</div><div class="arrow">→</div><div class="box">讀 token</div><div class="arrow">→</div><div class="diamond">operand?</div><div class="arrow">→</div><div class="box">push 或 pop 計算</div><div class="arrow">→</div><div class="box">最後 stack top 是答案</div></div></div>
+      <div class="section"><h3>7、考試容易錯的地方</h3><div class="warn">pop 出兩個數字後，運算順序不能反。對 - 和 / 特別重要：先 pop 的是右運算元，後 pop 的是左運算元。</div></div>
+    </div>
+  </article>
+
+  <!-- Q8 -->
+  <article class="accordion" id="q8">
+    <button class="acc-head" onclick="toggleAcc(this)">
+      <div><h2>第 8 題：Expression Trees 表達式樹</h2><div class="meta">主題：expression tree、preorder、postorder</div></div><span class="chev">⌄</span>
+    </button>
+    <div class="acc-body">
+      <div class="section"><h3>1、題目原文</h3><div class="en">Build an expression tree for the following expression. Then write its prefix and postfix expressions.
+
+(A + B) * (C - D)</div></div>
+      <div class="section"><h3>2、題目中文翻譯</h3><p>請根據 <span class="kbd">(A + B) * (C - D)</span> 建立 expression tree，並寫出 prefix 和 postfix。</p></div>
+      <div class="section"><h3>3、題目核心觀念</h3><p>Expression tree 中，leaf node 是 operand，internal node 是 operator。Prefix 是 preorder；Postfix 是 postorder。</p></div>
+      <div class="section"><h3>4、解題步驟</h3><ol><li>最外層 operator 是 *，所以 * 是 root。</li><li>左子樹是 A+B，root 是 +。</li><li>右子樹是 C-D，root 是 -。</li><li>走訪 root-left-right 得 prefix。</li><li>走訪 left-right-root 得 postfix。</li></ol></div>
+      <div class="section"><h3>5、圖解與 traversal 動畫</h3>
+        <div class="anim-card">
+          <div class="svgbox"><svg id="q8-tree" viewBox="0 0 520 260"></svg></div>
+          <div class="anim-controls">
+            <button class="btn small" onclick="setTraversal('pre')">Preorder 動畫</button>
+            <button class="btn small" onclick="setTraversal('post')">Postorder 動畫</button>
+            <button class="btn small" onclick="treeStep(-1)">上一步</button>
+            <button class="btn small" onclick="treeStep(1)">下一步</button>
+            <button class="btn small secondary" onclick="treeReset()">重播</button>
+          </div>
+          <div id="q8-order" class="output-box"></div>
+          <div id="q8-note" class="anim-note"></div>
+        </div>
+      </div>
+      <div class="section"><h3>6、完整答案</h3><div class="answer">Prefix：<span class="kbd">* + A B - C D</span><br>Postfix：<span class="kbd">A B + C D - *</span></div></div>
+      <div class="section"><h3>7、考試容易錯的地方</h3><div class="warn">Expression tree 的 root 不是第一個出現的 operator，而是「最後被計算」或「最外層」的 operator。</div></div>
+    </div>
+  </article>
+
+  <!-- Q9 -->
+  <article class="accordion" id="q9">
+    <button class="acc-head" onclick="toggleAcc(this)">
+      <div><h2>第 9 題：Implementation of Infix-to-Postfix in C</h2><div class="meta">主題：C program tracing、stack.h、push/pop</div></div><span class="chev">⌄</span>
+    </button>
+    <div class="acc-body">
+      <div class="section"><h3>1、題目原文</h3><div class="en">Write the output of the following infix-to-postfix program if the input expression is:
+
+x1 + y2 * 12 ^ (x2 ^ x3) / (z + 25)
+
+Please write the final postfix expression.</div></div>
+      <div class="section"><h3>2、題目中文翻譯</h3><p>若 C 程式將下列 infix expression 轉為 postfix，請寫出最後輸出結果。</p></div>
+      <div class="section"><h3>3、題目核心觀念</h3><p>這題考 C 程式中的 stack 操作、字串處理與 infix-to-postfix 轉換。變數如 x1、y2、x2、x3 要視為完整 operand。</p></div>
+      <div class="section"><h3>4、解題步驟</h3><ol><li>x1 直接輸出。</li><li>+ 進 stack。</li><li>y2 與 12 輸出。</li><li>^ 遇到括號內的 x2^x3，要先形成 x2 x3 ^。</li><li>12 ^ (x2 ^ x3) 形成 12 x2 x3 ^ ^。</li><li>與 y2 做乘法，再除以 (z+25)。</li><li>最後加上 x1。</li></ol></div>
+      <div class="section"><h3>5、動畫：C 程式 stack 與 output 變化</h3>
+        <div class="anim-card">
+          <div class="stack-wrap">
+            <div><strong>目前 Token</strong><div id="q9-token" class="output-box"></div></div>
+            <div><strong>Operator Stack</strong><div id="q9-stack" class="stack"></div></div>
+            <div style="flex:1"><strong>Postfix Output</strong><div id="q9-output" class="output-box"></div></div>
+          </div>
+          <div class="anim-controls"><button class="btn small" onclick="animStep('q9',-1)">上一步</button><button class="btn small" onclick="animStep('q9',1)">下一步</button><button class="btn small secondary" onclick="animReset('q9')">重播</button></div>
+          <div id="q9-note" class="anim-note"></div>
+        </div>
+      </div>
+      <div class="section"><h3>6、完整答案</h3><div class="answer">Final postfix expression：<br><span class="kbd">x1 y2 12 x2 x3 ^ ^ * z 25 + / +</span></div></div>
+      <div class="section"><h3>7、完整 C 程式碼：Infix-to-Postfix</h3>
+        <div class="codebox">
+          <div class="label">C 程式碼：infix_to_postfix.c</div><button class="copy-btn" onclick="copyCode(this)">複製程式碼</button>
+<pre><code>#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+#include &lt;ctype.h&gt;
+
+#define MAX 200
+
+/* 使用陣列實作 stack，專門存放運算子 */
+char stack[MAX];
+int top = -1;
+
+/* 判斷 stack 是否為空 */
+int isEmpty() {
+    return top == -1;
+}
+
+/* 將運算子放入 stack */
+void push(char c) {
+    stack[++top] = c;
+}
+
+/* 從 stack 取出最上面的運算子 */
+char pop() {
+    if (isEmpty()) return '\0';
+    return stack[top--];
+}
+
+/* 查看 stack 最上方的運算子，但不移除 */
+char peek() {
+    if (isEmpty()) return '\0';
+    return stack[top];
+}
+
+/* 回傳運算子的優先權 */
+int precedence(char op) {
+    if (op == '^') return 3;
+    if (op == '*' || op == '/') return 2;
+    if (op == '+' || op == '-') return 1;
+    return 0;
+}
+
+/* 將 infix 轉成 postfix */
+void infixToPostfix(const char infix[], char postfix[]) {
+    int i = 0;
+    postfix[0] = '\0';
+
+    while (infix[i] != '\0') {
+        char c = infix[i];
+
+        /* 跳過空白 */
+        if (isspace(c)) {
+            i++;
+            continue;
+        }
+
+        /* 如果是 operand，可能是 x1、y2、12 這種多字元資料 */
+        if (isalnum(c)) {
+            char token[MAX];
+            int k = 0;
+
+            while (isalnum(infix[i])) {
+                token[k++] = infix[i++];
+            }
+
+            token[k] = '\0';
+            strcat(postfix, token);
+            strcat(postfix, " ");
+            continue;
+        }
+
+        /* 左括號直接 push */
+        if (c == '(') {
+            push(c);
+        }
+        /* 右括號：pop 到遇到左括號為止 */
+        else if (c == ')') {
+            while (!isEmpty() && peek() != '(') {
+                char op[3] = {pop(), ' ', '\0'};
+                strcat(postfix, op);
+            }
+            pop(); // 移除左括號
+        }
+        /* 一般運算子 */
+        else {
+            while (!isEmpty() &&
+                   peek() != '(' &&
+                   precedence(peek()) >= precedence(c)) {
+                char op[3] = {pop(), ' ', '\0'};
+                strcat(postfix, op);
+            }
+            push(c);
+        }
+
+        i++;
+    }
+
+    /* 把 stack 剩下的運算子全部輸出 */
+    while (!isEmpty()) {
+        char op[3] = {pop(), ' ', '\0'};
+        strcat(postfix, op);
+    }
+}
+
+int main() {
+    char infix[] = "x1 + y2 * 12 ^ (x2 ^ x3) / (z + 25)";
+    char postfix[MAX];
+
+    infixToPostfix(infix, postfix);
+
+    printf("Infix: %s\n", infix);
+    printf("Postfix: %s\n", postfix);
+
+    return 0;
+}</code></pre>
+        </div>
+      </div>
+      <div class="section"><h3>8、程式流程圖</h3>
+        <div class="flow"><div class="box">開始</div><div class="arrow">→</div><div class="box">讀取字元</div><div class="arrow">→</div><div class="diamond">operand?</div><div class="arrow">→</div><div class="box">輸出 token</div><div class="arrow">→</div><div class="diamond">operator?</div><div class="arrow">→</div><div class="box">比較優先權並 push/pop</div><div class="arrow">→</div><div class="box">輸出 postfix</div></div>
+      </div>
+      <div class="section"><h3>9、函式與語法說明</h3>
+        <ul><li><strong>push</strong>：把 operator 放入 stack。</li><li><strong>pop</strong>：取出 stack top 的 operator。</li><li><strong>peek</strong>：查看 stack top，但不刪除。</li><li><strong>precedence</strong>：回傳 +、-、*、/、^ 的優先權。</li><li><strong>isalnum</strong>：判斷是否為英文或數字，用來讀多字元 operand。</li><li><strong>strcat</strong>：把 token 接到 postfix 字串後面。</li></ul>
+      </div>
+      <div class="section"><h3>10、執行結果</h3><div class="en">Infix: x1 + y2 * 12 ^ (x2 ^ x3) / (z + 25)
+Postfix: x1 y2 12 x2 x3 ^ ^ * z 25 + / +</div></div>
+      <div class="section"><h3>11、時間複雜度與考試提醒</h3><p>每個 token 最多被讀一次，每個 operator 最多 push/pop 一次，所以時間複雜度為 O(n)。</p><div class="warn">考試時要注意多字元 operand，例如 x1、12、x3，不能拆成 x 和 1 或 1 和 2。</div></div>
+    </div>
+  </article>
+
+</div>
+
+<script>
+function toggleAcc(btn){ btn.parentElement.classList.toggle('open'); }
+function openAll(){ document.querySelectorAll('.accordion').forEach(a=>a.classList.add('open')); }
+function closeAll(){ document.querySelectorAll('.accordion').forEach(a=>a.classList.remove('open')); }
+function copyCode(btn){
+  const code=btn.parentElement.querySelector('code').innerText;
+  navigator.clipboard.writeText(code).then(()=>{btn.textContent='已複製'; setTimeout(()=>btn.textContent='複製程式碼',1200);});
+}
+
+const simple = {
+ q1:{idx:0,tokens:['A','+','B','*','C'],notes:[
+   '這是一個 arithmetic expression。','A 是 operand。','+ 是 operator。','B 是 operand。','* 是 operator。','C 是 operand。'
+ ],outs:['A + B * C','A 是被運算資料','+ 表示加法動作','B 是被運算資料','* 表示乘法動作','C 是被運算資料']},
+ q2:{idx:0,tokens:['5','+','2','*','3','^','2','-','8','/','4'],notes:[
+   '原式：5 + 2 * 3 ^ 2 - 8 / 4','先算最高優先權：3 ^ 2 = 9','再算乘法：2 * 9 = 18','再算除法：8 / 4 = 2','最後算加減：5 + 18 - 2','答案為 21'
+ ],outs:['5 + 2 * 3 ^ 2 - 8 / 4','3 ^ 2 = 9','2 * 9 = 18','8 / 4 = 2','5 + 18 - 2','21']},
+ q3:{idx:0,tokens:['A','+','B','*','C'],notes:[
+   '原式 A + B * C。','因為 * 比 + 優先，所以先看 B*C。','B*C 的 postfix 是 B C *。','整體 postfix 是 A B C * +。','B*C 的 prefix 是 * B C。','整體 prefix 是 + A * B C。'
+ ],outs:['A + B * C','A + (B*C)','B C *','A B C * +','* B C','+ A * B C']},
+ q5:{idx:0,tokens:['(','A','+','B',')','*','(','C','-','D',')','/','E'],notes:[
+   '原式：(A+B)*(C-D)/E。','補完整括號：((A+B)*(C-D))/E。','最外層 operator 是 /，所以 / 在最前面。','左子式 (A+B)*(C-D) 的 operator 是 *。','A+B 變成 + A B；C-D 變成 - C D。','答案：/ * + A B - C D E。'
+ ],outs:['(A+B)*(C-D)/E','((A+B)*(C-D))/E','/  [左子式]  E','/ * [A+B] [C-D] E','+ A B，- C D','/ * + A B - C D E']}
+};
+function renderSimple(id){
+ const o=simple[id], tok=document.getElementById('anim-'+id+'-tokens'), note=document.getElementById('anim-'+id+'-note'), out=document.getElementById('anim-'+id+'-output');
+ if(!tok) return;
+ tok.innerHTML=o.tokens.map((t,i)=>`<span class="token ${i===Math.min(o.idx,o.tokens.length-1)?'active':''}">${t}</span>`).join('');
+ note.textContent=o.notes[o.idx]||'';
+ if(out) out.textContent=o.outs[o.idx]||'';
+}
+function stepSimple(id,d){ simple[id].idx=Math.max(0,Math.min(simple[id].notes.length-1,simple[id].idx+d)); renderSimple(id); }
+function resetSimple(id){ simple[id].idx=0; renderSimple(id); }
+
+const anims = {
+ q4:{idx:0,steps:[
+  {t:'(',s:['('],o:'',n:'讀到左括號，push 到 stack。'},
+  {t:'A',s:['('],o:'A',n:'A 是 operand，直接加入 output。'},
+  {t:'+',s:['(','+'],o:'A',n:'+ 是 operator，push。'},
+  {t:'B',s:['(','+'],o:'A B',n:'B 是 operand，直接輸出。'},
+  {t:')',s:[],o:'A B +',n:'右括號：pop 到左括號，所以 + 輸出，左括號丟掉。'},
+  {t:'*',s:['*'],o:'A B +',n:'* push 到 stack。'},
+  {t:'(',s:['*','('],o:'A B +',n:'讀到左括號，push。'},
+  {t:'C',s:['*','('],o:'A B + C',n:'C 是 operand，輸出。'},
+  {t:'-',s:['*','(','-'],o:'A B + C',n:'- push。'},
+  {t:'D',s:['*','(','-'],o:'A B + C D',n:'D 是 operand，輸出。'},
+  {t:')',s:['*'],o:'A B + C D -',n:'右括號：pop -，形成 C D -。'},
+  {t:'/',s:['/'],o:'A B + C D - *',n:'遇到 /，先 pop 相同或較高優先權的 *，再 push /。'},
+  {t:'E',s:['/'],o:'A B + C D - * E',n:'E 是 operand，輸出。'},
+  {t:'END',s:[],o:'A B + C D - * E /',n:'輸入結束，把 / pop 出來。'}
+ ]},
+ q6:{idx:0,steps:[
+  {t:'A',s:[],o:'A',n:'A 是 operand，直接輸出。'},
+  {t:'+',s:['+'],o:'A',n:'+ push 到 stack。'},
+  {t:'B',s:['+'],o:'A B',n:'B 是 operand，直接輸出。'},
+  {t:'*',s:['+','*'],o:'A B',n:'* 優先權高於 +，push。'},
+  {t:'C',s:['+','*'],o:'A B C',n:'C 是 operand，直接輸出。'},
+  {t:'-',s:['-'],o:'A B C * +',n:'- 優先權低於 stack top，所以 pop * 與 +，再 push -。'},
+  {t:'D',s:['-'],o:'A B C * + D',n:'D 是 operand，直接輸出。'},
+  {t:'END',s:[],o:'A B C * + D -',n:'輸入結束，pop 剩下的 -。'}
+ ]},
+ q7:{idx:0,steps:[
+  {t:'6',s:['6'],o:'push 6',n:'operand 直接 push。'},
+  {t:'3',s:['6','3'],o:'push 3',n:'operand 直接 push。'},
+  {t:'3',s:['6','3','3'],o:'push 3',n:'operand 直接 push。'},
+  {t:'^',s:['6','27'],o:'3 ^ 3 = 27',n:'operator ^：pop 3 和 3，計算後 push 27。'},
+  {t:'2',s:['6','27','2'],o:'push 2',n:'operand 直接 push。'},
+  {t:'*',s:['6','54'],o:'27 * 2 = 54',n:'operator *：pop 27 和 2，push 54。'},
+  {t:'8',s:['6','54','8'],o:'push 8',n:'operand 直接 push。'},
+  {t:'1',s:['6','54','8','1'],o:'push 1',n:'operand 直接 push。'},
+  {t:'+',s:['6','54','9'],o:'8 + 1 = 9',n:'operator +：pop 8 和 1，push 9。'},
+  {t:'/',s:['6','6'],o:'54 / 9 = 6',n:'operator /：pop 54 和 9，push 6。'},
+  {t:'/',s:['1'],o:'6 / 6 = 1',n:'最後答案為 1。'}
+ ]},
+ q9:{idx:0,steps:[
+  {t:'x1',s:[],o:'x1',n:'x1 是 operand，輸出。'},
+  {t:'+',s:['+'],o:'x1',n:'+ push。'},
+  {t:'y2',s:['+'],o:'x1 y2',n:'y2 是 operand，輸出。'},
+  {t:'*',s:['+','*'],o:'x1 y2',n:'* 優先權高於 +，push。'},
+  {t:'12',s:['+','*'],o:'x1 y2 12',n:'12 是 operand，輸出。'},
+  {t:'^',s:['+','*','^'],o:'x1 y2 12',n:'^ push。'},
+  {t:'(',s:['+','*','^','('],o:'x1 y2 12',n:'左括號 push。'},
+  {t:'x2',s:['+','*','^','('],o:'x1 y2 12 x2',n:'x2 輸出。'},
+  {t:'^',s:['+','*','^','(','^'],o:'x1 y2 12 x2',n:'括號內 ^ push。'},
+  {t:'x3',s:['+','*','^','(','^'],o:'x1 y2 12 x2 x3',n:'x3 輸出。'},
+  {t:')',s:['+','*','^'],o:'x1 y2 12 x2 x3 ^',n:'右括號：pop ^，完成 x2 x3 ^。'},
+  {t:'/',s:['+','/'],o:'x1 y2 12 x2 x3 ^ ^ *',n:'遇到 /，先 pop ^ 和 *，再 push /。'},
+  {t:'(',s:['+','/','('],o:'x1 y2 12 x2 x3 ^ ^ *',n:'左括號 push。'},
+  {t:'z',s:['+','/','('],o:'x1 y2 12 x2 x3 ^ ^ * z',n:'z 輸出。'},
+  {t:'+',s:['+','/','(','+'],o:'x1 y2 12 x2 x3 ^ ^ * z',n:'括號內 + push。'},
+  {t:'25',s:['+','/','(','+'],o:'x1 y2 12 x2 x3 ^ ^ * z 25',n:'25 輸出。'},
+  {t:')',s:['+','/'],o:'x1 y2 12 x2 x3 ^ ^ * z 25 +',n:'右括號：pop +。'},
+  {t:'END',s:[],o:'x1 y2 12 x2 x3 ^ ^ * z 25 + / +',n:'輸入結束，依序 pop / 和 +。'}
+ ]}
+};
+function renderAnim(id){
+ const a=anims[id], st=a.steps[a.idx];
+ document.getElementById(id+'-token').textContent=st.t;
+ document.getElementById(id+'-stack').innerHTML=st.s.map(x=>`<div class="stack-cell">${x}</div>`).join('');
+ document.getElementById(id+'-output').textContent=st.o;
+ document.getElementById(id+'-note').textContent=st.n;
+}
+function animStep(id,d){ const a=anims[id]; a.idx=Math.max(0,Math.min(a.steps.length-1,a.idx+d)); renderAnim(id); }
+function animReset(id){ anims[id].idx=0; renderAnim(id); }
+
+let treeMode='pre', treeIdx=0;
+const treeOrders={pre:['*','+','A','B','-','C','D'],post:['A','B','+','C','D','-','*']};
+const treePos={
+ '*':[260,45], '+':[160,120], '-':[360,120], A:[110,205], B:[210,205], C:[310,205], D:[410,205]
+};
+function drawQ8(){
+ const svg=document.getElementById('q8-tree'); if(!svg) return;
+ const active=treeOrders[treeMode][treeIdx];
+ const edges=[['*','+'],['*','-'],['+','A'],['+','B'],['-','C'],['-','D']];
+ let h='';
+ edges.forEach(([a,b])=>{h+=`<line class="edge" x1="${treePos[a][0]}" y1="${treePos[a][1]}" x2="${treePos[b][0]}" y2="${treePos[b][1]}"/>`;});
+ Object.keys(treePos).forEach(k=>{const [x,y]=treePos[k]; h+=`<g class="tree-node ${k===active?'active':''}"><circle cx="${x}" cy="${y}" r="25"/><text x="${x}" y="${y+8}" text-anchor="middle">${k}</text></g>`;});
+ svg.innerHTML=h;
+ document.getElementById('q8-order').textContent=(treeMode==='pre'?'Preorder / Prefix: ':'Postorder / Postfix: ')+treeOrders[treeMode].slice(0,treeIdx+1).join(' ');
+ document.getElementById('q8-note').textContent=`目前拜訪節點：${active}。${treeMode==='pre'?'Preorder 順序是 Root → Left → Right。':'Postorder 順序是 Left → Right → Root。'}`;
+}
+function setTraversal(m){treeMode=m;treeIdx=0;drawQ8();}
+function treeStep(d){treeIdx=Math.max(0,Math.min(treeOrders[treeMode].length-1,treeIdx+d));drawQ8();}
+function treeReset(){treeIdx=0;drawQ8();}
+
+document.addEventListener('DOMContentLoaded',()=>{
+ Object.keys(simple).forEach(renderSimple);
+ Object.keys(anims).forEach(renderAnim);
+ drawQ8();
+});
+</script>
+</body>
+</html>

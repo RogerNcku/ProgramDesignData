@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Lesson 8 Operating Systems 考古題練習與完整詳解</title>
+<style>
+:root{--bg:#f6f7fb;--card:#fff;--ink:#1e293b;--muted:#64748b;--brand:#1d4ed8;--brand2:#0f766e;--warn:#b45309;--danger:#b91c1c;--line:#cbd5e1;--soft:#e0f2fe;--soft2:#ecfdf5;--code:#0f172a}
+*{box-sizing:border-box} body{margin:0;font-family:"Noto Sans TC","Microsoft JhengHei",Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.72} header{background:linear-gradient(135deg,#1e3a8a,#0f766e);color:white;padding:42px 24px;text-align:center} header h1{margin:0;font-size:clamp(26px,4vw,42px)} header p{max-width:980px;margin:14px auto 0;color:#dbeafe}.wrap{max-width:1180px;margin:auto;padding:24px}.toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;position:sticky;top:0;background:rgba(246,247,251,.92);backdrop-filter:blur(8px);z-index:9;padding:10px 0}.btn{border:0;border-radius:999px;background:var(--brand);color:white;padding:9px 16px;cursor:pointer;font-weight:700}.btn.secondary{background:#475569}.btn.green{background:var(--brand2)}.btn.orange{background:#b45309}.toc,.exam-box,.card{background:var(--card);border:1px solid #e2e8f0;border-radius:18px;box-shadow:0 8px 24px rgba(15,23,42,.08);padding:22px;margin:18px 0}.toc a{display:inline-block;margin:6px;padding:7px 11px;border-radius:999px;background:#eff6ff;color:#1d4ed8;text-decoration:none;font-weight:700}.exam-box h2,.toc h2{margin-top:0}.accordion{margin:16px 0;border:1px solid #dbe3ef;border-radius:18px;overflow:hidden;background:white;box-shadow:0 8px 18px rgba(15,23,42,.06)}.acc-head{width:100%;text-align:left;background:#fff;border:0;padding:18px 22px;font-size:18px;font-weight:900;color:#0f172a;cursor:pointer;display:flex;justify-content:space-between;align-items:center}.acc-head:hover{background:#f8fafc}.acc-head .tag{font-size:13px;background:#e0f2fe;color:#0369a1;padding:4px 9px;border-radius:999px;margin-left:8px}.acc-body{display:none;padding:0 22px 24px;border-top:1px solid #e2e8f0}.accordion.open .acc-body{display:block}.section{margin:18px 0}.section h3{margin:16px 0 8px;color:#0f766e;border-left:5px solid #0f766e;padding-left:10px}.qtext{background:#f8fafc;border-left:5px solid #2563eb;padding:12px 14px;border-radius:10px;white-space:pre-wrap}.answer{background:#ecfdf5;border-left:5px solid #059669;padding:12px 14px;border-radius:10px}.mistake{background:#fff7ed;border-left:5px solid #ea580c;padding:12px 14px;border-radius:10px}.grid{display:grid;grid-template-columns:1.1fr .9fr;gap:18px;align-items:start}@media(max-width:850px){.grid{grid-template-columns:1fr}.toolbar{position:static}}
+.diagram{width:100%;max-width:820px;background:#ffffff;border:1px solid #e2e8f0;border-radius:14px;margin:10px 0}.box{fill:#eff6ff;stroke:#3b82f6;stroke-width:2}.box.user{fill:#fef3c7;stroke:#f59e0b}.box.app{fill:#ede9fe;stroke:#7c3aed}.box.os{fill:#dcfce7;stroke:#16a34a}.box.hw{fill:#fee2e2;stroke:#ef4444}.edge{stroke:#334155;stroke-width:2;fill:none}.small{font-size:14px;fill:#475569}.svgh2{font-size:18px;font-weight:bold;fill:#0f172a}.tier{stroke:#64748b;stroke-width:2}.t1{fill:#dbeafe}.t2{fill:#bfdbfe}.t3{fill:#93c5fd}.t4{fill:#60a5fa}.t5{fill:#3b82f6}.mem{fill:#f8fafc;stroke:#334155;stroke-width:2}.seg{stroke:#334155;stroke-width:1.5}.stack{fill:#fee2e2}.heap{fill:#ffedd5}.data{fill:#dcfce7}.text{fill:#dbeafe}.bigarrow{font-size:32px;fill:#64748b}.state{fill:#e0f2fe;stroke:#0284c7;stroke-width:2}.state.active,.proc.active,.res.active,.deadedge.active{filter:drop-shadow(0 0 10px #f59e0b);stroke:#f59e0b!important;stroke-width:5!important}.pcb{fill:#f8fafc;stroke:#334155;stroke-width:2}.pcbrow{fill:#e0f2fe;stroke:#94a3b8}.page{fill:#ede9fe;stroke:#7c3aed}.pt{fill:#dcfce7;stroke:#16a34a}.frame{fill:#fef3c7;stroke:#d97706}.threadline{stroke:#7c3aed;stroke-width:3;fill:none}.proc{fill:#dbeafe;stroke:#2563eb;stroke-width:3}.res{fill:#fee2e2;stroke:#dc2626;stroke-width:3}.deadedge{stroke:#7f1d1d}.gantt{fill:#dbeafe;stroke:#2563eb;stroke-width:2}.flowbox{fill:#f8fafc;stroke:#0f766e;stroke-width:2}.procbar{fill:#bfdbfe;stroke:#2563eb}.timeline{fill:#fef3c7;stroke:#d97706}.anim{border:1px solid #cbd5e1;border-radius:14px;background:#f8fafc;padding:14px;margin:14px 0}.anim-status{font-weight:800;color:#1d4ed8;background:white;border-radius:10px;padding:10px;margin-top:8px}.anim-controls{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}.codebox{position:relative;background:var(--code);color:#e2e8f0;border-radius:14px;overflow:hidden;margin:14px 0}.codebox pre{margin:0;padding:44px 16px 16px;overflow:auto}.copy{position:absolute;right:10px;top:9px;background:#22c55e;color:#052e16;border:0;border-radius:8px;padding:6px 10px;font-weight:800;cursor:pointer}table{border-collapse:collapse;width:100%;margin:10px 0;background:white}th,td{border:1px solid #cbd5e1;padding:8px;text-align:center}th{background:#eff6ff}.formula{font-family:Consolas,monospace;background:#f1f5f9;border-radius:8px;padding:2px 6px}.pill{display:inline-block;background:#e0f2fe;color:#0369a1;border-radius:999px;padding:3px 9px;margin:3px;font-size:13px;font-weight:700}.note{color:var(--muted);font-size:14px}
+</style>
+</head>
+<body>
+<header><h1>Lesson 8 Operating Systems 考古題練習與完整詳解</h1><p>依照老師考古題風格整理：短題幹、明確任務、完整圖解、動畫步驟、計算過程與考試提醒。</p></header>
+<div class="wrap">
+<div class="toolbar"><button class="btn" onclick="openAll()">全部展開</button><button class="btn secondary" onclick="closeAll()">全部收合</button><button class="btn green" onclick="location.href='#toc'">回目錄</button></div>
+<section class="toc" id="toc"><h2>首頁目錄</h2><p>點選題目可跳到對應下拉式區塊。</p>
+<a href="#q1">第 1 題：Operating System 作業系統基本概念</a><a href="#q2">第 2 題：Computer System Structure 電腦系統結構</a><a href="#q3">第 3 題：What Operating Systems Do 作業系統的功能</a><a href="#q4">第 4 題：Computer Startup 電腦開機流程</a><a href="#q5">第 5 題：Storage Structure 儲存結構</a><a href="#q6">第 6 題：Computer-System Architecture 電腦系統架構</a><a href="#q7">第 7 題：Operating System Structure 作業系統結構</a><a href="#q8">第 8 題：Process Management 行程管理</a><a href="#q9">第 9 題：Memory Management 記憶體管理</a><a href="#q10">第 10 題：Storage Management 儲存管理</a><a href="#q11">第 11 題：Protection and Security 保護與安全</a><a href="#q12">第 12 題：Program、Job and Process 程式、工作與行程</a><a href="#q13">第 13 題：Process in Memory 行程在記憶體中的結構</a><a href="#q14">第 14 題：Process State 行程狀態</a><a href="#q15">第 15 題：Process Control Block，PCB 行程控制區塊</a><a href="#q16">第 16 題：Schedulers and Context Switch 排程器與內容切換</a><a href="#q17">第 17 題：Interprocess Communication，IPC 行程間通訊</a><a href="#q18">第 18 題：Multithreaded Programming 多執行緒程式設計</a><a href="#q19">第 19 題：CPU Scheduling CPU 排程</a><a href="#q20">第 20 題：Deadlocks 死結</a></section><section class="exam-box"><h2>考試重點整理區</h2><p>本章最可能出成大題的是 <span class="pill">Process State Diagram</span><span class="pill">PCB</span><span class="pill">Schedulers / Context Switch</span><span class="pill">CPU Scheduling Gantt Chart</span><span class="pill">Deadlock / Resource-Allocation Graph</span>。觀念小題常考 OS 定義、program vs process、memory / storage 比較、IPC 與 thread 優點。</p><p>準備策略：先背名詞，再練畫圖，最後練 FCFS / SJF 計算與 deadlock cycle 判斷。</p></section>
+<article class="accordion" id="q1"><button class="acc-head" onclick="toggleAcc(this)"><span>第 1 題：Operating System 作業系統基本概念 <span class="tag">Lesson 8</span></span><span>＋</span></button><div class="acc-body">
+    <div class="section"><h3>1、題目原文</h3><div class="qtext">What is an operating system? Explain why an operating system can be viewed as an intermediary between users and computer hardware.</div></div>
+    <div class="section"><h3>2、題目中文翻譯</h3><p>什麼是作業系統？請解釋為什麼作業系統可以被視為使用者與電腦硬體之間的中介者。</p></div>
+    <div class="section"><h3>3、題目核心觀念</h3><p>operating system、intermediary、user、hardware</p></div>
+    <div class="section"><h3>4、解題步驟</h3><ol><li>先辨認題目要問的是定義、比較、畫圖、計算或判斷。</li><li>OS 是管理硬體與提供服務的系統軟體。它把複雜的 CPU、記憶體與 I/O 裝置包裝成較容易使用的介面。</li><li>最後用圖或表格把答案整理清楚，避免只寫零散文字。</li></ol></div>
+    <div class="section"><h3>5、圖解說明</h3><svg class="diagram" viewBox="0 0 760 260"><defs><marker id="arr2" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#334155"/></marker></defs>
+    <rect x="35" y="90" width="170" height="70" rx="14" class="box user"/><text x="120" y="130" text-anchor="middle">User</text>
+    <rect x="295" y="70" width="170" height="110" rx="14" class="box os"/><text x="380" y="115" text-anchor="middle">OS</text><text x="380" y="145" text-anchor="middle" class="small">resource allocator</text>
+    <rect x="555" y="90" width="170" height="70" rx="14" class="box hw"/><text x="640" y="130" text-anchor="middle">Hardware</text>
+    <line x1="205" y1="125" x2="295" y2="125" marker-end="url(#arr2)" class="edge"/><line x1="465" y1="125" x2="555" y2="125" marker-end="url(#arr2)" class="edge"/>
+    <text x="250" y="105" text-anchor="middle" class="small">system call</text><text x="510" y="105" text-anchor="middle" class="small">CPU / memory / I/O</text>
+    </svg></div>
+<div class="section"><h3>6、動態動畫說明</h3><div class="anim"><p>本題屬於觀念或比較題，圖解已呈現主要結構。考試時可依圖中的層次或箭頭說明。</p></div></div><div class="section"><h3>7、完整答案</h3><div class="answer">OS 位在使用者/應用程式與硬體之間，負責接收需求、分配資源、控制硬體、避免錯誤使用。</div></div>
+    <div class="section"><h3>8、流程圖</h3><svg class="diagram flow" viewBox="0 0 760 430"><text x="380" y="28" text-anchor="middle" class="svgh2">本題解題流程</text>
+    <defs><marker id="arrf" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#334155"/></marker></defs>
+    <rect x="300" y="55" width="160" height="44" rx="22" class="flowbox"/><text x="380" y="82" text-anchor="middle">開始</text>
+    <rect x="270" y="125" width="220" height="52" rx="10" class="flowbox"/><text x="380" y="156" text-anchor="middle">讀取題目資料</text>
+    <path d="M380 99 L380 125" marker-end="url(#arrf)" class="edge"/>
+    <polygon points="380,205 500,265 380,325 260,265" class="flowbox"/><text x="380" y="262" text-anchor="middle">是否需要</text><text x="380" y="284" text-anchor="middle">計算或畫圖？</text>
+    <path d="M380 177 L380 205" marker-end="url(#arrf)" class="edge"/>
+    <rect x="60" y="245" width="150" height="55" rx="10" class="flowbox"/><text x="135" y="278" text-anchor="middle">整理觀念</text>
+    <rect x="550" y="245" width="150" height="55" rx="10" class="flowbox"/><text x="625" y="278" text-anchor="middle">逐步處理</text>
+    <path d="M260 265 L210 272" marker-end="url(#arrf)" class="edge"/><path d="M500 265 L550 272" marker-end="url(#arrf)" class="edge"/>
+    <rect x="270" y="355" width="220" height="52" rx="10" class="flowbox"/><text x="380" y="386" text-anchor="middle">輸出完整答案</text>
+    <path d="M135 300 C170 360 250 380 270 380" marker-end="url(#arrf)" class="edge"/><path d="M625 300 C590 360 510 380 490 380" marker-end="url(#arrf)" class="edge"/>
+    </svg></div>
+    <div class="section"><h3>9、流程說明</h3><p>流程圖表示：先讀題與辨認核心觀念，若需要畫圖或計算，就依規則逐步處理；若是觀念題，則整理定義、比較項目與例子，最後輸出完整答案。</p></div>
+    <div class="section"><h3>10、重要概念與語法/變數說明</h3><p>operating system、intermediary、user、hardware。若是計算題，請特別注意 arrival time、burst time、waiting time、turnaround time、ready queue、time quantum、cycle 等名詞；若是圖形題，請標示箭頭方向與每個節點意義。</p></div>
+    <div class="section"><h3>11、時間複雜度與考試容易錯的地方</h3><div class="mistake"><p><b>時間複雜度：</b>觀念題通常不需計算；排程或圖形判斷若逐一檢查 n 個 process，基本整理成本約 O(n) 到 O(n log n)，依排序方式而定。</p><p><b>容易錯：</b>不要只背名詞，要能畫出對應圖形；CPU scheduling 要分清楚 waiting time 與 turnaround time；deadlock 要看 cycle 與 resource instance 數量。</p></div></div>
+</div></article><article class="accordion" id="q2"><button class="acc-head" onclick="toggleAcc(this)"><span>第 2 題：Computer System Structure 電腦系統結構 <span class="tag">Lesson 8</span></span><span>＋</span></button><div class="acc-body">
+    <div class="section"><h3>1、題目原文</h3><div class="qtext">Draw the four components of a computer system and briefly explain each component.</div></div>
+    <div class="section"><h3>2、題目中文翻譯</h3><p>請畫出電腦系統的四個組成部分，並簡單說明每一層的功能。</p></div>
+    <div class="section"><h3>3、題目核心觀念</h3><p>users、application programs、operating system、hardware</p></div>
+    <div class="section"><h3>4、解題步驟</h3><ol><li>先辨認題目要問的是定義、比較、畫圖、計算或判斷。</li><li>四層由上到下是 users、application programs、operating system、computer hardware。</li><li>最後用圖或表格把答案整理清楚，避免只寫零散文字。</li></ol></div>
+    <div class="section"><h3>5、圖解說明</h3><svg class="diagram" viewBox="0 0 760 360" role="img" aria-label="Computer system structure">
+    <defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#334155"/></marker></defs>
+    <rect x="60" y="30" width="640" height="55" rx="12" class="box user"/><text x="380" y="64" text-anchor="middle">Users 使用者</text>
+    <rect x="60" y="110" width="640" height="65" rx="12" class="box app"/><text x="380" y="148" text-anchor="middle">Application Programs 應用程式</text>
+    <rect x="60" y="200" width="640" height="65" rx="12" class="box os"/><text x="380" y="238" text-anchor="middle">Operating System 作業系統</text>
+    <rect x="60" y="290" width="640" height="55" rx="12" class="box hw"/><text x="380" y="324" text-anchor="middle">Computer Hardware 硬體：CPU、Memory、I/O</text>
+    <line x1="380" y1="85" x2="380" y2="110" marker-end="url(#arrow)" class="edge"/>
+    <line x1="380" y1="175" x2="380" y2="200" marker-end="url(#arrow)" class="edge"/>
+    <line x1="380" y1="265" x2="380" y2="290" marker-end="url(#arrow)" class="edge"/>
+    </svg></div>
+<div class="section"><h3>6、動態動畫說明</h3><div class="anim"><p>本題屬於觀念或比較題，圖解已呈現主要結構。考試時可依圖中的層次或箭頭說明。</p></div></div><div class="section"><h3>7、完整答案</h3><div class="answer">使用者透過應用程式提出需求；應用程式透過 OS 使用硬體；OS 管理 CPU、memory、I/O。</div></div>
+    <div class="section"><h3>8、流程圖</h3><svg class="diagram flow" viewBox="0 0 760 430"><text x="380" y="28" text-anchor="middle" class="svgh2">本題解題流程</text>
+    <defs><marker id="arrf" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#334155"/></marker></defs>
+    <rect x="300" y="55" width="160" height="44" rx="22" class="flowbox"/><text x="380" y="82" text-anchor="middle">開始</text>
+    <rect x="270" y="125" width="220" height="52" rx="10" class="flowbox"/><text x="380" y="156" text-anchor="middle">讀取題目資料</text>
+    <path d="M380 99 L380 125" marker-end="url(#arrf)" class="edge"/>
+    <polygon points="380,205 500,265 380,325 260,265" class="flowbox"/><text x="380" y="262" text-anchor="middle">是否需要</text><text x="380" y="284" text-anchor="middle">計算或畫圖？</text>
+    <path d="M380 177 L380 205" marker-end="url(#arrf)" class="edge"/>
+    <rect x="60" y="245" width="150" height="55" rx="10" class="flowbox"/><text x="135" y="278" text-anchor="middle">整理觀念</text>
+    <rect x="550" y="245" width="150" height="55" rx="10" class="flowbox"/><text x="625" y="278" text-anchor="middle">逐步處理</text>
+    <path d="M260 265 L210 272" marker-end="url(#arrf)" class="edge"/><path d="M500 265 L550 272" marker-end="url(#arrf)" class="edge"/>
+    <rect x="270" y="355" width="220" height="52" rx="10" class="flowbox"/><text x="380" y="386" text-anchor="middle">輸出完整答案</text>
+    <path d="M135 300 C170 360 250 380 270 380" marker-end="url(#arrf)" class="edge"/><path d="M625 300 C590 360 510 380 490 380" marker-end="url(#arrf)" class="edge"/>
+    </svg></div>
+    <div class="section"><h3>9、流程說明</h3><p>流程圖表示：先讀題與辨認核心觀念，若需要畫圖或計算，就依規則逐步處理；若是觀念題，則整理定義、比較項目與例子，最後輸出完整答案。</p></div>
+    <div class="section"><h3>10、重要概念與語法/變數說明</h3><p>users、application programs、operating system、hardware。若是計算題，請特別注意 arrival time、burst time、waiting time、turnaround time、ready queue、time quantum、cycle 等名詞；若是圖形題，請標示箭頭方向與每個節點意義。</p></div>
+    <div class="section"><h3>11、時間複雜度與考試容易錯的地方</h3><div class="mistake"><p><b>時間複雜度：</b>觀念題通常不需計算；排程或圖形判斷若逐一檢查 n 個 process，基本整理成本約 O(n) 到 O(n log n)，依排序方式而定。</p><p><b>容易錯：</b>不要只背名詞，要能畫出對應圖形；CPU scheduling 要分清楚 waiting time 與 turnaround time；deadlock 要看 cycle 與 resource instance 數量。</p></div></div>
+</div></article><article class="accordion" id="q3"><button class="acc-head" onclick="toggleAcc(this)"><span>第 3 題：What Operating Systems Do 作業系統的功能 <span class="tag">Lesson 8</span></span><span>＋</span></button><div class="acc-body">
+    <div class="section"><h3>1、題目原文</h3><div class="qtext">Explain the meanings of resource allocator and control program in an operating system.</div></div>
+    <div class="section"><h3>2、題目中文翻譯</h3><p>請解釋作業系統作為 resource allocator 與 control program 的意思。</p></div>
+    <div class="section"><h3>3、題目核心觀念</h3><p>resource allocator、control program</p></div>
+    <div class="section"><h3>4、解題步驟</h3><ol><li>先辨認題目要問的是定義、比較、畫圖、計算或判斷。</li><li>Resource allocator 強調資源分配；control program 強調控制程式執行與防止錯誤。</li><li>最後用圖或表格把答案整理清楚，避免只寫零散文字。</li></ol></div>
+    <div class="section"><h3>5、圖解說明</h3><svg class="diagram" viewBox="0 0 760 260"><defs><marker id="arr2" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#334155"/></marker></defs>
+    <rect x="35" y="90" width="170" height="70" rx="14" class="box user"/><text x="120" y="130" text-anchor="middle">User</text>
+    <rect x="295" y="70" width="170" height="110" rx="14" class="box os"/><text x="380" y="115" text-anchor="middle">OS</text><text x="380" y="145" text-anchor="middle" class="small">resource allocator</text>
+    <rect x="555" y="90" width="170" height="70" rx="14" class="box hw"/><text x="640" y="130" text-anchor="middle">Hardware</text>
+    <line x1="205" y1="125" x2="295" y2="125" marker-end="url(#arr2)" class="edge"/><line x1="465" y1="125" x2="555" y2="125" marker-end="url(#arr2)" class="edge"/>
+    <text x="250" y="105" text-anchor="middle" class="small">system call</text><text x="510" y="105" text-anchor="middle" class="small">CPU / memory / I/O</text>
+    </svg></div>
+<div class="section"><h3>6、動態動畫說明</h3><div class="anim"><p>本題屬於觀念或比較題，圖解已呈現主要結構。考試時可依圖中的層次或箭頭說明。</p></div></div><div class="section"><h3>7、完整答案</h3><div class="answer">OS 會把 CPU、memory、I/O 公平有效分配給 process，也會控制程式避免非法或錯誤使用。</div></div>
+    <div class="section"><h3>8、流程圖</h3><svg class="diagram flow" viewBox="0 0 760 430"><text x="380" y="28" text-anchor="middle" class="svgh2">本題解題流程</text>
+    <defs><marker id="arrf" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#334155"/></marker></defs>
+    <rect x="300" y="55" width="160" height="44" rx="22" class="flowbox"/><text x="380" y="82" text-anchor="middle">開始</text>
+    <rect x="270" y="125" width="220" height="52" rx="10" class="flowbox"/><text x="380" y="156" text-anchor="middle">讀取題目資料</text>
+    <path d="M380 99 L380 125" marker-end="url(#arrf)" class="edge"/>
+    <polygon points="380,205 500,265 380,325 260,265" class="flowbox"/><text x="380" y="262" text-anchor="middle">是否需要</text><text x="380" y="284" text-anchor="middle">計算或畫圖？</text>
+    <path d="M380 177 L380 205" marker-end="url(#arrf)" class="edge"/>
+    <rect x="60" y="245" width="150" height="55" rx="10" class="flowbox"/><text x="135" y="278" text-anchor="middle">整理觀念</text>
+    <rect x="550" y="245" width="150" height="55" rx="10" class="flowbox"/><text x="625" y="278" text-anchor="middle">逐步處理</text>
+    <path d="M260 265 L210 272" marker-end="url(#arrf)" class="edge"/><path d="M500 265 L550 272" marker-end="url(#arrf)" class="edge"/>
+    <rect x="270" y="355" width="220" height="52" rx="10" class="flowbox"/><text x="380" y="386" text-anchor="middle">輸出完整答案</text>
+    <path d="M135 300 C170 360 250 380 270 380" marker-end="url(#arrf)" class="edge"/><path d="M625 300 C590 360 510 380 490 380" marker-end="url(#arrf)" class="edge"/>
+    </svg></div>
+    <div class="section"><h3>9、流程說明</h3><p>流程圖表示：先讀題與辨認核心觀念，若需要畫圖或計算，就依規則逐步處理；若是觀念題，則整理定義、比較項目與例子，最後輸出完整答案。</p></div>
+    <div class="section"><h3>10、重要概念與語法/變數說明</h3><p>resource allocator、control program。若是計算題，請特別注意 arrival time、burst time、waiting time、turnaround time、ready queue、time quantum、cycle 等名詞；若是圖形題，請標示箭頭方向與每個節點意義。</p></div>
+    <div class="section"><h3>11、時間複雜度與考試容易錯的地方</h3><div class="mistake"><p><b>時間複雜度：</b>觀念題通常不需計算；排程或圖形判斷若逐一檢查 n 個 process，基本整理成本約 O(n) 到 O(n log n)，依排序方式而定。</p><p><b>容易錯：</b>不要只背名詞，要能畫出對應圖形；CPU scheduling 要分清楚 waiting time 與 turnaround time；deadlock 要看 cycle 與 resource instance 數量。</p></div></div>
+</div></article><article class="accordion" id="q4"><button class="acc-head" onclick="toggleAcc(this)"><span>第 4 題：Computer Startup 電腦開機流程 <span class="tag">Lesson 8</span></span><span>＋</span></button><div class="acc-body">
+    <div class="section"><h3>1、題目原文</h3><div class="qtext">Explain what a bootstrap program does when a computer starts or reboots.</div></div>
+    <div class="section"><h3>2、題目中文翻譯</h3><p>請說明電腦開機或重新啟動時 bootstrap program 的功能。</p></div>
+    <div class="section"><h3>3、題目核心觀念</h3><p>bootstrap program、firmware、kernel</p></div>
+    <div class="section"><h3>4、解題步驟</h3><ol><li>先辨認題目要問的是定義、比較、畫圖、計算或判斷。</li><li>Bootstrap program 通常存在 ROM / firmware，開機時先被執行。</li><li>最後用圖或表格把答案整理清楚，避免只寫零散文字。</li></ol></div>
+    <div class="section"><h3>5、圖解說明</h3><svg class="diagram" viewBox="0 0 760 200"><defs><marker id="arrb" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#334155"/></marker></defs><rect x="40" y="70" width="130" height="50" rx="8" class="box hw"/><text x="105" y="100" text-anchor="middle">Power on</text><rect x="220" y="70" width="150" height="50" rx="8" class="box os"/><text x="295" y="100" text-anchor="middle">Firmware/BIOS</text><rect x="420" y="70" width="130" height="50" rx="8" class="box app"/><text x="485" y="100" text-anchor="middle">Load Kernel</text><rect x="600" y="70" width="120" height="50" rx="8" class="box user"/><text x="660" y="100" text-anchor="middle">OS runs</text><line x1="170" y1="95" x2="220" y2="95" marker-end="url(#arrb)" class="edge"/><line x1="370" y1="95" x2="420" y2="95" marker-end="url(#arrb)" class="edge"/><line x1="550" y1="95" x2="600" y2="95" marker-end="url(#arrb)" class="edge"/></svg></div>
+<div class="section"><h3>6、動態動畫說明</h3><div class="anim"><p>本題屬於觀念或比較題，圖解已呈現主要結構。考試時可依圖中的層次或箭頭說明。</p></div></div><div class="section"><h3>7、完整答案</h3><div class="answer">它初始化硬體、檢查基本設備，找到 OS kernel 並將其載入 memory，最後把控制權交給 OS。</div></div>
+    <div class="section"><h3>8、流程圖</h3><svg class="diagram flow" viewBox="0 0 760 430"><text x="380" y="28" text-anchor="middle" class="svgh2">本題解題流程</text>
+    <defs><marker id="arrf" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#334155"/></marker></defs>
+    <rect x="300" y="55" width="160" height="44" rx="22" class="flowbox"/><text x="380" y="82" text-anchor="middle">開始</text>
+    <rect x="270" y="125" width="220" height="52" rx="10" class="flowbox"/><text x="380" y="156" text-anchor="middle">讀取題目資料</text>
+    <path d="M380 99 L380 125" marker-end="url(#arrf)" class="edge"/>
+    <polygon points="380,205 500,265 380,325 260,265" class="flowbox"/><text x="380" y="262" text-anchor="middle">是否需要</text><text x="380" y="284" text-anchor="middle">計算或畫圖？</text>
+    <path d="M380 177 L380 205" marker-end="url(#arrf)" class="edge"/>
+    <rect x="60" y="245" width="150" height="55" rx="10" class="flowbox"/><text x="135" y="278" text-anchor="middle">整理觀念</text>
+    <rect x="550" y="245" width="150" height="55" rx="10" class="flowbox"/><text x="625" y="278" text-anchor="middle">逐步處理</text>
+    <path d="M260 265 L210 272" marker-end="url(#arrf)" class="edge"/><path d="M500 265 L550 272" marker-end="url(#arrf)" class="edge"/>
+    <rect x="270" y="355" width="220" height="52" rx="10" class="flowbox"/><text x="380" y="386" text-anchor="middle">輸出完整答案</text>
+    <path d="M135 300 C170 360 250 380 270 380" marker-end="url(#arrf)" class="edge"/><path d="M625 300 C590 360 510 380 490 380" marker-end="url(#arrf)" class="edge"/>
+    </svg></div>
+    <div class="section"><h3>9、流程說明</h3><p>流程圖表示：先讀題與辨認核心觀念，若需要畫圖或計算，就依規則逐步處理；若是觀念題，則整理定義、比較項目與例子，最後輸出完整答案。</p></div>
+    <div class="section"><h3>10、重要概念與語法/變數說明</h3><p>bootstrap program、firmware、kernel。若是計算題，請特別注意 arrival time、burst time、waiting time、turnaround time、ready queue、time quantum、cycle 等名詞；若是圖形題，請標示箭頭方向與每個節點意義。</p></div>
+    <div class="section"><h3>11、時間複雜度與考試容易錯的地方</h3><div class="mistake"><p><b>時間複雜度：</b>觀念題通常不需計算；排程或圖形判斷若逐一檢查 n 個 process，基本整理成本約 O(n) 到 O(n log n)，依排序方式而定。</p><p><b>容易錯：</b>不要只背名詞，要能畫出對應圖形；CPU scheduling 要分清楚 waiting time 與 turnaround time；deadlock 要看 cycle 與 resource instance 數量。</p></div></div>
+</div></article><article class="accordion" id="q5"><button class="acc-head" onclick="toggleAcc(this)"><span>第 5 題：Storage Structure 儲存結構 <span class="tag">Lesson 8</span></span><span>＋</span></button><div class="acc-body">
+    <div class="section"><h3>1、題目原文</h3><div class="qtext">Compare main memory and secondary storage. Please mention volatility, access speed, and data persistence.</div></div>
+    <div class="section"><h3>2、題目中文翻譯</h3><p>請比較主記憶體與次級儲存裝置，並說明揮發性、速度與資料保存能力。</p></div>
+    <div class="section"><h3>3、題目核心觀念</h3><p>main memory、secondary storage、volatile、non-volatile</p></div>
+    <div class="section"><h3>4、解題步驟</h3><ol><li>先辨認題目要問的是定義、比較、畫圖、計算或判斷。</li><li>比較時要看 CPU 是否可直接存取、關機後是否保留、速度與容量。</li><li>最後用圖或表格把答案整理清楚，避免只寫零散文字。</li></ol></div>
+    <div class="section"><h3>5、圖解說明</h3><svg class="diagram" viewBox="0 0 760 360"><polygon points="380,30 260,90 500,90" class="tier t1"/><text x="380" y="72" text-anchor="middle">Registers</text>
+    <polygon points="260,100 210,155 550,155 500,100" class="tier t2"/><text x="380" y="135" text-anchor="middle">Cache</text>
+    <polygon points="210,165 165,220 595,220 550,165" class="tier t3"/><text x="380" y="200" text-anchor="middle">Main Memory（快、volatile）</text>
+    <polygon points="165,230 115,285 645,285 595,230" class="tier t4"/><text x="380" y="265" text-anchor="middle">SSD / Magnetic Disk（慢、non-volatile）</text>
+    <polygon points="115,295 65,345 695,345 645,295" class="tier t5"/><text x="380" y="328" text-anchor="middle">Backup / Optical / Tape</text>
+    <text x="40" y="55" class="small">速度快</text><text x="40" y="330" class="small">容量大</text>
+    </svg></div>
+<div class="section"><h3>6、動態動畫說明</h3><div class="anim"><p>本題屬於觀念或比較題，圖解已呈現主要結構。考試時可依圖中的層次或箭頭說明。</p></div></div><div class="section"><h3>7、完整答案</h3><div class="answer">Main memory 快、CPU 可直接存取、通常 volatile；secondary storage 慢、容量大、non-volatile。</div></div>
+    <div class="section"><h3>8、流程圖</h3><svg class="diagram flow" viewBox="0 0 760 430"><text x="380" y="28" text-anchor="middle" class="svgh2">本題解題流程</text>
+    <defs><marker id="arrf" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#334155"/></marker></defs>
+    <rect x="300" y="55" width="160" height="44" rx="22" class="flowbox"/><text x="380" y="82" text-anchor="middle">開始</text>
+    <rect x="270" y="125" width="220" height="52" rx="10" class="flowbox"/><text x="380" y="156" text-anchor="middle">讀取題目資料</text>
+    <path d="M380 99 L380 125" marker-end="url(#arrf)" class="edge"/>
+    <polygon points="380,205 500,265 380,325 260,265" class="flowbox"/><text x="380" y="262" text-anchor="middle">是否需要</text><text x="380" y="284" text-anchor="middle">計算或畫圖？</text>
+    <path d="M380 177 L380 205" marker-end="url(#arrf)" class="edge"/>
+    <rect x="60" y="245" width="150" height="55" rx="10" class="flowbox"/><text x="135" y="278" text-anchor="middle">整理觀念</text>
+    <rect x="550" y="245" width="150" height="55" rx="10" class="flowbox"/><text x="625" y="278" text-anchor="middle">逐步處理</text>
+    <path d="M260 265 L210 272" marker-end="url(#arrf)" class="edge"/><path d="M500 265 L550 272" marker-end="url(#arrf)" class="edge"/>
+    <rect x="270" y="355" width="220" height="52" rx="10" class="flowbox"/><text x="380" y="386" text-anchor="middle">輸出完整答案</text>
+    <path d="M135 300 C170 360 250 380 270 380" marker-end="url(#arrf)" class="edge"/><path d="M625 300 C590 360 510 380 490 380" marker-end="url(#arrf)" class="edge"/>
+    </svg></div>
+    <div class="section"><h3>9、流程說明</h3><p>流程圖表示：先讀題與辨認核心觀念，若需要畫圖或計算，就依規則逐步處理；若是觀念題，則整理定義、比較項目與例子，最後輸出完整答案。</p></div>
+    <div class="section"><h3>10、重要概念與語法/變數說明</h3><p>main memory、secondary storage、volatile、non-volatile。若是計算題，請特別注意 arrival time、burst time、waiting time、turnaround time、ready queue、time quantum、cycle 等名詞；若是圖形題，請標示箭頭方向與每個節點意義。</p></div>
+    <div class="section"><h3>11、時間複雜度與考試容易錯的地方</h3><div class="mistake"><p><b>時間複雜度：</b>觀念題通常不需計算；排程或圖形判斷若逐一檢查 n 個 process，基本整理成本約 O(n) 到 O(n log n)，依排序方式而定。</p><p><b>容易錯：</b>不要只背名詞，要能畫出對應圖形；CPU scheduling 要分清楚 waiting time 與 turnaround time；deadlock 要看 cycle 與 resource instance 數量。</p></div></div>
+</div></article><article class="accordion" id="q6"><button class="acc-head" onclick="toggleAcc(this)"><span>第 6 題：Computer-System Architecture 電腦系統架構 <span class="tag">Lesson 8</span></span><span>＋</span></button><div class="acc-body">
+    <div class="section"><h3>1、題目原文</h3><div class="qtext">What is a multiprocessor system? Give two advantages of using a multiprocessor system.</div></div>
+    <div class="section"><h3>2、題目中文翻譯</h3><p>什麼是多處理器系統？請寫出兩個優點。</p></div>
+    <div class="section"><h3>3、題目核心觀念</h3><p>multiprocessor、multicore、throughput、reliability</p></div>
+    <div class="section"><h3>4、解題步驟</h3><ol><li>先辨認題目要問的是定義、比較、畫圖、計算或判斷。</li><li>多處理器系統有兩個以上 CPU/core，可平行處理工作。</li><li>最後用圖或表格把答案整理清楚，避免只寫零散文字。</li></ol></div>
+    <div class="section"><h3>5、圖解說明</h3><svg class="diagram" viewBox="0 0 760 230"><rect x="80" y="40" width="140" height="90" rx="10" class="box hw"/><text x="150" y="90" text-anchor="middle">CPU 1</text><rect x="310" y="40" width="140" height="90" rx="10" class="box hw"/><text x="380" y="90" text-anchor="middle">CPU 2</text><rect x="540" y="40" width="140" height="90" rx="10" class="box hw"/><text x="610" y="90" text-anchor="middle">CPU 3</text><rect x="250" y="165" width="260" height="45" rx="10" class="box os"/><text x="380" y="194" text-anchor="middle">Shared Memory</text><line x1="150" y1="130" x2="300" y2="165" class="edge"/><line x1="380" y1="130" x2="380" y2="165" class="edge"/><line x1="610" y1="130" x2="460" y2="165" class="edge"/></svg></div>
+<div class="section"><h3>6、動態動畫說明</h3><div class="anim"><p>本題屬於觀念或比較題，圖解已呈現主要結構。考試時可依圖中的層次或箭頭說明。</p></div></div><div class="section"><h3>7、完整答案</h3><div class="answer">優點：增加 throughput、economy of scale、提高可靠度；某顆 CPU 故障時系統可能仍能降級運作。</div></div>
+    <div class="section"><h3>8、流程圖</h3><svg class="diagram flow" viewBox="0 0 760 430"><text x="380" y="28" text-anchor="middle" class="svgh2">本題解題流程</text>
+    <defs><marker id="arrf" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#334155"/></marker></defs>
+    <rect x="300" y="55" width="160" height="44" rx="22" class="flowbox"/><text x="380" y="82" text-anchor="middle">開始</text>
+    <rect x="270" y="125" width="220" height="52" rx="10" class="flowbox"/><text x="380" y="156" text-anchor="middle">讀取題目資料</text>
+    <path d="M380 99 L380 125" marker-end="url(#arrf)" class="edge"/>
+    <polygon points="380,205 500,265 380,325 260,265" class="flowbox"/><text x="380" y="262" text-anchor="middle">是否需要</text><text x="380" y="284" text-anchor="middle">計算或畫圖？</text>
+    <path d="M380 177 L380 205" marker-end="url(#arrf)" class="edge"/>
+    <rect x="60" y="245" width="150" height="55" rx="10" class="flowbox"/><text x="135" y="278" text-anchor="middle">整理觀念</text>
+    <rect x="550" y="245" width="150" height="55" rx="10" class="flowbox"/><text x="625" y="278" text-anchor="middle">逐步處理</text>
+    <path d="M260 265 L210 272" marker-end="url(#arrf)" class="edge"/><path d="M500 265 L550 272" marker-end="url(#arrf)" class="edge"/>
+    <rect x="270" y="355" width="220" height="52" rx="10" class="flowbox"/><text x="380" y="386" text-anchor="middle">輸出完整答案</text>
+    <path d="M135 300 C170 360 250 380 270 380" marker-end="url(#arrf)" class="edge"/><path d="M625 300 C590 360 510 380 490 380" marker-end="url(#arrf)" class="edge"/>
+    </svg></div>
+    <div class="section"><h3>9、流程說明</h3><p>流程圖表示：先讀題與辨認核心觀念，若需要畫圖或計算，就依規則逐步處理；若是觀念題，則整理定義、比較項目與例子，最後輸出完整答案。</p></div>
+    <div class="section"><h3>10、重要概念與語法/變數說明</h3><p>multiprocessor、multicore、throughput、reliability。若是計算題，請特別注意 arrival time、burst time、waiting time、turnaround time、ready queue、time quantum、cycle 等名詞；若是圖形題，請標示箭頭方向與每個節點意義。</p></div>
+    <div class="section"><h3>11、時間複雜度與考試容易錯的地方</h3><div class="mistake"><p><b>時間複雜度：</b>觀念題通常不需計算；排程或圖形判斷若逐一檢查 n 個 process，基本整理成本約 O(n) 到 O(n log n)，依排序方式而定。</p><p><b>容易錯：</b>不要只背名詞，要能畫出對應圖形；CPU scheduling 要分清楚 waiting time 與 turnaround time；deadlock 要看 cycle 與 resource instance 數量。</p></div></div>
+</div></article><article class="accordion" id="q7"><button class="acc-head" onclick="toggleAcc(this)"><span>第 7 題：Operating System Structure 作業系統結構 <span class="tag">Lesson 8</span></span><span>＋</span></button><div class="acc-body">
+    <div class="section"><h3>1、題目原文</h3><div class="qtext">Explain the difference between multiprogramming and time sharing.</div></div>
+    <div class="section"><h3>2、題目中文翻譯</h3><p>請解釋 multiprogramming 與 time sharing 的差異。</p></div>
+    <div class="section"><h3>3、題目核心觀念</h3><p>multiprogramming、time sharing、CPU scheduling</p></div>
+    <div class="section"><h3>4、解題步驟</h3><ol><li>先辨認題目要問的是定義、比較、畫圖、計算或判斷。</li><li>Multiprogramming 目標是提高 CPU 使用率；time sharing 目標是快速回應使用者。</li><li>最後用圖或表格把答案整理清楚，避免只寫零散文字。</li></ol></div>
+    <div class="section"><h3>5、圖解說明</h3><svg class="diagram" viewBox="0 0 760 260"><text x="190" y="30" text-anchor="middle" class="svgh2">Multiprogramming</text><rect x="90" y="60" width="200" height="150" class="box os"/><text x="190" y="90" text-anchor="middle">Memory</text><rect x="125" y="105" width="130" height="25" class="procbar"/><text x="190" y="123" text-anchor="middle">Job 1</text><rect x="125" y="135" width="130" height="25" class="procbar"/><text x="190" y="153" text-anchor="middle">Job 2</text><rect x="125" y="165" width="130" height="25" class="procbar"/><text x="190" y="183" text-anchor="middle">Job 3</text><text x="570" y="30" text-anchor="middle" class="svgh2">Time Sharing</text><rect x="440" y="80" width="260" height="50" class="timeline"/><text x="470" y="110">P1</text><text x="520" y="110">P2</text><text x="570" y="110">P3</text><text x="620" y="110">P1</text><text x="670" y="110">P2</text><text x="570" y="170" text-anchor="middle">短時間片輪流執行</text></svg></div>
+<div class="section"><h3>6、動態動畫說明</h3><div class="anim"><p>本題屬於觀念或比較題，圖解已呈現主要結構。考試時可依圖中的層次或箭頭說明。</p></div></div><div class="section"><h3>7、完整答案</h3><div class="answer">Multiprogramming 讓多個 job 在 memory 中輪流用 CPU；time sharing 用很短 time slice 快速切換，讓多使用者像同時互動。</div></div>
+    <div class="section"><h3>8、流程圖</h3><svg class="diagram flow" viewBox="0 0 760 430"><text x="380" y="28" text-anchor="middle" class="svgh2">本題解題流程</text>
+    <defs><marker id="arrf" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#334155"/></marker></defs>
+    <rect x="300" y="55" width="160" height="44" rx="22" class="flowbox"/><text x="380" y="82" text-anchor="middle">開始</text>
+    <rect x="270" y="125" width="220" height="52" rx="10" class="flowbox"/><text x="380" y="156" text-anchor="middle">讀取題目資料</text>
+    <path d="M380 99 L380 125" marker-end="url(#arrf)" class="edge"/>
+    <polygon points="380,205 500,265 380,325 260,265" class="flowbox"/><text x="380" y="262" text-anchor="middle">是否需要</text><text x="380" y="284" text-anchor="middle">計算或畫圖？</text>
+    <path d="M380 177 L380 205" marker-end="url(#arrf)" class="edge"/>
+    <rect x="60" y="245" width="150" height="55" rx="10" class="flowbox"/><text x="135" y="278" text-anchor="middle">整理觀念</text>
+    <rect x="550" y="245" width="150" height="55" rx="10" class="flowbox"/><text x="625" y="278" text-anchor="middle">逐步處理</text>
+    <path d="M260 265 L210 272" marker-end="url(#arrf)" class="edge"/><path d="M500 265 L550 272" marker-end="url(#arrf)" class="edge"/>
+    <rect x="270" y="355" width="220" height="52" rx="10" class="flowbox"/><text x="380" y="386" text-anchor="middle">輸出完整答案</text>
+    <path d="M135 300 C170 360 250 380 270 380" marker-end="url(#arrf)" class="edge"/><path d="M625 300 C590 360 510 380 490 380" marker-end="url(#arrf)" class="edge"/>
+    </svg></div>
+    <div class="section"><h3>9、流程說明</h3><p>流程圖表示：先讀題與辨認核心觀念，若需要畫圖或計算，就依規則逐步處理；若是觀念題，則整理定義、比較項目與例子，最後輸出完整答案。</p></div>
+    <div class="section"><h3>10、重要概念與語法/變數說明</h3><p>multiprogramming、time sharing、CPU scheduling。若是計算題，請特別注意 arrival time、burst time、waiting time、turnaround time、ready queue、time quantum、cycle 等名詞；若是圖形題，請標示箭頭方向與每個節點意義。</p></div>
+    <div class="section"><h3>11、時間複雜度與考試容易錯的地方</h3><div class="mistake"><p><b>時間複雜度：</b>觀念題通常不需計算；排程或圖形判斷若逐一檢查 n 個 process，基本整理成本約 O(n) 到 O(n log n)，依排序方式而定。</p><p><b>容易錯：</b>不要只背名詞，要能畫出對應圖形；CPU scheduling 要分清楚 waiting time 與 turnaround time；deadlock 要看 cycle 與 resource instance 數量。</p></div></div>
+</div></article><article class="accordion" id="q8"><button class="acc-head" onclick="toggleAcc(this)"><span>第 8 題：Process Management 行程管理 <span class="tag">Lesson 8</span></span><span>＋</span></button><div class="acc-body">
+    <div class="section"><h3>1、題目原文</h3><div class="qtext">What is a process? Explain the difference between a program and a process.</div></div>
+    <div class="section"><h3>2、題目中文翻譯</h3><p>什麼是 process？請比較 program 與 process 的差異。</p></div>
+    <div class="section"><h3>3、題目核心觀念</h3><p>program、process、execution</p></div>
+    <div class="section"><h3>4、解題步驟</h3><ol><li>先辨認題目要問的是定義、比較、畫圖、計算或判斷。</li><li>Program 是靜態檔案；process 是正在執行中的程式。</li><li>最後用圖或表格把答案整理清楚，避免只寫零散文字。</li></ol></div>
+    <div class="section"><h3>5、圖解說明</h3><svg class="diagram" viewBox="0 0 760 230"><defs><marker id="arrpr" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#334155"/></marker></defs><rect x="80" y="80" width="170" height="70" rx="10" class="box app"/><text x="165" y="120" text-anchor="middle">Program on disk</text><line x1="250" y1="115" x2="350" y2="115" marker-end="url(#arrpr)" class="edge"/><text x="300" y="95" class="small">load</text><rect x="350" y="60" width="300" height="110" rx="10" class="box os"/><text x="500" y="95" text-anchor="middle">Process in memory</text><text x="500" y="125" text-anchor="middle" class="small">code + PC + registers + stack + heap</text></svg></div>
+<div class="section"><h3>6、動態動畫說明</h3><div class="anim"><p>本題屬於觀念或比較題，圖解已呈現主要結構。考試時可依圖中的層次或箭頭說明。</p></div></div><div class="section"><h3>7、完整答案</h3><div class="answer">Process 除了程式碼，還有 program counter、registers、memory、I/O 狀態等執行資訊。</div></div>
+    <div class="section"><h3>8、流程圖</h3><svg class="diagram flow" viewBox="0 0 760 430"><text x="380" y="28" text-anchor="middle" class="svgh2">本題解題流程</text>
+    <defs><marker id="arrf" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#334155"/></marker></defs>
+    <rect x="300" y="55" width="160" height="44" rx="22" class="flowbox"/><text x="380" y="82" text-anchor="middle">開始</text>
+    <rect x="270" y="125" width="220" height="52" rx="10" class="flowbox"/><text x="380" y="156" text-anchor="middle">讀取題目資料</text>
+    <path d="M380 99 L380 125" marker-end="url(#arrf)" class="edge"/>
+    <polygon points="380,205 500,265 380,325 260,265" class="flowbox"/><text x="380" y="262" text-anchor="middle">是否需要</text><text x="380" y="284" text-anchor="middle">計算或畫圖？</text>
+    <path d="M380 177 L380 205" marker-end="url(#arrf)" class="edge"/>
+    <rect x="60" y="245" width="150" height="55" rx="10" class="flowbox"/><text x="135" y="278" text-anchor="middle">整理觀念</text>
+    <rect x="550" y="245" width="150" height="55" rx="10" class="flowbox"/><text x="625" y="278" text-anchor="middle">逐步處理</text>
+    <path d="M260 265 L210 272" marker-end="url(#arrf)" class="edge"/><path d="M500 265 L550 272" marker-end="url(#arrf)" class="edge"/>
+    <rect x="270" y="355" width="220" height="52" rx="10" class="flowbox"/><text x="380" y="386" text-anchor="middle">輸出完整答案</text>
+    <path d="M135 300 C170 360 250 380 270 380" marker-end="url(#arrf)" class="edge"/><path d="M625 300 C590 360 510 380 490 380" marker-end="url(#arrf)" class="edge"/>
+    </svg></div>
+    <div class="section"><h3>9、流程說明</h3><p>流程圖表示：先讀題與辨認核心觀念，若需要畫圖或計算，就依規則逐步處理；若是觀念題，則整理定義、比較項目與例子，最後輸出完整答案。</p></div>
+    <div class="section"><h3>10、重要概念與語法/變數說明</h3><p>program、process、execution。若是計算題，請特別注意 arrival time、burst time、waiting time、turnaround time、ready queue、time quantum、cycle 等名詞；若是圖形題，請標示箭頭方向與每個節點意義。</p></div>
+    <div class="section"><h3>11、時間複雜度與考試容易錯的地方</h3><div class="mistake"><p><b>時間複雜度：</b>觀念題通常不需計算；排程或圖形判斷若逐一檢查 n 個 process，基本整理成本約 O(n) 到 O(n log n)，依排序方式而定。</p><p><b>容易錯：</b>不要只背名詞，要能畫出對應圖形；CPU scheduling 要分清楚 waiting time 與 turnaround time；deadlock 要看 cycle 與 resource instance 數量。</p></div></div>
+</div></article><article class="accordion" id="q9"><button class="acc-head" onclick="toggleAcc(this)"><span>第 9 題：Memory Management 記憶體管理 <span class="tag">Lesson 8</span></span><span>＋</span></button><div class="acc-body">
+    <div class="section"><h3>1、題目原文</h3><div class="qtext">Explain paging. Why can paging allow a program to be stored in non-contiguous memory?</div></div>
+    <div class="section"><h3>2、題目中文翻譯</h3><p>請解釋 paging，並說明為什麼 paging 可以讓程式不必連續放在記憶體中。</p></div>
+    <div class="section"><h3>3、題目核心觀念</h3><p>paging、page、frame、non-contiguous memory</p></div>
+    <div class="section"><h3>4、解題步驟</h3><ol><li>先辨認題目要問的是定義、比較、畫圖、計算或判斷。</li><li>Paging 將 logical memory 切成 pages，physical memory 切成 frames。</li><li>最後用圖或表格把答案整理清楚，避免只寫零散文字。</li></ol></div>
+    <div class="section"><h3>5、圖解說明</h3><svg class="diagram" viewBox="0 0 760 350"><defs><marker id="arrpg" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#334155"/></marker></defs>
+    <text x="120" y="35" text-anchor="middle" class="svgh2">Logical Pages</text><text x="380" y="35" text-anchor="middle" class="svgh2">Page Table</text><text x="640" y="35" text-anchor="middle" class="svgh2">Physical Frames</text>
+    <rect x="60" y="65" width="120" height="42" class="page"/><text x="120" y="91" text-anchor="middle">Page 0</text><rect x="60" y="120" width="120" height="42" class="page"/><text x="120" y="146" text-anchor="middle">Page 1</text><rect x="60" y="175" width="120" height="42" class="page"/><text x="120" y="201" text-anchor="middle">Page 2</text><rect x="60" y="230" width="120" height="42" class="page"/><text x="120" y="256" text-anchor="middle">Page 3</text><rect x="320" y="65" width="120" height="42" class="pt"/><text x="380" y="91" text-anchor="middle">P0→F3</text><rect x="320" y="120" width="120" height="42" class="pt"/><text x="380" y="146" text-anchor="middle">P1→F0</text><rect x="320" y="175" width="120" height="42" class="pt"/><text x="380" y="201" text-anchor="middle">P2→F5</text><rect x="320" y="230" width="120" height="42" class="pt"/><text x="380" y="256" text-anchor="middle">P3→F2</text><rect x="580" y="50" width="120" height="34" class="frame"/><text x="640" y="72" text-anchor="middle">Frame 0</text><rect x="580" y="95" width="120" height="34" class="frame"/><text x="640" y="117" text-anchor="middle">Frame 1</text><rect x="580" y="140" width="120" height="34" class="frame"/><text x="640" y="162" text-anchor="middle">Frame 2</text><rect x="580" y="185" width="120" height="34" class="frame"/><text x="640" y="207" text-anchor="middle">Frame 3</text><rect x="580" y="230" width="120" height="34" class="frame"/><text x="640" y="252" text-anchor="middle">Frame 4</text><rect x="580" y="275" width="120" height="34" class="frame"/><text x="640" y="297" text-anchor="middle">Frame 5</text>
+    <line x1="180" y1="86" x2="320" y2="86" marker-end="url(#arrpg)" class="edge"/><line x1="440" y1="86" x2="580" y2="207" marker-end="url(#arrpg)" class="edge"/>
+    <line x1="180" y1="141" x2="320" y2="141" marker-end="url(#arrpg)" class="edge"/><line x1="440" y1="141" x2="580" y2="67" marker-end="url(#arrpg)" class="edge"/>
+    <text x="380" y="325" text-anchor="middle">Page 可放在不同 frame，因此不需要連續記憶體</text></svg></div>
+<div class="section"><h3>6、動態動畫說明</h3><div class="anim" data-anim="9"><div class="anim-controls"><button class="btn green" onclick="prevStep(9)">上一步</button><button class="btn" onclick="nextStep(9)">下一步</button><button class="btn orange" onclick="replayStep(9)">重播</button></div><div id="animStatus9" class="anim-status">按「下一步」開始觀看動畫。</div><p class="note">動畫會高亮本題的重點節點、狀態或流程。</p></div></div><div class="section"><h3>7、完整答案</h3><div class="answer">Page table 記錄 page 放在哪個 frame；不同 pages 可放在不同 frames，所以不需要連續空間。</div></div>
+    <div class="section"><h3>8、流程圖</h3><svg class="diagram flow" viewBox="0 0 760 430"><text x="380" y="28" text-anchor="middle" class="svgh2">本題解題流程</text>
+    <defs><marker id="arrf" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#334155"/></marker></defs>
+    <rect x="300" y="55" width="160" height="44" rx="22" class="flowbox"/><text x="380" y="82" text-anchor="middle">開始</text>
+    <rect x="270" y="125" width="220" height="52" rx="10" class="flowbox"/><text x="380" y="156" text-anchor="middle">讀取題目資料</text>
+    <path d="M380 99 L380 125" marker-end="url(#arrf)" class="edge"/>
+    <polygon points="380,205 500,265 380,325 260,265" class="flowbox"/><text x="380" y="262" text-anchor="middle">是否需要</text><text x="380" y="284" text-anchor="middle">計算或畫圖？</text>
+    <path d="M380 177 L380 205" marker-end="url(#arrf)" class="edge"/>
+    <rect x="60" y="245" width="150" height="55" rx="10" class="flowbox"/><text x="135" y="278" text-anchor="middle">整理觀念</text>
+    <rect x="550" y="245" width="150" height="55" rx="10" class="flowbox"/><text x="625" y="278" text-anchor="middle">逐步處理</text>
+    <path d="M260 265 L210 272" marker-end="url(#arrf)" class="edge"/><path d="M500 265 L550 272" marker-end="url(#arrf)" class="edge"/>
+    <rect x="270" y="355" width="220" height="52" rx="10" class="flowbox"/><text x="380" y="386" text-anchor="middle">輸出完整答案</text>
+    <path d="M135 300 C170 360 250 380 270 380" marker-end="url(#arrf)" class="edge"/><path d="M625 300 C590 360 510 380 490 380" marker-end="url(#arrf)" class="edge"/>
+    </svg></div>
+    <div class="section"><h3>9、流程說明</h3><p>流程圖表示：先讀題與辨認核心觀念，若需要畫圖或計算，就依規則逐步處理；若是觀念題，則整理定義、比較項目與例子，最後輸出完整答案。</p></div>
+    <div class="section"><h3>10、重要概念與語法/變數說明</h3><p>paging、page、frame、non-contiguous memory。若是計算題，請特別注意 arrival time、burst time、waiting time、turnaround time、ready queue、time quantum、cycle 等名詞；若是圖形題，請標示箭頭方向與每個節點意義。</p></div>
+    <div class="section"><h3>11、時間複雜度與考試容易錯的地方</h3><div class="mistake"><p><b>時間複雜度：</b>觀念題通常不需計算；排程或圖形判斷若逐一檢查 n 個 process，基本整理成本約 O(n) 到 O(n log n)，依排序方式而定。</p><p><b>容易錯：</b>不要只背名詞，要能畫出對應圖形；CPU scheduling 要分清楚 waiting time 與 turnaround time；deadlock 要看 cycle 與 resource instance 數量。</p></div></div>
+</div></article><article class="accordion" id="q10"><button class="acc-head" onclick="toggleAcc(this)"><span>第 10 題：Storage Management 儲存管理 <span class="tag">Lesson 8</span></span><span>＋</span></button><div class="acc-body">
+    <div class="section"><h3>1、題目原文</h3><div class="qtext">What does file-system management do? Please give three activities of file-system management.</div></div>
+    <div class="section"><h3>2、題目中文翻譯</h3><p>檔案系統管理做什麼？請舉三個活動。</p></div>
+    <div class="section"><h3>3、題目核心觀念</h3><p>file system、directory、backup</p></div>
+    <div class="section"><h3>4、解題步驟</h3><ol><li>先辨認題目要問的是定義、比較、畫圖、計算或判斷。</li><li>File-system management 將資料以 file 和 directory 的形式組織在儲存裝置上。</li><li>最後用圖或表格把答案整理清楚，避免只寫零散文字。</li></ol></div>
+    <div class="section"><h3>5、圖解說明</h3><svg class="diagram" viewBox="0 0 760 260"><rect x="80" y="50" width="180" height="150" rx="10" class="box os"/><text x="170" y="85" text-anchor="middle">File System</text><text x="170" y="125" text-anchor="middle">/home</text><text x="170" y="155" text-anchor="middle">/docs</text><text x="170" y="185" text-anchor="middle">report.txt</text><rect x="500" y="70" width="150" height="110" rx="10" class="box hw"/><text x="575" y="130" text-anchor="middle">Disk Blocks</text><line x1="260" y1="125" x2="500" y2="125" class="edge"/></svg></div>
+<div class="section"><h3>6、動態動畫說明</h3><div class="anim"><p>本題屬於觀念或比較題，圖解已呈現主要結構。考試時可依圖中的層次或箭頭說明。</p></div></div><div class="section"><h3>7、完整答案</h3><div class="answer">常見活動：create/delete file、create/delete directory、file operations、mapping files to secondary storage、backup。</div></div>
+    <div class="section"><h3>8、流程圖</h3><svg class="diagram flow" viewBox="0 0 760 430"><text x="380" y="28" text-anchor="middle" class="svgh2">本題解題流程</text>
+    <defs><marker id="arrf" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#334155"/></marker></defs>
+    <rect x="300" y="55" width="160" height="44" rx="22" class="flowbox"/><text x="380" y="82" text-anchor="middle">開始</text>
+    <rect x="270" y="125" width="220" height="52" rx="10" class="flowbox"/><text x="380" y="156" text-anchor="middle">讀取題目資料</text>
+    <path d="M380 99 L380 125" marker-end="url(#arrf)" class="edge"/>
+    <polygon points="380,205 500,265 380,325 260,265" class="flowbox"/><text x="380" y="262" text-anchor="middle">是否需要</text><text x="380" y="284" text-anchor="middle">計算或畫圖？</text>
+    <path d="M380 177 L380 205" marker-end="url(#arrf)" class="edge"/>
+    <rect x="60" y="245" width="150" height="55" rx="10" class="flowbox"/><text x="135" y="278" text-anchor="middle">整理觀念</text>
+    <rect x="550" y="245" width="150" height="55" rx="10" class="flowbox"/><text x="625" y="278" text-anchor="middle">逐步處理</text>
+    <path d="M260 265 L210 272" marker-end="url(#arrf)" class="edge"/><path d="M500 265 L550 272" marker-end="url(#arrf)" class="edge"/>
+    <rect x="270" y="355" width="220" height="52" rx="10" class="flowbox"/><text x="380" y="386" text-anchor="middle">輸出完整答案</text>
+    <path d="M135 300 C170 360 250 380 270 380" marker-end="url(#arrf)" class="edge"/><path d="M625 300 C590 360 510 380 490 380" marker-end="url(#arrf)" class="edge"/>
+    </svg></div>
+    <div class="section"><h3>9、流程說明</h3><p>流程圖表示：先讀題與辨認核心觀念，若需要畫圖或計算，就依規則逐步處理；若是觀念題，則整理定義、比較項目與例子，最後輸出完整答案。</p></div>
+    <div class="section"><h3>10、重要概念與語法/變數說明</h3><p>file system、directory、backup。若是計算題，請特別注意 arrival time、burst time、waiting time、turnaround time、ready queue、time quantum、cycle 等名詞；若是圖形題，請標示箭頭方向與每個節點意義。</p></div>
+    <div class="section"><h3>11、時間複雜度與考試容易錯的地方</h3><div class="mistake"><p><b>時間複雜度：</b>觀念題通常不需計算；排程或圖形判斷若逐一檢查 n 個 process，基本整理成本約 O(n) 到 O(n log n)，依排序方式而定。</p><p><b>容易錯：</b>不要只背名詞，要能畫出對應圖形；CPU scheduling 要分清楚 waiting time 與 turnaround time；deadlock 要看 cycle 與 resource instance 數量。</p></div></div>
+</div></article><article class="accordion" id="q11"><button class="acc-head" onclick="toggleAcc(this)"><span>第 11 題：Protection and Security 保護與安全 <span class="tag">Lesson 8</span></span><span>＋</span></button><div class="acc-body">
+    <div class="section"><h3>1、題目原文</h3><div class="qtext">Explain the difference between protection and security in an operating system.</div></div>
+    <div class="section"><h3>2、題目中文翻譯</h3><p>請解釋作業系統中 protection 與 security 的差異。</p></div>
+    <div class="section"><h3>3、題目核心觀念</h3><p>protection、security、access control</p></div>
+    <div class="section"><h3>4、解題步驟</h3><ol><li>先辨認題目要問的是定義、比較、畫圖、計算或判斷。</li><li>Protection 偏向系統內部資源存取控制；security 偏向防止內外部攻擊。</li><li>最後用圖或表格把答案整理清楚，避免只寫零散文字。</li></ol></div>
+    <div class="section"><h3>5、圖解說明</h3><svg class="diagram" viewBox="0 0 760 230"><rect x="90" y="70" width="220" height="90" rx="12" class="box os"/><text x="200" y="105" text-anchor="middle">Protection</text><text x="200" y="135" text-anchor="middle" class="small">合法使用者的權限控制</text><rect x="450" y="70" width="220" height="90" rx="12" class="box hw"/><text x="560" y="105" text-anchor="middle">Security</text><text x="560" y="135" text-anchor="middle" class="small">防止攻擊與非法存取</text></svg></div>
+<div class="section"><h3>6、動態動畫說明</h3><div class="anim"><p>本題屬於觀念或比較題，圖解已呈現主要結構。考試時可依圖中的層次或箭頭說明。</p></div></div><div class="section"><h3>7、完整答案</h3><div class="answer">Protection 控制誰能讀寫檔案、I/O、memory；security 防病毒、竊取身份、未授權登入。</div></div>
+    <div class="section"><h3>8、流程圖</h3><svg class="diagram flow" viewBox="0 0 760 430"><text x="380" y="28" text-anchor="middle" class="svgh2">本題解題流程</text>
+    <defs><marker id="arrf" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#334155"/></marker></defs>
+    <rect x="300" y="55" width="160" height="44" rx="22" class="flowbox"/><text x="380" y="82" text-anchor="middle">開始</text>
+    <rect x="270" y="125" width="220" height="52" rx="10" class="flowbox"/><text x="380" y="156" text-anchor="middle">讀取題目資料</text>
+    <path d="M380 99 L380 125" marker-end="url(#arrf)" class="edge"/>
+    <polygon points="380,205 500,265 380,325 260,265" class="flowbox"/><text x="380" y="262" text-anchor="middle">是否需要</text><text x="380" y="284" text-anchor="middle">計算或畫圖？</text>
+    <path d="M380 177 L380 205" marker-end="url(#arrf)" class="edge"/>
+    <rect x="60" y="245" width="150" height="55" rx="10" class="flowbox"/><text x="135" y="278" text-anchor="middle">整理觀念</text>
+    <rect x="550" y="245" width="150" height="55" rx="10" class="flowbox"/><text x="625" y="278" text-anchor="middle">逐步處理</text>
+    <path d="M260 265 L210 272" marker-end="url(#arrf)" class="edge"/><path d="M500 265 L550 272" marker-end="url(#arrf)" class="edge"/>
+    <rect x="270" y="355" width="220" height="52" rx="10" class="flowbox"/><text x="380" y="386" text-anchor="middle">輸出完整答案</text>
+    <path d="M135 300 C170 360 250 380 270 380" marker-end="url(#arrf)" class="edge"/><path d="M625 300 C590 360 510 380 490 380" marker-end="url(#arrf)" class="edge"/>
+    </svg></div>
+    <div class="section"><h3>9、流程說明</h3><p>流程圖表示：先讀題與辨認核心觀念，若需要畫圖或計算，就依規則逐步處理；若是觀念題，則整理定義、比較項目與例子，最後輸出完整答案。</p></div>
+    <div class="section"><h3>10、重要概念與語法/變數說明</h3><p>protection、security、access control。若是計算題，請特別注意 arrival time、burst time、waiting time、turnaround time、ready queue、time quantum、cycle 等名詞；若是圖形題，請標示箭頭方向與每個節點意義。</p></div>
+    <div class="section"><h3>11、時間複雜度與考試容易錯的地方</h3><div class="mistake"><p><b>時間複雜度：</b>觀念題通常不需計算；排程或圖形判斷若逐一檢查 n 個 process，基本整理成本約 O(n) 到 O(n log n)，依排序方式而定。</p><p><b>容易錯：</b>不要只背名詞，要能畫出對應圖形；CPU scheduling 要分清楚 waiting time 與 turnaround time；deadlock 要看 cycle 與 resource instance 數量。</p></div></div>
+</div></article><article class="accordion" id="q12"><button class="acc-head" onclick="toggleAcc(this)"><span>第 12 題：Program、Job and Process 程式、工作與行程 <span class="tag">Lesson 8</span></span><span>＋</span></button><div class="acc-body">
+    <div class="section"><h3>1、題目原文</h3><div class="qtext">Explain the relationship among program, job, and process.</div></div>
+    <div class="section"><h3>2、題目中文翻譯</h3><p>請說明 program、job、process 三者的關係。</p></div>
+    <div class="section"><h3>3、題目核心觀念</h3><p>program、job、process</p></div>
+    <div class="section"><h3>4、解題步驟</h3><ol><li>先辨認題目要問的是定義、比較、畫圖、計算或判斷。</li><li>三者常被混用，但考試要能分辨靜態與動態。</li><li>最後用圖或表格把答案整理清楚，避免只寫零散文字。</li></ol></div>
+    <div class="section"><h3>5、圖解說明</h3><svg class="diagram" viewBox="0 0 760 210"><defs><marker id="arrj" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#334155"/></marker></defs><rect x="70" y="75" width="160" height="60" rx="10" class="box app"/><text x="150" y="112" text-anchor="middle">Program</text><rect x="300" y="75" width="160" height="60" rx="10" class="box user"/><text x="380" y="112" text-anchor="middle">Job</text><rect x="530" y="75" width="160" height="60" rx="10" class="box os"/><text x="610" y="112" text-anchor="middle">Process</text><line x1="230" y1="105" x2="300" y2="105" marker-end="url(#arrj)" class="edge"/><line x1="460" y1="105" x2="530" y2="105" marker-end="url(#arrj)" class="edge"/></svg></div>
+<div class="section"><h3>6、動態動畫說明</h3><div class="anim"><p>本題屬於觀念或比較題，圖解已呈現主要結構。考試時可依圖中的層次或箭頭說明。</p></div></div><div class="section"><h3>7、完整答案</h3><div class="answer">Program 是程式碼；job 是提交給系統的工作；process 是程式被載入並執行的實體。</div></div>
+    <div class="section"><h3>8、流程圖</h3><svg class="diagram flow" viewBox="0 0 760 430"><text x="380" y="28" text-anchor="middle" class="svgh2">本題解題流程</text>
+    <defs><marker id="arrf" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#334155"/></marker></defs>
+    <rect x="300" y="55" width="160" height="44" rx="22" class="flowbox"/><text x="380" y="82" text-anchor="middle">開始</text>
+    <rect x="270" y="125" width="220" height="52" rx="10" class="flowbox"/><text x="380" y="156" text-anchor="middle">讀取題目資料</text>
+    <path d="M380 99 L380 125" marker-end="url(#arrf)" class="edge"/>
+    <polygon points="380,205 500,265 380,325 260,265" class="flowbox"/><text x="380" y="262" text-anchor="middle">是否需要</text><text x="380" y="284" text-anchor="middle">計算或畫圖？</text>
+    <path d="M380 177 L380 205" marker-end="url(#arrf)" class="edge"/>
+    <rect x="60" y="245" width="150" height="55" rx="10" class="flowbox"/><text x="135" y="278" text-anchor="middle">整理觀念</text>
+    <rect x="550" y="245" width="150" height="55" rx="10" class="flowbox"/><text x="625" y="278" text-anchor="middle">逐步處理</text>
+    <path d="M260 265 L210 272" marker-end="url(#arrf)" class="edge"/><path d="M500 265 L550 272" marker-end="url(#arrf)" class="edge"/>
+    <rect x="270" y="355" width="220" height="52" rx="10" class="flowbox"/><text x="380" y="386" text-anchor="middle">輸出完整答案</text>
+    <path d="M135 300 C170 360 250 380 270 380" marker-end="url(#arrf)" class="edge"/><path d="M625 300 C590 360 510 380 490 380" marker-end="url(#arrf)" class="edge"/>
+    </svg></div>
+    <div class="section"><h3>9、流程說明</h3><p>流程圖表示：先讀題與辨認核心觀念，若需要畫圖或計算，就依規則逐步處理；若是觀念題，則整理定義、比較項目與例子，最後輸出完整答案。</p></div>
+    <div class="section"><h3>10、重要概念與語法/變數說明</h3><p>program、job、process。若是計算題，請特別注意 arrival time、burst time、waiting time、turnaround time、ready queue、time quantum、cycle 等名詞；若是圖形題，請標示箭頭方向與每個節點意義。</p></div>
+    <div class="section"><h3>11、時間複雜度與考試容易錯的地方</h3><div class="mistake"><p><b>時間複雜度：</b>觀念題通常不需計算；排程或圖形判斷若逐一檢查 n 個 process，基本整理成本約 O(n) 到 O(n log n)，依排序方式而定。</p><p><b>容易錯：</b>不要只背名詞，要能畫出對應圖形；CPU scheduling 要分清楚 waiting time 與 turnaround time；deadlock 要看 cycle 與 resource instance 數量。</p></div></div>
+</div></article><article class="accordion" id="q13"><button class="acc-head" onclick="toggleAcc(this)"><span>第 13 題：Process in Memory 行程在記憶體中的結構 <span class="tag">Lesson 8</span></span><span>＋</span></button><div class="acc-body">
+    <div class="section"><h3>1、題目原文</h3><div class="qtext">Draw the memory layout of a process and explain text, data, heap, and stack sections.</div></div>
+    <div class="section"><h3>2、題目中文翻譯</h3><p>請畫出 process 在 memory 中的結構，並說明 text、data、heap、stack。</p></div>
+    <div class="section"><h3>3、題目核心觀念</h3><p>text、data、heap、stack</p></div>
+    <div class="section"><h3>4、解題步驟</h3><ol><li>先辨認題目要問的是定義、比較、畫圖、計算或判斷。</li><li>從低位址到高位址常見為 text、data、heap、stack；heap 往上長，stack 往下長。</li><li>最後用圖或表格把答案整理清楚，避免只寫零散文字。</li></ol></div>
+    <div class="section"><h3>5、圖解說明</h3><svg class="diagram" viewBox="0 0 420 520"><rect x="95" y="30" width="230" height="460" rx="10" class="mem"/>
+    <rect x="110" y="50" width="200" height="70" class="seg stack"/><text x="210" y="92" text-anchor="middle">Stack：區域變數、return address</text>
+    <text x="210" y="145" text-anchor="middle" class="bigarrow">↓</text>
+    <rect x="110" y="170" width="200" height="70" class="seg heap"/><text x="210" y="212" text-anchor="middle">Heap：動態配置</text>
+    <text x="210" y="265" text-anchor="middle" class="bigarrow">↑</text>
+    <rect x="110" y="295" width="200" height="70" class="seg data"/><text x="210" y="337" text-anchor="middle">Data：global/static</text>
+    <rect x="110" y="390" width="200" height="70" class="seg text"/><text x="210" y="432" text-anchor="middle">Text：程式碼</text>
+    </svg></div>
+<div class="section"><h3>6、動態動畫說明</h3><div class="anim"><p>本題屬於觀念或比較題，圖解已呈現主要結構。考試時可依圖中的層次或箭頭說明。</p></div></div><div class="section"><h3>7、完整答案</h3><div class="answer">Text 存程式碼；data 存全域/靜態資料；heap 存動態配置；stack 存函式呼叫與區域變數。</div></div>
+    <div class="section"><h3>8、流程圖</h3><svg class="diagram flow" viewBox="0 0 760 430"><text x="380" y="28" text-anchor="middle" class="svgh2">本題解題流程</text>
+    <defs><marker id="arrf" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#334155"/></marker></defs>
+    <rect x="300" y="55" width="160" height="44" rx="22" class="flowbox"/><text x="380" y="82" text-anchor="middle">開始</text>
+    <rect x="270" y="125" width="220" height="52" rx="10" class="flowbox"/><text x="380" y="156" text-anchor="middle">讀取題目資料</text>
+    <path d="M380 99 L380 125" marker-end="url(#arrf)" class="edge"/>
+    <polygon points="380,205 500,265 380,325 260,265" class="flowbox"/><text x="380" y="262" text-anchor="middle">是否需要</text><text x="380" y="284" text-anchor="middle">計算或畫圖？</text>
+    <path d="M380 177 L380 205" marker-end="url(#arrf)" class="edge"/>
+    <rect x="60" y="245" width="150" height="55" rx="10" class="flowbox"/><text x="135" y="278" text-anchor="middle">整理觀念</text>
+    <rect x="550" y="245" width="150" height="55" rx="10" class="flowbox"/><text x="625" y="278" text-anchor="middle">逐步處理</text>
+    <path d="M260 265 L210 272" marker-end="url(#arrf)" class="edge"/><path d="M500 265 L550 272" marker-end="url(#arrf)" class="edge"/>
+    <rect x="270" y="355" width="220" height="52" rx="10" class="flowbox"/><text x="380" y="386" text-anchor="middle">輸出完整答案</text>
+    <path d="M135 300 C170 360 250 380 270 380" marker-end="url(#arrf)" class="edge"/><path d="M625 300 C590 360 510 380 490 380" marker-end="url(#arrf)" class="edge"/>
+    </svg></div>
+    <div class="section"><h3>9、流程說明</h3><p>流程圖表示：先讀題與辨認核心觀念，若需要畫圖或計算，就依規則逐步處理；若是觀念題，則整理定義、比較項目與例子，最後輸出完整答案。</p></div>
+    <div class="section"><h3>10、重要概念與語法/變數說明</h3><p>text、data、heap、stack。若是計算題，請特別注意 arrival time、burst time、waiting time、turnaround time、ready queue、time quantum、cycle 等名詞；若是圖形題，請標示箭頭方向與每個節點意義。</p></div>
+    <div class="section"><h3>11、時間複雜度與考試容易錯的地方</h3><div class="mistake"><p><b>時間複雜度：</b>觀念題通常不需計算；排程或圖形判斷若逐一檢查 n 個 process，基本整理成本約 O(n) 到 O(n log n)，依排序方式而定。</p><p><b>容易錯：</b>不要只背名詞，要能畫出對應圖形；CPU scheduling 要分清楚 waiting time 與 turnaround time；deadlock 要看 cycle 與 resource instance 數量。</p></div></div>
+</div></article><article class="accordion" id="q14"><button class="acc-head" onclick="toggleAcc(this)"><span>第 14 題：Process State 行程狀態 <span class="tag">Lesson 8</span></span><span>＋</span></button><div class="acc-body">
+    <div class="section"><h3>1、題目原文</h3><div class="qtext">Draw the process state diagram and explain new, ready, running, waiting, and terminated states.</div></div>
+    <div class="section"><h3>2、題目中文翻譯</h3><p>請畫出 process state diagram，並解釋 new、ready、running、waiting、terminated。</p></div>
+    <div class="section"><h3>3、題目核心觀念</h3><p>process state、state transition</p></div>
+    <div class="section"><h3>4、解題步驟</h3><ol><li>先辨認題目要問的是定義、比較、畫圖、計算或判斷。</li><li>Process 執行時會隨事件改變狀態。</li><li>最後用圖或表格把答案整理清楚，避免只寫零散文字。</li></ol></div>
+    <div class="section"><h3>5、圖解說明</h3><svg class="diagram state-svg" viewBox="0 0 760 360"><defs><marker id="arrps" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#334155"/></marker></defs>
+    <ellipse id="st-new" cx="90" cy="175" rx="62" ry="35" class="state"/><text x="90" y="181" text-anchor="middle">new</text>
+    <ellipse id="st-ready" cx="250" cy="175" rx="62" ry="35" class="state"/><text x="250" y="181" text-anchor="middle">ready</text>
+    <ellipse id="st-running" cx="430" cy="175" rx="70" ry="35" class="state"/><text x="430" y="181" text-anchor="middle">running</text>
+    <ellipse id="st-waiting" cx="430" cy="285" rx="70" ry="35" class="state"/><text x="430" y="291" text-anchor="middle">waiting</text>
+    <ellipse id="st-term" cx="630" cy="175" rx="80" ry="35" class="state"/><text x="630" y="181" text-anchor="middle">terminated</text>
+    <line x1="152" y1="175" x2="188" y2="175" marker-end="url(#arrps)" class="edge"/><text x="170" y="158" class="small">admitted</text>
+    <line x1="312" y1="175" x2="360" y2="175" marker-end="url(#arrps)" class="edge"/><text x="330" y="158" class="small">dispatch</text>
+    <path d="M430 210 L430 248" marker-end="url(#arrps)" class="edge"/><text x="448" y="235" class="small">I/O wait</text>
+    <path d="M360 285 C270 285 250 245 250 210" marker-end="url(#arrps)" class="edge"/><text x="275" y="270" class="small">I/O complete</text>
+    <line x1="500" y1="175" x2="550" y2="175" marker-end="url(#arrps)" class="edge"/><text x="520" y="158" class="small">exit</text>
+    <path d="M430 140 C430 85 250 85 250 140" marker-end="url(#arrps)" class="edge"/><text x="330" y="95" class="small">interrupt</text>
+    </svg></div>
+<div class="section"><h3>6、動態動畫說明</h3><div class="anim" data-anim="14"><div class="anim-controls"><button class="btn green" onclick="prevStep(14)">上一步</button><button class="btn" onclick="nextStep(14)">下一步</button><button class="btn orange" onclick="replayStep(14)">重播</button></div><div id="animStatus14" class="anim-status">按「下一步」開始觀看動畫。</div><p class="note">動畫會高亮本題的重點節點、狀態或流程。</p></div></div><div class="section"><h3>7、完整答案</h3><div class="answer">new 正在建立；ready 等 CPU；running 正在執行；waiting 等 I/O；terminated 結束。</div></div>
+    <div class="section"><h3>8、流程圖</h3><svg class="diagram flow" viewBox="0 0 760 430"><text x="380" y="28" text-anchor="middle" class="svgh2">本題解題流程</text>
+    <defs><marker id="arrf" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#334155"/></marker></defs>
+    <rect x="300" y="55" width="160" height="44" rx="22" class="flowbox"/><text x="380" y="82" text-anchor="middle">開始</text>
+    <rect x="270" y="125" width="220" height="52" rx="10" class="flowbox"/><text x="380" y="156" text-anchor="middle">讀取題目資料</text>
+    <path d="M380 99 L380 125" marker-end="url(#arrf)" class="edge"/>
+    <polygon points="380,205 500,265 380,325 260,265" class="flowbox"/><text x="380" y="262" text-anchor="middle">是否需要</text><text x="380" y="284" text-anchor="middle">計算或畫圖？</text>
+    <path d="M380 177 L380 205" marker-end="url(#arrf)" class="edge"/>
+    <rect x="60" y="245" width="150" height="55" rx="10" class="flowbox"/><text x="135" y="278" text-anchor="middle">整理觀念</text>
+    <rect x="550" y="245" width="150" height="55" rx="10" class="flowbox"/><text x="625" y="278" text-anchor="middle">逐步處理</text>
+    <path d="M260 265 L210 272" marker-end="url(#arrf)" class="edge"/><path d="M500 265 L550 272" marker-end="url(#arrf)" class="edge"/>
+    <rect x="270" y="355" width="220" height="52" rx="10" class="flowbox"/><text x="380" y="386" text-anchor="middle">輸出完整答案</text>
+    <path d="M135 300 C170 360 250 380 270 380" marker-end="url(#arrf)" class="edge"/><path d="M625 300 C590 360 510 380 490 380" marker-end="url(#arrf)" class="edge"/>
+    </svg></div>
+    <div class="section"><h3>9、流程說明</h3><p>流程圖表示：先讀題與辨認核心觀念，若需要畫圖或計算，就依規則逐步處理；若是觀念題，則整理定義、比較項目與例子，最後輸出完整答案。</p></div>
+    <div class="section"><h3>10、重要概念與語法/變數說明</h3><p>process state、state transition。若是計算題，請特別注意 arrival time、burst time、waiting time、turnaround time、ready queue、time quantum、cycle 等名詞；若是圖形題，請標示箭頭方向與每個節點意義。</p></div>
+    <div class="section"><h3>11、時間複雜度與考試容易錯的地方</h3><div class="mistake"><p><b>時間複雜度：</b>觀念題通常不需計算；排程或圖形判斷若逐一檢查 n 個 process，基本整理成本約 O(n) 到 O(n log n)，依排序方式而定。</p><p><b>容易錯：</b>不要只背名詞，要能畫出對應圖形；CPU scheduling 要分清楚 waiting time 與 turnaround time；deadlock 要看 cycle 與 resource instance 數量。</p></div></div>
+</div></article><article class="accordion" id="q15"><button class="acc-head" onclick="toggleAcc(this)"><span>第 15 題：Process Control Block，PCB 行程控制區塊 <span class="tag">Lesson 8</span></span><span>＋</span></button><div class="acc-body">
+    <div class="section"><h3>1、題目原文</h3><div class="qtext">What information is stored in a process control block? List at least five items.</div></div>
+    <div class="section"><h3>2、題目中文翻譯</h3><p>PCB 裡面存放哪些資訊？請至少列出五項。</p></div>
+    <div class="section"><h3>3、題目核心觀念</h3><p>PCB、process state、program counter、registers</p></div>
+    <div class="section"><h3>4、解題步驟</h3><ol><li>先辨認題目要問的是定義、比較、畫圖、計算或判斷。</li><li>PCB 是 OS 管理 process 的資料結構。</li><li>最後用圖或表格把答案整理清楚，避免只寫零散文字。</li></ol></div>
+    <div class="section"><h3>5、圖解說明</h3><svg class="diagram" viewBox="0 0 520 390"><rect x="120" y="20" width="280" height="340" rx="12" class="pcb"/><text x="260" y="50" text-anchor="middle" class="svgh2">PCB</text><rect x="150" y="70" width="220" height="34" class="pcbrow"/><text x="260" y="92" text-anchor="middle">Process state</text><rect x="150" y="110" width="220" height="34" class="pcbrow"/><text x="260" y="132" text-anchor="middle">Program counter</text><rect x="150" y="150" width="220" height="34" class="pcbrow"/><text x="260" y="172" text-anchor="middle">CPU registers</text><rect x="150" y="190" width="220" height="34" class="pcbrow"/><text x="260" y="212" text-anchor="middle">CPU scheduling info</text><rect x="150" y="230" width="220" height="34" class="pcbrow"/><text x="260" y="252" text-anchor="middle">Memory-management info</text><rect x="150" y="270" width="220" height="34" class="pcbrow"/><text x="260" y="292" text-anchor="middle">Accounting info</text><rect x="150" y="310" width="220" height="34" class="pcbrow"/><text x="260" y="332" text-anchor="middle">I/O status info</text></svg></div>
+<div class="section"><h3>6、動態動畫說明</h3><div class="anim"><p>本題屬於觀念或比較題，圖解已呈現主要結構。考試時可依圖中的層次或箭頭說明。</p></div></div><div class="section"><h3>7、完整答案</h3><div class="answer">PCB 內含 process state、program counter、CPU registers、CPU scheduling info、memory-management info、I/O status 等。</div></div>
+    <div class="section"><h3>8、流程圖</h3><svg class="diagram flow" viewBox="0 0 760 430"><text x="380" y="28" text-anchor="middle" class="svgh2">本題解題流程</text>
+    <defs><marker id="arrf" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#334155"/></marker></defs>
+    <rect x="300" y="55" width="160" height="44" rx="22" class="flowbox"/><text x="380" y="82" text-anchor="middle">開始</text>
+    <rect x="270" y="125" width="220" height="52" rx="10" class="flowbox"/><text x="380" y="156" text-anchor="middle">讀取題目資料</text>
+    <path d="M380 99 L380 125" marker-end="url(#arrf)" class="edge"/>
+    <polygon points="380,205 500,265 380,325 260,265" class="flowbox"/><text x="380" y="262" text-anchor="middle">是否需要</text><text x="380" y="284" text-anchor="middle">計算或畫圖？</text>
+    <path d="M380 177 L380 205" marker-end="url(#arrf)" class="edge"/>
+    <rect x="60" y="245" width="150" height="55" rx="10" class="flowbox"/><text x="135" y="278" text-anchor="middle">整理觀念</text>
+    <rect x="550" y="245" width="150" height="55" rx="10" class="flowbox"/><text x="625" y="278" text-anchor="middle">逐步處理</text>
+    <path d="M260 265 L210 272" marker-end="url(#arrf)" class="edge"/><path d="M500 265 L550 272" marker-end="url(#arrf)" class="edge"/>
+    <rect x="270" y="355" width="220" height="52" rx="10" class="flowbox"/><text x="380" y="386" text-anchor="middle">輸出完整答案</text>
+    <path d="M135 300 C170 360 250 380 270 380" marker-end="url(#arrf)" class="edge"/><path d="M625 300 C590 360 510 380 490 380" marker-end="url(#arrf)" class="edge"/>
+    </svg></div>
+    <div class="section"><h3>9、流程說明</h3><p>流程圖表示：先讀題與辨認核心觀念，若需要畫圖或計算，就依規則逐步處理；若是觀念題，則整理定義、比較項目與例子，最後輸出完整答案。</p></div>
+    <div class="section"><h3>10、重要概念與語法/變數說明</h3><p>PCB、process state、program counter、registers。若是計算題，請特別注意 arrival time、burst time、waiting time、turnaround time、ready queue、time quantum、cycle 等名詞；若是圖形題，請標示箭頭方向與每個節點意義。</p></div>
+    <div class="section"><h3>11、時間複雜度與考試容易錯的地方</h3><div class="mistake"><p><b>時間複雜度：</b>觀念題通常不需計算；排程或圖形判斷若逐一檢查 n 個 process，基本整理成本約 O(n) 到 O(n log n)，依排序方式而定。</p><p><b>容易錯：</b>不要只背名詞，要能畫出對應圖形；CPU scheduling 要分清楚 waiting time 與 turnaround time；deadlock 要看 cycle 與 resource instance 數量。</p></div></div>
+</div></article><article class="accordion" id="q16"><button class="acc-head" onclick="toggleAcc(this)"><span>第 16 題：Schedulers and Context Switch 排程器與內容切換 <span class="tag">Lesson 8</span></span><span>＋</span></button><div class="acc-body">
+    <div class="section"><h3>1、題目原文</h3><div class="qtext">Compare long-term scheduler, short-term scheduler, and medium-term scheduler. Then explain what a context switch is.</div></div>
+    <div class="section"><h3>2、題目中文翻譯</h3><p>請比較 long-term、short-term、medium-term scheduler，並解釋 context switch。</p></div>
+    <div class="section"><h3>3、題目核心觀念</h3><p>scheduler、context switch</p></div>
+    <div class="section"><h3>4、解題步驟</h3><ol><li>先辨認題目要問的是定義、比較、畫圖、計算或判斷。</li><li>Long-term 控制進入系統的 jobs；short-term 選下一個 CPU process；medium-term 做 swap。</li><li>最後用圖或表格把答案整理清楚，避免只寫零散文字。</li></ol></div>
+    <div class="section"><h3>5、圖解說明</h3><svg class="diagram ctx-svg" viewBox="0 0 760 270"><defs><marker id="arrc" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#334155"/></marker></defs><rect id="ctx-a" x="60" y="70" width="150" height="70" rx="10" class="box app"/><text x="135" y="112" text-anchor="middle">Process A</text><rect x="305" y="70" width="150" height="70" rx="10" class="box os"/><text x="380" y="112" text-anchor="middle">OS saves/loads</text><rect id="ctx-b" x="550" y="70" width="150" height="70" rx="10" class="box app"/><text x="625" y="112" text-anchor="middle">Process B</text><line x1="210" y1="105" x2="305" y2="105" marker-end="url(#arrc)" class="edge"/><line x1="455" y1="105" x2="550" y2="105" marker-end="url(#arrc)" class="edge"/><text x="380" y="205" text-anchor="middle">Context switch：切換期間 CPU 沒有執行使用者程式</text></svg></div>
+<div class="section"><h3>6、動態動畫說明</h3><div class="anim" data-anim="16"><div class="anim-controls"><button class="btn green" onclick="prevStep(16)">上一步</button><button class="btn" onclick="nextStep(16)">下一步</button><button class="btn orange" onclick="replayStep(16)">重播</button></div><div id="animStatus16" class="anim-status">按「下一步」開始觀看動畫。</div><p class="note">動畫會高亮本題的重點節點、狀態或流程。</p></div></div><div class="section"><h3>7、完整答案</h3><div class="answer">Context switch 是儲存舊 process 狀態、載入新 process 狀態；它是 overhead。</div></div>
+    <div class="section"><h3>8、流程圖</h3><svg class="diagram flow" viewBox="0 0 760 430"><text x="380" y="28" text-anchor="middle" class="svgh2">本題解題流程</text>
+    <defs><marker id="arrf" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#334155"/></marker></defs>
+    <rect x="300" y="55" width="160" height="44" rx="22" class="flowbox"/><text x="380" y="82" text-anchor="middle">開始</text>
+    <rect x="270" y="125" width="220" height="52" rx="10" class="flowbox"/><text x="380" y="156" text-anchor="middle">讀取題目資料</text>
+    <path d="M380 99 L380 125" marker-end="url(#arrf)" class="edge"/>
+    <polygon points="380,205 500,265 380,325 260,265" class="flowbox"/><text x="380" y="262" text-anchor="middle">是否需要</text><text x="380" y="284" text-anchor="middle">計算或畫圖？</text>
+    <path d="M380 177 L380 205" marker-end="url(#arrf)" class="edge"/>
+    <rect x="60" y="245" width="150" height="55" rx="10" class="flowbox"/><text x="135" y="278" text-anchor="middle">整理觀念</text>
+    <rect x="550" y="245" width="150" height="55" rx="10" class="flowbox"/><text x="625" y="278" text-anchor="middle">逐步處理</text>
+    <path d="M260 265 L210 272" marker-end="url(#arrf)" class="edge"/><path d="M500 265 L550 272" marker-end="url(#arrf)" class="edge"/>
+    <rect x="270" y="355" width="220" height="52" rx="10" class="flowbox"/><text x="380" y="386" text-anchor="middle">輸出完整答案</text>
+    <path d="M135 300 C170 360 250 380 270 380" marker-end="url(#arrf)" class="edge"/><path d="M625 300 C590 360 510 380 490 380" marker-end="url(#arrf)" class="edge"/>
+    </svg></div>
+    <div class="section"><h3>9、流程說明</h3><p>流程圖表示：先讀題與辨認核心觀念，若需要畫圖或計算，就依規則逐步處理；若是觀念題，則整理定義、比較項目與例子，最後輸出完整答案。</p></div>
+    <div class="section"><h3>10、重要概念與語法/變數說明</h3><p>scheduler、context switch。若是計算題，請特別注意 arrival time、burst time、waiting time、turnaround time、ready queue、time quantum、cycle 等名詞；若是圖形題，請標示箭頭方向與每個節點意義。</p></div>
+    <div class="section"><h3>11、時間複雜度與考試容易錯的地方</h3><div class="mistake"><p><b>時間複雜度：</b>觀念題通常不需計算；排程或圖形判斷若逐一檢查 n 個 process，基本整理成本約 O(n) 到 O(n log n)，依排序方式而定。</p><p><b>容易錯：</b>不要只背名詞，要能畫出對應圖形；CPU scheduling 要分清楚 waiting time 與 turnaround time；deadlock 要看 cycle 與 resource instance 數量。</p></div></div>
+</div></article><article class="accordion" id="q17"><button class="acc-head" onclick="toggleAcc(this)"><span>第 17 題：Interprocess Communication，IPC 行程間通訊 <span class="tag">Lesson 8</span></span><span>＋</span></button><div class="acc-body">
+    <div class="section"><h3>1、題目原文</h3><div class="qtext">Compare shared memory and message passing for interprocess communication.</div></div>
+    <div class="section"><h3>2、題目中文翻譯</h3><p>請比較 IPC 中的 shared memory 與 message passing。</p></div>
+    <div class="section"><h3>3、題目核心觀念</h3><p>IPC、shared memory、message passing</p></div>
+    <div class="section"><h3>4、解題步驟</h3><ol><li>先辨認題目要問的是定義、比較、畫圖、計算或判斷。</li><li>IPC 是 cooperating processes 交換資料的方式。</li><li>最後用圖或表格把答案整理清楚，避免只寫零散文字。</li></ol></div>
+    <div class="section"><h3>5、圖解說明</h3><svg class="diagram" viewBox="0 0 760 330"><defs><marker id="arripc" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#334155"/></marker></defs>
+    <text x="190" y="35" text-anchor="middle" class="svgh2">Shared Memory</text><rect x="55" y="85" width="110" height="90" rx="10" class="box app"/><text x="110" y="135" text-anchor="middle">Process A</text><rect x="215" y="85" width="110" height="90" rx="10" class="box app"/><text x="270" y="135" text-anchor="middle">Process B</text><rect x="130" y="215" width="120" height="65" rx="10" class="box os"/><text x="190" y="254" text-anchor="middle">Shared Memory</text><line x1="110" y1="175" x2="160" y2="215" marker-end="url(#arripc)" class="edge"/><line x1="270" y1="175" x2="220" y2="215" marker-end="url(#arripc)" class="edge"/>
+    <text x="570" y="35" text-anchor="middle" class="svgh2">Message Passing</text><rect x="440" y="85" width="110" height="90" rx="10" class="box app"/><text x="495" y="135" text-anchor="middle">Process A</text><rect x="600" y="85" width="110" height="90" rx="10" class="box app"/><text x="655" y="135" text-anchor="middle">Process B</text><rect x="520" y="215" width="110" height="65" rx="10" class="box os"/><text x="575" y="254" text-anchor="middle">Kernel Queue</text><path d="M495 175 C500 205 540 205 555 215" marker-end="url(#arripc)" class="edge"/><path d="M595 215 C610 205 650 205 655 175" marker-end="url(#arripc)" class="edge"/></svg></div>
+<div class="section"><h3>6、動態動畫說明</h3><div class="anim"><p>本題屬於觀念或比較題，圖解已呈現主要結構。考試時可依圖中的層次或箭頭說明。</p></div></div><div class="section"><h3>7、完整答案</h3><div class="answer">Shared memory 速度快但需同步；message passing 易管理但有 kernel/system call 成本。</div></div>
+    <div class="section"><h3>8、流程圖</h3><svg class="diagram flow" viewBox="0 0 760 430"><text x="380" y="28" text-anchor="middle" class="svgh2">本題解題流程</text>
+    <defs><marker id="arrf" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#334155"/></marker></defs>
+    <rect x="300" y="55" width="160" height="44" rx="22" class="flowbox"/><text x="380" y="82" text-anchor="middle">開始</text>
+    <rect x="270" y="125" width="220" height="52" rx="10" class="flowbox"/><text x="380" y="156" text-anchor="middle">讀取題目資料</text>
+    <path d="M380 99 L380 125" marker-end="url(#arrf)" class="edge"/>
+    <polygon points="380,205 500,265 380,325 260,265" class="flowbox"/><text x="380" y="262" text-anchor="middle">是否需要</text><text x="380" y="284" text-anchor="middle">計算或畫圖？</text>
+    <path d="M380 177 L380 205" marker-end="url(#arrf)" class="edge"/>
+    <rect x="60" y="245" width="150" height="55" rx="10" class="flowbox"/><text x="135" y="278" text-anchor="middle">整理觀念</text>
+    <rect x="550" y="245" width="150" height="55" rx="10" class="flowbox"/><text x="625" y="278" text-anchor="middle">逐步處理</text>
+    <path d="M260 265 L210 272" marker-end="url(#arrf)" class="edge"/><path d="M500 265 L550 272" marker-end="url(#arrf)" class="edge"/>
+    <rect x="270" y="355" width="220" height="52" rx="10" class="flowbox"/><text x="380" y="386" text-anchor="middle">輸出完整答案</text>
+    <path d="M135 300 C170 360 250 380 270 380" marker-end="url(#arrf)" class="edge"/><path d="M625 300 C590 360 510 380 490 380" marker-end="url(#arrf)" class="edge"/>
+    </svg></div>
+    <div class="section"><h3>9、流程說明</h3><p>流程圖表示：先讀題與辨認核心觀念，若需要畫圖或計算，就依規則逐步處理；若是觀念題，則整理定義、比較項目與例子，最後輸出完整答案。</p></div>
+    <div class="section"><h3>10、重要概念與語法/變數說明</h3><p>IPC、shared memory、message passing。若是計算題，請特別注意 arrival time、burst time、waiting time、turnaround time、ready queue、time quantum、cycle 等名詞；若是圖形題，請標示箭頭方向與每個節點意義。</p></div>
+    <div class="section"><h3>11、時間複雜度與考試容易錯的地方</h3><div class="mistake"><p><b>時間複雜度：</b>觀念題通常不需計算；排程或圖形判斷若逐一檢查 n 個 process，基本整理成本約 O(n) 到 O(n log n)，依排序方式而定。</p><p><b>容易錯：</b>不要只背名詞，要能畫出對應圖形；CPU scheduling 要分清楚 waiting time 與 turnaround time；deadlock 要看 cycle 與 resource instance 數量。</p></div></div>
+</div></article><article class="accordion" id="q18"><button class="acc-head" onclick="toggleAcc(this)"><span>第 18 題：Multithreaded Programming 多執行緒程式設計 <span class="tag">Lesson 8</span></span><span>＋</span></button><div class="acc-body">
+    <div class="section"><h3>1、題目原文</h3><div class="qtext">What is a thread? Give three benefits of multithreaded programming.</div></div>
+    <div class="section"><h3>2、題目中文翻譯</h3><p>什麼是 thread？請列出多執行緒程式設計的三個優點。</p></div>
+    <div class="section"><h3>3、題目核心觀念</h3><p>thread、multithreaded process、responsiveness</p></div>
+    <div class="section"><h3>4、解題步驟</h3><ol><li>先辨認題目要問的是定義、比較、畫圖、計算或判斷。</li><li>Thread 是 process 內的執行單位，同 process 的 threads 可共享 code/data/files。</li><li>最後用圖或表格把答案整理清楚，避免只寫零散文字。</li></ol></div>
+    <div class="section"><h3>5、圖解說明</h3><svg class="diagram" viewBox="0 0 760 320"><text x="190" y="35" text-anchor="middle" class="svgh2">Single-threaded</text><rect x="90" y="65" width="200" height="220" rx="12" class="box app"/><rect x="115" y="90" width="150" height="35" class="seg text"/><text x="190" y="113" text-anchor="middle">code/data/files</text><rect x="115" y="145" width="150" height="50" class="seg stack"/><text x="190" y="175" text-anchor="middle">one stack</text><path d="M190 205 C170 220 210 235 190 250" class="threadline"/>
+    <text x="570" y="35" text-anchor="middle" class="svgh2">Multithreaded</text><rect x="440" y="65" width="250" height="220" rx="12" class="box app"/><rect x="465" y="90" width="200" height="35" class="seg text"/><text x="565" y="113" text-anchor="middle">shared code/data/files</text><rect x="465" y="145" width="45" height="70" class="seg stack"/><rect x="540" y="145" width="45" height="70" class="seg stack"/><rect x="615" y="145" width="45" height="70" class="seg stack"/><path d="M487 220 C467 235 507 250 487 265" class="threadline"/><path d="M562 220 C542 235 582 250 562 265" class="threadline"/><path d="M637 220 C617 235 657 250 637 265" class="threadline"/></svg></div>
+<div class="section"><h3>6、動態動畫說明</h3><div class="anim"><p>本題屬於觀念或比較題，圖解已呈現主要結構。考試時可依圖中的層次或箭頭說明。</p></div></div><div class="section"><h3>7、完整答案</h3><div class="answer">優點：responsiveness、resource sharing、economy、scalability。</div></div>
+    <div class="section"><h3>8、流程圖</h3><svg class="diagram flow" viewBox="0 0 760 430"><text x="380" y="28" text-anchor="middle" class="svgh2">本題解題流程</text>
+    <defs><marker id="arrf" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#334155"/></marker></defs>
+    <rect x="300" y="55" width="160" height="44" rx="22" class="flowbox"/><text x="380" y="82" text-anchor="middle">開始</text>
+    <rect x="270" y="125" width="220" height="52" rx="10" class="flowbox"/><text x="380" y="156" text-anchor="middle">讀取題目資料</text>
+    <path d="M380 99 L380 125" marker-end="url(#arrf)" class="edge"/>
+    <polygon points="380,205 500,265 380,325 260,265" class="flowbox"/><text x="380" y="262" text-anchor="middle">是否需要</text><text x="380" y="284" text-anchor="middle">計算或畫圖？</text>
+    <path d="M380 177 L380 205" marker-end="url(#arrf)" class="edge"/>
+    <rect x="60" y="245" width="150" height="55" rx="10" class="flowbox"/><text x="135" y="278" text-anchor="middle">整理觀念</text>
+    <rect x="550" y="245" width="150" height="55" rx="10" class="flowbox"/><text x="625" y="278" text-anchor="middle">逐步處理</text>
+    <path d="M260 265 L210 272" marker-end="url(#arrf)" class="edge"/><path d="M500 265 L550 272" marker-end="url(#arrf)" class="edge"/>
+    <rect x="270" y="355" width="220" height="52" rx="10" class="flowbox"/><text x="380" y="386" text-anchor="middle">輸出完整答案</text>
+    <path d="M135 300 C170 360 250 380 270 380" marker-end="url(#arrf)" class="edge"/><path d="M625 300 C590 360 510 380 490 380" marker-end="url(#arrf)" class="edge"/>
+    </svg></div>
+    <div class="section"><h3>9、流程說明</h3><p>流程圖表示：先讀題與辨認核心觀念，若需要畫圖或計算，就依規則逐步處理；若是觀念題，則整理定義、比較項目與例子，最後輸出完整答案。</p></div>
+    <div class="section"><h3>10、重要概念與語法/變數說明</h3><p>thread、multithreaded process、responsiveness。若是計算題，請特別注意 arrival time、burst time、waiting time、turnaround time、ready queue、time quantum、cycle 等名詞；若是圖形題，請標示箭頭方向與每個節點意義。</p></div>
+    <div class="section"><h3>11、時間複雜度與考試容易錯的地方</h3><div class="mistake"><p><b>時間複雜度：</b>觀念題通常不需計算；排程或圖形判斷若逐一檢查 n 個 process，基本整理成本約 O(n) 到 O(n log n)，依排序方式而定。</p><p><b>容易錯：</b>不要只背名詞，要能畫出對應圖形；CPU scheduling 要分清楚 waiting time 與 turnaround time；deadlock 要看 cycle 與 resource instance 數量。</p></div></div>
+</div></article><article class="accordion" id="q19"><button class="acc-head" onclick="toggleAcc(this)"><span>第 19 題：CPU Scheduling CPU 排程 <span class="tag">Lesson 8</span></span><span>＋</span></button><div class="acc-body">
+    <div class="section"><h3>1、題目原文</h3><div class="qtext">Given the following processes, draw the Gantt chart and calculate the average waiting time by using FCFS and SJF scheduling.</div></div>
+    <div class="section"><h3>2、題目中文翻譯</h3><p>給定 process 的 arrival time 與 burst time，請用 FCFS 與 SJF non-preemptive 畫 Gantt chart 並計算平均 waiting time。</p></div>
+    <div class="section"><h3>3、題目核心觀念</h3><p>FCFS、SJF、Gantt chart、waiting time</p></div>
+    <div class="section"><h3>4、解題步驟</h3><ol><li>先辨認題目要問的是定義、比較、畫圖、計算或判斷。</li><li>FCFS 依到達順序；SJF non-preemptive 每次選 ready queue 中 burst time 最短者。</li><li>最後用圖或表格把答案整理清楚，避免只寫零散文字。</li></ol></div>
+    <div class="section"><h3>5、圖解說明</h3><svg class="diagram gantt-svg" viewBox="0 0 760 150"><text x="30" y="30" class="svgh2">Gantt Chart</text><rect x="60.0" y="55" width="196.9" height="50" class="gantt"/><text x="158.5" y="86" text-anchor="middle">P1</text><text x="60.0" y="125" text-anchor="middle" class="small">0</text><rect x="256.9" y="55" width="98.5" height="50" class="gantt"/><text x="306.2" y="86" text-anchor="middle">P2</text><text x="256.9" y="125" text-anchor="middle" class="small">8</text><rect x="355.4" y="55" width="221.5" height="50" class="gantt"/><text x="466.2" y="86" text-anchor="middle">P3</text><text x="355.4" y="125" text-anchor="middle" class="small">12</text><rect x="576.9" y="55" width="123.1" height="50" class="gantt"/><text x="638.5" y="86" text-anchor="middle">P4</text><text x="576.9" y="125" text-anchor="middle" class="small">21</text><text x="700.0" y="125" text-anchor="middle" class="small">26</text></svg><svg class="diagram gantt-svg" viewBox="0 0 760 150"><text x="30" y="30" class="svgh2">Gantt Chart</text><rect x="60.0" y="55" width="196.9" height="50" class="gantt"/><text x="158.5" y="86" text-anchor="middle">P1</text><text x="60.0" y="125" text-anchor="middle" class="small">0</text><rect x="256.9" y="55" width="98.5" height="50" class="gantt"/><text x="306.2" y="86" text-anchor="middle">P2</text><text x="256.9" y="125" text-anchor="middle" class="small">8</text><rect x="355.4" y="55" width="123.1" height="50" class="gantt"/><text x="416.9" y="86" text-anchor="middle">P4</text><text x="355.4" y="125" text-anchor="middle" class="small">12</text><rect x="478.5" y="55" width="221.5" height="50" class="gantt"/><text x="589.2" y="86" text-anchor="middle">P3</text><text x="478.5" y="125" text-anchor="middle" class="small">17</text><text x="700.0" y="125" text-anchor="middle" class="small">26</text></svg></div>
+<div class="section"><h3>6、動態動畫說明</h3><div class="anim" data-anim="19"><div class="anim-controls"><button class="btn green" onclick="prevStep(19)">上一步</button><button class="btn" onclick="nextStep(19)">下一步</button><button class="btn orange" onclick="replayStep(19)">重播</button></div><div id="animStatus19" class="anim-status">按「下一步」開始觀看動畫。</div><p class="note">動畫會高亮本題的重點節點、狀態或流程。</p></div></div><div class="section"><h3>7、完整答案</h3><div class="answer">FCFS：P1 0-8, P2 8-12, P3 12-21, P4 21-26。Waiting：P1=0, P2=7, P3=10, P4=18，平均 8.75。SJF：P1 0-8, P2 8-12, P4 12-17, P3 17-26。Waiting：P1=0, P2=7, P4=9, P3=15，平均 7.75。</div></div>
+    <div class="section"><h3>8、流程圖</h3><svg class="diagram flow" viewBox="0 0 760 430"><text x="380" y="28" text-anchor="middle" class="svgh2">本題解題流程</text>
+    <defs><marker id="arrf" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#334155"/></marker></defs>
+    <rect x="300" y="55" width="160" height="44" rx="22" class="flowbox"/><text x="380" y="82" text-anchor="middle">開始</text>
+    <rect x="270" y="125" width="220" height="52" rx="10" class="flowbox"/><text x="380" y="156" text-anchor="middle">讀取題目資料</text>
+    <path d="M380 99 L380 125" marker-end="url(#arrf)" class="edge"/>
+    <polygon points="380,205 500,265 380,325 260,265" class="flowbox"/><text x="380" y="262" text-anchor="middle">是否需要</text><text x="380" y="284" text-anchor="middle">計算或畫圖？</text>
+    <path d="M380 177 L380 205" marker-end="url(#arrf)" class="edge"/>
+    <rect x="60" y="245" width="150" height="55" rx="10" class="flowbox"/><text x="135" y="278" text-anchor="middle">整理觀念</text>
+    <rect x="550" y="245" width="150" height="55" rx="10" class="flowbox"/><text x="625" y="278" text-anchor="middle">逐步處理</text>
+    <path d="M260 265 L210 272" marker-end="url(#arrf)" class="edge"/><path d="M500 265 L550 272" marker-end="url(#arrf)" class="edge"/>
+    <rect x="270" y="355" width="220" height="52" rx="10" class="flowbox"/><text x="380" y="386" text-anchor="middle">輸出完整答案</text>
+    <path d="M135 300 C170 360 250 380 270 380" marker-end="url(#arrf)" class="edge"/><path d="M625 300 C590 360 510 380 490 380" marker-end="url(#arrf)" class="edge"/>
+    </svg></div>
+    <div class="section"><h3>9、流程說明</h3><p>流程圖表示：先讀題與辨認核心觀念，若需要畫圖或計算，就依規則逐步處理；若是觀念題，則整理定義、比較項目與例子，最後輸出完整答案。</p></div>
+    <div class="section"><h3>10、重要概念與語法/變數說明</h3><p>FCFS、SJF、Gantt chart、waiting time。若是計算題，請特別注意 arrival time、burst time、waiting time、turnaround time、ready queue、time quantum、cycle 等名詞；若是圖形題，請標示箭頭方向與每個節點意義。</p></div>
+    <div class="section"><h3>11、時間複雜度與考試容易錯的地方</h3><div class="mistake"><p><b>時間複雜度：</b>觀念題通常不需計算；排程或圖形判斷若逐一檢查 n 個 process，基本整理成本約 O(n) 到 O(n log n)，依排序方式而定。</p><p><b>容易錯：</b>不要只背名詞，要能畫出對應圖形；CPU scheduling 要分清楚 waiting time 與 turnaround time；deadlock 要看 cycle 與 resource instance 數量。</p></div></div>
+<div class="section"><h3>12、演算法範例程式碼與複製鍵</h3><div class="codebox"><button class="copy" onclick="copyCode(this)">複製程式碼</button><pre><code>// CPU Scheduling 計算 waiting time 的簡化偽程式
+// processes: 每個 process 有 name, arrival, burst
+function fcfs(processes) {
+    let time = 0;
+    let result = [];
+    processes.sort((a, b) =&gt; a.arrival - b.arrival);
+    for (const p of processes) {
+        if (time &lt; p.arrival) time = p.arrival; // CPU idle
+        const start = time;
+        const finish = start + p.burst;
+        const waiting = start - p.arrival;
+        result.push({ name: p.name, start, finish, waiting });
+        time = finish;
+    }
+    return result;
+}</code></pre></div></div></div></article><article class="accordion" id="q20"><button class="acc-head" onclick="toggleAcc(this)"><span>第 20 題：Deadlocks 死結 <span class="tag">Lesson 8</span></span><span>＋</span></button><div class="acc-body">
+    <div class="section"><h3>1、題目原文</h3><div class="qtext">Given the following resource-allocation situation, determine whether a deadlock may occur. Please draw the resource-allocation graph and explain your answer. Process P1 holds R1 and requests R2. Process P2 holds R2 and requests R1.</div></div>
+    <div class="section"><h3>2、題目中文翻譯</h3><p>P1 持有 R1 並要求 R2；P2 持有 R2 並要求 R1。請畫出 resource-allocation graph 並判斷是否可能 deadlock。</p></div>
+    <div class="section"><h3>3、題目核心觀念</h3><p>deadlock、resource-allocation graph、cycle</p></div>
+    <div class="section"><h3>4、解題步驟</h3><ol><li>先辨認題目要問的是定義、比較、畫圖、計算或判斷。</li><li>Request edge：process → resource；assignment edge：resource → process。</li><li>最後用圖或表格把答案整理清楚，避免只寫零散文字。</li></ol></div>
+    <div class="section"><h3>5、圖解說明</h3><svg class="diagram dead-svg" viewBox="0 0 760 360"><defs><marker id="arrd" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#7f1d1d"/></marker></defs>
+    <circle id="d-p1" cx="170" cy="100" r="42" class="proc"/><text x="170" y="107" text-anchor="middle">P1</text>
+    <rect id="d-r1" x="510" y="70" width="84" height="60" rx="8" class="res"/><text x="552" y="107" text-anchor="middle">R1</text>
+    <circle id="d-p2" cx="590" cy="260" r="42" class="proc"/><text x="590" y="267" text-anchor="middle">P2</text>
+    <rect id="d-r2" x="130" y="230" width="84" height="60" rx="8" class="res"/><text x="172" y="267" text-anchor="middle">R2</text>
+    <line id="e-r1-p1" x1="510" y1="100" x2="214" y2="100" marker-end="url(#arrd)" class="edge deadedge"/><text x="350" y="88" class="small">assignment: R1 → P1</text>
+    <line id="e-r2-p2" x1="214" y1="260" x2="548" y2="260" marker-end="url(#arrd)" class="edge deadedge"/><text x="355" y="282" class="small">assignment: R2 → P2</text>
+    <path id="e-p1-r2" d="M150 138 C85 180 85 235 130 260" marker-end="url(#arrd)" class="edge deadedge"/><text x="63" y="205" class="small">request: P1 → R2</text>
+    <path id="e-p2-r1" d="M610 222 C685 180 685 115 594 100" marker-end="url(#arrd)" class="edge deadedge"/><text x="600" y="180" class="small">request: P2 → R1</text>
+    <text x="380" y="330" text-anchor="middle" class="svgh2">形成 cycle：P1 → R2 → P2 → R1 → P1</text>
+    </svg></div>
+<div class="section"><h3>6、動態動畫說明</h3><div class="anim" data-anim="20"><div class="anim-controls"><button class="btn green" onclick="prevStep(20)">上一步</button><button class="btn" onclick="nextStep(20)">下一步</button><button class="btn orange" onclick="replayStep(20)">重播</button></div><div id="animStatus20" class="anim-status">按「下一步」開始觀看動畫。</div><p class="note">動畫會高亮本題的重點節點、狀態或流程。</p></div></div><div class="section"><h3>7、完整答案</h3><div class="answer">圖中有 cycle：P1→R2→P2→R1→P1。若 R1、R2 都只有一個 instance，這代表 deadlock。</div></div>
+    <div class="section"><h3>8、流程圖</h3><svg class="diagram flow" viewBox="0 0 760 430"><text x="380" y="28" text-anchor="middle" class="svgh2">本題解題流程</text>
+    <defs><marker id="arrf" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#334155"/></marker></defs>
+    <rect x="300" y="55" width="160" height="44" rx="22" class="flowbox"/><text x="380" y="82" text-anchor="middle">開始</text>
+    <rect x="270" y="125" width="220" height="52" rx="10" class="flowbox"/><text x="380" y="156" text-anchor="middle">讀取題目資料</text>
+    <path d="M380 99 L380 125" marker-end="url(#arrf)" class="edge"/>
+    <polygon points="380,205 500,265 380,325 260,265" class="flowbox"/><text x="380" y="262" text-anchor="middle">是否需要</text><text x="380" y="284" text-anchor="middle">計算或畫圖？</text>
+    <path d="M380 177 L380 205" marker-end="url(#arrf)" class="edge"/>
+    <rect x="60" y="245" width="150" height="55" rx="10" class="flowbox"/><text x="135" y="278" text-anchor="middle">整理觀念</text>
+    <rect x="550" y="245" width="150" height="55" rx="10" class="flowbox"/><text x="625" y="278" text-anchor="middle">逐步處理</text>
+    <path d="M260 265 L210 272" marker-end="url(#arrf)" class="edge"/><path d="M500 265 L550 272" marker-end="url(#arrf)" class="edge"/>
+    <rect x="270" y="355" width="220" height="52" rx="10" class="flowbox"/><text x="380" y="386" text-anchor="middle">輸出完整答案</text>
+    <path d="M135 300 C170 360 250 380 270 380" marker-end="url(#arrf)" class="edge"/><path d="M625 300 C590 360 510 380 490 380" marker-end="url(#arrf)" class="edge"/>
+    </svg></div>
+    <div class="section"><h3>9、流程說明</h3><p>流程圖表示：先讀題與辨認核心觀念，若需要畫圖或計算，就依規則逐步處理；若是觀念題，則整理定義、比較項目與例子，最後輸出完整答案。</p></div>
+    <div class="section"><h3>10、重要概念與語法/變數說明</h3><p>deadlock、resource-allocation graph、cycle。若是計算題，請特別注意 arrival time、burst time、waiting time、turnaround time、ready queue、time quantum、cycle 等名詞；若是圖形題，請標示箭頭方向與每個節點意義。</p></div>
+    <div class="section"><h3>11、時間複雜度與考試容易錯的地方</h3><div class="mistake"><p><b>時間複雜度：</b>觀念題通常不需計算；排程或圖形判斷若逐一檢查 n 個 process，基本整理成本約 O(n) 到 O(n log n)，依排序方式而定。</p><p><b>容易錯：</b>不要只背名詞，要能畫出對應圖形；CPU scheduling 要分清楚 waiting time 與 turnaround time；deadlock 要看 cycle 與 resource instance 數量。</p></div></div>
+<div class="section"><h3>12、Deadlock 判斷概念程式碼與複製鍵</h3><div class="codebox"><button class="copy" onclick="copyCode(this)">複製程式碼</button><pre><code>// Deadlock 判斷概念：若資源配置圖形成 cycle，且每種資源只有一個 instance，則 deadlock
+// 這裡用概念性偽程式表示
+function hasDeadlock(graph) {
+    // graph 包含 process 與 resource 的有向邊
+    // request edge: P -&gt; R
+    // assignment edge: R -&gt; P
+    return hasCycle(graph); // 若有 cycle，可能代表 deadlock
+}</code></pre></div></div></div></article>
+<section class="card"><h2>第 19 題補充：FCFS 與 SJF 完整計算表</h2>
+<h3>FCFS</h3><table><tr><th>Process</th><th>Arrival</th><th>Burst</th><th>Start</th><th>Finish</th><th>Waiting = Start - Arrival</th></tr><tr><td>P1</td><td>0</td><td>8</td><td>0</td><td>8</td><td>0</td></tr><tr><td>P2</td><td>1</td><td>4</td><td>8</td><td>12</td><td>7</td></tr><tr><td>P3</td><td>2</td><td>9</td><td>12</td><td>21</td><td>10</td></tr><tr><td>P4</td><td>3</td><td>5</td><td>21</td><td>26</td><td>18</td></tr><tr><th colspan="5">Average waiting time</th><th>(0+7+10+18)/4 = 8.75</th></tr></table>
+<h3>SJF non-preemptive</h3><table><tr><th>Process</th><th>Arrival</th><th>Burst</th><th>Start</th><th>Finish</th><th>Waiting = Start - Arrival</th></tr><tr><td>P1</td><td>0</td><td>8</td><td>0</td><td>8</td><td>0</td></tr><tr><td>P2</td><td>1</td><td>4</td><td>8</td><td>12</td><td>7</td></tr><tr><td>P4</td><td>3</td><td>5</td><td>12</td><td>17</td><td>9</td></tr><tr><td>P3</td><td>2</td><td>9</td><td>17</td><td>26</td><td>15</td></tr><tr><th colspan="5">Average waiting time</th><th>(0+7+9+15)/4 = 7.75</th></tr></table></section>
+</div>
+<script>
+const animData = {14: [("new", "Process 正在建立。"), ("ready", "admitted 後進入 ready queue，等待 CPU。"), ("running", "scheduler dispatch，CPU 開始執行。"), ("waiting", "Process 等待 I/O 或事件，離開 CPU。"), ("ready", "I/O completion，回到 ready。"), ("running", "再次被排程執行。"), ("terminated", "程式結束，process terminated。")], 16: [("ctx-a", "Process A 正在 CPU 上執行。"), ("ctx-a", "Interrupt 發生，OS 儲存 Process A 的 registers、program counter。"), ("ctx-b", "OS 載入 Process B 的狀態。"), ("ctx-b", "CPU 開始執行 Process B。")], 19: [("g1", "FCFS：P1 先到，執行 0–8。"), ("g2", "FCFS：P2 執行 8–12。"), ("g3", "FCFS：P3 執行 12–21。"), ("g4", "FCFS：P4 執行 21–26。"), ("s1", "SJF：0 時只有 P1，先執行。"), ("s2", "SJF：8 時 P2/P3/P4 都 ready，選最短 P2。"), ("s3", "SJF：接著選 P4。"), ("s4", "SJF：最後 P3。")], 20: [("d-r1", "R1 → P1：P1 持有 R1。"), ("d-r2", "R2 → P2：P2 持有 R2。"), ("e-p1-r2", "P1 → R2：P1 要求 R2。"), ("e-p2-r1", "P2 → R1：P2 要求 R1。"), ("cycle", "形成 cycle，若每個 resource 只有一個 instance，就是 deadlock。")], 9: [("p0", "程式分成 Page 0–3。"), ("p1", "Physical memory 分成 Frame 0–5。"), ("p2", "Page table 記錄 Page 對應 Frame。"), ("p3", "不同 Page 可放在不同 Frame，因此可以 non-contiguous。")]};
+const animIndex = {};
+function toggleAcc(btn){ const acc=btn.closest('.accordion'); acc.classList.toggle('open'); btn.querySelector('span:last-child').textContent = acc.classList.contains('open')?'－':'＋'; }
+function openAll(){ document.querySelectorAll('.accordion').forEach(a=>{a.classList.add('open'); a.querySelector('.acc-head span:last-child').textContent='－';}); }
+function closeAll(){ document.querySelectorAll('.accordion').forEach(a=>{a.classList.remove('open'); a.querySelector('.acc-head span:last-child').textContent='＋';}); }
+function copyCode(btn){ const code=btn.parentElement.querySelector('code').innerText; navigator.clipboard.writeText(code).then(()=>{btn.textContent='已複製'; setTimeout(()=>btn.textContent='複製程式碼',1200);}); }
+function clearHighlights(n){ const acc=document.querySelector('#q'+n); if(!acc) return; acc.querySelectorAll('.active').forEach(el=>el.classList.remove('active')); }
+function applyAnim(n){ const data=animData[n]; if(!data) return; if(animIndex[n]===undefined) animIndex[n]=-1; clearHighlights(n); const status=document.getElementById('animStatus'+n); const step=data[animIndex[n]]; if(!step){ status.textContent='按「下一步」開始觀看動畫。'; return; } const [id,text]=step; status.textContent='步驟 '+(animIndex[n]+1)+' / '+data.length+'：'+text; const acc=document.querySelector('#q'+n); if(!acc) return; if(id==='cycle'){ acc.querySelectorAll('.deadedge,.proc,.res').forEach(el=>el.classList.add('active')); return; } const el=acc.querySelector('#'+id); if(el) el.classList.add('active'); }
+function nextStep(n){ if(animIndex[n]===undefined) animIndex[n]=-1; animIndex[n]++; if(animIndex[n]>=animData[n].length) animIndex[n]=animData[n].length-1; applyAnim(n); }
+function prevStep(n){ if(animIndex[n]===undefined) animIndex[n]=0; animIndex[n]--; if(animIndex[n]<0) animIndex[n]=-1; applyAnim(n); }
+function replayStep(n){ animIndex[n]=-1; applyAnim(n); }
+// 初始展開前兩題，方便預覽
+window.addEventListener('load',()=>{document.querySelectorAll('.accordion').forEach((a,i)=>{if(i<1){a.classList.add('open'); a.querySelector('.acc-head span:last-child').textContent='－';}});});
+</script>
+</body></html>

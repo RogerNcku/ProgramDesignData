@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 5 Linked Lists 考古題練習與完整詳解</title>
+<style>
+:root{
+  --bg:#f5f7fb; --card:#fff; --ink:#1f2937; --muted:#64748b; --brand:#2f5bea; --brand2:#0f766e;
+  --line:#dbe3ef; --soft:#eef4ff; --warn:#fff7ed; --ok:#ecfdf5; --code:#101828;
+}
+*{box-sizing:border-box}
+body{margin:0;background:linear-gradient(180deg,#eef4ff 0,#f8fafc 320px);color:var(--ink);font-family:"Noto Sans TC","Microsoft JhengHei",Arial,sans-serif;line-height:1.72}
+header{padding:34px 20px 20px;text-align:center}
+header h1{margin:0;font-size:clamp(26px,4vw,42px);letter-spacing:.5px}
+header p{max-width:980px;margin:12px auto 0;color:#475569}
+.wrap{max-width:1180px;margin:auto;padding:0 18px 60px}
+.toolbar{position:sticky;top:0;z-index:10;background:rgba(248,250,252,.92);backdrop-filter:blur(8px);border:1px solid var(--line);border-radius:18px;padding:12px;margin:10px 0 20px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between}
+.btn{border:0;border-radius:999px;background:var(--brand);color:white;padding:9px 16px;font-weight:700;cursor:pointer;box-shadow:0 5px 14px rgba(47,91,234,.18)}
+.btn.secondary{background:#334155}.btn.green{background:var(--brand2)}.btn.small{font-size:13px;padding:6px 12px}
+.toc{display:flex;gap:8px;flex-wrap:wrap}
+.toc a{font-size:14px;text-decoration:none;background:white;border:1px solid var(--line);border-radius:999px;padding:7px 11px;color:#334155}
+.exam-focus,.note-box{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px;margin:18px 0;box-shadow:0 10px 28px rgba(15,23,42,.06)}
+.exam-focus h2,.note-box h2{margin-top:0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.focus-card{border-left:5px solid var(--brand);background:#f8fbff;border-radius:12px;padding:12px}
+.accordion{margin:14px 0;border:1px solid var(--line);border-radius:18px;background:var(--card);overflow:hidden;box-shadow:0 10px 24px rgba(15,23,42,.06)}
+.accordion summary{cursor:pointer;list-style:none;padding:18px 22px;font-weight:900;font-size:20px;display:flex;align-items:center;gap:12px;background:linear-gradient(90deg,#ffffff,#f1f7ff)}
+.accordion summary::-webkit-details-marker{display:none}
+.badge{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:12px;background:var(--brand);color:white;font-weight:900;flex:0 0 auto}
+.panel{padding:0 22px 24px}
+.section{border-top:1px dashed var(--line);padding-top:18px;margin-top:18px}
+h3{font-size:18px;margin:0 0 10px;color:#0f172a}
+.en{background:#0f172a;color:#e5e7eb;padding:14px 16px;border-radius:14px;font-family:Georgia,serif}
+.zh{background:#f8fafc;border-left:5px solid var(--brand2);padding:12px 14px;border-radius:10px}
+.steps li{margin:5px 0}
+.mistake{background:var(--warn);border-left:5px solid #f97316;border-radius:12px;padding:12px 14px}
+.answer{background:var(--ok);border-left:5px solid #10b981;border-radius:12px;padding:12px 14px}
+.svgbox{background:white;border:1px solid var(--line);border-radius:16px;padding:12px;overflow:auto;margin:10px 0}
+svg{max-width:100%;height:auto}
+.anim{display:grid;grid-template-columns:1.2fr .8fr;gap:14px;align-items:start}
+@media(max-width:850px){.anim{grid-template-columns:1fr}}
+.anim-text{background:#f8fafc;border:1px solid var(--line);border-radius:14px;padding:14px;min-height:120px}
+.anim-controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.codebox{position:relative;margin:12px 0}
+.copy-btn{position:absolute;right:10px;top:10px;background:#475569;color:white;border:0;border-radius:9px;padding:6px 10px;cursor:pointer;font-weight:700}
+pre{background:var(--code);color:#e5e7eb;padding:48px 16px 16px;border-radius:16px;overflow:auto;tab-size:4}
+code{font-family:"Consolas","Monaco",monospace;font-size:14px}
+.kbd{font-family:Consolas,monospace;background:#eef2ff;border:1px solid #c7d2fe;border-radius:6px;padding:1px 6px}
+.table{width:100%;border-collapse:collapse;background:white;border-radius:14px;overflow:hidden}
+.table th,.table td{border:1px solid var(--line);padding:8px 10px;text-align:left}.table th{background:#eef4ff}
+.flow{background:#fff;border:1px solid var(--line);border-radius:16px;padding:12px;overflow:auto}
+.footer{color:#64748b;text-align:center;margin-top:28px}
+</style>
+</head>
+<body>
+<header>
+  <h1>Lesson 5 Linked Lists 考古題練習與完整詳解</h1>
+  <p>依照老師常見出題方式整理：題目短、任務明確，但解答要能畫圖、能追蹤 pointer、能寫程式、能說明流程。</p>
+</header>
+<div class="wrap">
+  <div class="toolbar">
+    <div>
+      <button class="btn" onclick="openAll()">全部展開</button>
+      <button class="btn secondary" onclick="closeAll()">全部收合</button>
+    </div>
+    <nav class="toc">
+      <a href="#q1">第1題</a><a href="#q2">第2題</a><a href="#q3">第3題</a><a href="#q4">第4題</a><a href="#q5">第5題</a>
+      <a href="#q6">第6題</a><a href="#q7">第7題</a><a href="#q8">第8題</a><a href="#q9">第9題</a><a href="#q10">第10題</a>
+    </nav>
+  </div>
+
+  <section class="exam-focus">
+    <h2>考試重點整理</h2>
+    <div class="grid">
+      <div class="focus-card"><b>最可能考 1：</b>單向 linked list 的插入、刪除、指標改變。考試常要求畫操作前後。</div>
+      <div class="focus-card"><b>最可能考 2：</b>Java / C 程式碼補完，例如 insert、delete、reverse 或 remove 指定節點。</div>
+      <div class="focus-card"><b>最可能考 3：</b>程式輸出追蹤，尤其是 insert/delete 後的串列內容。</div>
+      <div class="focus-card"><b>最可能考 4：</b>多項式 linked list 表示與相加，重點是 exponent 相同時合併係數。</div>
+      <div class="focus-card"><b>觀念題：</b>array vs linked list、singly vs circular、singly vs doubly。</div>
+    </div>
+  </section>
+
+  <!-- Q1 -->
+  <details class="accordion" id="q1">
+    <summary><span class="badge">1</span>Array 的缺點與 Linked List 的需求</summary>
+    <div class="panel">
+      <div class="section"><h3>1、題目原文</h3><div class="en">Just for the factor of insertion and deletion, explain why a linked list is better than an array. Please provide your reason.</div></div>
+      <div class="section"><h3>2、題目中文翻譯</h3><div class="zh">只考慮「插入」與「刪除」這個因素，請解釋為什麼 linked list 比 array 更好，並說明理由。</div></div>
+      <div class="section"><h3>3、題目核心觀念</h3><p>這題在考 array 與 linked list 在資料移動成本上的差異。array 是連續記憶體，插入或刪除中間元素時，常需要搬移後方元素；linked list 則透過修改 link/pointer 完成，不需要搬動所有資料。</p></div>
+      <div class="section"><h3>4、解題步驟</h3><ol class="steps"><li>先說明 array 的資料是連續放在記憶體中。</li><li>如果要在中間插入資料，array 後面的元素要往後移。</li><li>如果要刪除中間資料，array 後面的元素要往前移。</li><li>linked list 的節點不一定連續，只要改變前後節點的 pointer。</li><li>因此在頻繁插入、刪除的情況下，linked list 較方便。</li></ol></div>
+      <div class="section"><h3>5、圖解說明</h3>
+        <div class="svgbox"><svg viewBox="0 0 960 320" role="img" aria-label="array versus linked list insertion deletion">
+          <text x="30" y="35" font-size="24" font-weight="700">Array 插入：需要搬動後方元素</text>
+          <g transform="translate(30,60)"><rect width="90" height="48" fill="#e0f2fe" stroke="#0284c7"/><text x="38" y="31">A</text></g>
+          <g transform="translate(120,60)"><rect width="90" height="48" fill="#e0f2fe" stroke="#0284c7"/><text x="38" y="31">D</text></g>
+          <g transform="translate(210,60)"><rect width="90" height="48" fill="#fee2e2" stroke="#dc2626"/><text x="38" y="31">空</text></g>
+          <g transform="translate(300,60)"><rect width="90" height="48" fill="#e0f2fe" stroke="#0284c7"/><text x="38" y="31">U</text></g>
+          <g transform="translate(390,60)"><rect width="90" height="48" fill="#e0f2fe" stroke="#0284c7"/><text x="38" y="31">X</text></g>
+          <path d="M350 130 C420 170 520 170 570 130" stroke="#ef4444" fill="none" stroke-width="3" marker-end="url(#arr)"/>
+          <text x="370" y="190" font-size="18" fill="#b91c1c">U、X 等元素要往後搬</text>
+
+          <text x="30" y="235" font-size="24" font-weight="700">Linked List 插入：只改 pointer</text>
+          <g id="ll1" transform="translate(30,255)"></g>
+          <defs><marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#ef4444"/></marker></defs>
+          <rect x="35" y="255" width="70" height="38" fill="#dcfce7" stroke="#16a34a"/><text x="61" y="281">A</text>
+          <path d="M105 274 L150 274" stroke="#16a34a" stroke-width="3" marker-end="url(#arr2)"/>
+          <rect x="150" y="255" width="70" height="38" fill="#dcfce7" stroke="#16a34a"/><text x="176" y="281">D</text>
+          <path d="M220 274 L265 274" stroke="#16a34a" stroke-width="3" marker-end="url(#arr2)"/>
+          <rect x="265" y="255" width="70" height="38" fill="#fef9c3" stroke="#ca8a04"/><text x="291" y="281">T</text>
+          <path d="M335 274 L380 274" stroke="#16a34a" stroke-width="3" marker-end="url(#arr2)"/>
+          <rect x="380" y="255" width="70" height="38" fill="#dcfce7" stroke="#16a34a"/><text x="406" y="281">U</text>
+          <text x="520" y="280" font-size="18" fill="#166534">不搬資料，只改 D.next 與 T.next</text>
+          <defs><marker id="arr2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/></marker></defs>
+        </svg></div>
+      </div>
+      <div class="section"><h3>6、動畫說明</h3><div class="anim"><div class="svgbox"><svg id="anim-q1" viewBox="0 0 760 210"></svg><div class="anim-controls"><button class="btn small" onclick="prevStep('q1')">上一步</button><button class="btn small green" onclick="nextStep('q1')">下一步</button><button class="btn small secondary" onclick="resetStep('q1')">重播</button></div></div><div class="anim-text" id="text-q1"></div></div></div>
+      <div class="section"><h3>7、完整答案</h3><div class="answer">Linked list 在插入與刪除上通常比 array 更方便，因為 array 需要搬動元素來維持連續位置，而 linked list 只要修改節點的 pointer/link 即可完成插入或刪除。若資料經常插入或刪除，linked list 較適合。</div></div>
+      <div class="section"><h3>8、考試容易錯的地方</h3><div class="mistake">不要寫成「linked list 一定比 array 快」。若是隨機存取第 i 個元素，array 是 O(1)，linked list 通常是 O(n)。本題限定 insertion and deletion，所以才強調 linked list 優勢。</div></div>
+    </div>
+  </details>
+
+  <!-- Q2 -->
+  <details class="accordion" id="q2">
+    <summary><span class="badge">2</span>List 的基本概念</summary>
+    <div class="panel">
+      <div class="section"><h3>1、題目原文</h3><div class="en">Define the following terms in a linked list: node, head pointer, data field, link field, and null pointer.</div></div>
+      <div class="section"><h3>2、題目中文翻譯</h3><div class="zh">請定義 linked list 中的以下名詞：node、head pointer、data field、link field、null pointer。</div></div>
+      <div class="section"><h3>3、題目核心觀念</h3><p>這題考 linked list 最基本的組成。要能把「節點」、「資料欄位」、「鏈結欄位」、「串列開頭」、「串列結尾」說清楚。</p></div>
+      <div class="section"><h3>4、解題步驟</h3><ol class="steps"><li>先說明 linked list 是由多個 node 串接而成。</li><li>每個 node 通常包含 data field 與 link field。</li><li>head pointer 指向第一個 node。</li><li>最後一個 node 的 link 指向 null，表示串列結束。</li></ol></div>
+      <div class="section"><h3>5、圖解說明</h3><div class="svgbox"><svg viewBox="0 0 920 210">
+        <text x="30" y="30" font-size="24" font-weight="700">Linked List 基本結構</text>
+        <text x="35" y="84" font-size="18">Head pointer</text><path d="M80 92 L130 120" stroke="#2563eb" stroke-width="3" marker-end="url(#arrowQ2)"/>
+        <g transform="translate(130,100)"><rect width="90" height="44" fill="#dbeafe" stroke="#2563eb"/><line x1="55" y1="0" x2="55" y2="44" stroke="#2563eb"/><text x="22" y="28">A</text><text x="62" y="28">•</text></g>
+        <path d="M220 122 L285 122" stroke="#2563eb" stroke-width="3" marker-end="url(#arrowQ2)"/>
+        <g transform="translate(285,100)"><rect width="90" height="44" fill="#dbeafe" stroke="#2563eb"/><line x1="55" y1="0" x2="55" y2="44" stroke="#2563eb"/><text x="22" y="28">D</text><text x="62" y="28">•</text></g>
+        <path d="M375 122 L440 122" stroke="#2563eb" stroke-width="3" marker-end="url(#arrowQ2)"/>
+        <g transform="translate(440,100)"><rect width="90" height="44" fill="#dbeafe" stroke="#2563eb"/><line x1="55" y1="0" x2="55" y2="44" stroke="#2563eb"/><text x="22" y="28">U</text><text x="62" y="28">/</text></g>
+        <text x="555" y="128" font-size="20">null pointer</text>
+        <text x="133" y="170" font-size="16">data field</text><text x="185" y="70" font-size="16">link field</text>
+        <defs><marker id="arrowQ2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2563eb"/></marker></defs>
+      </svg></div></div>
+      <div class="section"><h3>6、完整答案</h3><table class="table"><tr><th>名詞</th><th>定義</th></tr><tr><td>node</td><td>linked list 中的一個節點，通常包含資料與指標。</td></tr><tr><td>head pointer</td><td>指向串列第一個節點的指標。</td></tr><tr><td>data field</td><td>節點中存放資料的欄位。</td></tr><tr><td>link field</td><td>節點中存放下一個節點位址的欄位，也常稱為 next。</td></tr><tr><td>null pointer</td><td>表示沒有下一個節點，常用於串列結尾。</td></tr></table></div>
+      <div class="section"><h3>7、考試容易錯的地方</h3><div class="mistake">head 不是第一個節點本身，而是「指向第一個節點的指標」。null 也不是一個普通節點，而是表示沒有下一個節點。</div></div>
+    </div>
+  </details>
+
+  <!-- Q3 -->
+  <details class="accordion" id="q3">
+    <summary><span class="badge">3</span>Singly Linked List 單向鏈結串列</summary>
+    <div class="panel">
+      <div class="section"><h3>1、題目原文</h3><div class="en">Draw a singly linked list based on the following data sequence:<br>A, D, U, X, Y<br>Please show the head pointer and the null pointer.</div></div>
+      <div class="section"><h3>2、題目中文翻譯</h3><div class="zh">請根據資料順序 A、D、U、X、Y 畫出一個單向鏈結串列，並標示 head pointer 與 null pointer。</div></div>
+      <div class="section"><h3>3、題目核心觀念</h3><p>這題考單向鏈結串列的基本畫法：每個節點只會指向下一個節點，最後一個節點指向 null。</p></div>
+      <div class="section"><h3>4、解題步驟</h3><ol class="steps"><li>依照資料順序建立節點 A、D、U、X、Y。</li><li>讓 head 指向第一個節點 A。</li><li>讓 A.next 指向 D，D.next 指向 U，依此類推。</li><li>讓 Y.next 指向 null。</li></ol></div>
+      <div class="section"><h3>5、圖解說明</h3><div class="svgbox"><svg class="list-svg" data-list="A,D,U,X,Y" data-title="Head → A → D → U → X → Y → null" viewBox="0 0 960 180"></svg></div></div>
+      <div class="section"><h3>6、動畫說明</h3><div class="anim"><div class="svgbox"><svg id="anim-q3" viewBox="0 0 820 200"></svg><div class="anim-controls"><button class="btn small" onclick="prevStep('q3')">上一步</button><button class="btn small green" onclick="nextStep('q3')">下一步</button><button class="btn small secondary" onclick="resetStep('q3')">重播</button></div></div><div class="anim-text" id="text-q3"></div></div></div>
+      <div class="section"><h3>7、完整答案</h3><div class="answer">Head → A → D → U → X → Y → null</div></div>
+      <div class="section"><h3>8、考試容易錯的地方</h3><div class="mistake">最後一個節點 Y 一定要畫出指向 null，不可以讓最後節點空白不標示。</div></div>
+    </div>
+  </details>
+
+  <!-- Q4 -->
+  <details class="accordion" id="q4">
+    <summary><span class="badge">4</span>Singly Linked List 的插入與刪除</summary>
+    <div class="panel">
+      <div class="section"><h3>1、題目原文</h3><div class="en">Given a singly linked list:<br>A → D → U → X → Y → null<br>a. Insert T between D and U.<br>b. Delete X from the list.<br>Please draw the linked list after each operation.</div></div>
+      <div class="section"><h3>2、題目中文翻譯</h3><div class="zh">給定單向鏈結串列 A → D → U → X → Y → null。請先將 T 插入 D 與 U 之間，再從串列中刪除 X，並畫出每一步操作後的串列。</div></div>
+      <div class="section"><h3>3、題目核心觀念</h3><p>這題考 linked list 最重要的 pointer 修改。插入時要讓新節點先接到後方節點，再讓前方節點接到新節點。刪除時要讓前一個節點跳過被刪除節點。</p></div>
+      <div class="section"><h3>4、解題步驟</h3><ol class="steps"><li>原串列：A → D → U → X → Y → null。</li><li>插入 T：令 T.next = U，再令 D.next = T。</li><li>插入後：A → D → T → U → X → Y → null。</li><li>刪除 X：令 U.next = Y，X 不再被串列連到。</li><li>刪除後：A → D → T → U → Y → null。</li></ol></div>
+      <div class="section"><h3>5、圖解說明</h3><div class="svgbox"><svg class="list-svg" data-list="A,D,T,U,Y" data-title="最後結果：Head → A → D → T → U → Y → null" viewBox="0 0 960 180"></svg></div></div>
+      <div class="section"><h3>6、動畫說明</h3><div class="anim"><div class="svgbox"><svg id="anim-q4" viewBox="0 0 900 260"></svg><div class="anim-controls"><button class="btn small" onclick="prevStep('q4')">上一步</button><button class="btn small green" onclick="nextStep('q4')">下一步</button><button class="btn small secondary" onclick="resetStep('q4')">重播</button></div></div><div class="anim-text" id="text-q4"></div></div></div>
+      <div class="section"><h3>7、完整答案</h3><div class="answer">插入 T 後：A → D → T → U → X → Y → null<br>刪除 X 後：A → D → T → U → Y → null</div></div>
+      <div class="section"><h3>8、考試容易錯的地方</h3><div class="mistake">插入時 pointer 順序不能反。若先寫 D.next = T，再沒有保存 U 的位置，就可能遺失後半段串列。刪除時也不能只把 X 擦掉，要畫出 U.next 改指向 Y。</div></div>
+    </div>
+  </details>
+
+  <!-- Q5 -->
+  <details class="accordion" id="q5">
+    <summary><span class="badge">5</span>Singly Linked List 的 Java 實作</summary>
+    <div class="panel">
+      <div class="section"><h3>1、題目原文</h3><div class="en">Write a Java method to insert an integer x into a sorted singly linked list. The method has a parameter indicating the head of the linked list.</div></div>
+      <div class="section"><h3>2、題目中文翻譯</h3><div class="zh">請寫一個 Java 方法，將整數 x 插入已排序的單向鏈結串列中。方法需要有一個參數表示 linked list 的 head。</div></div>
+      <div class="section"><h3>3、題目核心觀念</h3><p>這題考 sorted linked list 的插入。要處理三種情況：空串列、插入最前面、插入中間或最後。</p></div>
+      <div class="section"><h3>4、解題步驟</h3><ol class="steps"><li>先建立新節點 node。</li><li>如果 head 是 null，或 x 比 head.data 小，代表要插在最前面。</li><li>否則用 current 從 head 開始往後找。</li><li>找到第一個 current.next.data 不小於 x 的位置。</li><li>把新節點接在 current 與 current.next 之間。</li><li>回傳 head。</li></ol></div>
+      <div class="section"><h3>5、圖解說明</h3><div class="svgbox"><svg viewBox="0 0 960 240">
+        <text x="30" y="30" font-size="22" font-weight="700">範例：將 4 插入 1 → 3 → 5 → 7</text>
+        <rect x="40" y="80" width="70" height="42" fill="#dbeafe" stroke="#2563eb"/><text x="68" y="107">1</text>
+        <path d="M110 101 L155 101" stroke="#2563eb" stroke-width="3" marker-end="url(#arr5)"/>
+        <rect x="155" y="80" width="70" height="42" fill="#dbeafe" stroke="#2563eb"/><text x="183" y="107">3</text>
+        <path d="M225 101 L270 101" stroke="#f97316" stroke-width="4" marker-end="url(#arr5o)"/>
+        <rect x="270" y="80" width="70" height="42" fill="#dbeafe" stroke="#2563eb"/><text x="298" y="107">5</text>
+        <path d="M340 101 L385 101" stroke="#2563eb" stroke-width="3" marker-end="url(#arr5)"/>
+        <rect x="385" y="80" width="70" height="42" fill="#dbeafe" stroke="#2563eb"/><text x="413" y="107">7</text>
+        <text x="485" y="107" font-size="18">null</text>
+        <rect x="220" y="165" width="70" height="42" rx="6" fill="#fef9c3" stroke="#ca8a04"/><text x="248" y="192">4</text>
+        <path d="M225 101 C225 145 225 145 245 165" stroke="#ca8a04" fill="none" stroke-width="3" marker-end="url(#arr5y)"/>
+        <path d="M290 186 C340 180 295 130 305 123" stroke="#ca8a04" fill="none" stroke-width="3" marker-end="url(#arr5y)"/>
+        <text x="560" y="95" font-size="18">current 停在 3</text><text x="560" y="125" font-size="18">node.next = current.next</text><text x="560" y="155" font-size="18">current.next = node</text>
+        <defs><marker id="arr5" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2563eb"/></marker><marker id="arr5o" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#f97316"/></marker><marker id="arr5y" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#ca8a04"/></marker></defs>
+      </svg></div></div>
+      <div class="section"><h3>6、完整 Java 程式碼</h3><div class="codebox"><button class="copy-btn" onclick="copyCode(this)">複製程式碼</button><pre><code>public class SortedLinkedListDemo {
+
+    // Node 類別：代表 linked list 裡的一個節點
+    static class Node {
+        int data;       // 存放節點資料
+        Node next;      // 指向下一個節點
+
+        Node(int data) {
+            this.data = data;
+            this.next = null;
+        }
+    }
+
+    // 將 x 插入「已排序」的單向鏈結串列，並回傳新的 head
+    public static Node insert(Node head, int x) {
+        Node node = new Node(x); // 建立新節點
+
+        // 情況一：空串列，或 x 應該插在最前面
+        if (head == null || x &lt; head.data) {
+            node.next = head; // 新節點指向原本的第一個節點
+            return node;      // 新節點成為新的 head
+        }
+
+        // 情況二：尋找插入位置
+        Node current = head;
+
+        // 只要下一個節點存在，而且下一個節點的資料仍小於 x，就繼續往後走
+        while (current.next != null &amp;&amp; current.next.data &lt; x) {
+            current = current.next;
+        }
+
+        // 插入 node 到 current 與 current.next 中間
+        node.next = current.next;
+        current.next = node;
+
+        return head; // head 沒有改變
+    }
+
+    // 印出 linked list
+    public static void printList(Node head) {
+        Node current = head;
+        while (current != null) {
+            System.out.print(current.data + " -&gt; ");
+            current = current.next;
+        }
+        System.out.println("null");
+    }
+
+    public static void main(String[] args) {
+        Node head = null;
+
+        head = insert(head, 5);
+        head = insert(head, 2);
+        head = insert(head, 8);
+        head = insert(head, 4);
+
+        printList(head); // 2 -&gt; 4 -&gt; 5 -&gt; 8 -&gt; null
+    }
+}</code></pre></div></div>
+      <div class="section"><h3>7、程式流程圖</h3><div class="flow"><svg viewBox="0 0 900 620">
+        <defs><marker id="flowArrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#334155"/></marker></defs>
+        <rect x="350" y="20" width="190" height="50" rx="22" fill="#dbeafe" stroke="#2563eb"/><text x="415" y="52">開始 insert</text>
+        <path d="M445 70 L445 105" stroke="#334155" stroke-width="2" marker-end="url(#flowArrow)"/>
+        <rect x="330" y="105" width="230" height="58" fill="#f8fafc" stroke="#64748b"/><text x="365" y="140">建立新節點 node</text>
+        <path d="M445 163 L445 198" stroke="#334155" stroke-width="2" marker-end="url(#flowArrow)"/>
+        <polygon points="445,198 580,265 445,332 310,265" fill="#fff7ed" stroke="#f97316"/><text x="374" y="260">head == null</text><text x="383" y="284">或 x &lt; head.data?</text>
+        <path d="M310 265 L185 265 L185 375" stroke="#334155" stroke-width="2" marker-end="url(#flowArrow)"/><text x="230" y="250">是</text>
+        <rect x="85" y="375" width="200" height="58" fill="#ecfdf5" stroke="#10b981"/><text x="112" y="410">node.next = head</text>
+        <path d="M185 433 L185 470" stroke="#334155" stroke-width="2" marker-end="url(#flowArrow)"/>
+        <rect x="85" y="470" width="200" height="58" fill="#ecfdf5" stroke="#10b981"/><text x="125" y="505">return node</text>
+        <path d="M445 332 L445 370" stroke="#334155" stroke-width="2" marker-end="url(#flowArrow)"/><text x="455" y="355">否</text>
+        <rect x="330" y="370" width="230" height="58" fill="#f8fafc" stroke="#64748b"/><text x="365" y="405">current = head</text>
+        <path d="M445 428 L445 460" stroke="#334155" stroke-width="2" marker-end="url(#flowArrow)"/>
+        <polygon points="445,460 610,530 445,600 280,530" fill="#fff7ed" stroke="#f97316"/><text x="333" y="526">current.next != null</text><text x="360" y="550">且 next.data &lt; x?</text>
+        <path d="M610 530 L735 530 L735 405 L560 405" stroke="#334155" stroke-width="2" marker-end="url(#flowArrow)"/><text x="640" y="515">是：current 往後</text>
+        <path d="M445 600 L445 605 L720 605 L720 250 L580 250" stroke="#334155" stroke-width="2" opacity=".2"/>
+        <path d="M280 530 L180 530 L180 570" stroke="#334155" stroke-width="2" marker-end="url(#flowArrow)"/><text x="215" y="515">否</text>
+        <rect x="80" y="570" width="215" height="38" fill="#ecfdf5" stroke="#10b981"/><text x="98" y="596">接指標並 return head</text>
+      </svg></div></div>
+      <div class="section"><h3>8、程式流程說明與函式說明</h3><p><b>insert(Node head, int x)</b>：head 是原本串列開頭，x 是要插入的數字，回傳值是插入後的 head。若插在最前面，head 會改變；若插在中間或最後，head 不變。</p><p><b>時間複雜度：</b>最壞情況要走完整個串列，所以是 O(n)。</p></div>
+      <div class="section"><h3>9、執行結果</h3><div class="answer"><pre style="padding:12px;background:#064e3b;color:#dcfce7;border-radius:10px">2 -> 4 -> 5 -> 8 -> null</pre></div></div>
+      <div class="section"><h3>10、考試容易錯的地方</h3><div class="mistake">忘記處理插入 head 前面的情況，是這題最常見錯誤。另外，指標順序要先設 node.next，再改 current.next。</div></div>
+    </div>
+  </details>
+
+  <!-- Q6 -->
+  <details class="accordion" id="q6">
+    <summary><span class="badge">6</span>Polynomial 多項式表示法</summary>
+    <div class="panel">
+      <div class="section"><h3>1、題目原文</h3><div class="en">Represent the following polynomial by using a linked list:<br>A(x) = 9x^20 - x^10 + 12<br>Each node should contain coefficient, exponent, and link field.</div></div>
+      <div class="section"><h3>2、題目中文翻譯</h3><div class="zh">請使用 linked list 表示多項式 A(x) = 9x²⁰ - x¹⁰ + 12。每個節點必須包含係數 coefficient、指數 exponent 與 link 欄位。</div></div>
+      <div class="section"><h3>3、題目核心觀念</h3><p>這題考多項式的 linked list 表示法。每一個非零項是一個節點，節點中存放 coef 與 exp，再用 link 串起來。</p></div>
+      <div class="section"><h3>4、解題步驟</h3><ol class="steps"><li>找出所有非零項：9x²⁰、-x¹⁰、12。</li><li>把 -x¹⁰ 寫成 -1x¹⁰，因此 coefficient 是 -1。</li><li>常數 12 可視為 12x⁰，因此 exponent 是 0。</li><li>依指數由大到小串接節點。</li></ol></div>
+      <div class="section"><h3>5、圖解說明</h3><div class="svgbox"><svg viewBox="0 0 980 190">
+        <text x="30" y="32" font-size="22" font-weight="700">A(x) = 9x²⁰ - x¹⁰ + 12</text>
+        <text x="40" y="100" font-size="18">Head</text><path d="M90 95 L130 95" stroke="#2563eb" stroke-width="3" marker-end="url(#arr6)"/>
+        <g transform="translate(130,70)"><rect width="150" height="55" fill="#dbeafe" stroke="#2563eb"/><line x1="55" y1="0" x2="55" y2="55" stroke="#2563eb"/><line x1="105" y1="0" x2="105" y2="55" stroke="#2563eb"/><text x="18" y="35">9</text><text x="70" y="35">20</text><text x="120" y="35">•</text><text x="8" y="75">coef</text><text x="62" y="75">exp</text><text x="112" y="75">link</text></g>
+        <path d="M280 98 L335 98" stroke="#2563eb" stroke-width="3" marker-end="url(#arr6)"/>
+        <g transform="translate(335,70)"><rect width="150" height="55" fill="#dbeafe" stroke="#2563eb"/><line x1="55" y1="0" x2="55" y2="55" stroke="#2563eb"/><line x1="105" y1="0" x2="105" y2="55" stroke="#2563eb"/><text x="14" y="35">-1</text><text x="70" y="35">10</text><text x="120" y="35">•</text></g>
+        <path d="M485 98 L540 98" stroke="#2563eb" stroke-width="3" marker-end="url(#arr6)"/>
+        <g transform="translate(540,70)"><rect width="150" height="55" fill="#dbeafe" stroke="#2563eb"/><line x1="55" y1="0" x2="55" y2="55" stroke="#2563eb"/><line x1="105" y1="0" x2="105" y2="55" stroke="#2563eb"/><text x="15" y="35">12</text><text x="75" y="35">0</text><text x="120" y="35">/</text></g>
+        <text x="720" y="104" font-size="20">null</text>
+        <defs><marker id="arr6" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2563eb"/></marker></defs>
+      </svg></div></div>
+      <div class="section"><h3>6、完整答案</h3><div class="answer">Head → [coef=9, exp=20] → [coef=-1, exp=10] → [coef=12, exp=0] → null</div></div>
+      <div class="section"><h3>7、考試容易錯的地方</h3><div class="mistake">常數項 12 的 exponent 是 0，不是空白。-x¹⁰ 的 coefficient 是 -1，不是只寫 x。</div></div>
+    </div>
+  </details>
+
+  <!-- Q7 -->
+  <details class="accordion" id="q7">
+    <summary><span class="badge">7</span>Polynomial Addition 多項式相加</summary>
+    <div class="panel">
+      <div class="section"><h3>1、題目原文</h3><div class="en">Given two polynomials represented by linked lists:<br>A(x) = 9x^20 - x^10 + 12<br>B(x) = 3x^10 - 7x^2 + 2x - 1<br>Add A(x) and B(x), and show the resulting linked list.</div></div>
+      <div class="section"><h3>2、題目中文翻譯</h3><div class="zh">給定兩個用 linked list 表示的多項式，請計算 A(x) + B(x)，並畫出結果 linked list。</div></div>
+      <div class="section"><h3>3、題目核心觀念</h3><p>這題考多項式相加。若兩個節點 exponent 相同，coefficient 相加；若 exponent 不同，就把較高次方的項目先放入結果。</p></div>
+      <div class="section"><h3>4、解題步驟</h3><ol class="steps"><li>A 的項：9x²⁰、-1x¹⁰、12x⁰。</li><li>B 的項：3x¹⁰、-7x²、2x¹、-1x⁰。</li><li>9x²⁰ 沒有同類項，保留。</li><li>-1x¹⁰ + 3x¹⁰ = 2x¹⁰。</li><li>-7x² 沒有同類項，保留。</li><li>2x¹ 沒有同類項，保留。</li><li>12x⁰ + (-1x⁰) = 11x⁰。</li></ol></div>
+      <div class="section"><h3>5、圖解說明</h3><div class="svgbox"><svg viewBox="0 0 980 300">
+        <text x="30" y="32" font-size="22" font-weight="700">多項式相加結果</text>
+        <text x="40" y="80" font-size="18">A: [9,20] → [-1,10] → [12,0]</text>
+        <text x="40" y="112" font-size="18">B: [3,10] → [-7,2] → [2,1] → [-1,0]</text>
+        <text x="40" y="160" font-size="18" fill="#b45309">相同 exponent：10 與 0 需要合併係數</text>
+        <text x="40" y="210" font-size="18">C: </text>
+        <g transform="translate(80,185)"><rect width="120" height="44" fill="#dcfce7" stroke="#16a34a"/><text x="25" y="28">9,20</text></g><path d="M200 207 L245 207" stroke="#16a34a" stroke-width="3" marker-end="url(#arr7)"/>
+        <g transform="translate(245,185)"><rect width="120" height="44" fill="#dcfce7" stroke="#16a34a"/><text x="25" y="28">2,10</text></g><path d="M365 207 L410 207" stroke="#16a34a" stroke-width="3" marker-end="url(#arr7)"/>
+        <g transform="translate(410,185)"><rect width="120" height="44" fill="#dcfce7" stroke="#16a34a"/><text x="25" y="28">-7,2</text></g><path d="M530 207 L575 207" stroke="#16a34a" stroke-width="3" marker-end="url(#arr7)"/>
+        <g transform="translate(575,185)"><rect width="120" height="44" fill="#dcfce7" stroke="#16a34a"/><text x="25" y="28">2,1</text></g><path d="M695 207 L740 207" stroke="#16a34a" stroke-width="3" marker-end="url(#arr7)"/>
+        <g transform="translate(740,185)"><rect width="120" height="44" fill="#dcfce7" stroke="#16a34a"/><text x="25" y="28">11,0</text></g><text x="880" y="213" font-size="18">null</text>
+        <defs><marker id="arr7" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/></marker></defs>
+      </svg></div></div>
+      <div class="section"><h3>6、動畫說明</h3><div class="anim"><div class="svgbox"><svg id="anim-q7" viewBox="0 0 900 280"></svg><div class="anim-controls"><button class="btn small" onclick="prevStep('q7')">上一步</button><button class="btn small green" onclick="nextStep('q7')">下一步</button><button class="btn small secondary" onclick="resetStep('q7')">重播</button></div></div><div class="anim-text" id="text-q7"></div></div></div>
+      <div class="section"><h3>7、完整答案</h3><div class="answer">A(x)+B(x)=9x²⁰+2x¹⁰-7x²+2x+11<br>結果 linked list：Head → [9,20] → [2,10] → [-7,2] → [2,1] → [11,0] → null</div></div>
+      <div class="section"><h3>8、考試容易錯的地方</h3><div class="mistake">只有 exponent 相同的項目才能合併，不能把 coefficient 相同或相近的項目亂合併。常數項也是 exponent 0，必須和另一個常數項相加。</div></div>
+    </div>
+  </details>
+
+  <!-- Q8 -->
+  <details class="accordion" id="q8">
+    <summary><span class="badge">8</span>Circularly Linked List 環狀鏈結串列</summary>
+    <div class="panel">
+      <div class="section"><h3>1、題目原文</h3><div class="en">What is the difference between a singly linked list and a circularly linked list? Draw an example with nodes A, D, U, X, Y.</div></div>
+      <div class="section"><h3>2、題目中文翻譯</h3><div class="zh">請說明單向鏈結串列與環狀鏈結串列的差異，並用 A、D、U、X、Y 畫出例子。</div></div>
+      <div class="section"><h3>3、題目核心觀念</h3><p>這題考最後一個節點的 link 指向哪裡。singly linked list 的最後節點指向 null；circularly linked list 的最後節點指回第一個節點或 head。</p></div>
+      <div class="section"><h3>4、解題步驟</h3><ol class="steps"><li>畫出一般單向串列，最後 Y.next = null。</li><li>畫出環狀串列，最後 Y.next 指回 A。</li><li>比較兩者的結束條件：一個遇到 null 停止，一個需要回到 head 才停止。</li></ol></div>
+      <div class="section"><h3>5、圖解說明</h3><div class="svgbox"><svg viewBox="0 0 980 360">
+        <text x="30" y="35" font-size="22" font-weight="700">Singly Linked List</text>
+        <rect x="45" y="70" width="70" height="42" fill="#dbeafe" stroke="#2563eb"/><text x="73" y="97">A</text><path d="M115 91 L160 91" stroke="#2563eb" stroke-width="3" marker-end="url(#arr8b)"/>
+        <rect x="160" y="70" width="70" height="42" fill="#dbeafe" stroke="#2563eb"/><text x="188" y="97">D</text><path d="M230 91 L275 91" stroke="#2563eb" stroke-width="3" marker-end="url(#arr8b)"/>
+        <rect x="275" y="70" width="70" height="42" fill="#dbeafe" stroke="#2563eb"/><text x="303" y="97">U</text><path d="M345 91 L390 91" stroke="#2563eb" stroke-width="3" marker-end="url(#arr8b)"/>
+        <rect x="390" y="70" width="70" height="42" fill="#dbeafe" stroke="#2563eb"/><text x="418" y="97">X</text><path d="M460 91 L505 91" stroke="#2563eb" stroke-width="3" marker-end="url(#arr8b)"/>
+        <rect x="505" y="70" width="70" height="42" fill="#dbeafe" stroke="#2563eb"/><text x="533" y="97">Y</text><text x="610" y="98">null</text>
+
+        <text x="30" y="205" font-size="22" font-weight="700">Circularly Linked List</text>
+        <rect x="45" y="240" width="70" height="42" fill="#dcfce7" stroke="#16a34a"/><text x="73" y="267">A</text><path d="M115 261 L160 261" stroke="#16a34a" stroke-width="3" marker-end="url(#arr8g)"/>
+        <rect x="160" y="240" width="70" height="42" fill="#dcfce7" stroke="#16a34a"/><text x="188" y="267">D</text><path d="M230 261 L275 261" stroke="#16a34a" stroke-width="3" marker-end="url(#arr8g)"/>
+        <rect x="275" y="240" width="70" height="42" fill="#dcfce7" stroke="#16a34a"/><text x="303" y="267">U</text><path d="M345 261 L390 261" stroke="#16a34a" stroke-width="3" marker-end="url(#arr8g)"/>
+        <rect x="390" y="240" width="70" height="42" fill="#dcfce7" stroke="#16a34a"/><text x="418" y="267">X</text><path d="M460 261 L505 261" stroke="#16a34a" stroke-width="3" marker-end="url(#arr8g)"/>
+        <rect x="505" y="240" width="70" height="42" fill="#dcfce7" stroke="#16a34a"/><text x="533" y="267">Y</text>
+        <path d="M575 261 C690 330 5 330 45 261" fill="none" stroke="#16a34a" stroke-width="3" marker-end="url(#arr8g)"/>
+        <text x="310" y="335" font-size="18" fill="#166534">最後一個節點 Y 指回 A，不是 null</text>
+        <defs><marker id="arr8b" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2563eb"/></marker><marker id="arr8g" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/></marker></defs>
+      </svg></div></div>
+      <div class="section"><h3>6、完整答案</h3><div class="answer">Singly linked list：A → D → U → X → Y → null。Circularly linked list：A → D → U → X → Y，且 Y.next 指回 A。</div></div>
+      <div class="section"><h3>7、考試容易錯的地方</h3><div class="mistake">環狀串列不能用 current != null 當唯一停止條件，否則可能無限迴圈。通常要檢查是否回到 head。</div></div>
+    </div>
+  </details>
+
+  <!-- Q9 -->
+  <details class="accordion" id="q9">
+    <summary><span class="badge">9</span>Doubly Linked List 雙向鏈結串列</summary>
+    <div class="panel">
+      <div class="section"><h3>1、題目原文</h3><div class="en">Explain why deletion is more efficient in a doubly linked list than in a singly linked list. Please draw a doubly linked list with nodes A, C, E.</div></div>
+      <div class="section"><h3>2、題目中文翻譯</h3><div class="zh">請解釋為什麼在 doubly linked list 中刪除節點比 singly linked list 更有效率，並畫出包含 A、C、E 的雙向鏈結串列。</div></div>
+      <div class="section"><h3>3、題目核心觀念</h3><p>雙向鏈結串列每個節點有 left link 與 right link，所以可以往前也可以往後。刪除某個已知節點時，可以直接透過 node.llink 找到前一個節點，不必從 head 重新找。</p></div>
+      <div class="section"><h3>4、解題步驟</h3><ol class="steps"><li>畫出 null ← A ⇄ C ⇄ E → null。</li><li>說明 singly linked list 只有 next，要刪除 C 時常需要找到 C 的前一個節點 A。</li><li>doubly linked list 的 C 有 llink 指向 A、rlink 指向 E。</li><li>刪除 C 時，只要 A.rlink = E，E.llink = A。</li></ol></div>
+      <div class="section"><h3>5、圖解說明</h3><div class="svgbox"><svg viewBox="0 0 960 250">
+        <text x="30" y="35" font-size="22" font-weight="700">Doubly Linked List：null ← A ⇄ C ⇄ E → null</text>
+        <text x="35" y="122">null</text>
+        <g transform="translate(100,85)"><rect width="120" height="55" fill="#e0f2fe" stroke="#0284c7"/><line x1="35" y1="0" x2="35" y2="55" stroke="#0284c7"/><line x1="85" y1="0" x2="85" y2="55" stroke="#0284c7"/><text x="10" y="35">/</text><text x="55" y="35">A</text><text x="98" y="35">•</text></g>
+        <path d="M220 105 L280 105" stroke="#0284c7" stroke-width="3" marker-end="url(#arr9)"/><path d="M280 122 L220 122" stroke="#0284c7" stroke-width="3" marker-end="url(#arr9)"/>
+        <g transform="translate(280,85)"><rect width="120" height="55" fill="#fee2e2" stroke="#dc2626"/><line x1="35" y1="0" x2="35" y2="55" stroke="#dc2626"/><line x1="85" y1="0" x2="85" y2="55" stroke="#dc2626"/><text x="10" y="35">•</text><text x="55" y="35">C</text><text x="98" y="35">•</text></g>
+        <path d="M400 105 L460 105" stroke="#0284c7" stroke-width="3" marker-end="url(#arr9)"/><path d="M460 122 L400 122" stroke="#0284c7" stroke-width="3" marker-end="url(#arr9)"/>
+        <g transform="translate(460,85)"><rect width="120" height="55" fill="#e0f2fe" stroke="#0284c7"/><line x1="35" y1="0" x2="35" y2="55" stroke="#0284c7"/><line x1="85" y1="0" x2="85" y2="55" stroke="#0284c7"/><text x="10" y="35">•</text><text x="55" y="35">E</text><text x="98" y="35">/</text></g>
+        <text x="620" y="122">null</text>
+        <path d="M185 165 C280 220 420 220 520 165" fill="none" stroke="#16a34a" stroke-width="4" marker-end="url(#arr9g)"/>
+        <text x="260" y="230" font-size="18" fill="#166534">刪除 C 後：A.rlink = E，E.llink = A</text>
+        <defs><marker id="arr9" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#0284c7"/></marker><marker id="arr9g" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/></marker></defs>
+      </svg></div></div>
+      <div class="section"><h3>6、完整答案</h3><div class="answer">Doubly linked list 的每個節點有前後兩個連結，因此刪除某個節點時，可以直接透過該節點的 llink 找到前一個節點，透過 rlink 找到下一個節點，再把兩者接起來。若刪除 C，則 A.rlink = E，E.llink = A。</div></div>
+      <div class="section"><h3>7、考試容易錯的地方</h3><div class="mistake">不要只改右邊的 link。雙向鏈結串列刪除時通常要改兩個方向：前一個節點的 rlink，以及下一個節點的 llink。</div></div>
+    </div>
+  </details>
+
+  <!-- Q10 -->
+  <details class="accordion" id="q10">
+    <summary><span class="badge">10</span>Linked List 的 C 語言實作</summary>
+    <div class="panel">
+      <div class="section"><h3>1、題目原文</h3><div class="en">Write a C function to delete an integer delData from a sorted singly linked list. The function has a parameter indicating the head of the linked list.</div></div>
+      <div class="section"><h3>2、題目中文翻譯</h3><div class="zh">請寫一個 C 函式，從已排序的單向鏈結串列中刪除整數 delData。函式需要有一個參數表示 linked list 的 head。</div></div>
+      <div class="section"><h3>3、題目核心觀念</h3><p>這題考 C 語言 linked list 刪除節點，包含 struct Node、指標、二級指標、prev/curr 搜尋、刪除 head、刪除中間節點與 free 記憶體。</p></div>
+      <div class="section"><h3>4、解題步驟</h3><ol class="steps"><li>先檢查串列是否為空。</li><li>用 curr 指向目前節點，prev 記錄前一個節點。</li><li>一路尋找 curr->data 是否等於 delData。</li><li>如果找不到，印出不在串列中。</li><li>如果刪除的是 head，更新 *head = curr->next。</li><li>如果刪除的是中間或最後節點，令 prev->next = curr->next。</li><li>最後 free(curr) 釋放記憶體。</li></ol></div>
+      <div class="section"><h3>5、圖解說明</h3><div class="svgbox"><svg viewBox="0 0 960 240">
+        <text x="30" y="35" font-size="22" font-weight="700">刪除 5：1 → 3 → 5 → 7 → null</text>
+        <rect x="60" y="95" width="70" height="42" fill="#dbeafe" stroke="#2563eb"/><text x="88" y="122">1</text><path d="M130 116 L180 116" stroke="#2563eb" stroke-width="3" marker-end="url(#arr10)"/>
+        <rect x="180" y="95" width="70" height="42" fill="#dbeafe" stroke="#2563eb"/><text x="208" y="122">3</text><path d="M250 116 L300 116" stroke="#ef4444" stroke-width="4" marker-end="url(#arr10r)"/>
+        <rect x="300" y="95" width="70" height="42" fill="#fee2e2" stroke="#ef4444"/><text x="328" y="122">5</text><path d="M370 116 L420 116" stroke="#ef4444" stroke-width="4" marker-end="url(#arr10r)"/>
+        <rect x="420" y="95" width="70" height="42" fill="#dbeafe" stroke="#2563eb"/><text x="448" y="122">7</text><text x="525" y="122">null</text>
+        <path d="M215 152 C260 210 420 210 455 152" fill="none" stroke="#16a34a" stroke-width="4" marker-end="url(#arr10g)"/>
+        <text x="280" y="215" font-size="18" fill="#166534">prev->next = curr->next</text>
+        <text x="185" y="75" font-size="16">prev</text><text x="310" y="75" font-size="16" fill="#b91c1c">curr 要刪除</text>
+        <defs><marker id="arr10" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2563eb"/></marker><marker id="arr10r" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#ef4444"/></marker><marker id="arr10g" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/></marker></defs>
+      </svg></div></div>
+      <div class="section"><h3>6、完整 C 程式碼</h3><div class="codebox"><button class="copy-btn" onclick="copyCode(this)">複製程式碼</button><pre><code>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+// Node 結構：代表 linked list 的一個節點
+struct Node {
+    int data;           // 節點資料
+    struct Node *next;  // 指向下一個節點
+};
+
+// 建立新節點
+struct Node* createNode(int data) {
+    struct Node *node = (struct Node*)malloc(sizeof(struct Node));
+    node-&gt;data = data;
+    node-&gt;next = NULL;
+    return node;
+}
+
+// 將資料插入串列最後，方便測試
+void pushBack(struct Node **head, int data) {
+    struct Node *node = createNode(data);
+
+    if (*head == NULL) {
+        *head = node;
+        return;
+    }
+
+    struct Node *curr = *head;
+    while (curr-&gt;next != NULL) {
+        curr = curr-&gt;next;
+    }
+    curr-&gt;next = node;
+}
+
+// 從 linked list 中刪除 delData
+void deleteNode(struct Node **head, int delData) {
+    struct Node *curr = *head;  // curr 指向目前檢查的節點
+    struct Node *prev = NULL;   // prev 指向 curr 的前一個節點
+
+    // 情況一：空串列
+    if (*head == NULL) {
+        printf("Empty\\n");
+        return;
+    }
+
+    // 尋找要刪除的節點
+    while (curr != NULL &amp;&amp; curr-&gt;data != delData) {
+        prev = curr;
+        curr = curr-&gt;next;
+    }
+
+    // 情況二：找不到 delData
+    if (curr == NULL) {
+        printf("%d is not in the list!\\n", delData);
+        return;
+    }
+
+    // 情況三：要刪除的是第一個節點 head
+    if (prev == NULL) {
+        *head = curr-&gt;next;
+    }
+    // 情況四：刪除中間或最後節點
+    else {
+        prev-&gt;next = curr-&gt;next;
+    }
+
+    // 釋放被刪除節點的記憶體
+    free(curr);
+}
+
+// 印出 linked list
+void printList(struct Node *head) {
+    struct Node *curr = head;
+    while (curr != NULL) {
+        printf("%d -&gt; ", curr-&gt;data);
+        curr = curr-&gt;next;
+    }
+    printf("NULL\\n");
+}
+
+int main(void) {
+    struct Node *head = NULL;
+
+    pushBack(&amp;head, 1);
+    pushBack(&amp;head, 3);
+    pushBack(&amp;head, 5);
+    pushBack(&amp;head, 7);
+
+    printList(head);
+
+    deleteNode(&amp;head, 5);
+    printList(head);
+
+    deleteNode(&amp;head, 1);
+    printList(head);
+
+    deleteNode(&amp;head, 9);
+
+    return 0;
+}</code></pre></div></div>
+      <div class="section"><h3>7、程式流程圖</h3><div class="flow"><svg viewBox="0 0 920 700">
+        <defs><marker id="flowArrow10" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#334155"/></marker></defs>
+        <rect x="360" y="20" width="190" height="50" rx="22" fill="#dbeafe" stroke="#2563eb"/><text x="405" y="52">開始 deleteNode</text>
+        <path d="M455 70 L455 105" stroke="#334155" stroke-width="2" marker-end="url(#flowArrow10)"/>
+        <rect x="330" y="105" width="250" height="58" fill="#f8fafc" stroke="#64748b"/><text x="360" y="140">curr=*head, prev=NULL</text>
+        <path d="M455 163 L455 200" stroke="#334155" stroke-width="2" marker-end="url(#flowArrow10)"/>
+        <polygon points="455,200 590,265 455,330 320,265" fill="#fff7ed" stroke="#f97316"/><text x="405" y="272">*head == NULL?</text>
+        <path d="M320 265 L190 265 L190 360" stroke="#334155" stroke-width="2" marker-end="url(#flowArrow10)"/><text x="245" y="250">是</text>
+        <rect x="90" y="360" width="200" height="58" fill="#fee2e2" stroke="#ef4444"/><text x="135" y="395">印出 Empty</text>
+        <path d="M455 330 L455 370" stroke="#334155" stroke-width="2" marker-end="url(#flowArrow10)"/><text x="465" y="350">否</text>
+        <polygon points="455,370 630,445 455,520 280,445" fill="#fff7ed" stroke="#f97316"/><text x="350" y="440">curr != NULL 且</text><text x="356" y="464">curr->data != delData?</text>
+        <path d="M630 445 L760 445 L760 375 L580 375" stroke="#334155" stroke-width="2" marker-end="url(#flowArrow10)"/><text x="658" y="430">是：往後找</text>
+        <path d="M455 520 L455 555" stroke="#334155" stroke-width="2" marker-end="url(#flowArrow10)"/><text x="465" y="540">否</text>
+        <polygon points="455,555 585,615 455,675 325,615" fill="#fff7ed" stroke="#f97316"/><text x="410" y="622">curr == NULL?</text>
+        <path d="M325 615 L190 615" stroke="#334155" stroke-width="2" marker-end="url(#flowArrow10)"/><text x="255" y="600">是：找不到</text>
+        <path d="M585 615 L740 615" stroke="#334155" stroke-width="2" marker-end="url(#flowArrow10)"/><text x="630" y="600">否：接指標、free</text>
+        <rect x="740" y="585" width="150" height="58" fill="#ecfdf5" stroke="#10b981"/><text x="760" y="620">刪除並結束</text>
+      </svg></div></div>
+      <div class="section"><h3>8、程式流程說明與函式說明</h3><p><b>deleteNode(struct Node **head, int delData)</b>：使用二級指標是為了可以修改原本的 head。如果刪除的是第一個節點，必須讓外部的 head 也跟著改變。</p><p><b>主要變數：</b>curr 是目前檢查的節點；prev 是 curr 的前一個節點；delData 是要刪除的資料。</p><p><b>時間複雜度：</b>最壞情況需要走完整個串列，為 O(n)。</p><p><b>重要語法：</b><span class="kbd">malloc</span> 配置記憶體，<span class="kbd">free</span> 釋放記憶體，<span class="kbd">-&gt;</span> 用於透過指標存取 struct 成員。</p></div>
+      <div class="section"><h3>9、執行結果</h3><div class="answer"><pre style="padding:12px;background:#064e3b;color:#dcfce7;border-radius:10px">1 -> 3 -> 5 -> 7 -> NULL
+1 -> 3 -> 7 -> NULL
+3 -> 7 -> NULL
+9 is not in the list!</pre></div></div>
+      <div class="section"><h3>10、考試容易錯的地方</h3><div class="mistake">最容易錯的是刪除 head 時沒有更新 head。另外，C 語言刪除節點後要 free(curr)，否則會造成 memory leak。</div></div>
+    </div>
+  </details>
+
+  <p class="footer">本頁可直接存成 .html，以瀏覽器開啟使用。建議考前把第 4、5、7、10 題反覆練習。</p>
+</div>
+
+<script>
+function openAll(){document.querySelectorAll('details.accordion').forEach(d=>d.open=true)}
+function closeAll(){document.querySelectorAll('details.accordion').forEach(d=>d.open=false)}
+function copyCode(btn){
+  const code = btn.parentElement.querySelector('code').innerText;
+  navigator.clipboard.writeText(code).then(()=>{
+    const old = btn.textContent; btn.textContent='已複製'; setTimeout(()=>btn.textContent=old,1200);
+  });
+}
+
+function drawList(svg, nodes, title){
+  const ns='http://www.w3.org/2000/svg';
+  svg.innerHTML='';
+  const w=960,h=180; svg.setAttribute('viewBox',`0 0 ${w} ${h}`);
+  const defs=document.createElementNS(ns,'defs');
+  defs.innerHTML='<marker id="larr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2563eb"/></marker>';
+  svg.appendChild(defs);
+  const t=document.createElementNS(ns,'text'); t.setAttribute('x',30);t.setAttribute('y',30);t.setAttribute('font-size',22);t.setAttribute('font-weight',700);t.textContent=title;svg.appendChild(t);
+  const head=document.createElementNS(ns,'text');head.setAttribute('x',35);head.setAttribute('y',100);head.setAttribute('font-size',18);head.textContent='Head';svg.appendChild(head);
+  let x=120,y=70;
+  const p0=document.createElementNS(ns,'path');p0.setAttribute('d',`M80 95 L${x} 95`);p0.setAttribute('stroke','#2563eb');p0.setAttribute('stroke-width','3');p0.setAttribute('marker-end','url(#larr)');svg.appendChild(p0);
+  nodes.forEach((n,i)=>{
+    const g=document.createElementNS(ns,'g');g.setAttribute('transform',`translate(${x+i*130},${y})`);
+    g.innerHTML=`<rect width="82" height="50" fill="#dbeafe" stroke="#2563eb"/><line x1="50" y1="0" x2="50" y2="50" stroke="#2563eb"/><text x="20" y="32" font-size="18">${n}</text><text x="61" y="32" font-size="18">${i===nodes.length-1?'/':'•'}</text>`;
+    svg.appendChild(g);
+    if(i<nodes.length-1){
+      const p=document.createElementNS(ns,'path');p.setAttribute('d',`M${x+i*130+82} ${y+25} L${x+(i+1)*130} ${y+25}`);p.setAttribute('stroke','#2563eb');p.setAttribute('stroke-width','3');p.setAttribute('marker-end','url(#larr)');svg.appendChild(p);
+    }
+  });
+  const nul=document.createElementNS(ns,'text'); nul.setAttribute('x',x+nodes.length*130-35);nul.setAttribute('y',102);nul.setAttribute('font-size',18);nul.textContent='null';svg.appendChild(nul);
+}
+document.querySelectorAll('.list-svg').forEach(svg=>drawList(svg, svg.dataset.list.split(','), svg.dataset.title));
+
+const anims={
+ q1:{i:0,steps:[
+  {nodes:['A','D','U','X'],txt:'步驟 1：array 插入中間時，後方元素通常要移動位置。'},
+  {nodes:['A','D','空','U','X'],txt:'步驟 2：為了插入新資料，必須先騰出空位。'},
+  {nodes:['A','D','T','U','X'],txt:'步驟 3：linked list 不需要搬動資料，只需要修改 pointer。'}
+ ]},
+ q3:{i:0,steps:[
+  {nodes:['A'],txt:'步驟 1：head 指向第一個節點 A。'},
+  {nodes:['A','D'],txt:'步驟 2：A.next 指向 D。'},
+  {nodes:['A','D','U'],txt:'步驟 3：D.next 指向 U。'},
+  {nodes:['A','D','U','X'],txt:'步驟 4：U.next 指向 X。'},
+  {nodes:['A','D','U','X','Y'],txt:'步驟 5：X.next 指向 Y，Y.next 指向 null。'}
+ ]},
+ q4:{i:0,steps:[
+  {nodes:['A','D','U','X','Y'],txt:'原始串列：A → D → U → X → Y → null。'},
+  {nodes:['A','D','T','U','X','Y'],txt:'插入 T：先令 T.next = U，再令 D.next = T。'},
+  {nodes:['A','D','T','U','Y'],txt:'刪除 X：令 U.next = Y，X 被跳過。'}
+ ]},
+ q7:{i:0,steps:[
+  {nodes:['9,20'],txt:'先放入 A 的最高次方項 9x²⁰。'},
+  {nodes:['9,20','2,10'],txt:'-1x¹⁰ 與 3x¹⁰ 指數相同，係數相加得到 2x¹⁰。'},
+  {nodes:['9,20','2,10','-7,2'],txt:'B 的 -7x² 沒有同類項，直接放入結果。'},
+  {nodes:['9,20','2,10','-7,2','2,1'],txt:'B 的 2x 沒有同類項，直接放入結果。'},
+  {nodes:['9,20','2,10','-7,2','2,1','11,0'],txt:'常數項 12 與 -1 相加，得到 11。'}
+ ]}
+};
+function drawAnim(key){
+  const a=anims[key], step=a.steps[a.i], svg=document.getElementById('anim-'+key), text=document.getElementById('text-'+key);
+  drawList(svg, step.nodes, `動畫第 ${a.i+1} / ${a.steps.length} 步`);
+  text.innerHTML=`<h3>目前步驟</h3><p>${step.txt}</p>`;
+}
+function nextStep(key){const a=anims[key]; a.i=(a.i+1)%a.steps.length; drawAnim(key)}
+function prevStep(key){const a=anims[key]; a.i=(a.i-1+a.steps.length)%a.steps.length; drawAnim(key)}
+function resetStep(key){anims[key].i=0; drawAnim(key)}
+Object.keys(anims).forEach(drawAnim);
+</script>
+</body>
+</html>

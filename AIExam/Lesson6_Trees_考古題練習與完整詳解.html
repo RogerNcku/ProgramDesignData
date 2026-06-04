@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 6 Trees 考古題練習與完整詳解</title>
+<style>
+:root {
+  --bg:#f5f7fb; --card:#fff; --ink:#172033; --muted:#5b6475;
+  --main:#2563eb; --main2:#0f766e; --warn:#b45309; --soft:#e8f0ff;
+  --code:#101827; --line:#d8e0ef; --hi:#facc15; --ok:#16a34a;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Noto Sans TC","Microsoft JhengHei",Arial,sans-serif;background:linear-gradient(180deg,#eef4ff,var(--bg));color:var(--ink);line-height:1.75}
+header{padding:36px 22px;background:linear-gradient(135deg,#1d4ed8,#0f766e);color:white}
+header h1{margin:0;font-size:30px}
+header p{max-width:1050px;margin:10px 0 0;color:#e7f2ff}
+.wrap{max-width:1180px;margin:0 auto;padding:22px}
+.toolbar,.toc,.exam-box{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;margin:18px 0;box-shadow:0 8px 20px #1e293b12}
+button{border:0;border-radius:10px;padding:9px 14px;background:var(--main);color:white;cursor:pointer;font-weight:700;margin:4px}
+button.secondary{background:#475569}
+button.ghost{background:#e2e8f0;color:#1e293b}
+button:hover{filter:brightness(0.96)}
+.toc a{display:inline-block;margin:5px 6px;padding:7px 10px;border-radius:999px;background:var(--soft);color:#1d4ed8;text-decoration:none;font-weight:700}
+.accordion{margin:16px 0;border-radius:18px;overflow:hidden;border:1px solid var(--line);background:var(--card);box-shadow:0 10px 22px #1e293b12}
+.acc-head{width:100%;text-align:left;padding:18px 22px;background:#fff;color:var(--ink);display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);font-size:19px}
+.acc-head span:first-child{font-weight:900}
+.acc-body{display:none;padding:22px}
+.accordion.open .acc-body{display:block}
+.tag{display:inline-block;background:#dcfce7;color:#166534;border-radius:999px;padding:2px 9px;margin:2px;font-size:13px;font-weight:800}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media(max-width:850px){.grid{grid-template-columns:1fr}}
+.box{background:#f8fafc;border:1px solid var(--line);border-radius:14px;padding:14px;margin:12px 0}
+.answer{border-left:5px solid var(--ok);background:#f0fdf4}
+.warning{border-left:5px solid var(--warn);background:#fff7ed}
+h2,h3,h4{line-height:1.35}
+h3{margin-top:22px;color:#0f3f7a}
+pre{white-space:pre-wrap;word-break:break-word}
+.code-wrap{position:relative;margin:12px 0}
+.copy-btn{position:absolute;right:10px;top:10px;background:#334155;font-size:13px}
+code,pre.code{font-family:Consolas,"Courier New",monospace}
+pre.code{background:var(--code);color:#dbeafe;padding:48px 16px 16px;border-radius:14px;overflow:auto;line-height:1.55}
+.svgbox{background:white;border:1px solid var(--line);border-radius:14px;padding:8px;margin:10px 0;overflow:auto}
+svg{max-width:100%;height:auto}
+.node circle{fill:#ffffff;stroke:#334155;stroke-width:2}
+.node.active circle{fill:var(--hi);stroke:#b45309;stroke-width:3}
+.node.done circle{fill:#bbf7d0;stroke:#15803d}
+.edge{stroke:#475569;stroke-width:2;fill:none}
+.label{font-size:15px;font-weight:800;text-anchor:middle;dominant-baseline:middle;fill:#172033}
+.small{font-size:13px;fill:#64748b}
+.stepper{display:grid;grid-template-columns:minmax(300px,1fr) 330px;gap:16px;align-items:start}
+@media(max-width:850px){.stepper{grid-template-columns:1fr}}
+.step-text{font-weight:800;background:#fff7ed;border:1px solid #fed7aa;border-radius:12px;padding:12px;color:#7c2d12}
+.array{display:flex;flex-wrap:wrap;gap:4px;margin:8px 0}
+.cell{min-width:38px;text-align:center;border:1px solid #64748b;background:white;border-radius:6px;padding:6px;font-weight:800}
+.cell.active{background:var(--hi)}
+.cell.sorted{background:#bbf7d0}
+.flow svg text{font-size:13px;font-weight:700}
+.kv{display:grid;grid-template-columns:170px 1fr;gap:8px}
+.kv div{padding:8px;border-bottom:1px dashed #cbd5e1}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <h1>Lesson 6 Trees 考古題練習與完整詳解</h1>
+    <p>依照老師考古題風格設計：題目短、任務明確，但解答完整；特別強化 tree、BST、heap、traversal 的圖解與動態步驟。</p>
+  </div>
+</header>
+<main class="wrap">
+  <section class="toolbar">
+    <button onclick="openAll()">全部展開</button>
+    <button class="secondary" onclick="closeAll()">全部收合</button>
+    <button class="ghost" onclick="window.print()">列印 / 另存 PDF</button>
+  </section>
+  <section class="toc">
+    <h2>首頁目錄</h2>
+    <a href="#q1">第1題 樹的基本概念</a><a href="#q2">第2題 樹的名詞</a><a href="#q3">第3題 樹的應用</a><a href="#q4">第4題 樹的表示法</a><a href="#q5">第5題 二元樹公式</a><a href="#q6">第6題 陣列表示法</a><a href="#q7">第7題 走訪</a><a href="#q8">第8題 BST 建立</a><a href="#q9">第9題 BST 搜尋</a><a href="#q10">第10題 Max Heap</a><a href="#q11">第11題 Heap Sort</a><a href="#q12">第12題 C 走訪程式</a>
+  </section>
+  <section class="exam-box">
+    <h2>考試重點整理區</h2>
+    <p>最可能考：<b>Binary Tree Traversal、Build BST、BST Search、Build Max Heap、Heap Sort、Tree Traversal 程式輸出</b>。次重要：tree terminology、array representation、left-child right-sibling。觀念小題：tree definition、applications、binary tree maximum nodes。</p>
+  </section>
+
+
+  <article class="accordion open" id="q1">
+    <button class="acc-head"><span>第 1 題：Trees 樹的基本概念</span><span>＋/－</span></button>
+    <div class="acc-body">
+      <h3>題目原文</h3><div class="box">Define a tree. Please explain the meaning of root and subtree.</div>
+      <h3>中文翻譯</h3><p>請定義什麼是樹，並說明 root（根節點）與 subtree（子樹）的意思。</p>
+      <h3>核心觀念</h3><p><span class="tag">tree</span><span class="tag">root</span><span class="tag">subtree</span><span class="tag">recursive definition</span></p>
+      <h3>圖解說明</h3><div class="svgbox"><svg viewBox="0 0 520 260">
+        <line class="edge" x1="260" y1="45" x2="160" y2="120"/><line class="edge" x1="260" y1="45" x2="360" y2="120"/>
+        <line class="edge" x1="160" y1="120" x2="110" y2="200"/><line class="edge" x1="160" y1="120" x2="210" y2="200"/>
+        <line class="edge" x1="360" y1="120" x2="330" y2="200"/><line class="edge" x1="360" y1="120" x2="410" y2="200"/>
+        <g class="node active"><circle cx="260" cy="45" r="25"/><text class="label" x="260" y="45">A</text></g>
+        <g class="node"><circle cx="160" cy="120" r="24"/><text class="label" x="160" y="120">B</text></g><g class="node"><circle cx="360" cy="120" r="24"/><text class="label" x="360" y="120">C</text></g>
+        <g class="node"><circle cx="110" cy="200" r="22"/><text class="label" x="110" y="200">D</text></g><g class="node"><circle cx="210" cy="200" r="22"/><text class="label" x="210" y="200">E</text></g>
+        <g class="node"><circle cx="330" cy="200" r="22"/><text class="label" x="330" y="200">F</text></g><g class="node"><circle cx="410" cy="200" r="22"/><text class="label" x="410" y="200">G</text></g>
+        <text x="260" y="18" class="small">Root：整棵樹最上方的節點</text><rect x="75" y="90" width="165" height="145" rx="14" fill="none" stroke="#f97316" stroke-width="3"/><text x="155" y="250" class="small">以 B 為 root 的 subtree</text>
+      </svg></div>
+      <h3>動態說明</h3><div class="stepper"><div id="anim-q1" class="svgbox"></div><div><div id="text-q1" class="step-text"></div><button onclick="prevStep('q1')">上一步</button><button onclick="nextStep('q1')">下一步</button><button onclick="replay('q1')">重播</button></div></div>
+      <h3>解題步驟</h3><ol><li>先說 tree 是一種階層式資料結構。</li><li>整棵樹只有一個 root。</li><li>root 底下每個分支本身也可以視為一棵 tree，稱為 subtree。</li></ol>
+      <div class="box answer"><b>完整答案：</b>Tree 是由一個或多個 node 組成的有限集合，其中有一個特殊節點稱為 root，其餘節點可以分成若干個互不相交的集合，每一個集合本身也是一棵 tree，稱為 root 的 subtree。</div>
+      <div class="box warning"><b>考試容易錯：</b>不要把 root 說成「第一個輸入的節點」；root 是樹狀結構最上層的節點。</div>
+    </div>
+  </article>
+
+  <article class="accordion" id="q2">
+    <button class="acc-head"><span>第 2 題：Tree Terminology 樹的專有名詞</span><span>＋/－</span></button>
+    <div class="acc-body">
+      <h3>題目原文</h3><div class="box"><pre>Given the following tree, answer the questions below.
+
+        A
+      / | \
+     B  C  D
+    / \    |
+   E   F   G
+          / \
+         H   I
+
+a. What is the root?
+b. What are the leaves?
+c. What is the degree of node A?
+d. What is the parent of node G?
+e. What are the children of node D?
+f. What is the depth of the tree?</pre></div>
+      <h3>中文翻譯</h3><p>請根據圖中的一般樹，回答根節點、葉節點、節點 degree、parent、children 與 depth。</p>
+      <h3>核心觀念</h3><p><span class="tag">root</span><span class="tag">leaf</span><span class="tag">degree</span><span class="tag">parent</span><span class="tag">children</span><span class="tag">depth</span></p>
+      <h3>圖解與動畫</h3><div class="stepper"><div id="anim-q2" class="svgbox"></div><div><div id="text-q2" class="step-text"></div><button onclick="prevStep('q2')">上一步</button><button onclick="nextStep('q2')">下一步</button><button onclick="replay('q2')">重播</button></div></div>
+      <h3>解題步驟</h3><ol><li>root 是最上方節點，所以是 A。</li><li>leaf 是沒有 child 的節點：C、E、F、H、I。</li><li>degree 是 children 數量，A 有 B、C、D 三個 child，所以 degree(A)=3。</li><li>G 是 D 的 child，所以 parent(G)=D。</li><li>D 的 children 是 G。</li><li>若 root 算第 1 層，最深為 A→D→G→H/I，共 4 層，因此 depth=4。</li></ol>
+      <div class="box answer"><b>完整答案：</b>a. A　b. C, E, F, H, I　c. 3　d. D　e. G　f. 4。</div>
+      <div class="box warning"><b>考試容易錯：</b>leaf 是「沒有小孩」的節點，不是最下面畫得最靠下才算；C 雖然在第 2 層，但它沒有小孩，也是 leaf。</div>
+    </div>
+  </article>
+
+  <article class="accordion" id="q3"><button class="acc-head"><span>第 3 題：Applications of Trees 樹的應用</span><span>＋/－</span></button><div class="acc-body">
+    <h3>題目原文</h3><div class="box">Give three applications of trees in computer science or daily computer systems. Briefly explain each one.</div>
+    <h3>中文翻譯</h3><p>請舉出三個樹狀結構在電腦科學或日常電腦系統中的應用，並簡單說明。</p>
+    <h3>核心觀念</h3><p><span class="tag">applications</span><span class="tag">directory tree</span><span class="tag">decision tree</span><span class="tag">game tree</span></p>
+    <h3>圖解說明</h3><div class="svgbox"><svg viewBox="0 0 900 260">
+      <text x="120" y="30" class="label">檔案目錄樹</text><text x="450" y="30" class="label">Decision Tree</text><text x="740" y="30" class="label">Game Tree</text>
+      <g transform="translate(0,30)"><line class="edge" x1="120" y1="40" x2="70" y2="100"/><line class="edge" x1="120" y1="40" x2="170" y2="100"/><line class="edge" x1="70" y1="100" x2="40" y2="160"/><line class="edge" x1="70" y1="100" x2="100" y2="160"/><g class="node active"><circle cx="120" cy="40" r="24"/><text class="label" x="120" y="40">/</text></g><g class="node"><circle cx="70" cy="100" r="24"/><text class="label" x="70" y="100">home</text></g><g class="node"><circle cx="170" cy="100" r="24"/><text class="label" x="170" y="100">bin</text></g><g class="node"><circle cx="40" cy="160" r="24"/><text class="label" x="40" y="160">hw</text></g><g class="node"><circle cx="100" cy="160" r="24"/><text class="label" x="100" y="160">doc</text></g></g>
+      <g transform="translate(330,30)"><line class="edge" x1="120" y1="40" x2="70" y2="100"/><line class="edge" x1="120" y1="40" x2="170" y2="100"/><g class="node active"><circle cx="120" cy="40" r="27"/><text class="label" x="120" y="40">score?</text></g><g class="node"><circle cx="70" cy="100" r="28"/><text class="label" x="70" y="100">pass</text></g><g class="node"><circle cx="170" cy="100" r="28"/><text class="label" x="170" y="100">fail</text></g></g>
+      <g transform="translate(630,30)"><line class="edge" x1="110" y1="40" x2="60" y2="100"/><line class="edge" x1="110" y1="40" x2="160" y2="100"/><line class="edge" x1="60" y1="100" x2="40" y2="160"/><line class="edge" x1="60" y1="100" x2="90" y2="160"/><g class="node active"><circle cx="110" cy="40" r="24"/><text class="label" x="110" y="40">S</text></g><g class="node"><circle cx="60" cy="100" r="24"/><text class="label" x="60" y="100">M1</text></g><g class="node"><circle cx="160" cy="100" r="24"/><text class="label" x="160" y="100">M2</text></g><g class="node"><circle cx="40" cy="160" r="22"/><text class="label" x="40" y="160">W</text></g><g class="node"><circle cx="90" cy="160" r="22"/><text class="label" x="90" y="160">L</text></g></g>
+    </svg></div>
+    <h3>解題步驟</h3><ol><li>找出樹能表達階層關係的應用。</li><li>說明每個應用中 root、branch、leaf 代表什麼。</li></ol>
+    <div class="box answer"><b>完整答案：</b>檔案目錄結構：root directory 底下有資料夾與檔案。Decision tree：依條件分支做決策。Game tree：表示遊戲中不同走法與結果。</div>
+    <div class="box warning"><b>考試容易錯：</b>不要只列名稱，要簡短說明為什麼它是 tree。</div>
+  </div></article>
+
+  <article class="accordion" id="q4"><button class="acc-head"><span>第 4 題：Representation of Trees 樹的表示法</span><span>＋/－</span></button><div class="acc-body">
+    <h3>題目原文</h3><div class="box"><pre>Convert the following general tree into a left-child right-sibling representation.
+
+        A
+      / | \
+     B  C  D
+    / \    |
+   E   F   G
+
+Please draw the resulting binary-tree-like structure.</pre></div>
+    <h3>中文翻譯</h3><p>請把一般樹轉成 left-child right-sibling 表示法，並畫出轉換後像二元樹的結構。</p>
+    <h3>核心觀念</h3><p><span class="tag">left-child</span><span class="tag">right-sibling</span><span class="tag">tree representation</span></p>
+    <h3>動態圖解</h3><div class="stepper"><div id="anim-q4" class="svgbox"></div><div><div id="text-q4" class="step-text"></div><button onclick="prevStep('q4')">上一步</button><button onclick="nextStep('q4')">下一步</button><button onclick="replay('q4')">重播</button></div></div>
+    <h3>解題步驟</h3><ol><li>每個節點的 left child 指向它的第一個小孩。</li><li>每個節點的 right sibling 指向它右邊最近的兄弟。</li><li>A 的 left child 是 B；B 的 right sibling 是 C；C 的 right sibling 是 D。</li><li>B 的 left child 是 E；E 的 right sibling 是 F；D 的 left child 是 G。</li></ol>
+    <div class="box answer"><b>完整答案：</b>A.left=B，B.right=C，C.right=D，B.left=E，E.right=F，D.left=G。圖中斜下是 left child，水平向右是 right sibling。</div>
+    <div class="box warning"><b>考試容易錯：</b>不要把所有孩子都畫成 left child；只有第一個 child 是 left child，其餘孩子靠 right sibling 串起來。</div>
+  </div></article>
+
+  <article class="accordion" id="q5"><button class="acc-head"><span>第 5 題：Binary Trees 二元樹基本概念</span><span>＋/－</span></button><div class="acc-body">
+    <h3>題目原文</h3><div class="box">For a binary tree with height h, what is the maximum number of nodes? If h = 4, what is the maximum number of nodes?</div>
+    <h3>中文翻譯</h3><p>一棵高度為 h 的二元樹，最多有幾個節點？如果 h=4，最多有幾個節點？</p>
+    <h3>核心觀念</h3><p><span class="tag">binary tree</span><span class="tag">height</span><span class="tag">maximum nodes</span></p>
+    <h3>圖解說明</h3><div class="svgbox"><svg viewBox="0 0 720 280">
+      <text x="360" y="24" class="label">Full Binary Tree 高度 4：每一層都填滿</text>
+      <g id="fullTree"></g>
+      <text x="70" y="260" class="small">第1層：1</text><text x="210" y="260" class="small">第2層：2</text><text x="350" y="260" class="small">第3層：4</text><text x="490" y="260" class="small">第4層：8</text><text x="600" y="260" class="small">總數=15</text>
+    </svg></div>
+    <h3>解題步驟</h3><ol><li>高度 h 的滿二元樹最多節點。</li><li>第 1 層最多 1 個，第 2 層最多 2 個，第 3 層最多 4 個。</li><li>總和是 1+2+4+...+2^(h-1)=2^h-1。</li><li>h=4，最多節點數=2^4-1=15。</li></ol>
+    <div class="box answer"><b>完整答案：</b>Maximum number of nodes = 2<sup>h</sup> − 1；h=4 時為 15。</div>
+    <div class="box warning"><b>考試容易錯：</b>有些教材 root level 從 0 算，有些從 1 算；本題依投影片高度 h 對應最多 2^h−1。</div>
+  </div></article>
+
+  <article class="accordion" id="q6"><button class="acc-head"><span>第 6 題：Binary Tree Representation 二元樹表示法</span><span>＋/－</span></button><div class="acc-body">
+    <h3>題目原文</h3><div class="box">A complete binary tree is stored in an array starting from index 1. For the node at index i, write the array index of its parent, left child, and right child. Then answer the same questions for i = 5.</div>
+    <h3>中文翻譯</h3><p>完全二元樹從 index 1 開始存入陣列。請寫出 index i 的 parent、left child、right child 位置，並計算 i=5 的情況。</p>
+    <h3>核心觀念</h3><p><span class="tag">array representation</span><span class="tag">parent index</span><span class="tag">left child</span><span class="tag">right child</span></p>
+    <h3>圖解說明</h3><div class="svgbox" id="q6svg"></div>
+    <h3>解題步驟</h3><ol><li>從 1 開始存 complete binary tree。</li><li>parent(i)=⌊i/2⌋。</li><li>left child(i)=2i。</li><li>right child(i)=2i+1。</li><li>i=5 時：parent=2，left child=10，right child=11。</li></ol>
+    <div class="box answer"><b>完整答案：</b>Parent=⌊i/2⌋，Left child=2i，Right child=2i+1。當 i=5 時，parent=2，left child=10，right child=11。</div>
+    <div class="box warning"><b>考試容易錯：</b>這組公式是 index 從 1 開始；如果 index 從 0 開始，公式會不同。</div>
+  </div></article>
+
+  <article class="accordion" id="q7"><button class="acc-head"><span>第 7 題：Binary Tree Traversal 二元樹走訪</span><span>＋/－</span></button><div class="acc-body">
+    <h3>題目原文</h3><div class="box"><pre>Given the following binary tree, write its inorder, preorder, and postorder traversal.
+
+        A
+       / \
+      B   C
+     / \   \
+    D   E   F</pre></div>
+    <h3>中文翻譯</h3><p>請寫出這棵二元樹的 inorder、preorder、postorder 走訪結果。</p>
+    <h3>核心觀念</h3><p><span class="tag">inorder LVR</span><span class="tag">preorder VLR</span><span class="tag">postorder LRV</span><span class="tag">recursive traversal</span></p>
+    <h3>走訪動畫</h3><div class="box"><button onclick="setTraversal('in')">Inorder 動畫</button><button onclick="setTraversal('pre')">Preorder 動畫</button><button onclick="setTraversal('post')">Postorder 動畫</button></div>
+    <div class="stepper"><div id="anim-q7" class="svgbox"></div><div><div id="text-q7" class="step-text"></div><button onclick="prevStep('q7')">上一步</button><button onclick="nextStep('q7')">下一步</button><button onclick="replay('q7')">重播</button></div></div>
+    <h3>解題步驟</h3><ol><li>Inorder：左 → 根 → 右，所以 D B E A C F。</li><li>Preorder：根 → 左 → 右，所以 A B D E C F。</li><li>Postorder：左 → 右 → 根，所以 D E B F C A。</li></ol>
+    <div class="box answer"><b>完整答案：</b>Inorder：D B E A C F；Preorder：A B D E C F；Postorder：D E B F C A。</div>
+    <div class="box warning"><b>考試容易錯：</b>Traversal 是針對每一棵子樹遞迴套用規則，不是只看整棵樹第一層。</div>
+  </div></article>
+
+  <article class="accordion" id="q8"><button class="acc-head"><span>第 8 題：Binary Search Tree，BST 建立</span><span>＋/－</span></button><div class="acc-body">
+    <h3>題目原文</h3><div class="box">Build a binary search tree based on the following array: 7, 14, 10, 8, 16, 3, 2, 4, 1. Please draw the final binary search tree.</div>
+    <h3>中文翻譯</h3><p>依照給定順序建立二元搜尋樹，並畫出最後的 BST。</p>
+    <h3>核心觀念</h3><p><span class="tag">BST</span><span class="tag">insertion</span><span class="tag">left smaller</span><span class="tag">right larger</span></p>
+    <h3>BST 插入動畫</h3><div class="stepper"><div id="anim-q8" class="svgbox"></div><div><div id="text-q8" class="step-text"></div><button onclick="prevStep('q8')">上一步</button><button onclick="nextStep('q8')">下一步</button><button onclick="replay('q8')">重播</button></div></div>
+    <h3>解題步驟</h3><ol><li>7 是第一個數字，成為 root。</li><li>14 &gt; 7，放在 7 的右邊。</li><li>10 &gt; 7 且 10 &lt; 14，放在 14 的左邊。</li><li>8 &gt; 7，&lt;14，&lt;10，放在 10 的左邊。</li><li>16 &gt; 7，&gt;14，放在 14 的右邊。</li><li>3 &lt; 7，放左邊；2 &lt;7 &lt;3? 實際是 2&lt;7 且 2&lt;3，放在 3 左邊；4 放在 3 右邊；1 放在 2 左邊。</li></ol>
+    <div class="box answer"><b>完整答案：</b>Root=7；左子樹為 3，其左為 2、右為 4，2 的左為 1；右子樹為 14，其左為 10、右為 16，10 的左為 8。</div>
+    <div class="box warning"><b>考試容易錯：</b>BST 必須依照「輸入順序」一個一個插入，不能先排序後畫平衡樹。</div>
+  </div></article>
+
+  <article class="accordion" id="q9"><button class="acc-head"><span>第 9 題：BST Searching Algorithm 搜尋演算法</span><span>＋/－</span></button><div class="acc-body">
+    <h3>題目原文</h3><div class="box"><pre>Given the following binary search tree, trace the searching path for finding 9 and 15.
+        7
+       / \
+      3   14
+     / \  / \
+    2  4 10 16
+   /     /
+  1     8
+         \
+          9</pre></div>
+    <h3>中文翻譯</h3><p>請追蹤在 BST 中搜尋 9 和 15 的比較路徑。</p>
+    <h3>核心觀念</h3><p><span class="tag">BST search</span><span class="tag">comparison</span><span class="tag">found / not found</span></p>
+    <h3>搜尋動畫</h3><div class="box"><button onclick="setSearchTarget(9)">搜尋 9</button><button onclick="setSearchTarget(15)">搜尋 15</button></div>
+    <div class="stepper"><div id="anim-q9" class="svgbox"></div><div><div id="text-q9" class="step-text"></div><button onclick="prevStep('q9')">上一步</button><button onclick="nextStep('q9')">下一步</button><button onclick="replay('q9')">重播</button></div></div>
+    <h3>解題步驟</h3><ol><li>搜尋 9：9&gt;7 往右；9&lt;14 往左；9&lt;10 往左；9&gt;8 往右；找到 9。</li><li>搜尋 15：15&gt;7 往右；15&gt;14 往右；15&lt;16 往左；左子樹為 null，所以找不到。</li></ol>
+    <div class="box answer"><b>完整答案：</b>Search 9 path：7 → 14 → 10 → 8 → 9，found。Search 15 path：7 → 14 → 16 → null，not found。</div>
+    <div class="box warning"><b>考試容易錯：</b>每一步都要寫比較方向；只寫路徑通常不夠完整。</div>
+  </div></article>
+
+  <article class="accordion" id="q10"><button class="acc-head"><span>第 10 題：Heap 堆積樹</span><span>＋/－</span></button><div class="acc-body">
+    <h3>題目原文</h3><div class="box">Build a max heap based on the following array: 4, 1, 3, 2, 16, 9, 10, 14, 8, 7. Please show the final heap as a tree and as an array.</div>
+    <h3>中文翻譯</h3><p>根據陣列建立 max heap，並用樹狀圖與陣列表示最後結果。</p>
+    <h3>核心觀念</h3><p><span class="tag">max heap</span><span class="tag">complete binary tree</span><span class="tag">heapify</span><span class="tag">array representation</span></p>
+    <h3>Heap 建立動畫</h3><div class="stepper"><div id="anim-q10" class="svgbox"></div><div><div id="text-q10" class="step-text"></div><button onclick="prevStep('q10')">上一步</button><button onclick="nextStep('q10')">下一步</button><button onclick="replay('q10')">重播</button></div></div>
+    <h3>解題步驟</h3><ol><li>先把陣列視為 complete binary tree。</li><li>從最後一個非葉節點開始往前做 heapify。</li><li>每個 parent 要大於等於左右 child。</li><li>若 child 比 parent 大，就交換並繼續往下檢查。</li></ol>
+    <div class="box answer"><b>完整答案：</b>使用 bottom-up heapify 後，max heap array = [16, 14, 10, 8, 7, 9, 3, 2, 4, 1]。</div>
+    <div class="box warning"><b>考試容易錯：</b>Max heap 不是 BST，左邊不一定小於右邊；只要 parent 大於 children 即可。</div>
+  </div></article>
+
+  <article class="accordion" id="q11"><button class="acc-head"><span>第 11 題：Heap Sort 堆積排序</span><span>＋/－</span></button><div class="acc-body">
+    <h3>題目原文</h3><div class="box">Use heap sort to sort the following numbers in ascending order: 4, 1, 3, 2, 16, 9, 10, 14, 8, 7. Please show the major steps of removing the root and rebuilding the heap.</div>
+    <h3>中文翻譯</h3><p>請使用 heap sort 將數字由小到大排序，並顯示移除 root 與重建 heap 的主要步驟。</p>
+    <h3>核心觀念</h3><p><span class="tag">heap sort</span><span class="tag">remove root</span><span class="tag">swap</span><span class="tag">heapify</span><span class="tag">O(n log n)</span></p>
+    <h3>Heap Sort 動畫</h3><div class="stepper"><div id="anim-q11" class="svgbox"></div><div><div id="text-q11" class="step-text"></div><button onclick="prevStep('q11')">上一步</button><button onclick="nextStep('q11')">下一步</button><button onclick="replay('q11')">重播</button></div></div>
+    <h3>解題步驟</h3><ol><li>先建立 max heap。</li><li>將 root 最大值與 heap 最後一個元素交換。</li><li>縮小 heap 範圍，固定右側已排序區。</li><li>對新的 root 做 heapify。</li><li>重複直到排序完成。</li></ol>
+    <div class="box answer"><b>完整答案：</b>排序結果為 [1, 2, 3, 4, 7, 8, 9, 10, 14, 16]。時間複雜度：O(n log n)。</div>
+    <div class="box warning"><b>考試容易錯：</b>升冪 heap sort 通常先建立 max heap；每次取出的最大值會放到陣列右側。</div>
+  </div></article>
+
+  <article class="accordion" id="q12"><button class="acc-head"><span>第 12 題：Tree Traversal in C 程式輸出</span><span>＋/－</span></button><div class="acc-body">
+    <h3>題目原文</h3><div class="box"><pre>Write the output of the following tree traversal program.
+Tree structure:
+        A
+       / \
+      B   C
+     / \   \
+    D   E   F
+
+The program calls:
+inOrder(root);
+postOrder(root);</pre></div>
+    <h3>中文翻譯</h3><p>請根據這棵二元樹，寫出呼叫 inOrder(root) 與 postOrder(root) 的輸出結果，並補充 C 程式。</p>
+    <h3>核心觀念</h3><p><span class="tag">C struct</span><span class="tag">recursive traversal</span><span class="tag">inOrder</span><span class="tag">preOrder</span><span class="tag">postOrder</span></p>
+    <h3>走訪動畫</h3><div class="stepper"><div id="anim-q12" class="svgbox"></div><div><div id="text-q12" class="step-text"></div><button onclick="prevStep('q12')">上一步</button><button onclick="nextStep('q12')">下一步</button><button onclick="replay('q12')">重播</button></div></div>
+    <h3>完整 C 程式碼</h3><div class="code-wrap"><button class="copy-btn" onclick="copyCode('code12')">複製程式碼</button><pre class="code"><code id="code12">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+/* 定義二元樹節點 */
+typedef struct Node {
+    char data;              // 節點資料
+    struct Node *left;      // 左子樹指標
+    struct Node *right;     // 右子樹指標
+} Node;
+
+/* 建立新節點 */
+Node* createNode(char data) {
+    Node* node = (Node*)malloc(sizeof(Node));
+    node-&gt;data = data;
+    node-&gt;left = NULL;
+    node-&gt;right = NULL;
+    return node;
+}
+
+/* 中序走訪：Left → Root → Right */
+void inOrder(Node* root) {
+    if (root != NULL) {
+        inOrder(root-&gt;left);           // 先走訪左子樹
+        printf(&quot;%c &quot;, root-&gt;data);     // 再輸出目前節點
+        inOrder(root-&gt;right);          // 最後走訪右子樹
+    }
+}
+
+/* 前序走訪：Root → Left → Right */
+void preOrder(Node* root) {
+    if (root != NULL) {
+        printf(&quot;%c &quot;, root-&gt;data);     // 先輸出目前節點
+        preOrder(root-&gt;left);          // 再走訪左子樹
+        preOrder(root-&gt;right);         // 最後走訪右子樹
+    }
+}
+
+/* 後序走訪：Left → Right → Root */
+void postOrder(Node* root) {
+    if (root != NULL) {
+        postOrder(root-&gt;left);         // 先走訪左子樹
+        postOrder(root-&gt;right);        // 再走訪右子樹
+        printf(&quot;%c &quot;, root-&gt;data);     // 最後輸出目前節點
+    }
+}
+
+int main(void) {
+    Node* root = createNode(&#x27;A&#x27;);
+    root-&gt;left = createNode(&#x27;B&#x27;);
+    root-&gt;right = createNode(&#x27;C&#x27;);
+    root-&gt;left-&gt;left = createNode(&#x27;D&#x27;);
+    root-&gt;left-&gt;right = createNode(&#x27;E&#x27;);
+    root-&gt;right-&gt;right = createNode(&#x27;F&#x27;);
+
+    printf(&quot;Inorder traversal: &quot;);
+    inOrder(root);
+    printf(&quot;\n&quot;);
+
+    printf(&quot;Preorder traversal: &quot;);
+    preOrder(root);
+    printf(&quot;\n&quot;);
+
+    printf(&quot;Postorder traversal: &quot;);
+    postOrder(root);
+    printf(&quot;\n&quot;);
+
+    return 0;
+}</code></pre></div>
+    <h3>程式流程圖</h3><div class="svgbox flow"><svg viewBox="0 0 760 520">
+      <defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#475569"/></marker></defs>
+      <rect x="300" y="20" width="160" height="42" rx="18" fill="#dbeafe" stroke="#2563eb"/><text x="380" y="46" text-anchor="middle">開始 inOrder(root)</text>
+      <rect x="285" y="95" width="190" height="58" rx="8" fill="#fff" stroke="#334155"/><text x="380" y="122" text-anchor="middle">判斷 root != NULL?</text>
+      <rect x="90" y="200" width="170" height="48" rx="8" fill="#fef3c7" stroke="#b45309"/><text x="175" y="228" text-anchor="middle">inOrder(root->left)</text>
+      <rect x="305" y="200" width="150" height="48" rx="8" fill="#dcfce7" stroke="#15803d"/><text x="380" y="228" text-anchor="middle">printf(root->data)</text>
+      <rect x="500" y="200" width="175" height="48" rx="8" fill="#fef3c7" stroke="#b45309"/><text x="587" y="228" text-anchor="middle">inOrder(root->right)</text>
+      <rect x="300" y="315" width="160" height="42" rx="18" fill="#e2e8f0" stroke="#475569"/><text x="380" y="341" text-anchor="middle">結束 / return</text>
+      <line x1="380" y1="62" x2="380" y2="95" stroke="#475569" marker-end="url(#arrow)"/>
+      <line x1="380" y1="153" x2="175" y2="200" stroke="#475569" marker-end="url(#arrow)"/><text x="250" y="175">是</text>
+      <line x1="260" y1="224" x2="305" y2="224" stroke="#475569" marker-end="url(#arrow)"/>
+      <line x1="455" y1="224" x2="500" y2="224" stroke="#475569" marker-end="url(#arrow)"/>
+      <line x1="587" y1="248" x2="400" y2="315" stroke="#475569" marker-end="url(#arrow)"/>
+      <line x1="475" y1="124" x2="680" y2="315" stroke="#475569" marker-end="url(#arrow)"/><text x="575" y="155">否</text>
+    </svg></div>
+    <h3>程式流程說明</h3><ol><li>若 root 為 NULL，代表空子樹，直接 return。</li><li>inOrder 先遞迴左子樹，再輸出目前節點，再遞迴右子樹。</li><li>preOrder 先輸出目前節點，再處理左、右子樹。</li><li>postOrder 先處理左、右子樹，最後輸出目前節點。</li></ol>
+    <h3>函式與語法說明</h3><div class="box kv"><div>struct Node</div><div>定義樹節點資料型態。</div><div>char data</div><div>存放節點字元資料。</div><div>left / right</div><div>分別指向左子節點與右子節點。</div><div>malloc</div><div>動態配置節點記憶體。</div><div>NULL</div><div>表示沒有子節點。</div><div>recursive call</div><div>函式呼叫自己，適合處理遞迴定義的 tree。</div></div>
+    <div class="box answer"><b>完整答案：</b>Inorder traversal: D B E A C F。Postorder traversal: D E B F C A。補充 Preorder：A B D E C F。</div>
+    <div class="box warning"><b>考試容易錯：</b>Postorder 是 left-right-root，不是 root-right-left；遞迴程式題要逐行追蹤呼叫順序。</div>
+  </div></article>
+</main>
+
+<script>
+const heapSteps = [{"text": "原始陣列，先視為 complete binary tree。", "array": [4, 1, 3, 2, 16, 9, 10, 14, 8, 7], "hi": []}, {"text": "從最後一個非葉節點 index 4 開始 heapify。", "array": [4, 1, 3, 2, 16, 9, 10, 14, 8, 7], "hi": [4]}, {"text": "檢查 index 4，值 16；與左右孩子比較。", "array": [4, 1, 3, 2, 16, 9, 10, 14, 8, 7], "hi": [4, 9]}, {"text": "從最後一個非葉節點 index 3 開始 heapify。", "array": [4, 1, 3, 2, 16, 9, 10, 14, 8, 7], "hi": [3]}, {"text": "檢查 index 3，值 2；與左右孩子比較。", "array": [4, 1, 3, 2, 16, 9, 10, 14, 8, 7], "hi": [3, 7, 8]}, {"text": "孩子 14 比 2 大，交換 2 與 14。", "array": [4, 1, 3, 2, 16, 9, 10, 14, 8, 7], "hi": [3, 7]}, {"text": "交換後繼續往下檢查。", "array": [4, 1, 3, 14, 16, 9, 10, 2, 8, 7], "hi": [3, 7]}, {"text": "檢查 index 7，值 2；與左右孩子比較。", "array": [4, 1, 3, 14, 16, 9, 10, 2, 8, 7], "hi": [7]}, {"text": "從最後一個非葉節點 index 2 開始 heapify。", "array": [4, 1, 3, 14, 16, 9, 10, 2, 8, 7], "hi": [2]}, {"text": "檢查 index 2，值 3；與左右孩子比較。", "array": [4, 1, 3, 14, 16, 9, 10, 2, 8, 7], "hi": [2, 5, 6]}, {"text": "孩子 10 比 3 大，交換 3 與 10。", "array": [4, 1, 3, 14, 16, 9, 10, 2, 8, 7], "hi": [2, 6]}, {"text": "交換後繼續往下檢查。", "array": [4, 1, 10, 14, 16, 9, 3, 2, 8, 7], "hi": [2, 6]}, {"text": "檢查 index 6，值 3；與左右孩子比較。", "array": [4, 1, 10, 14, 16, 9, 3, 2, 8, 7], "hi": [6]}, {"text": "從最後一個非葉節點 index 1 開始 heapify。", "array": [4, 1, 10, 14, 16, 9, 3, 2, 8, 7], "hi": [1]}, {"text": "檢查 index 1，值 1；與左右孩子比較。", "array": [4, 1, 10, 14, 16, 9, 3, 2, 8, 7], "hi": [1, 3, 4]}, {"text": "孩子 16 比 1 大，交換 1 與 16。", "array": [4, 1, 10, 14, 16, 9, 3, 2, 8, 7], "hi": [1, 4]}, {"text": "交換後繼續往下檢查。", "array": [4, 16, 10, 14, 1, 9, 3, 2, 8, 7], "hi": [1, 4]}, {"text": "檢查 index 4，值 1；與左右孩子比較。", "array": [4, 16, 10, 14, 1, 9, 3, 2, 8, 7], "hi": [4, 9]}, {"text": "孩子 7 比 1 大，交換 1 與 7。", "array": [4, 16, 10, 14, 1, 9, 3, 2, 8, 7], "hi": [4, 9]}, {"text": "交換後繼續往下檢查。", "array": [4, 16, 10, 14, 7, 9, 3, 2, 8, 1], "hi": [4, 9]}, {"text": "檢查 index 9，值 1；與左右孩子比較。", "array": [4, 16, 10, 14, 7, 9, 3, 2, 8, 1], "hi": [9]}, {"text": "從最後一個非葉節點 index 0 開始 heapify。", "array": [4, 16, 10, 14, 7, 9, 3, 2, 8, 1], "hi": [0]}, {"text": "檢查 index 0，值 4；與左右孩子比較。", "array": [4, 16, 10, 14, 7, 9, 3, 2, 8, 1], "hi": [0, 1, 2]}, {"text": "孩子 16 比 4 大，交換 4 與 16。", "array": [4, 16, 10, 14, 7, 9, 3, 2, 8, 1], "hi": [0, 1]}, {"text": "交換後繼續往下檢查。", "array": [16, 4, 10, 14, 7, 9, 3, 2, 8, 1], "hi": [0, 1]}, {"text": "檢查 index 1，值 4；與左右孩子比較。", "array": [16, 4, 10, 14, 7, 9, 3, 2, 8, 1], "hi": [1, 3, 4]}, {"text": "孩子 14 比 4 大，交換 4 與 14。", "array": [16, 4, 10, 14, 7, 9, 3, 2, 8, 1], "hi": [1, 3]}, {"text": "交換後繼續往下檢查。", "array": [16, 14, 10, 4, 7, 9, 3, 2, 8, 1], "hi": [1, 3]}, {"text": "檢查 index 3，值 4；與左右孩子比較。", "array": [16, 14, 10, 4, 7, 9, 3, 2, 8, 1], "hi": [3, 7, 8]}, {"text": "孩子 8 比 4 大，交換 4 與 8。", "array": [16, 14, 10, 4, 7, 9, 3, 2, 8, 1], "hi": [3, 8]}, {"text": "交換後繼續往下檢查。", "array": [16, 14, 10, 8, 7, 9, 3, 2, 4, 1], "hi": [3, 8]}, {"text": "檢查 index 8，值 4；與左右孩子比較。", "array": [16, 14, 10, 8, 7, 9, 3, 2, 4, 1], "hi": [8]}, {"text": "完成 max heap，最大值在 root。", "array": [16, 14, 10, 8, 7, 9, 3, 2, 4, 1], "hi": [0]}];
+const sortSteps = [{"text": "先建立 max heap。", "array": [16, 14, 10, 8, 7, 9, 3, 2, 4, 1], "heapSize": 10, "hi": [0]}, {"text": "把 root 最大值 16 與目前 heap 最後一格 1 交換，最大值固定到排序區。", "array": [16, 14, 10, 8, 7, 9, 3, 2, 4, 1], "heapSize": 10, "hi": [0, 9]}, {"text": "縮小 heap 範圍到 index 0..8，對 root 做 heapify。", "array": [1, 14, 10, 8, 7, 9, 3, 2, 4, 16], "heapSize": 9, "hi": [0, 9]}, {"text": "排序階段：檢查 index 0，值 1；與左右孩子比較。", "array": [1, 14, 10, 8, 7, 9, 3, 2, 4, 16], "hi": [0, 1, 2], "heapSize": 9}, {"text": "孩子 14 比 1 大，交換 1 與 14。", "array": [1, 14, 10, 8, 7, 9, 3, 2, 4, 16], "hi": [0, 1], "heapSize": 9}, {"text": "交換後繼續往下檢查。", "array": [14, 1, 10, 8, 7, 9, 3, 2, 4, 16], "hi": [0, 1], "heapSize": 9}, {"text": "排序階段：檢查 index 1，值 1；與左右孩子比較。", "array": [14, 1, 10, 8, 7, 9, 3, 2, 4, 16], "hi": [1, 3, 4], "heapSize": 9}, {"text": "孩子 8 比 1 大，交換 1 與 8。", "array": [14, 1, 10, 8, 7, 9, 3, 2, 4, 16], "hi": [1, 3], "heapSize": 9}, {"text": "交換後繼續往下檢查。", "array": [14, 8, 10, 1, 7, 9, 3, 2, 4, 16], "hi": [1, 3], "heapSize": 9}, {"text": "排序階段：檢查 index 3，值 1；與左右孩子比較。", "array": [14, 8, 10, 1, 7, 9, 3, 2, 4, 16], "hi": [3, 7, 8], "heapSize": 9}, {"text": "孩子 4 比 1 大，交換 1 與 4。", "array": [14, 8, 10, 1, 7, 9, 3, 2, 4, 16], "hi": [3, 8], "heapSize": 9}, {"text": "交換後繼續往下檢查。", "array": [14, 8, 10, 4, 7, 9, 3, 2, 1, 16], "hi": [3, 8], "heapSize": 9}, {"text": "排序階段：檢查 index 8，值 1；與左右孩子比較。", "array": [14, 8, 10, 4, 7, 9, 3, 2, 1, 16], "hi": [8], "heapSize": 9}, {"text": "本輪完成；右側已排序區不再動。", "array": [14, 8, 10, 4, 7, 9, 3, 2, 1, 16], "heapSize": 9, "hi": []}, {"text": "把 root 最大值 14 與目前 heap 最後一格 1 交換，最大值固定到排序區。", "array": [14, 8, 10, 4, 7, 9, 3, 2, 1, 16], "heapSize": 9, "hi": [0, 8]}, {"text": "縮小 heap 範圍到 index 0..7，對 root 做 heapify。", "array": [1, 8, 10, 4, 7, 9, 3, 2, 14, 16], "heapSize": 8, "hi": [0, 8]}, {"text": "排序階段：檢查 index 0，值 1；與左右孩子比較。", "array": [1, 8, 10, 4, 7, 9, 3, 2, 14, 16], "hi": [0, 1, 2], "heapSize": 8}, {"text": "孩子 10 比 1 大，交換 1 與 10。", "array": [1, 8, 10, 4, 7, 9, 3, 2, 14, 16], "hi": [0, 2], "heapSize": 8}, {"text": "交換後繼續往下檢查。", "array": [10, 8, 1, 4, 7, 9, 3, 2, 14, 16], "hi": [0, 2], "heapSize": 8}, {"text": "排序階段：檢查 index 2，值 1；與左右孩子比較。", "array": [10, 8, 1, 4, 7, 9, 3, 2, 14, 16], "hi": [2, 5, 6], "heapSize": 8}, {"text": "孩子 9 比 1 大，交換 1 與 9。", "array": [10, 8, 1, 4, 7, 9, 3, 2, 14, 16], "hi": [2, 5], "heapSize": 8}, {"text": "交換後繼續往下檢查。", "array": [10, 8, 9, 4, 7, 1, 3, 2, 14, 16], "hi": [2, 5], "heapSize": 8}, {"text": "排序階段：檢查 index 5，值 1；與左右孩子比較。", "array": [10, 8, 9, 4, 7, 1, 3, 2, 14, 16], "hi": [5], "heapSize": 8}, {"text": "本輪完成；右側已排序區不再動。", "array": [10, 8, 9, 4, 7, 1, 3, 2, 14, 16], "heapSize": 8, "hi": []}, {"text": "把 root 最大值 10 與目前 heap 最後一格 2 交換，最大值固定到排序區。", "array": [10, 8, 9, 4, 7, 1, 3, 2, 14, 16], "heapSize": 8, "hi": [0, 7]}, {"text": "縮小 heap 範圍到 index 0..6，對 root 做 heapify。", "array": [2, 8, 9, 4, 7, 1, 3, 10, 14, 16], "heapSize": 7, "hi": [0, 7]}, {"text": "排序階段：檢查 index 0，值 2；與左右孩子比較。", "array": [2, 8, 9, 4, 7, 1, 3, 10, 14, 16], "hi": [0, 1, 2], "heapSize": 7}, {"text": "孩子 9 比 2 大，交換 2 與 9。", "array": [2, 8, 9, 4, 7, 1, 3, 10, 14, 16], "hi": [0, 2], "heapSize": 7}, {"text": "交換後繼續往下檢查。", "array": [9, 8, 2, 4, 7, 1, 3, 10, 14, 16], "hi": [0, 2], "heapSize": 7}, {"text": "排序階段：檢查 index 2，值 2；與左右孩子比較。", "array": [9, 8, 2, 4, 7, 1, 3, 10, 14, 16], "hi": [2, 5, 6], "heapSize": 7}, {"text": "孩子 3 比 2 大，交換 2 與 3。", "array": [9, 8, 2, 4, 7, 1, 3, 10, 14, 16], "hi": [2, 6], "heapSize": 7}, {"text": "交換後繼續往下檢查。", "array": [9, 8, 3, 4, 7, 1, 2, 10, 14, 16], "hi": [2, 6], "heapSize": 7}, {"text": "排序階段：檢查 index 6，值 2；與左右孩子比較。", "array": [9, 8, 3, 4, 7, 1, 2, 10, 14, 16], "hi": [6], "heapSize": 7}, {"text": "本輪完成；右側已排序區不再動。", "array": [9, 8, 3, 4, 7, 1, 2, 10, 14, 16], "heapSize": 7, "hi": []}, {"text": "把 root 最大值 9 與目前 heap 最後一格 2 交換，最大值固定到排序區。", "array": [9, 8, 3, 4, 7, 1, 2, 10, 14, 16], "heapSize": 7, "hi": [0, 6]}, {"text": "縮小 heap 範圍到 index 0..5，對 root 做 heapify。", "array": [2, 8, 3, 4, 7, 1, 9, 10, 14, 16], "heapSize": 6, "hi": [0, 6]}, {"text": "排序階段：檢查 index 0，值 2；與左右孩子比較。", "array": [2, 8, 3, 4, 7, 1, 9, 10, 14, 16], "hi": [0, 1, 2], "heapSize": 6}, {"text": "孩子 8 比 2 大，交換 2 與 8。", "array": [2, 8, 3, 4, 7, 1, 9, 10, 14, 16], "hi": [0, 1], "heapSize": 6}, {"text": "交換後繼續往下檢查。", "array": [8, 2, 3, 4, 7, 1, 9, 10, 14, 16], "hi": [0, 1], "heapSize": 6}, {"text": "排序階段：檢查 index 1，值 2；與左右孩子比較。", "array": [8, 2, 3, 4, 7, 1, 9, 10, 14, 16], "hi": [1, 3, 4], "heapSize": 6}, {"text": "排序完成：由小到大排列。", "array": [1, 2, 3, 4, 7, 8, 9, 10, 14, 16], "heapSize": 0, "hi": []}];
+const state = {};
+
+document.querySelectorAll('.acc-head').forEach(btn=>btn.addEventListener('click',()=>btn.parentElement.classList.toggle('open')));
+function openAll(){document.querySelectorAll('.accordion').forEach(a=>a.classList.add('open'));}
+function closeAll(){document.querySelectorAll('.accordion').forEach(a=>a.classList.remove('open'));}
+function copyCode(id){navigator.clipboard.writeText(document.getElementById(id).innerText).then(()=>alert('已複製程式碼'));}
+
+const baseNodes = {
+ A:[260,50], B:[160,130], C:[360,130], D:[95,210], E:[225,210], F:[420,210]
+};
+const termNodes = {A:[260,45],B:[130,120],C:[260,120],D:[390,120],E:[80,205],F:[180,205],G:[390,205],H:[340,270],I:[440,270]};
+const bstNodes = {7:[310,45],3:[175,125],14:[455,125],2:[100,205],4:[245,205],10:[385,205],16:[520,205],1:[60,285],8:[340,285],9:[385,355]};
+const bstEdges = [[7,3],[7,14],[3,2],[3,4],[14,10],[14,16],[2,1],[10,8],[8,9]];
+function edgeStr(n1,n2,map){let [x1,y1]=map[n1], [x2,y2]=map[n2]; return `<line class="edge" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}"/>`;}
+function nodeStr(id,map,hi=[],done=[]){let [x,y]=map[id]; let cls='node '+(hi.includes(id)?'active ':'')+(done.includes(id)?'done':''); return `<g class="${cls}"><circle cx="${x}" cy="${y}" r="24"/><text class="label" x="${x}" y="${y}">${id}</text></g>`;}
+function simpleTree(map,edges,hi=[],done=[],view='0 0 560 390'){return `<svg viewBox="${view}">${edges.map(e=>edgeStr(e[0],e[1],map)).join('')}${Object.keys(map).map(k=>nodeStr(isNaN(k)?k:Number(k),map,hi,done)).join('')}</svg>`;}
+function renderGeneralTree(hi=[]){let edges=[['A','B'],['A','C'],['A','D'],['B','E'],['B','F'],['D','G'],['G','H'],['G','I']]; return simpleTree(termNodes,edges,hi,[], '0 0 540 320');}
+function renderBaseTree(hi=[],done=[]){let edges=[['A','B'],['A','C'],['B','D'],['B','E'],['C','F']]; return simpleTree(baseNodes,edges,hi,done,'0 0 520 260');}
+function renderLCRS(step){ 
+ const map={A:[260,50],B:[160,130],C:[260,130],D:[360,130],E:[100,210],F:[200,210],G:[360,210]};
+ let edgeList = step>=1?[['A','B']]:[];
+ if(step>=2) edgeList.push(['B','C'],['C','D']);
+ if(step>=3) edgeList.push(['B','E'],['E','F'],['D','G']);
+ let labels = edgeList.map(e=>edgeStr(e[0],e[1],map)).join('');
+ return `<svg viewBox="0 0 520 270">${labels}${Object.keys(map).map(k=>nodeStr(k,map,[],[])).join('')}<text x="260" y="255" class="small">斜線代表 left child；水平串接代表 right sibling</text></svg>`;
+}
+function heapSvg(array, hi=[], heapSize=array.length){ 
+ const pos=[[310,45],[190,115],[430,115],[120,190],[260,190],[380,190],[520,190],[80,260],[160,260],[230,260],[290,260]];
+ let s='<svg viewBox="0 0 620 330">';
+ for(let i=0;i<array.length && i<heapSize;i++){let l=2*i+1,r=2*i+2; if(l<heapSize) s+=`<line class="edge" x1="${pos[i][0]}" y1="${pos[i][1]}" x2="${pos[l][0]}" y2="${pos[l][1]}"/>`; if(r<heapSize) s+=`<line class="edge" x1="${pos[i][0]}" y1="${pos[i][1]}" x2="${pos[r][0]}" y2="${pos[r][1]}"/>`;}
+ for(let i=0;i<array.length && i<heapSize;i++){let cls='node '+(hi.includes(i)?'active':''); s+=`<g class="${cls}"><circle cx="${pos[i][0]}" cy="${pos[i][1]}" r="24"/><text class="label" x="${pos[i][0]}" y="${pos[i][1]}">${array[i]}</text><text class="small" x="${pos[i][0]}" y="${pos[i][1]+34}">[${i}]</text></g>`;}
+ s+='</svg>';
+ let cells='<div class="array">'+array.map((v,i)=>`<div class="cell ${hi.includes(i)?'active':''} ${i>=heapSize?'sorted':''}">${v}<br><small>[${i}]</small></div>`).join('')+'</div>';
+ return s+cells;
+}
+function nextStep(id){state[id].idx=Math.min(state[id].idx+1,state[id].steps.length-1); renderStep(id);}
+function prevStep(id){state[id].idx=Math.max(state[id].idx-1,0); renderStep(id);}
+function replay(id){state[id].idx=0; renderStep(id);}
+function renderStep(id){let st=state[id], item=st.steps[st.idx]; document.getElementById('text-'+id).innerHTML=`第 ${st.idx+1} / ${st.steps.length} 步：${item.text}`; document.getElementById('anim-'+id).innerHTML=item.svg();}
+
+function initSteppers(){
+ state.q1={idx:0,steps:[
+  {text:'A 是 root，所有分支都從 root 往下展開。',svg:()=>renderBaseTree(['A'])},
+  {text:'以 B 為根的 B-D-E 區塊本身也是一棵 subtree。',svg:()=>renderBaseTree(['B','D','E'])},
+  {text:'以 C 為根的 C-F 區塊也是另一棵 subtree。',svg:()=>renderBaseTree(['C','F'])}
+ ]};
+ state.q2={idx:0,steps:[
+  {text:'Root 是最上方節點 A。',svg:()=>renderGeneralTree(['A'])},
+  {text:'Leaves 是沒有 child 的節點：C、E、F、H、I。',svg:()=>renderGeneralTree(['C','E','F','H','I'])},
+  {text:'A 有 B、C、D 三個 children，所以 degree(A)=3。',svg:()=>renderGeneralTree(['A','B','C','D'])},
+  {text:'G 的 parent 是 D；D 的 child 是 G。',svg:()=>renderGeneralTree(['D','G'])},
+  {text:'最深路徑 A→D→G→H/I，共 4 層。',svg:()=>renderGeneralTree(['A','D','G','H','I'])}
+ ]};
+ state.q4={idx:0,steps:[
+  {text:'先找每個節點的第一個小孩：A 的 left child 是 B。',svg:()=>renderLCRS(1)},
+  {text:'兄弟節點用 right sibling 串起來：B→C→D。',svg:()=>renderLCRS(2)},
+  {text:'再處理下一層：B 的孩子 E、F 串起來，D 的孩子是 G。',svg:()=>renderLCRS(3)}
+ ]};
+ state.q7={idx:0,mode:'in',steps:traversalSteps('in')};
+ state.q8={idx:0,steps:bstInsertSteps()};
+ state.q9={idx:0,target:9,steps:searchSteps(9)};
+ state.q10={idx:0,steps:heapSteps.map(s=>({text:s.text, svg:()=>heapSvg(s.array,s.hi)}))};
+ state.q11={idx:0,steps:sortSteps.map(s=>({text:s.text, svg:()=>heapSvg(s.array,s.hi||[],s.heapSize??s.array.length)}))};
+ state.q12={idx:0,steps:traversalSteps('in').concat([{text:'切換到 postOrder：左子樹 → 右子樹 → root。', svg:()=>renderBaseTree([])}]).concat(traversalSteps('post'))};
+ Object.keys(state).forEach(renderStep);
+ document.getElementById('q6svg').innerHTML = q6Svg();
+ renderFullTree();
+}
+function traversalSteps(mode){
+ let orders={in:['D','B','E','A','C','F'],pre:['A','B','D','E','C','F'],post:['D','E','B','F','C','A']};
+ let names={in:'Inorder：Left → Root → Right',pre:'Preorder：Root → Left → Right',post:'Postorder：Left → Right → Root'};
+ let done=[];
+ return orders[mode].map((n,i)=>({text:`${names[mode]}；目前輸出 ${n}，已輸出：${orders[mode].slice(0,i+1).join(' ')}`, svg:()=>renderBaseTree([n],orders[mode].slice(0,i))}));
+}
+function setTraversal(mode){state.q7.mode=mode; state.q7.steps=traversalSteps(mode); state.q7.idx=0; renderStep('q7');}
+function bstInsertSteps(){
+ let order=[7,14,10,8,16,3,2,4,1]; let present=[]; let steps=[];
+ let paths={7:[7],14:[7,14],10:[7,14,10],8:[7,14,10,8],16:[7,14,16],3:[7,3],2:[7,3,2],4:[7,3,4],1:[7,3,2,1]};
+ let edges=[];
+ let allEdges=bstEdges;
+ order.forEach(v=>{present.push(v); edges=allEdges.filter(e=>present.includes(e[0])&&present.includes(e[1])); let p=paths[v]; steps.push({text:`插入 ${v}：從 root 開始比較，路徑為 ${p.join(' → ')}。`, svg:()=>simpleTree(Object.fromEntries(present.map(k=>[k,bstNodes[k]])),edges,p,[], '0 0 610 390')});});
+ return steps;
+}
+function searchSteps(target){
+ let paths={9:[7,14,10,8,9],15:[7,14,16]};
+ let text9=['9 > 7，往右子樹。','9 < 14，往左子樹。','9 < 10，往左子樹。','9 > 8，往右子樹。','找到 9。'];
+ let text15=['15 > 7，往右子樹。','15 > 14，往右子樹。','15 < 16，往左子樹。','16 的左子樹為 null，所以找不到 15。'];
+ let arr=target===9?paths[9]:paths[15], tx=target===9?text9:text15;
+ return tx.map((t,i)=>({text:t, svg:()=>simpleTree(bstNodes,bstEdges,arr.slice(0,i+1),[], '0 0 610 390')}));
+}
+function setSearchTarget(t){state.q9.target=t; state.q9.steps=searchSteps(t); state.q9.idx=0; renderStep('q9');}
+function q6Svg(){return `<svg viewBox="0 0 780 310">
+ <text x="390" y="24" class="label">Array index 從 1 開始</text>
+ <line class="edge" x1="390" y1="55" x2="260" y2="125"/><line class="edge" x1="390" y1="55" x2="520" y2="125"/>
+ <line class="edge" x1="260" y1="125" x2="190" y2="205"/><line class="edge" x1="260" y1="125" x2="330" y2="205"/>
+ <line class="edge" x1="520" y1="125" x2="450" y2="205"/><line class="edge" x1="520" y1="125" x2="590" y2="205"/>
+ ${[[1,390,55],[2,260,125],[3,520,125],[4,190,205],[5,330,205],[6,450,205],[7,590,205]].map(a=>`<g class="node ${a[0]===5?'active':''}"><circle cx="${a[1]}" cy="${a[2]}" r="24"/><text class="label" x="${a[1]}" y="${a[2]}">${a[0]}</text></g>`).join('')}
+ <text x="390" y="285" class="small">i=5：parent=⌊5/2⌋=2；left=10；right=11</text></svg>`;}
+function renderFullTree(){let g=document.getElementById('fullTree'); if(!g)return; let nodes=[]; let y=[55,105,160,220]; let xs=[[360],[260,460],[190,330,400,540],[150,230,300,360,430,490,560,620]]; let id=1; let s=''; for(let level=0;level<4;level++){xs[level].forEach((x,j)=>nodes.push([id++,x,y[level]]));} function pos(i){return nodes.find(n=>n[0]===i);} for(let i=1;i<=7;i++){let p=pos(i),l=pos(i*2),r=pos(i*2+1); if(l)s+=`<line class="edge" x1="${p[1]}" y1="${p[2]}" x2="${l[1]}" y2="${l[2]}"/>`; if(r)s+=`<line class="edge" x1="${p[1]}" y1="${p[2]}" x2="${r[1]}" y2="${r[2]}"/>`;} nodes.forEach(n=>s+=`<g class="node"><circle cx="${n[1]}" cy="${n[2]}" r="18"/><text class="label" x="${n[1]}" y="${n[2]}">${n[0]}</text></g>`); g.innerHTML=s;}
+initSteppers();
+</script>
+</body>
+</html>
